@@ -1,4 +1,4 @@
-# NEXT-TYPESCRIPT STARTER
+# MARKET DESIGN
 
 <p>
   <a aria-label="Next js logo" href="https://nextjs.org">
@@ -40,18 +40,11 @@ Run `npm run dev` to start the development server on http://localhost:3000
 
 #### Styling
 
-Styling options include:
-
-- Vanilla CSS
-- Sass/Scss
 - [TailwindCSS](https://tailwindcss.com/docs/installation). A utility-first CSS framework with pre-configured classes to create an API for the projects design system.
-
-You can also use modular styling with css or scss.
 
 #### Page Analytics
 
-We added functionalities for both [Google Analytics](https://developers.google.com/analytics) and [Fathom Analytics](https://usefathom.com/) in this project, so you can choose one that's suitable for your project.
-NB: Add your google or fathom analytics ids to the `next.config.js` file as environmental variables. Use identifiers/keys `GOOGLE_ANALYTICS_ID` for google analytics id and `FATHOM_ANALYTICS_ID` as env variable for fathom analytics.
+We use [Fathom](https://usefathom.com/) for page analytics. Add the Fathom Analytics ID to the `next.config.js` file as an environmental variable. Use identifier/key `FATHOM_ANALYTICS_ID` as an env variable.
 
 #### SEO
 
