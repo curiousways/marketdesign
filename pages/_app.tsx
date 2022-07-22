@@ -5,13 +5,10 @@ import { useRouter } from "next/router";
 import { DefaultSeo } from "next-seo";
 import * as Fathom from "fathom-client";
 
-import * as gtag from "../lib/gtag";
-
 import Nav from "@/components/common/Nav";
 import Footer from "@/components/common/Footer";
 
 import "../styles/globals.css"; // Global style sheet for css
-// import "../styles/global.scss"; //Global stylesheet for sass
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -22,20 +19,15 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     // Load fathom analytics
-    // Fathom.load(fathom, {
-    //   includedDomains: [siteUrlhttpsStripped],
-    //   excludedDomains: ["localhost", "*.vercel.app"],
-    // });
-
-    // Google Analytics
-    const handleRouteChange = (url: URL) => {
-      gtag.pageview(url);
-    };
+    Fathom.load(fathom, {
+      includedDomains: [siteUrlhttpsStripped],
+      excludedDomains: ["localhost", "*.vercel.app"],
+    });
 
     // Fathom Analytics
-    // const handleRouteChange = () => {
-    //   Fathom.trackPageview();
-    // };
+    const handleRouteChange = () => {
+      Fathom.trackPageview();
+    };
 
     router.events.on("routeChangeComplete", handleRouteChange);
     return () => {
@@ -72,7 +64,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       />
       <Nav />
       <Component {...pageProps} />
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

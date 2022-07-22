@@ -14,7 +14,7 @@ module.exports = {
         "3xl": "1920px",
       },
       fontFamily: {
-        sans: ["fontFamily", ...defaultTheme.fontFamily.serif],
+        sans: ["Raleway", ...defaultTheme.fontFamily.sans],
       },
     },
   },
