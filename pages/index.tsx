@@ -1,202 +1,182 @@
-import { useState, useEffect } from "react";
-
 import type { NextPage } from "next";
 
-import axios from "axios";
-import useSWR from "swr";
+import Image from "next/image";
 
-// import AppContextProvider from "@/context/Context";
+import Button from "@/components/common/Button";
+import Header from "@/components/home/Header";
+import Faqs from "@/components/home/Faqs";
 
-import PricingRuleSelect from "@/components/home/PricingRuleSelect";
-import FreeDisposalSelect from "@/components/home/FreeDisposalSelect";
-import Modal from "@/components/home/Modal";
-import ResultModal from "@/components/home/ResultModal";
-import Badge from "@/components/proto/Badge";
-
-type Result = {
-  [key: string]: any;
-};
-
-// API call function using axios
-const fetcher = (url: string, freeDisposal: boolean, bidders: any[]) =>
-  axios
-    .post(url, { free_disposal: freeDisposal, bidders: bidders })
-    .then((res) => res.data);
+import UnderstandingTheModel from "../public/assets/images/home/understanding-the-model.png";
+import Frame from "../public/assets/images/home/frame.png";
+import Frame2 from "../public/assets/images/home/frame-2.png";
 
 const Home: NextPage = () => {
-  const [pricingRule, setPricingRule] = useState("lindsay2018");
-  const [freeDisposal, setFreeDisposal] = useState(true);
-  const [bidders, setBidders] = useState<any[]>([]);
-  const [result, setResult] = useState<Result>({});
-
-  // Controls different modals
-  const [openBuyerModal, setOpenBuyerModal] = useState(false);
-  const [openSellerModal, setOpenSellerModal] = useState(false);
-  const [showResultModal, setShowResultModal] = useState(false);
-
-  // Controls result data fetching
-  const [shouldFetch, setShouldFetch] = useState(false);
-
-  const updateBidders = (newBidder: any) => setBidders([...bidders, newBidder]);
-  const solveMarket = () => {
-    setShouldFetch(true);
-    setShowResultModal(true);
-  };
-
-  // Returns array of sellers and buyers
-  const sellers = bidders.filter((bidder) => bidder.bids[0].v < 0);
-  const buyers = bidders.filter((bidder) => bidder.bids[0].v > 0);
-
-  // API call using SWR
-  const url = `https://marketdesign.herokuapp.com/solve/${pricingRule}`;
-  const { data, error } = useSWR(
-    [shouldFetch ? url : null, freeDisposal, bidders],
-    fetcher,
-    {
-      onSuccess: function (data, ...rest) {
-        setShouldFetch(false);
-        setResult(data);
-        // Replace bidders array with the one from the result
-        setBidders(data?.problem.bidders);
-      },
-    }
-  );
-
   return (
     <>
-      <div className="max-w-[1110px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="space-y-8">
-          {/* Pricing rule */}
-          <PricingRuleSelect setPricingRule={setPricingRule} />
-          {/* Free Disposal */}
-          <FreeDisposalSelect
-            freeDisposal={freeDisposal}
-            setFreeDisposal={setFreeDisposal}
-          />
+      <Header />
 
-          {/* Bidders */}
-          <div className="grid grid-cols-2 gap-16">
-            {/* Sellers */}
-            <div>
-              <div className="bg-white px-4 py-5 border-b border-gray-200 sm:px-6">
-                <div className="-ml-4 -mt-2 flex items-center justify-between flex-wrap sm:flex-nowrap">
-                  <div className="ml-4 mt-2">
-                    <h3 className="text-lg leading-6 text-gray-900">
-                      Sellers list
-                    </h3>
-                  </div>
-                  <div className="ml-4 mt-2 flex-shrink-0">
-                    <button
-                      type="button"
-                      className="relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      onClick={() => setOpenSellerModal(true)}
-                    >
-                      Add new Seller
-                    </button>
-                  </div>
+      <main id="home">
+        <section className="relative">
+          <svg
+            width="564"
+            height="817"
+            viewBox="0 0 564 817"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="absolute left-0 -top-52 opacity-10"
+          >
+            <path
+              d="M509.394 571.561L563.772 445.756L550.692 281.445L528.353 0L0 199.437V816.999L180.919 729.847L509.394 571.561Z"
+              fill="#7DBB67"
+            />
+          </svg>
+          <div className="xl:max-w-[1130px] pl-20 2xl:pl-40 pt-32 pb-20 space-y-5 relative">
+            <p className="text-green-dark text-4xl">
+              It defines a set of rules and processes to optimise outcomes for
+              both buyers and sellers while delivering the greatest benefit to
+              the natural environment.
+            </p>
+            <p className="max-w-[790px]">
+              This website explains the concepts underpinning the model,
+              provides a step-by-step walkthrough of how it works for buyers and
+              sellers, and presents a simulation of a real-world marketplace so
+              you can familiarise yourself with the model and how it operates in
+              a range of scenarios.
+            </p>
+          </div>
+        </section>
+
+        {/* Understanding the model  */}
+        <section className="lg:flex lg:gap-x-10 xl:gap-x-20 xl:space-y-16 mt-20">
+          <div className="max-w-[833px] relative z-10">
+            <Image src={UnderstandingTheModel} />
+          </div>
+          <div className="max-w-[461px]">
+            <h2 className="max-w-[343px]">Understanding the model</h2>
+            <p>
+              All markets have rules and processes that set out who can
+              participate, what can be traded, how prices are set and how
+              payment is settled.
+            </p>
+          </div>
+        </section>
+
+        {/*  */}
+        <section className="relative mb-5">
+          <div className="xl:max-w-[1130px] pl-20 2xl:pl-40">
+            <div className="relative">
+              <svg
+                width="753"
+                height="317"
+                viewBox="0 0 753 317"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="absolute -top-24 -left-6 -z-0 max-w-[783px]"
+              >
+                <path
+                  d="M0 96.6406L64.5562 0L571.45 38.0493L753 228.063L636.473 317L33.0938 264.945L0 96.6406Z"
+                  fill="#FFFCEF"
+                />
+              </svg>
+
+              <div className="max-w-[616px] relative pt-5 space-y-10">
+                <div className="space-y-10 mt-5">
+                  <h2>Optimise the financial & environmental benefits</h2>
+                  <p>
+                    The Exeter Lindsay market model applies robust and
+                    innovative thinking to optimise financial and environmental
+                    benefits to all parties. To maximise the opportunities
+                    presented by the model, take a few minutes to understand how
+                    the model works and the ways in which it delivers better
+                    outcomes for buyers, sellers and the environment.
+                  </p>
                 </div>
-              </div>
-              <ul className="px-4 py-5 border-b border-gray-200 space-y-4">
-                {sellers.map((seller, i) => (
-                  <li
-                    key={i}
-                    className="shadow-sm border border-gray-200 rounded-md p-3 space-y-4"
-                  >
-                    <Badge winning={seller.bids[0].winning} />
-                    <div className="flex justify-between items-center">
-                      <img
-                        className="rounded-full w-12 h-12 border border-purple-200"
-                        src="https://joeschmoe.io/api/v1/random"
-                        alt=""
-                      />
-                      <div className="space-x-8">
-                        <span>{seller.name}</span>
-                        <span>{Math.abs(seller.bids[0].v)}</span>
-                      </div>
-                    </div>
+
+                <ul className="space-y-3 list-disc list-inside text-lg">
+                  <li>
+                    Building Blocks: Participants, Projects, Credits, Costs &
+                    Values
                   </li>
-                ))}
-              </ul>
+                  <li>Bids & Offers in a Market</li>
+                  <li>Choosing Winners: Surplus maximisation</li>
+                  <li>Determining Payments: Division using the Shapley</li>
+                </ul>
+
+                <Button text="Find out more" link="/" />
+              </div>
+
+              <div className="max-w-[616px] mt-20 space-y-10">
+                <h2>Take a tour</h2>
+                <p>
+                  Take a guided tour of a market scenario to gain a step-by-step
+                  understanding of how it works, how to participate and how to
+                  maximise your opportunity as a buyer or seller.
+                </p>
+                <Button text="Take the tour" link="/" />
+              </div>
             </div>
 
-            {/* Buyers */}
-            <div>
-              <div className="bg-white px-4 py-5 border-b border-gray-200 sm:px-6">
-                <div className="-ml-4 -mt-2 flex items-center justify-between flex-wrap sm:flex-nowrap">
-                  <div className="ml-4 mt-2">
-                    <h3 className="text-lg leading-6 text-gray-900">
-                      Buyers List
-                    </h3>
-                  </div>
-                  <div className="ml-4 mt-2 flex-shrink-0">
-                    <button
-                      type="button"
-                      className="relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      onClick={() => setOpenBuyerModal(true)}
-                    >
-                      Add new Buyer
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <ul className="px-4 py-5 border-b border-gray-200 space-y-4">
-                {buyers.map((buyer, i) => (
-                  <li
-                    key={i}
-                    className="shadow-sm border border-gray-200 rounded-md p-3 space-y-4"
-                  >
-                    <Badge winning={buyer.bids[0].winning} />
-                    <div className="flex justify-between items-center">
-                      <img
-                        className="rounded-full w-12 h-12 border border-purple-200"
-                        src="https://joeschmoe.io/api/v1/random"
-                        alt=""
-                      />
-                      <div className="space-x-8">
-                        <span>{buyer.name}</span>
-                        <span>{Math.abs(buyer.bids[0].v)}</span>
-                      </div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+            <div className="absolute -top-36 right-0">
+              <Image src={Frame} />
             </div>
           </div>
+        </section>
 
-          <button
-            type="button"
-            className="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
-            onClick={solveMarket}
-          >
-            Solve Market
-          </button>
-        </div>
+        {/* Give it a try  */}
+        <section className="pr-20 2xl:pr-40 flex gap-x-4">
+          <div>
+            <Image src={Frame2} />
+          </div>
+          <div>
+            <div className="max-w-[430px] space-y-10 relative -mt-10 mb-28">
+              <h2>Give it a try</h2>
+              <p>
+                Get a feel for trading in markets based on Exeter Lindsay. We’ve
+                created a series of simulations to give you first hand
+                experience of the model and demonstrate how your choices can
+                affect outcomes in different circumstances.
+              </p>
+              <Button text="Start trading" link="/" />
+            </div>
 
-        {/* Bidder Info modals */}
-        {openBuyerModal && (
-          <Modal
-            open={openBuyerModal}
-            setOpen={setOpenBuyerModal}
-            type="Buyer"
-            addBidder={updateBidders}
-          />
-        )}
-        {openSellerModal && (
-          <Modal
-            open={openSellerModal}
-            setOpen={setOpenSellerModal}
-            type="Seller"
-            addBidder={updateBidders}
-          />
-        )}
-        {showResultModal && (
-          <ResultModal
-            open={showResultModal}
-            setOpen={setShowResultModal}
-            result={result}
-          />
-        )}
-      </div>
+            <div className="relative">
+              <svg
+                width="699"
+                height="197"
+                viewBox="0 0 699 197"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="absolute top-0 -left-32"
+              >
+                <path
+                  d="M97.0419 162.43L176.941 196.441L570.244 158.386L698.174 66.781C698.174 66.781 697.796 39.0802 696.701 35.9814C693.605 27.1761 650.332 -0.411052 647.84 0.00464757C645.348 0.420347 534.561 27.6298 534.561 27.6298L293.882 1.17616L0 38.0601L3.13399 106.386L97.0419 162.43Z"
+                  fill="#328814"
+                  fillOpacity="0.1"
+                />
+              </svg>
+              <div className="max-w-[430px] pt-12 space-y-32">
+                <h2>How It Works</h2>
+                <div className="space-y-10">
+                  <h3>Optimising Natural Capital Markets</h3>
+                  <p>
+                    The goal of the Exeter Lindsay model is to optimise trading
+                    for buyers and sellers of environmental goods and services
+                    to deliver the maximum environmental benefit for the lowest
+                    cost by the most equitable means by enabling:
+                  </p>
+                  <ul className="text-green-dark list-disc list-inside pl-4">
+                    <li>Accurate price discovery</li>
+                    <li>Equitable settlement </li>
+                    <li>Efficient resource allocation</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <Faqs />
+      </main>
     </>
   );
 };
