@@ -1,11 +1,11 @@
 import { classNames } from "@/utils/index";
 
-import { Buyer } from "@/types/types";
+import { Buyer as BuyerType } from "@/types/types";
 
 import HammerIcon from "./HammerIcon";
 
 type Props = {
-  buyer: Buyer;
+  buyer: BuyerType;
   stage: number;
   maxStage: number;
   options: {

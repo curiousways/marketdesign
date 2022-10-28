@@ -14,13 +14,7 @@ type Props = {
   className?: string;
 };
 
-const MarketOutcome = ({
-  stage,
-  walkthrough,
-  maxStage,
-  options,
-  className = "",
-}: Props) => {
+const MarketOutcome = ({ stage, options, className = "" }: Props) => {
   const { show_balanced_market } = options;
 
   return (
