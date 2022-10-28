@@ -3,31 +3,66 @@
 @tailwind utilities;
 
 @layer base {
-  @font-face {
-    font-family: "font name";
-    src: url("/assets/fonts/MuseoSans300/font.woff2") format("woff2"),
-      url("/assets/fonts/MuseoSans300/font.woff") format("woff");
-    font-weight: font-weight;
-    font-style: normal;
-    font-display: swap;
+  body {
+    @apply text-dark-grey;
   }
 
-  @font-face {
-    font-family: "font name";
-    src: url("/assets/fonts/MuseoSans500/font.woff2") format("woff2"),
-      url("/assets/fonts/MuseoSans500/font.woff") format("woff");
-    font-weight: font-weight;
-    font-style: strong;
-    font-display: swap;
+  h1 {
+    @apply font-medium;
   }
 
-  html {
-    scroll-behavior: smooth;
-  }
-
-  h1,
   h2,
   h3 {
-    @apply font-bold;
+    @apply text-green-dark;
   }
+
+  h2 {
+    @apply text-5xl leading-[67px];
+  }
+
+  h3 {
+    @apply text-4xl leading-[48px];
+  }
+}
+
+@layer utilities {
+  .shadow-custom {
+    box-shadow: 0 3px 10px rgb(0, 0, 0, 0.2);
+  }
+
+  .neo-shadow-green {
+    background: linear-gradient(145deg, #c4dbbb, #a5b99e);
+    box-shadow: 7px 7px 13px #b2c7aa, -7px -7px 13px #bcd3b4;
+  }
+
+  .neo-shadow-brown {
+    background: #9d7f69;
+    box-shadow: inset 7px 7px 13px #987b66, inset -7px -7px 13px #a2836c;
+  }
+
+  .neo-shadow-blue {
+    background: linear-gradient(145deg, #89daf4, #73b8cd);
+    box-shadow: 7px 7px 13px #7dc8df, -7px -7px 13px #83d0e9;
+  }
+}
+
+#home p {
+  @apply text-xl;
+}
+
+.home-bg {
+  background-image: url(../public/assets/images/home/header.png);
+  @apply bg-cover bg-no-repeat;
+}
+
+.accordion-body[data-state="open"] {
+  @apply animate-open;
+}
+
+.accordion-body[data-state="closed"] {
+  @apply animate-close;
+}
+
+.accordion-header[data-state="open"] svg {
+  @apply rotate-180;
 }
