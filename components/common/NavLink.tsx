@@ -7,12 +7,12 @@ type NavLinkProps = { href: string; children: ReactChild | ReactChildren };
 function NavLink({ children, href }: NavLinkProps) {
   const router = useRouter();
 
-  const sharedStyles = `underline-offset-4 uppercase text-xl`;
+  const sharedStyles = `underline-offset-8 uppercase text-lg`;
 
   const styles =
-    router.asPath === href || router.asPath.includes(href)
-      ? `${sharedStyles} underline`
-      : `${sharedStyles} no-underline hover:underline`;
+    router.asPath === href
+      ? `${sharedStyles} underline text-green-dark`
+      : `${sharedStyles} no-underline hover:underline text-current`;
 
   const handleClick = (e: any) => {
     e.preventDefault();

@@ -5,8 +5,8 @@ import { useRouter } from "next/router";
 import { DefaultSeo } from "next-seo";
 import * as Fathom from "fathom-client";
 
-import Nav from "@/components/common/Nav";
 import Footer from "@/components/common/Footer";
+import Nav from "@/components/common/Nav";
 
 import "../styles/globals.css"; // Global style sheet for css
 
@@ -64,7 +64,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       />
       <Nav />
       <Component {...pageProps} />
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 }

@@ -1,32 +1,32 @@
-/* This example requires Tailwind CSS v2.0+ */
-const navigation = [
-  { name: "Solutions", href: "#" },
-  { name: "Pricing", href: "#" },
-  { name: "Docs", href: "#" },
-  { name: "Company", href: "#" },
-];
+import Link from "next/link";
 
-export default function Example() {
+import NavLink from "./NavLink";
+import Logo from "./Logo";
+
+const Nav = () => {
   return (
-    <header className="bg-indigo-600">
-      <nav
-        className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8"
-        aria-label="Top"
-      >
-        <div className="w-full py-6 flex items-center justify-between border-b border-indigo-500 lg:border-none">
-          <div className="flex items-center">
-            <a href="#">
-              <span className="sr-only">Workflow</span>
-              {/* <img
-                className="h-10 w-auto"
-                src="https://tailwindui.com/img/logos/workflow-mark.svg?color=white"
-                alt=""
-              /> */}
-              <h1 className="text-white text-2xl">EXETER MARKET DESIGN</h1>
-            </a>
-          </div>
-        </div>
-      </nav>
-    </header>
+    <div className="p-10 lg:flex justify-between items-center bg-white">
+      <Link href="/" passHref>
+        <a aria-label="Exeter Lindsay">
+          <Logo />
+        </a>
+      </Link>
+      <ul className="lg:flex gap-x-10 xl:gap-x-16 text-light-grey">
+        <li>
+          <NavLink href="/">Home</NavLink>
+        </li>
+        <li>
+          <NavLink href="/about-the-model">About the model</NavLink>
+        </li>
+        <li>
+          <NavLink href="/how-it-works">How it works</NavLink>
+        </li>
+        <li>
+          <NavLink href="/live-demo">Live demo</NavLink>
+        </li>
+      </ul>
+    </div>
   );
-}
+};
+
+export default Nav;
