@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useEffect } from "react";
 
 import { classNames } from "@/utils/index";
 
-import { Data } from "@/types/types";
+import { Data } from "@/types/index";
 
 import Buyer from "./Buyer";
 import BuyerLost from "./BuyerLost";

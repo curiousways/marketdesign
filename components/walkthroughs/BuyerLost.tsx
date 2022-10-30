@@ -1,4 +1,4 @@
-import { Buyer } from "@/types/types";
+import { Buyer } from "@/types/index";
 
 type Props = {
   buyer: Buyer;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 
-import { Data } from "@/types/types";
+import { Data } from "@/types/index";
 
 import SideBar from "@/components/walkthroughs/sidebar/SideBar";
 import MainContent from "@/components/walkthroughs/MainContent";
