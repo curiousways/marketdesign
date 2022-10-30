@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from "react";
 
-import { Data } from "@/types/types";
+import { Data } from "@/types/index";
 
 import Navigation from "./Navigation";
 import Details from "./Details";

@@ -1,7 +1,7 @@
 import NextButton from "./NextButton";
 import PrevButton from "./PrevButton";
 
-import { Data } from "@/types/types";
+import { Data } from "@/types/index";
 
 type Props = {
   walkthrough: number;

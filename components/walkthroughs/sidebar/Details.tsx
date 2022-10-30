@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useState, useEffect } from "react";
 
-import { Data } from "@/types/types";
+import { Data } from "@/types/index";
 
 import Avatar from "./Avatar";
 import { classNames } from "@/utils/index";

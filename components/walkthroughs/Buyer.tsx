@@ -1,6 +1,6 @@
 import { classNames } from "@/utils/index";
 
-import { Buyer as BuyerType } from "@/types/types";
+import { Buyer as BuyerType } from "@/types/index";
 
 import HammerIcon from "./HammerIcon";
 
