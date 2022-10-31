@@ -1,7 +1,11 @@
-import NextButton from "./NextButton";
-import PrevButton from "./PrevButton";
+import { motion } from "framer-motion";
+
+import { item } from "@/utils/animations";
 
 import { Data } from "@/types/index";
+
+import NextButton from "./NextButton";
+import PrevButton from "./PrevButton";
 
 type Props = {
   walkthrough: number;
@@ -47,10 +51,13 @@ const Navigation = ({
 
         {/* The content of this div changes */}
         <div className="bg-[#D9D9D9] text-black p-8 min-h-[471px] flex flex-col justify-center items-center">
-          <div
+          <motion.div
+            variants={item}
+            initial="hidden"
+            animate="visible"
             className="space-y-5"
             dangerouslySetInnerHTML={{ __html: html }}
-          ></div>
+          ></motion.div>
         </div>
 
         {/* Bottom Nav */}

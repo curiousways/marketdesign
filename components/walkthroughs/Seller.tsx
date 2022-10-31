@@ -1,6 +1,9 @@
+import { motion } from "framer-motion";
+
 import { classNames } from "@/utils/index";
 
 import { Seller as SellerType } from "@/types/index";
+import { item } from "@/utils/animations";
 
 import HammerIcon from "./HammerIcon";
 
@@ -44,7 +47,6 @@ const Seller = ({
     >
       <div>
         <p className="text-black">{title}</p>
-        <p>Landowner</p>
       </div>
 
       {/* Products */}
@@ -99,7 +101,12 @@ const Seller = ({
       <div className="flex gap-x-10">
         {/* Offer */}
         {stage >= show_offers && (
-          <div className="bg-white rounded-lg px-1 w-[95px]">
+          <motion.div
+            variants={item}
+            initial="hidden"
+            animate="visible"
+            className="bg-white rounded-lg px-1 w-[95px]"
+          >
             <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white shadow-custom">
               <HammerIcon />
             </div>
@@ -110,12 +117,17 @@ const Seller = ({
               {!me && <p>£{offer}</p>}
               {showMyOffer && <p>£{offer}</p>}
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Bonus */}
         {stage >= show_surpluses && (
-          <div className="bg-white rounded-lg px-1 w-[95px]">
+          <motion.div
+            variants={item}
+            initial="hidden"
+            animate="visible"
+            className="bg-white rounded-lg px-1 w-[95px]"
+          >
             <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white shadow-custom">
               <p>+</p>
             </div>
@@ -123,12 +135,17 @@ const Seller = ({
               <p className="text-light-grey">Bonus</p>
               {bonus && <p>£{bonus}</p>}
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Received */}
         {stage >= show_final_payments && (
-          <div className="bg-white rounded-lg px-1 w-[95px]">
+          <motion.div
+            variants={item}
+            initial="hidden"
+            animate="visible"
+            className="bg-white rounded-lg px-1 w-[95px]"
+          >
             <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white shadow-custom">
               <HammerIcon />
             </div>
@@ -136,7 +153,7 @@ const Seller = ({
               <p className="text-light-grey">Received</p>
               {received && <p>£{received}</p>}
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
     </div>

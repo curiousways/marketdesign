@@ -1,6 +1,9 @@
+import { motion } from "framer-motion";
+
 import { classNames } from "@/utils/index";
 
 import { Buyer as BuyerType } from "@/types/index";
+import { item } from "@/utils/animations";
 
 import HammerIcon from "./HammerIcon";
 
@@ -31,7 +34,6 @@ const Buyer = ({ buyer, stage, maxStage, options, className = "" }: Props) => {
     >
       <div>
         <p className="text-black">{title}</p>
-        <p className="text-gray-100 font-light">Landowner</p>
       </div>
 
       {/* Products */}
@@ -84,7 +86,12 @@ const Buyer = ({ buyer, stage, maxStage, options, className = "" }: Props) => {
       <div className="flex gap-x-10">
         {/* Bid */}
         {stage >= show_bids && (
-          <div className="bg-white rounded-lg px-1 w-[95px]">
+          <motion.div
+            variants={item}
+            initial="hidden"
+            animate="visible"
+            className="bg-white rounded-lg px-1 w-[95px]"
+          >
             <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white shadow-custom">
               <HammerIcon />
             </div>
@@ -92,12 +99,17 @@ const Buyer = ({ buyer, stage, maxStage, options, className = "" }: Props) => {
               <p className="text-light-grey">Bid</p>
               {bid && <p>£{bid}</p>}
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Discount */}
         {stage >= show_surpluses && (
-          <div className="bg-white rounded-lg px-1 w-[95px]">
+          <motion.div
+            variants={item}
+            initial="hidden"
+            animate="visible"
+            className="bg-white rounded-lg px-1 w-[95px]"
+          >
             <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white shadow-custom">
               <p>-</p>
             </div>
@@ -105,12 +117,17 @@ const Buyer = ({ buyer, stage, maxStage, options, className = "" }: Props) => {
               <p className="text-light-grey">Discount</p>
               {discount && <p>£{discount}</p>}
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Received */}
         {stage >= show_final_payments && (
-          <div className="bg-white rounded-lg px-1 w-[95px]">
+          <motion.div
+            variants={item}
+            initial="hidden"
+            animate="visible"
+            className="bg-white rounded-lg px-1 w-[95px]"
+          >
             <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white shadow-custom">
               <HammerIcon />
             </div>
@@ -118,7 +135,7 @@ const Buyer = ({ buyer, stage, maxStage, options, className = "" }: Props) => {
               <p className="text-light-grey">Received</p>
               {pays && <p>£{pays}</p>}
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
     </div>

@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useEffect } from "react";
 import { motion } from "framer-motion";
 
 import { classNames } from "@/utils/index";
-import { container, list } from "@/utils/animations";
+import { container, item } from "@/utils/animations";
 
 import { Data } from "@/types/index";
 
@@ -53,7 +53,7 @@ const MainContent = ({ stage, setStage, data, walkthrough }: Props) => {
       variants={container}
       initial="hidden"
       animate="visible"
-      className="bg-[#D9D9D9] pt-20 pb-24 w-full relative flex"
+      className="bg-[#D9D9D9] pt-20 pb-24 w-full relative flex justify-center"
     >
       {/* Loading Screen */}
       {data?.options.show_calculating_overlay.includes(stage) && (
@@ -62,7 +62,7 @@ const MainContent = ({ stage, setStage, data, walkthrough }: Props) => {
 
       {/* Losers */}
       {!data?.options.hide_losers.includes(stage) && (
-        <motion.div variants={list} initial="hidden" animate="visible">
+        <motion.div variants={item} initial="hidden" animate="visible">
           {buyersLost?.map((buyer) => (
             <BuyerLost
               key={buyer.id}
@@ -89,7 +89,7 @@ const MainContent = ({ stage, setStage, data, walkthrough }: Props) => {
         {/* Full List */}
         {data?.options.hide_losers.includes(stage) && (
           <motion.div
-            variants={list}
+            variants={item}
             initial="hidden"
             animate="visible"
             className="space-y-5"
@@ -97,8 +97,8 @@ const MainContent = ({ stage, setStage, data, walkthrough }: Props) => {
             {/* Buyers */}
             <div
               className={classNames(
-                "space-y-5 py-2 px-40 rounded-lg",
-                highlightBuyersList ? "relative z-50 bg-[#D9D9D9]" : ""
+                "space-y-5 rounded-lg",
+                highlightBuyersList ? "relative z-50 bg-[#D9D9D9] p-10" : ""
               )}
             >
               {data?.buyers.map((buyer) => (
@@ -115,8 +115,8 @@ const MainContent = ({ stage, setStage, data, walkthrough }: Props) => {
             {/* Sellers */}
             <div
               className={classNames(
-                "space-y-5 py-2 px-40 rounded-lg",
-                highlightSellersList ? "relative z-50 bg-[#D9D9D9]" : ""
+                "space-y-5 rounded-lg",
+                highlightSellersList ? "relative z-50 bg-[#D9D9D9] p-10" : ""
               )}
             >
               {data?.sellers.map((seller) => (
@@ -142,7 +142,7 @@ const MainContent = ({ stage, setStage, data, walkthrough }: Props) => {
         {/* Winners */}
         {!data?.options.hide_losers.includes(stage) && (
           <motion.div
-            variants={list}
+            variants={item}
             initial="hidden"
             animate="visible"
             className="space-y-5"
@@ -179,7 +179,7 @@ const MainContent = ({ stage, setStage, data, walkthrough }: Props) => {
         {/* Market Outcome */}
         {stage >= data?.options.show_market_outcome && (
           <motion.div
-            variants={list}
+            variants={item}
             initial="hidden"
             animate="visible"
             className={classNames(

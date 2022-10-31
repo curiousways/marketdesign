@@ -35,7 +35,8 @@ const Details = ({ data, stage, onButtonClick }: Props) => {
 
       <div className="px-5 pb-5 space-y-4 text-black">
         <p className="max-w-[108px] text-xl leading-5">
-          <span className="text-black font-bold">My Project</span> <span className="text-gray-500">landowner</span>
+          <span className="text-black font-bold">My Project</span>{" "}
+          <span className="text-gray-500">landowner</span>
         </p>
         {/* Credits */}
         <div className="flex gap-x-2 items-center">

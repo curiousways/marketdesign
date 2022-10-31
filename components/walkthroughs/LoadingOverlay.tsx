@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 
 import { Data } from "@/types/index";
-import { overlay } from "@/utils/animations";
+import { item } from "@/utils/animations";
 
 type Props = {
   stage: number;
@@ -11,7 +11,7 @@ type Props = {
 const LoadingOverlay = ({ stage, data }: Props) => {
   return (
     <motion.div
-      variants={overlay}
+      variants={item}
       initial="hidden"
       whileInView="visible"
       className="absolute top-0 left-0 w-full h-full bg-black/70 z-10 flex justify-center items-center"

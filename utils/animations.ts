@@ -9,18 +9,7 @@ export const container = {
   },
 };
 
-export const overlay = {
-  hidden: { opacity: 0, y: -10 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-    },
-  },
-};
-
-export const list = {
+export const item = {
   hidden: { opacity: 0, y: -10 },
   visible: {
     opacity: 1,
