@@ -7,7 +7,7 @@ type NavLinkProps = { href: string; children: ReactChild | ReactChildren };
 function NavLink({ children, href }: NavLinkProps) {
   const router = useRouter();
 
-  const sharedStyles = `underline-offset-8 uppercase text-lg`;
+  const sharedStyles = `underline-offset-8 text-lg`;
 
   const styles =
     router.asPath === href
