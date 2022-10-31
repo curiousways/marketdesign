@@ -1,6 +1,8 @@
 import { Dispatch, SetStateAction, useEffect } from "react";
+import { motion } from "framer-motion";
 
 import { classNames } from "@/utils/index";
+import { container, list } from "@/utils/animations";
 
 import { Data } from "@/types/index";
 
@@ -9,6 +11,7 @@ import BuyerLost from "./BuyerLost";
 import Seller from "./Seller";
 import SellerLost from "./SellerLost";
 import MarketOutcome from "./MarketOutcome";
+import LoadingOverlay from "./LoadingOverlay";
 
 type Props = {
   stage: number;
@@ -46,34 +49,20 @@ const MainContent = ({ stage, setStage, data, walkthrough }: Props) => {
   const buyersWon = data?.buyers.filter((buyer) => buyer.pays !== "0");
 
   return (
-    <div className="bg-[#D9D9D9] pt-20 pb-24 w-full relative flex">
+    <motion.div
+      variants={container}
+      initial="hidden"
+      animate="visible"
+      className="bg-[#D9D9D9] pt-20 pb-24 w-full relative flex"
+    >
       {/* Loading Screen */}
       {data?.options.show_calculating_overlay.includes(stage) && (
-        <div className="absolute top-0 left-0 w-full h-full bg-black/60 z-10 flex justify-center items-center">
-          <div>
-            {stage === data?.options.show_calculating_winners && (
-              <p className="text-center text-black text-2xl font-bold">
-                Calculating Market Winners
-              </p>
-            )}
-            {stage === data?.options.show_distributing_surplus && (
-              <p className="text-center text-black text-2xl font-bold">
-                Distributing Market Surplus
-              </p>
-            )}
-
-            {stage === data?.options.show_calculating_final && (
-              <p className="text-center text-black text-2xl font-bold">
-                Calculating Final Payments
-              </p>
-            )}
-          </div>
-        </div>
+        <LoadingOverlay stage={stage} data={data} />
       )}
 
       {/* Losers */}
       {!data?.options.hide_losers.includes(stage) && (
-        <div>
+        <motion.div variants={list} initial="hidden" animate="visible">
           {buyersLost?.map((buyer) => (
             <BuyerLost
               key={buyer.id}
@@ -93,13 +82,18 @@ const MainContent = ({ stage, setStage, data, walkthrough }: Props) => {
               options={data?.options as any}
             />
           ))}
-        </div>
+        </motion.div>
       )}
 
       <div className="space-y-5">
         {/* Full List */}
         {data?.options.hide_losers.includes(stage) && (
-          <div className="space-y-5">
+          <motion.div
+            variants={list}
+            initial="hidden"
+            animate="visible"
+            className="space-y-5"
+          >
             {/* Buyers */}
             <div
               className={classNames(
@@ -142,12 +136,17 @@ const MainContent = ({ stage, setStage, data, walkthrough }: Props) => {
                 />
               ))}
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Winners */}
         {!data?.options.hide_losers.includes(stage) && (
-          <div className="space-y-5">
+          <motion.div
+            variants={list}
+            initial="hidden"
+            animate="visible"
+            className="space-y-5"
+          >
             {/* Buyers */}
             <div className="space-y-5 px-2 rounded-lg">
               {buyersWon?.map((buyer) => (
@@ -174,12 +173,15 @@ const MainContent = ({ stage, setStage, data, walkthrough }: Props) => {
                 />
               ))}
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Market Outcome */}
         {stage >= data?.options.show_market_outcome && (
-          <div
+          <motion.div
+            variants={list}
+            initial="hidden"
+            animate="visible"
             className={classNames(
               "space-y-5 py-2 px-2 rounded-lg",
               data?.options.hide_losers.includes(stage) ? "px-40" : ""
@@ -191,10 +193,10 @@ const MainContent = ({ stage, setStage, data, walkthrough }: Props) => {
               maxStage={maxStage}
               options={data?.options as any}
             />
-          </div>
+          </motion.div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
