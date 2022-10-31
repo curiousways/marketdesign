@@ -46,7 +46,7 @@ const MainContent = ({ stage, setStage, data, walkthrough }: Props) => {
   const buyersWon = data?.buyers.filter((buyer) => buyer.pays !== "0");
 
   return (
-    <div className="bg-[#D9D9D9] pt-5 pb-24 w-full relative flex">
+    <div className="bg-[#D9D9D9] pt-20 pb-24 w-full relative flex">
       {/* Loading Screen */}
       {data?.options.show_calculating_overlay.includes(stage) && (
         <div className="absolute top-0 left-0 w-full h-full bg-black/60 z-10 flex justify-center items-center">

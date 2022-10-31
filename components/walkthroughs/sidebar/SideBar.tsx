@@ -42,7 +42,7 @@ const SideBar = ({
   };
 
   return (
-    <div className="max-w-[434px] pt-12">
+    <div className="max-w-[434px] pt-20">
       {/* Top */}
       <Details onButtonClick={onButtonClick} data={data} stage={stage} />
 
