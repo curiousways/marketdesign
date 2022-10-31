@@ -31,7 +31,7 @@ const Buyer = ({ buyer, stage, maxStage, options, className = "" }: Props) => {
     >
       <div>
         <p className="text-black">{title}</p>
-        <p>Landowner</p>
+        <p className="text-gray-100 font-light">Landowner</p>
       </div>
 
       {/* Products */}
