@@ -25,7 +25,7 @@ const Navigation = ({
   const maxStage = data?.options?.stages;
 
   return (
-    <div className="border-4 border-[#707070] rounded-t-lg mt-8 p-3 relative z-20">
+    <div className="rounded-t-lg mt-8 p-3 relative z-20">
       <div>
         {/* Top Nav */}
         <div className="bg-[#707070] rounded-t-lg py-4 px-6 text-white flex items-center">

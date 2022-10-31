@@ -43,7 +43,7 @@ const HowItWorks: NextPage = () => {
 
   return (
     <>
-      <div className="flex items-stretch font-poppins relative border-t-2 border-[#707070]">
+      <div className="flex items-stretch font-poppins relative border-t border-green-dark">
         {data?.options?.show_general_overlay.includes(stage) && (
           <div className="absolute top-0 left-0 w-full h-full bg-black/80 z-10"></div>
         )}
