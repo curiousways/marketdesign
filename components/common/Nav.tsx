@@ -5,7 +5,7 @@ import Logo from "./Logo";
 
 const Nav = () => {
   return (
-    <div className="p-10 lg:flex justify-between items-center bg-white">
+    <div className="px-10 py-5 lg:flex justify-between items-center bg-white">
       <Link href="/" passHref>
         <a aria-label="Exeter Lindsay">
           <Logo />
