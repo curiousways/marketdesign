@@ -27,15 +27,15 @@ const Details = ({ data, stage, onButtonClick }: Props) => {
   const projectCost = data?.project_cost;
 
   return (
-    <div className="bg-[#D9D9D9] max-w-[256px] rounded-lg mx-auto relative z-20">
+    <div className="bg-gray-200 max-w-[256px] rounded-lg mx-auto relative z-20 shadow-lg">
       {/* Avatar */}
-      <div className="h-[90px] w-[90px] mx-auto flex justify-center items-center rounded-full border border-green-dark bg-white relative bottom-10">
+      <div className="shadow-xl h-[90px] w-[90px] mx-auto flex justify-center items-center rounded-full border-2 border-green-dark bg-white relative bottom-10">
         <Avatar />
       </div>
 
-      <div className="px-5 py-5 space-y-4">
+      <div className="px-5 pb-5 space-y-4 text-black">
         <p className="max-w-[108px] text-xl leading-5">
-          <span className="text-black font-bold">My Project</span> landowner
+          <span className="text-black font-bold">My Project</span> <span className="text-gray-500">landowner</span>
         </p>
         {/* Credits */}
         <div className="flex gap-x-2 items-center">
