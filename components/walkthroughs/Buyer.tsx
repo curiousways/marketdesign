@@ -5,7 +5,8 @@ import { classNames } from "@/utils/index";
 import { Buyer as BuyerType } from "@/types/index";
 import { item } from "@/utils/animations";
 
-import HammerIcon from "./HammerIcon";
+import HammerIcon from "./icons/HammerIcon";
+import PoundcashTag from "./icons/PoundcashTag";
 
 type Props = {
   buyer: BuyerType;
@@ -111,7 +112,7 @@ const Buyer = ({ buyer, stage, maxStage, options, className = "" }: Props) => {
             className="bg-white rounded-lg px-1 w-[95px]"
           >
             <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white shadow-custom">
-              <p>-</p>
+              <p className="text-black">-</p>
             </div>
             <div className="text-center text-sm relative -mt-2">
               <p className="text-light-grey">Discount</p>
@@ -120,7 +121,7 @@ const Buyer = ({ buyer, stage, maxStage, options, className = "" }: Props) => {
           </motion.div>
         )}
 
-        {/* Received */}
+        {/* Pays */}
         {stage >= show_final_payments && (
           <motion.div
             variants={item}
@@ -129,7 +130,7 @@ const Buyer = ({ buyer, stage, maxStage, options, className = "" }: Props) => {
             className="bg-white rounded-lg px-1 w-[95px]"
           >
             <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white shadow-custom">
-              <HammerIcon />
+              <PoundcashTag />
             </div>
             <div className="text-center text-sm relative -mt-2">
               <p className="text-light-grey">Received</p>

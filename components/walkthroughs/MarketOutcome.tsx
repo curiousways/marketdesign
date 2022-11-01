@@ -2,7 +2,10 @@ import { classNames } from "@/utils/index";
 
 import { Seller } from "@/types/index";
 
-import HammerIcon from "./HammerIcon";
+import HammerIcon from "./icons/HammerIcon";
+import BalanceIcon from "./icons/BalanceIcon";
+import CartPlus from "./icons/CartPlus";
+import PoundcashTag from "./icons/PoundcashTag";
 
 type Props = {
   stage: number;
@@ -147,14 +150,16 @@ const MarketOutcome = ({ stage, options, className = "" }: Props) => {
         {stage >= show_balanced_market && (
           <div className="bg-white rounded-lg px-1 w-[95px]">
             <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white shadow-custom">
-              <HammerIcon />
+              <BalanceIcon />
             </div>
 
             <div className="text-center text-sm relative -mt-2">
               <p className="text-light-grey">Balance</p>
-              <p className="flex justify-center">
-                <HammerIcon />
-              </p>
+              <div className="flex justify-center items-center gap-x-1">
+                <CartPlus />
+                <span>=</span>
+                <PoundcashTag />
+              </div>
             </div>
           </div>
         )}
