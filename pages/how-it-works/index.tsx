@@ -42,25 +42,27 @@ const HowItWorks: NextPage = () => (
                 <ul
                   className="text-green-dark text-xl py-5 ml-12"
                 >
-                  {walkthrough.scenarios.map((scenario, scenarioIndex) => (
-                    <li
-                      key={scenario.title}
-                      className={classNames(
-                        scenarioIndex < walkthrough.scenarios.length -1 ? "mb-5" : ''
-                      )}
-                    >
-                      <Link
-                        href={{
-                          pathname: '/how-it-works/[scenarioId]',
-                          query: {
-                            scenarioId: scenario.id,
-                          },
-                        }}
+                  {walkthrough.scenarios.map((scenario, scenarioIndex) => {
+                    const isLast = scenarioIndex < walkthrough.scenarios.length -1;
+
+                    return (
+                      <li
+                        key={scenario.title}
+                        className={classNames(isLast ? "mb-5" : '')}
                       >
-                        <a>{scenario.id} {scenario.title}</a>
-                      </Link>
-                    </li>
-                  ))}
+                        <Link
+                          href={{
+                            pathname: '/how-it-works/[scenarioId]',
+                            query: {
+                              scenarioId: scenario.id,
+                            },
+                          }}
+                        >
+                          <a>{scenario.id} {scenario.title}</a>
+                        </Link>
+                      </li>
+                    )
+                  })}
                 </ul>
               </Splodge>
             </div>
