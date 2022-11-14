@@ -50,7 +50,7 @@ const Details = ({ data, stage, next }: Props) => {
       animate="visible"
       exit="hidden"
       layout
-      onAnimationComplete={() => !isPresent && safeToRemove()}
+      // onAnimationComplete={() => !isPresent && safeToRemove()}
       className="border-2 border-black px-5 py-4 rounded-lg w-full"
     >
       <div className="text-black text-xl">

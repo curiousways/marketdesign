@@ -64,7 +64,7 @@ const SideBar = ({
             animate="visible"
             exit="hidden"
             layout
-            onAnimationComplete={() => !isPresent && safeToRemove()}
+            // onAnimationComplete={() => !isPresent && safeToRemove()}
             onClick={onButtonClick}
             className="text-center border-2 border-black rounded-lg p-3 text-black text-xl hover:bg-black hover:text-white duration-300"
           >
