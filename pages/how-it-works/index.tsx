@@ -43,7 +43,7 @@ const HowItWorks: NextPage = () => (
                   className="text-green-dark text-xl py-5 ml-12"
                 >
                   {walkthrough.scenarios.map((scenario, scenarioIndex) => {
-                    const isLast = scenarioIndex < walkthrough.scenarios.length -1;
+                    const isLast = scenarioIndex === walkthrough.scenarios.length -1;
 
                     return (
                       <li
