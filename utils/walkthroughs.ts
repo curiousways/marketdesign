@@ -1,7 +1,7 @@
 import { RoleId } from "@/types/roles";
 import { roles } from "data/roles";
 import { walkthroughs } from "data/walkthroughs";
-import { Scenario } from "../types";
+import { Scenario } from "../types/walkthrough";
 
 const getAllScenarios = (): Scenario[] => {
   const scenarios: Scenario[] = [];

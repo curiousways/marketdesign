@@ -2,7 +2,7 @@ import React, { Dispatch, ReactNode, SetStateAction } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { fadeIn } from "@/utils/animations";
-import { Data } from "@/types/index";
+import { Data } from "@/types/walkthrough";
 
 import Description from "./Description";
 import Details from "./Details";

@@ -1,4 +1,4 @@
-import { Walkthrough } from "@/types/index";
+import { Walkthrough } from "@/types/walkthrough";
 import { buyerScenario1_1 } from "./scenarios/buyers/1.1";
 import { buyerScenario1_2 } from "./scenarios/buyers/1.2";
 import { buyerScenario1_3 } from "./scenarios/buyers/1.3";

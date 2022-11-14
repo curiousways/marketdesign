@@ -1,4 +1,4 @@
-import { Seller } from "@/types/index";
+import { Seller } from "@/types/walkthrough";
 
 type Props = {
   seller: Seller;

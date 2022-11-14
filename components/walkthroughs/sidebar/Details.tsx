@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, usePresence } from "framer-motion";
 
-import { Data } from "@/types/index";
+import { Data } from "@/types/walkthrough";
 import { fadeIn } from "@/utils/animations";
 
 import SellerVector from "@/components/walkthroughs/icons/SellerVector";

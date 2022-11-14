@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 import { container, fadeInDown } from "@/utils/animations";
 
-import { Data, Seller as SellerType, Buyer as BuyerType } from "@/types/index";
+import { Data, Seller as SellerType, Buyer as BuyerType } from "@/types/walkthrough";
 
 import MarketOutcome from "./MarketOutcome";
 import LoadingOverlay from "./LoadingOverlay";

@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 import { classNames } from "@/utils/index";
 
-import { Buyer as BuyerType } from "@/types/index";
+import { Buyer as BuyerType } from "@/types/walkthrough";
 import { fadeInDown } from "@/utils/animations";
 
 import HammerIcon from "../icons/HammerIcon";
