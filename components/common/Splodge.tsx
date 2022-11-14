@@ -2,6 +2,7 @@ import React, { FunctionComponent, ReactNode } from 'react';
 
 const COLORS = {
   green: '#A3C995',
+  brown: '#9D7F69',
 } as const;
 
 type SplodgeProps = {

@@ -27,8 +27,10 @@ const HowItWorksWalthrough: NextPage<HowItWorksWalthroughProps> = ({
   const sidebarContent = scenarioForRole.sidebarContent?.[stage];
 
   return (
-    <>
-      <div className="flex items-stretch font-poppins relative border-t border-green-dark min-h-screen">
+    <main>
+      <div
+        className="flex items-stretch font-poppins relative border-t border-green-dark min-h-screen"
+      >
         <SideBar
           stage={stage}
           scenarioId={scenarioId}
@@ -42,7 +44,7 @@ const HowItWorksWalthrough: NextPage<HowItWorksWalthroughProps> = ({
           data={scenarioForRole}
         />
       </div>
-    </>
+    </main>
   );
 };
 
