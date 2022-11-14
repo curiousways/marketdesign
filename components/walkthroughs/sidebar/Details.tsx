@@ -17,7 +17,7 @@ type Props = {
 
 const Details = ({ data, stage, next }: Props) => {
   const [price, setPrice] = useState("");
-  const [isPresent, safeToRemove] = usePresence();
+  const [isPresent, safeToRemove] = usePresence()!;
 
   // User role either buyer or seller
   const role = data?.options?.role!;
