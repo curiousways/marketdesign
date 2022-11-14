@@ -63,7 +63,12 @@ const HowItWorksScenario: NextPage<HowItWorksScenarioProps> = ({
                     !!(headingIndex % 2) ? 'ml-auto' : '',
                   )}
                 >
-                  <Splodge index={splogeIndex} color={splodgeColor}>
+                  <Splodge
+                    type="heading"
+                    index={splogeIndex}
+                    color={splodgeColor}
+                    height={300}
+                  >
                     <p className="text-6xl font-bold text-white">
                       {roles[roleId].label}
                     </p>

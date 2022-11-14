@@ -5,6 +5,7 @@ import Header from "@/components/common/Header";
 import HeaderImg from "../../public/assets/images/how-it-works/header.png";
 import HeaderThumb from "../../public/assets/images/how-it-works/header-thumb.png";
 import { Splodge } from "@/components/common/Splodge";
+import { classNames } from "@/utils/index";
 
 const HowItWorks: NextPage = () => (
   <>
@@ -16,9 +17,14 @@ const HowItWorks: NextPage = () => (
     />
     <ul className="flex flex-wrap justify-around mt-16">
       {walkthroughs.map((walkthrough, walkthroughIndex) => (
-        <li key={walkthrough.title} className="items-center lg:w-1/2 xl:w-1/3 p-5">
-          <div className="max-w-[400px]">
-            <Splodge index={walkthroughIndex} color="green">
+        <li key={walkthrough.title} className="items-center w-full md:w-1/2 xl:w-1/3 p-5">
+          <div className="max-w-[420px] mx-auto">
+            <Splodge
+              type="heading"
+              index={walkthroughIndex}
+              color="green"
+              height={150}
+            >
               <h2 className="text-3xl font-bold text-white">
                 Walkthrough {walkthrough.id}
               </h2>
@@ -26,23 +32,39 @@ const HowItWorks: NextPage = () => (
                 {walkthrough.title}
               </p>
             </Splodge>
-          </div>
-          <ul>
-            {walkthrough.scenarios.map((scenario) => (
-              <li key={scenario.title}>
-                <Link
-                  href={{
-                    pathname: '/how-it-works/[scenarioId]',
-                    query: {
-                      scenarioId: scenario.id,
-                    },
-                  }}
+            <div className="mt-4">
+              <Splodge
+                type="content"
+                index={walkthroughIndex}
+                color="yellow"
+                height={200}
+              >
+                <ul
+                  className="text-green-dark text-xl py-5 ml-12"
                 >
-                  <a>{scenario.id} {scenario.title}</a>
-                </Link>
-              </li>
-            ))}
-          </ul>
+                  {walkthrough.scenarios.map((scenario, scenarioIndex) => (
+                    <li
+                      key={scenario.title}
+                      className={classNames(
+                        scenarioIndex < walkthrough.scenarios.length -1 ? "mb-5" : ''
+                      )}
+                    >
+                      <Link
+                        href={{
+                          pathname: '/how-it-works/[scenarioId]',
+                          query: {
+                            scenarioId: scenario.id,
+                          },
+                        }}
+                      >
+                        <a>{scenario.id} {scenario.title}</a>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </Splodge>
+            </div>
+          </div>
         </li>
       ))}
     </ul>
