@@ -48,7 +48,7 @@ const HowItWorks: NextPage = () => (
                     return (
                       <li
                         key={scenario.title}
-                        className={classNames(isLast ? "mb-5" : '')}
+                        className={classNames(!isLast ? "mb-5" : '')}
                       >
                         <Link
                           href={{
