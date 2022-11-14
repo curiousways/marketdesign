@@ -59,7 +59,7 @@ const HowItWorksScenario: NextPage<HowItWorksScenarioProps> = ({
               <a>
                 <div
                   className={classNames(
-                    'lg:w-1/2',
+                    'xl:w-1/2 mx-10',
                     !!(headingIndex % 2) ? 'ml-auto' : '',
                   )}
                 >
@@ -67,10 +67,10 @@ const HowItWorksScenario: NextPage<HowItWorksScenarioProps> = ({
                     type="heading"
                     index={splogeIndex}
                     color={splodgeColor}
-                    height={300}
+                    height={220}
                   >
-                    <p className="text-6xl font-bold text-white">
-                      {roles[roleId].label}
+                    <p className="text-4xl lg:text-6xl font-bold text-white">
+                      {roles[roleId].label} ?
                     </p>
                   </Splodge>
                 </div>
