@@ -28,7 +28,7 @@ const Header: FunctionComponent<HeaderProps> = ({
         </div>
         <div className="absolute top-0 left-0 w-full h-full flex items-center pl-20 2xl:pl-40">
           <div className="max-w-[526px] text-white space-y-3">
-            <h1 className="text-[64px] leading-[62px]">
+            <h1 className="heading-1 text-[64px] leading-[62px]">
               {title}
             </h1>
             <p>
