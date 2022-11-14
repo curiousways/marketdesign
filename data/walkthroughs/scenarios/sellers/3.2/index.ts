@@ -67,7 +67,7 @@ export const sellerScenario3_2: Data = {
     "total_bids": "750,000",
     "total_offers": "300,000",
     "surplus": "450,000",
-    "next_walkthrough": 4,
+    "next_walkthrough": "4",
     "next_walkthrough_title": "Poor fit bid",
     "stages": 9,
     "role": "seller",

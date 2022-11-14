@@ -4,12 +4,11 @@ import HammerIcon from "../icons/HammerIcon";
 import BalanceIcon from "../icons/BalanceIcon";
 import CartPlus from "../icons/CartPlus";
 import PoundcashTag from "../icons/PoundcashTag";
+import { WalkthroughOptions } from "@/types/walkthrough";
 
 type Props = {
   stage: number;
-  options: {
-    [key: string]: any;
-  };
+  options: WalkthroughOptions;
   className?: string;
 };
 

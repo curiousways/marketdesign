@@ -1,4 +1,4 @@
-import { ReactChildren, ReactChild } from "react";
+import { ReactChildren, ReactChild, MouseEvent } from "react";
 
 import { useRouter } from "next/router";
 
@@ -14,7 +14,7 @@ function NavLink({ children, href }: NavLinkProps) {
       ? `${sharedStyles} underline text-green-dark`
       : `${sharedStyles} no-underline hover:underline text-current`;
 
-  const handleClick = (e: any) => {
+  const handleClick = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault();
     router.push(href);
   };

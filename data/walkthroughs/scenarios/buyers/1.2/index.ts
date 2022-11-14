@@ -59,7 +59,7 @@ export const buyerScenario1_2: Data = {
     "total_bids": "300,000",
     "total_offers": "130,000",
     "surplus": "170,000",
-    "next_walkthrough": 1.3,
+    "next_walkthrough": "1.3",
     "next_walkthrough_title": "Offer above cost and lose",
     "stages": 8,
     "role": "buyer",

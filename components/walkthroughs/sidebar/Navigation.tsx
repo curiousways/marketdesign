@@ -22,7 +22,7 @@ const Navigation = ({ scenarioId, stage, next, previous, data }: Props) => {
         <PrevButton
           onClick={previous}
           stage={stage}
-          hideButton={data?.options?.hide_prev_button}
+          hideButton={data.options.hide_prev_button}
         />
 
         <div className="bg-green-dark text-white rounded-lg px-3 py-1 max-w-[285px]">
@@ -33,7 +33,7 @@ const Navigation = ({ scenarioId, stage, next, previous, data }: Props) => {
         <NextButton
           onClick={next}
           stage={stage}
-          hideButton={data?.options.hide_next_button}
+          hideButton={data.options.hide_next_button}
         />
       </div>
     </motion.div>

@@ -65,7 +65,7 @@ export const sellerScenario1_3: Data = {
     "total_bids": "320,000",
     "total_offers": "170,000",
     "surplus": "150,000",
-    "next_walkthrough": 2.1,
+    "next_walkthrough": "2.1",
     "next_walkthrough_title": "Balanced Supply & Demand",
     "stages": 8,
     "role": "seller",

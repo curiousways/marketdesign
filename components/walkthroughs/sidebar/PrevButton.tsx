@@ -11,7 +11,7 @@ const PrevButton = ({ onClick, stage, hideButton }: Props) => {
     <button
       className={classNames(
         "w-10 h-10 bg-green-dark rounded-full flex justify-center items-center",
-        hideButton?.includes(stage) ? "invisible" : ""
+        hideButton.includes(stage) ? "invisible" : ""
       )}
       onClick={onClick}
     >
