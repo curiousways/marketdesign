@@ -39,45 +39,65 @@ const HowItWorksScenario: NextPage<HowItWorksScenarioProps> = ({
 }) => (
   <main>
     <section className="flex flex-col items-center">
-      <h1 className="text-6xl text-green-dark">Are you a...</h1>
-      <ul className="w-full">
+      <h1 className="text-4xl lg:text-6xl text-green-dark">Are you a...</h1>
+      <ul className="w-full my-20">
         {HEADINGS.map(({
           roleId,
           splogeIndex,
           splodgeColor,
-        }, headingIndex) => (
-          <li key={roleId} className="my-20">
-            <Link
-              href={{
-                pathname: '/how-it-works/[scenarioId]/[roleId]',
-                query: {
-                  scenarioId,
-                  roleId,
-                },
-              }}
-            >
-              <a>
+        }, headingIndex) => {
+          const isLast = headingIndex === HEADINGS.length -1;
+
+          return (
+            <li key={roleId} className="mt-5">
+              <Link
+                href={{
+                  pathname: '/how-it-works/[scenarioId]/[roleId]',
+                  query: {
+                    scenarioId,
+                    roleId,
+                  },
+                }}
+              >
+                <a>
+                  <div
+                    className={classNames(
+                      'xl:w-1/2 mx-10',
+                      !!(headingIndex % 2) ? 'ml-auto' : '',
+                    )}
+                  >
+                    <Splodge
+                      type="heading"
+                      index={splogeIndex}
+                      color={splodgeColor}
+                      height={220}
+                    >
+                      <p className="text-4xl lg:text-6xl font-bold text-white">
+                        {roles[roleId].label} ?
+                      </p>
+                    </Splodge>
+                  </div>
+                </a>
+              </Link>
+              {!isLast && (
                 <div
-                  className={classNames(
-                    'xl:w-1/2 mx-10',
-                    !!(headingIndex % 2) ? 'ml-auto' : '',
-                  )}
+                  className="max-w-[150px] mx-auto mt-3"
                 >
                   <Splodge
-                    type="heading"
-                    index={splogeIndex}
-                    color={splodgeColor}
-                    height={220}
+                    type="content"
+                    index={0}
+                    color="yellow"
+                    height={150}
                   >
-                    <p className="text-4xl lg:text-6xl font-bold text-white">
-                      {roles[roleId].label} ?
+                    <p className="text-4xl lg:text-6xl text-green-dark text-center">
+                      or
                     </p>
                   </Splodge>
                 </div>
-              </a>
-            </Link>
-          </li>
-        ))}
+              )}
+            </li>
+          );
+        })}
       </ul>
     </section>
   </main>
