@@ -4,7 +4,7 @@ import type { NextPage } from "next";
 import { Data } from "@/types/index";
 
 import SideBar from "@/components/walkthroughs/sidebar/SideBar";
-import MainContent from "@/components/walkthroughs/MainContent";
+import MainContent from "@/components/walkthroughs/Main/MainContent";
 
 const HowItWorks: NextPage = () => {
   const [walkthrough, setWalkthrough] = useState(1.1);
@@ -14,7 +14,7 @@ const HowItWorks: NextPage = () => {
 
   useEffect(() => {
     const getJson = async () => {
-      const res = await fetch(`/json/${walkthrough}.json`);
+      const res = await fetch(`/json/sellers/${walkthrough}.json`);
       const result = await res.json();
 
       setData(result);
@@ -25,12 +25,9 @@ const HowItWorks: NextPage = () => {
   }, [walkthrough]);
 
   useEffect(() => {
-    if (
-      data &&
-      (data.options.show_calculating_overlay.includes(stage) ||
-        data.options.highlight_me.includes(stage))
-    )
+    if (data?.options.hide_description.includes(stage)) {
       return;
+    }
 
     const getHtml = async () => {
       const res = await fetch(`/html/${walkthrough}/${stage}.html`);
@@ -43,10 +40,7 @@ const HowItWorks: NextPage = () => {
 
   return (
     <>
-      <div className="flex items-stretch font-poppins relative border-t border-green-dark">
-        {data?.options?.show_general_overlay.includes(stage) && (
-          <div className="absolute top-0 left-0 w-full h-full bg-black/80 z-10"></div>
-        )}
+      <div className="flex items-stretch font-poppins relative border-t border-green-dark min-h-screen">
         <SideBar
           stage={stage}
           walkthrough={walkthrough}
@@ -55,12 +49,7 @@ const HowItWorks: NextPage = () => {
           data={data}
           html={html}
         />
-        <MainContent
-          stage={stage}
-          setStage={setStage}
-          walkthrough={walkthrough}
-          data={data}
-        />
+        <MainContent stage={stage} setStage={setStage} data={data} />
       </div>
     </>
   );
