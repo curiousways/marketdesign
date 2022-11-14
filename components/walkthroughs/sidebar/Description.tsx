@@ -19,7 +19,7 @@ const Navigation = ({
   // nextWalkthrough,
   children,
 }: Props) => {
-  const hide = data?.options.hide_description.includes(stage);
+  const hide = !children;
 
   return (
     <motion.div

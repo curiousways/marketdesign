@@ -81,7 +81,6 @@ export const buyerScenario3_2 = {
     "show_participants": 1,
     "hide_next_button": [1, 2, 3, 4, 5, 6, 7, 9],
     "hide_prev_button": [1],
-    "hide_description": [2, 3, 4, 5, 6, 7],
     "show_losers": 4,
     "highlight_me": 2
   }
