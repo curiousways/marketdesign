@@ -1,7 +1,8 @@
+import { Data } from "@/types/walkthrough";
 import { sidebarContentStage1 } from "./sidebar-content/1";
 import { sidebarContentStage8 } from "./sidebar-content/8";
 
-export const sellerScenario1_2 = {
+export const sellerScenario1_2: Data = {
   "title": "Offer above cost and win",
   "project_cost": "60,000",
   "buyers": [

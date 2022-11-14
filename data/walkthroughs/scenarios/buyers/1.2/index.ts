@@ -1,4 +1,6 @@
-export const buyerScenario1_2 = {
+import { Data } from "@/types/walkthrough";
+
+export const buyerScenario1_2: Data = {
   "title": "Offer above cost and win",
   "project_cost": "120,000",
   "buyers": [

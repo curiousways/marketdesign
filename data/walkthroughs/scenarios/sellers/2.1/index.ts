@@ -2,8 +2,9 @@ import { sidebarContentStage1 } from "./sidebar-content/1";
 import { sidebarContentStage2 } from "./sidebar-content/2";
 import { sidebarContentStage3 } from "./sidebar-content/3";
 import { sidebarContentStage10 } from "./sidebar-content/10";
+import { Data } from "@/types/walkthrough";
 
-export const sellerScenario2_1 = {
+export const sellerScenario2_1: Data = {
   "title": "Balanced Supply & Demand",
   "project_cost": "140,000",
   "buyers": [

@@ -1,7 +1,8 @@
+import { Data } from "@/types/walkthrough";
 import { sidebarContentStage1 } from "./sidebar-content/1";
 import { sidebarContentStage8 } from "./sidebar-content/8";
 
-export const sellerScenario2_2 = {
+export const sellerScenario2_2: Data = {
   "title": "Restricted Supply",
   "project_cost": "140,000",
   "buyers": [
