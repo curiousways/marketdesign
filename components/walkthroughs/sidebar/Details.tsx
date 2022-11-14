@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, usePresence } from "framer-motion";
 
-import { Data } from "@/types/walkthrough";
+import { WalkthroughData } from "@/types/walkthrough";
 import { fadeIn } from "@/utils/animations";
 
 import SellerVector from "@/components/walkthroughs/icons/SellerVector";
@@ -12,7 +12,7 @@ import NutrientsIcon from "@/components/walkthroughs/icons/NutrientsIcon";
 type Props = {
   next: () => void;
   stage: number;
-  data: Data;
+  data: WalkthroughData;
 };
 
 const Details = ({ data, stage, next }: Props) => {

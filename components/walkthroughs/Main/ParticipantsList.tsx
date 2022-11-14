@@ -3,13 +3,13 @@ import Seller from "./Seller";
 import BuyerLost from "./BuyerLost";
 import SellerLost from "./SellerLost";
 
-import { Data, Seller as SellerType, Buyer as BuyerType } from "@/types/walkthrough";
+import { WalkthroughData, Seller as SellerType, Buyer as BuyerType } from "@/types/walkthrough";
 
 type Props = {
   buyers: BuyerType[];
   sellers: SellerType[];
   stage: number;
-  data: Data;
+  data: WalkthroughData;
   type?: "winners" | "losers";
 };
 

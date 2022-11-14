@@ -2,7 +2,7 @@ import React, { Dispatch, ReactNode, SetStateAction } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { fadeIn } from "@/utils/animations";
-import { Data } from "@/types/walkthrough";
+import { WalkthroughData } from "@/types/walkthrough";
 
 import Description from "./Description";
 import Details from "./Details";
@@ -12,7 +12,7 @@ type Props = {
   scenarioId: string;
   stage: number;
   setStage: Dispatch<SetStateAction<number>>;
-  data: Data;
+  data: WalkthroughData;
   sidebarContent: ReactNode;
 };
 
@@ -83,7 +83,6 @@ const SideBar = ({
           key={4}
           // walkthrough={walkthrough}
           stage={stage}
-          data={data}
           // nextWalkthrough={nextWalkthrough}
         >
           {sidebarContent}

@@ -33,7 +33,7 @@ export interface WalkthroughOptions {
   highlight_me: number;
 };
 
-export interface Data {
+export interface WalkthroughData {
   title: string;
   project_cost: string;
   buyers: Buyer[];
@@ -70,8 +70,8 @@ export interface Seller {
 export interface Scenario {
   id: string,
   title: string,
-  buyer: Data,
-  seller: Data,
+  buyer: WalkthroughData,
+  seller: WalkthroughData,
 }
 
 export interface Walkthrough {

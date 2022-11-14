@@ -1,9 +1,9 @@
-import { Data } from "@/types/walkthrough";
+import { WalkthroughData } from "@/types/walkthrough";
 import { sidebarContentStage1 } from "./sidebar-content/1";
 import { sidebarContentStage8 } from "./sidebar-content/8";
 import { sidebarContentStage9 } from "./sidebar-content/9";
 
-export const sellerScenario3_2: Data = {
+export const sellerScenario3_2: WalkthroughData = {
   "title": "Poor fit bid",
   "project_cost": "100,000",
   "buyers": [

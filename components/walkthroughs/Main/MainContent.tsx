@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 import { container, fadeInDown } from "@/utils/animations";
 
-import { Buyer, Data, Seller } from "@/types/walkthrough";
+import { Buyer, WalkthroughData, Seller } from "@/types/walkthrough";
 
 import MarketOutcome from "./MarketOutcome";
 import LoadingOverlay from "./LoadingOverlay";
@@ -12,7 +12,7 @@ import ParticipantsList from "./ParticipantsList";
 type Props = {
   stage: number;
   setStage: Dispatch<SetStateAction<number>>;
-  data: Data;
+  data: WalkthroughData;
 };
 
 const filterUser = <

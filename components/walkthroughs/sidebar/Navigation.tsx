@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-import { Data } from "@/types/walkthrough";
+import { WalkthroughData } from "@/types/walkthrough";
 
 import NextButton from "./NextButton";
 import PrevButton from "./PrevButton";
@@ -10,7 +10,7 @@ type Props = {
   stage: number;
   next: () => void;
   previous: () => void;
-  data: Data;
+  data: WalkthroughData;
 };
 
 const Navigation = ({ scenarioId, stage, next, previous, data }: Props) => {

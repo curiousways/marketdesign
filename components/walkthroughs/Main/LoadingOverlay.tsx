@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 
-import { Data } from "@/types/walkthrough";
+import { WalkthroughData } from "@/types/walkthrough";
 import { fadeInDown } from "@/utils/animations";
 
 type Props = {
   stage: number;
-  data: Data;
+  data: WalkthroughData;
 };
 
 const LoadingOverlay = ({ stage, data }: Props) => {
