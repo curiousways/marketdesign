@@ -3,10 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply text-dark-grey;
-  }
-
   h1 {
     @apply font-medium;
   }
