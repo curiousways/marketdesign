@@ -55,6 +55,31 @@ export const getWalkthroughForScenario = (scenarioId: string): Walkthrough => {
   return walkthrough;
 };
 
+export const getNextScenario = (
+  scenarioId: string,
+  roleId: RoleId,
+): Scenario | undefined => {
+  const { scenarios } = getWalkthroughForScenario(scenarioId);
+  const currentIndex = scenarios.findIndex(({ id }) => id === scenarioId);
+
+  if (currentIndex < 0) {
+    throw new Error(`No scenario found with ID: ${scenarioId}`);
+  }
+
+  const nextScenario = scenarios[currentIndex + 1];
+
+  if (!nextScenario) {
+    return;
+  }
+
+  // There may be a next scenario, but not necessarily for the given role.
+  if (!Object.keys(nextScenario.roles).includes(roleId)) {
+    return;
+  }
+
+  return nextScenario;
+};
+
 export const isValidScenarioId = (
   maybeScenarioId?: string,
 ): maybeScenarioId is string => (

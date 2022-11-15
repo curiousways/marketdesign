@@ -94,7 +94,7 @@ export const buyerScenario1_1: WalkthroughData = {
     "show_full_map": 1,
     "show_highlighted_map": 2,
     "show_participants": 3,
-    "hide_next_button": [5, 6, 7, 8, 9, 10, 11, 12],
+    "hide_next_button": [5, 6, 7, 8, 9, 10, 11],
     "hide_prev_button": [1],
     "show_losers": 8,
     "highlight_me": 6

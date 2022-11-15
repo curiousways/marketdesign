@@ -7,10 +7,14 @@ import { WalkthroughData } from "@/types/walkthrough";
 import Description from "./Description";
 import Details from "./Details";
 import Navigation from "./Navigation";
+import { getNextScenario } from "@/utils/walkthroughs";
+import { useRouter } from "next/router";
+import { RoleId } from "@/types/roles";
 
 type Props = {
   title: string;
   scenarioId: string;
+  roleId: RoleId;
   stage: number;
   setStage: Dispatch<SetStateAction<number>>;
   data: WalkthroughData;
@@ -20,6 +24,7 @@ type Props = {
 const SideBar = ({
   title,
   scenarioId,
+  roleId,
   stage,
   setStage,
   data,
@@ -27,13 +32,23 @@ const SideBar = ({
 }: Props) => {
   const maxStage = data.options.stages;
   const showSolveMarketBtn = data.options.show_solve_market;
+  const nextScenario = getNextScenario(scenarioId, roleId);
+  const router = useRouter();
 
   const previous = () => {
     if (stage > 1) setStage((prev) => prev - 1);
   };
 
   const next = () => {
-    if (maxStage && stage < maxStage) setStage((prev) => prev + 1);
+    if (maxStage && stage < maxStage) {
+      setStage((prev) => prev + 1);
+
+      return;
+    }
+
+    if (nextScenario) {
+      router.push(`/how-it-works/${nextScenario.id}/${roleId}`);
+    }
   };
 
   const onButtonClick = (e: React.FormEvent) => {

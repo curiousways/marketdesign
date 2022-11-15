@@ -63,7 +63,12 @@ function MyApp({ Component, pageProps }: AppProps) {
         }}
       />
       <Nav />
-      <Component {...pageProps} />
+      <Component
+        {...pageProps}
+        // Remount components if the route changes
+        // https://nextjs.org/docs/api-reference/next/router#resetting-state-after-navigation
+        key={router.asPath}
+      />
       <Footer />
     </>
   );

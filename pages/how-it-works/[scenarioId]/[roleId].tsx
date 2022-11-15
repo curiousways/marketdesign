@@ -47,6 +47,7 @@ const HowItWorksWalthrough: NextPage<HowItWorksWalthroughProps> = ({
         <SideBar
           stage={stage}
           scenarioId={scenarioId}
+          roleId={roleId}
           setStage={setStage}
           data={scenarioForRole}
           sidebarContent={sidebarContent}
