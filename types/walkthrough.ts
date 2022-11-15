@@ -41,6 +41,7 @@ export interface WalkthroughProject {
   cost: number;
   accepted: boolean | number,
   isMyProject?: boolean;
+  isInactive?: boolean;
   discountOrBonus: number;
   products: Products;
 }

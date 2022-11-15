@@ -67,9 +67,9 @@ const ParticipantsList = ({
       )}
 
       {type === "losers" && (
-        <div className="space-y-2 px-1">
+        <>
           {/* Sellers */}
-          <div className="space-y-2">
+          <div className="space-y-2 px-1">
             {sortedSellerProjects.map((project) => (
               <SellerLost
                 key={project.title}
@@ -79,7 +79,7 @@ const ParticipantsList = ({
           </div>
 
           {/* Buyers */}
-          <div className="space-y-2">
+          <div className="space-y-2 px-1">
             {sortedBuyerProjects.map((project) => (
               <BuyerLost
                 key={project.title}
@@ -87,7 +87,7 @@ const ParticipantsList = ({
               />
             ))}
           </div>
-        </div>
+        </>
       )}
     </>
   );

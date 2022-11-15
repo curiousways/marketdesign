@@ -40,7 +40,9 @@ const Details = ({ data, stage, next, roleId }: Props) => {
       className="border-2 border-black px-5 py-4 rounded-lg w-full"
     >
       <div className="text-black text-xl">
-        <p className="font-bold">My Project</p>
+        <p className="font-bold">
+          My Project{data.myProjects.length ? 's' : ''}
+        </p>
         <p>{roles[roleId].label}</p>
       </div>
 
@@ -50,8 +52,19 @@ const Details = ({ data, stage, next, roleId }: Props) => {
       >
         <ul>
           {data.myProjects.map((project, projectIndex) => (
-            <li key={projectIndex}>
-              <div className="mt-3 flex gap-x-3 justify-between items-center">
+            <li
+              key={projectIndex}
+              className={classNames(
+                'mt-3',
+                stage >= data.options.set_my_price && project.isInactive ? 'opacity-30' : '',
+              )}
+            >
+              {!!data.myProjects.length && !!project.subtitle && (
+                <span className="flex justify-end	text-sm underline">
+                  {project.subtitle}
+                </span>
+              )}
+              <div className="flex gap-x-3 justify-between items-center">
                 {/* Vector */}
                 <>{roleId === "seller" ? <SellerVector /> : <BuyerVector />}</>
 
@@ -76,17 +89,19 @@ const Details = ({ data, stage, next, roleId }: Props) => {
                 {/* Project Cost */}
                 <p className="font-light">£{project.cost.toLocaleString()}</p>
 
-                <input
-                  type="text"
-                  placeholder="Enter offer..."
-                  className="flex-1 text-sm text-center inline-block rounded-lg py-2 bg-[#e8e8e8]"
-                  value={stage >= data.options.set_my_price ? project.cost : ''}
-                />
+                <div className="flex-1">
+                  <input
+                    type="text"
+                    placeholder="Enter offer..."
+                    className="w-full text-sm inline-block rounded-lg py-2 px-3 bg-[#e8e8e8]"
+                    value={stage >= data.options.set_my_price && !project.isInactive ? project.cost : ''}
+                  />
+                </div>
               </div>
             </li>
           ))}
         </ul>
-        <div className="flex items-center">
+        <div className="flex items-center mt-3">
           {data.options.show_divisible_input && (
             <label
               className={classNames(

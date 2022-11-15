@@ -17,6 +17,7 @@ import { sellerScenario2_2 } from "./scenarios/sellers/2.2";
 import { sellerScenario2_3 } from "./scenarios/sellers/2.3";
 import { sellerScenario3_1 } from "./scenarios/sellers/3.1";
 import { sellerScenario3_2 } from "./scenarios/sellers/3.2";
+import { sellerScenario4_1, sellerScenario5_1 } from "./scenarios/sellers/5.1";
 
 export const walkthroughs: Walkthrough[] = [
   {
@@ -131,5 +132,18 @@ export const walkthroughs: Walkthrough[] = [
         },
       },
     ]
+  },
+  {
+    id: 5,
+    title: 'Project Options for the Same Field',
+    scenarios: [
+      {
+        id: '5.1',
+        title: 'Project 1 Bid',
+        roles: {
+          seller: sellerScenario5_1,
+        },
+      },
+    ],
   },
 ];
