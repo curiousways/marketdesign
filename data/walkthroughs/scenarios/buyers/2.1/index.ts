@@ -69,8 +69,6 @@ export const buyerScenario2_1: WalkthroughData = {
     "total_bids": "780,000",
     "total_offers": "420,000",
     "surplus": "360,000",
-    "next_walkthrough": "2.2",
-    "next_walkthrough_title": "Restricted Supply",
     "stages": 10,
     "role": "buyer",
     "set_my_price": 3,

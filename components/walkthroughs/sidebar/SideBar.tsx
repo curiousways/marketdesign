@@ -34,10 +34,6 @@ const SideBar = ({
     if (maxStage && stage < maxStage) setStage((prev) => prev + 1);
   };
 
-  // const nextWalkthrough = () => {
-  //   setWalkthrough(data.options.next_walkthrough);
-  // };
-
   const onButtonClick = (e: React.FormEvent) => {
     e.preventDefault();
     next();
@@ -81,9 +77,7 @@ const SideBar = ({
         {/* Walkthrough Description text */}
         <Description
           key={4}
-          // walkthrough={walkthrough}
           stage={stage}
-          // nextWalkthrough={nextWalkthrough}
         >
           {sidebarContent}
         </Description>

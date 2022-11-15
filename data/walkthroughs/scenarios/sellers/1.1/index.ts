@@ -73,8 +73,6 @@ export const sellerScenario1_1: WalkthroughData = {
     "total_bids": "300,000",
     "total_offers": "110,000",
     "surplus": "190,000",
-    "next_walkthrough": "1.2",
-    "next_walkthrough_title": "Offer above cost and win",
     "stages": 11,
     "role": "seller",
     "set_my_price": 4,

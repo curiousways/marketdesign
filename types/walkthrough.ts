@@ -4,8 +4,6 @@ export interface WalkthroughOptions {
   total_bids: string;
   total_offers: string;
   surplus: string;
-  next_walkthrough: string;
-  next_walkthrough_title: string;
   stages: number;
   role: RoleId;
   set_my_price: number;
