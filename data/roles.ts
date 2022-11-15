@@ -7,4 +7,7 @@ export const roles: Roles = {
   seller: {
     label: 'Landholder',
   },
+  generic: {
+    label: 'None',
+  },
 };

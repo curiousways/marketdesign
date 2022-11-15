@@ -70,8 +70,11 @@ export interface Seller {
 export interface Scenario {
   id: string,
   title: string,
-  buyer: WalkthroughData,
-  seller: WalkthroughData,
+  roles: {
+    buyer?: WalkthroughData;
+    seller?: WalkthroughData;
+    generic?: WalkthroughData;
+  }
 }
 
 export interface Walkthrough {
