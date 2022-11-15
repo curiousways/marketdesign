@@ -135,8 +135,7 @@ export const getStaticProps: GetStaticProps<
     };
   }
 
-  // If there is only one role for this scenario (i.e. it is a generic scenario
-  // or we haven't added all the roles yet) then redirect straight to the
+  // If there is only one role for this scenario then redirect straight to the
   // walkthrough for that role. Note that it is important for this to remain a
   // non-permanent redirect for the case where we add more roles later!
   if (scenarioRoles.length === 1) {
