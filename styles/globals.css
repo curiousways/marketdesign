@@ -2,25 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  h1 {
-    @apply font-medium;
-  }
-
-  h2,
-  h3 {
-    @apply text-green-dark;
-  }
-
-  h2 {
-    @apply text-5xl leading-[67px];
-  }
-
-  h3 {
-    @apply text-4xl leading-[48px];
-  }
-}
-
 @layer utilities {
   .shadow-custom {
     box-shadow: 0 3px 10px rgb(0, 0, 0, 0.2);
@@ -40,15 +21,24 @@
     background: linear-gradient(145deg, #89daf4, #73b8cd);
     box-shadow: 7px 7px 13px #7dc8df, -7px -7px 13px #83d0e9;
   }
+
+  .heading-1 {
+    @apply font-medium;
+  }
+
+  .heading-2 {
+    @apply text-green-dark;
+    @apply text-5xl leading-[67px];
+  }
+
+  .heading-3 {
+    @apply text-green-dark;
+    @apply text-4xl leading-[48px];
+  }
 }
 
 #home p {
   @apply text-xl;
-}
-
-.home-bg {
-  background-image: url(../public/assets/images/home/header.png);
-  @apply bg-cover bg-no-repeat;
 }
 
 .accordion-body[data-state="open"] {

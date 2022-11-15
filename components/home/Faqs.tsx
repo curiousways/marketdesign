@@ -34,7 +34,7 @@ const Faqs = () => {
     <>
       {/* FAQs */}
       <section className="max-w-[900px] mx-auto space-y-10 pb-20 md:pb-40">
-        <h2>Frequently asked questions</h2>
+        <h2 className="heading-2">Frequently asked questions</h2>
         <Accordion.Root type="multiple" className="space-y-5 overflow-auto">
           {faqs.map((faq, i) => (
             <Accordion.Item

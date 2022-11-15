@@ -3,17 +3,24 @@ import type { NextPage } from "next";
 import Image from "next/image";
 
 import Button from "@/components/common/Button";
-import Header from "@/components/home/Header";
+import Header from "@/components/common/Header";
 import Faqs from "@/components/home/Faqs";
 
 import UnderstandingTheModel from "../public/assets/images/home/understanding-the-model.png";
 import Frame from "../public/assets/images/home/frame.png";
 import Frame2 from "../public/assets/images/home/frame-2.png";
+import HeaderImg from "../public/assets/images/home/header.png";
+import HeaderThumb from "../public/assets/images/home/header-thumb.png";
 
 const Home: NextPage = () => {
   return (
     <>
-      <Header />
+      <Header
+        title="The Lindsay Nature Market Model"
+        description="Designed to facilitate trade in environmental goods and services at the local level."
+        mainImageSrc={HeaderImg}
+        secondaryImageSrc={HeaderThumb}
+      />
 
       <main id="home">
         <section className="relative">
@@ -52,7 +59,7 @@ const Home: NextPage = () => {
             <Image src={UnderstandingTheModel} />
           </div>
           <div className="max-w-[461px]">
-            <h2 className="max-w-[343px]">Understanding the model</h2>
+            <h2 className="heading-2 max-w-[343px]">Understanding the model</h2>
             <p>
               All markets have rules and processes that set out who can
               participate, what can be traded, how prices are set and how
@@ -81,7 +88,7 @@ const Home: NextPage = () => {
 
               <div className="max-w-[616px] relative pt-5 space-y-10">
                 <div className="space-y-10 mt-5">
-                  <h2>Optimise the financial & environmental benefits</h2>
+                  <h2 className="heading-2">Optimise the financial & environmental benefits</h2>
                   <p>
                     The Exeter Lindsay market model applies robust and
                     innovative thinking to optimise financial and environmental
@@ -106,7 +113,7 @@ const Home: NextPage = () => {
               </div>
 
               <div className="max-w-[616px] mt-20 space-y-10">
-                <h2>Take a tour</h2>
+                <h2 className="heading-2">Take a tour</h2>
                 <p>
                   Take a guided tour of a market scenario to gain a step-by-step
                   understanding of how it works, how to participate and how to
@@ -129,7 +136,7 @@ const Home: NextPage = () => {
           </div>
           <div>
             <div className="max-w-[430px] space-y-10 relative -mt-10 mb-28">
-              <h2>Give it a try</h2>
+              <h2 className="heading-2">Give it a try</h2>
               <p>
                 Get a feel for trading in markets based on Exeter Lindsay. We’ve
                 created a series of simulations to give you first hand
@@ -155,9 +162,9 @@ const Home: NextPage = () => {
                 />
               </svg>
               <div className="max-w-[430px] pt-12 space-y-32">
-                <h2>How It Works</h2>
+                <h2 className="heading-2">How It Works</h2>
                 <div className="space-y-10">
-                  <h3>Optimising Natural Capital Markets</h3>
+                  <h3 className="heading-3">Optimising Natural Capital Markets</h3>
                   <p>
                     The goal of the Exeter Lindsay model is to optimise trading
                     for buyers and sellers of environmental goods and services
