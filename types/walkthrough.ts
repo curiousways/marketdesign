@@ -5,6 +5,7 @@ export interface WalkthroughOptions {
   stages: number;
   set_my_price: number;
   allow_button_click: number;
+  allow_division?: boolean,
   show_products_quantity?: number;
   show_calculating_overlay: number[];
   show_details_widget: number;

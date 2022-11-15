@@ -70,6 +70,7 @@ export const buyerScenario4_1: WalkthroughData = {
     stages: 10,
     set_my_price: 3,
     allow_button_click: 3,
+    allow_division: true,
     show_calculating_overlay: [5, 7, 9],
     show_details_widget: 2,
     show_divisible_input: true,

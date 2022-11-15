@@ -21,6 +21,7 @@ type Props = {
 
 const Details = ({ data, stage, next, roleId }: Props) => {
   const isFormEnabled = stage === data.options.allow_button_click;
+  const isDivisibleInputEnabled = isFormEnabled && !!data.options.allow_division;
 
   // Proceed to next stage when submit button is clicked
   const onSubmit = (e: React.FormEvent) => {
@@ -90,12 +91,12 @@ const Details = ({ data, stage, next, roleId }: Props) => {
             <label
               className={classNames(
                 'flex',
-                isFormEnabled ? 'cursor-pointer' : ''
+                isDivisibleInputEnabled ? 'cursor-pointer' : ''
               )}
             >
               <input
                 required type="checkbox"
-                disabled={!isFormEnabled}
+                disabled={!isDivisibleInputEnabled}
               />
               <span className="ml-2">Divisible</span>
             </label>

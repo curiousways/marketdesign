@@ -8,6 +8,7 @@ import { buyerScenario2_3 } from "./scenarios/buyers/2.3";
 import { buyerScenario3_1 } from "./scenarios/buyers/3.1";
 import { buyerScenario3_2 } from "./scenarios/buyers/3.2";
 import { buyerScenario4_1 } from "./scenarios/buyers/4.1";
+import { buyerScenario4_2 } from "./scenarios/buyers/4.2";
 import { sellerScenario1_1 } from "./scenarios/sellers/1.1";
 import { sellerScenario1_2 } from "./scenarios/sellers/1.2";
 import { sellerScenario1_3 } from "./scenarios/sellers/1.3";
@@ -117,9 +118,16 @@ export const walkthroughs: Walkthrough[] = [
     scenarios: [
       {
         id: '4.1',
-        title: 'Divisible Bidding',
+        title: 'Divisible Bid',
         roles: {
           buyer: buyerScenario4_1,
+        },
+      },
+      {
+        id: '4.2',
+        title: 'Undivided Bid',
+        roles: {
+          buyer: buyerScenario4_2,
         },
       },
     ]
