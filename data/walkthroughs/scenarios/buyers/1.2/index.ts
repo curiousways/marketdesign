@@ -1,4 +1,6 @@
 import { WalkthroughData } from "@/types/walkthrough";
+import { sidebarContent1 } from "./sidebar-content/1";
+import { sidebarContent8 } from "./sidebar-content/8";
 
 export const buyerScenario1_2: WalkthroughData = {
   "title": "Offer above cost and win",
@@ -55,10 +57,14 @@ export const buyerScenario1_2: WalkthroughData = {
       "products": { "biodiversity": 1, "nutrients": 4 }
     }
   ],
+  sidebarContent: {
+    1: sidebarContent1,
+    8: sidebarContent8,
+  },
   "options": {
-    "total_bids": "300,000",
-    "total_offers": "130,000",
-    "surplus": "170,000",
+    "total_bids": "200,000",
+    "total_offers": "180,000",
+    "surplus": "20,000",
     "next_walkthrough": "1.3",
     "next_walkthrough_title": "Offer above cost and lose",
     "stages": 8,
