@@ -11,9 +11,5 @@ export const sidebarContentStage1 = (
       You now face tough competition from the other sellers in the market to supply
       that buyer with credits.
     </p>
-    <p>
-      You now face tough competition from the other sellers in the market to supply
-      that buyer with credits.
-    </p>
   </>
 );
