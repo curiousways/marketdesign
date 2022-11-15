@@ -72,6 +72,7 @@ export const buyerScenario4_1: WalkthroughData = {
     allow_button_click: 3,
     show_calculating_overlay: [5, 7, 9],
     show_details_widget: 2,
+    show_divisible_input: true,
     show_solve_market: 4,
     show_market_outcome: 6,
     show_calculating_winners: 5,

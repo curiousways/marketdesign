@@ -8,6 +8,7 @@ export interface WalkthroughOptions {
   show_products_quantity?: number;
   show_calculating_overlay: number[];
   show_details_widget: number;
+  show_divisible_input?: boolean;
   show_solve_market: number;
   show_market_outcome: number;
   show_calculating_winners: number;
