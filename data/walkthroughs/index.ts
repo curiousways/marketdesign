@@ -19,6 +19,7 @@ import { sellerScenario3_1 } from "./scenarios/sellers/3.1";
 import { sellerScenario3_2 } from "./scenarios/sellers/3.2";
 import { sellerScenario5_1 } from "./scenarios/sellers/5.1";
 import { sellerScenario5_2 } from "./scenarios/sellers/5.2";
+import { sellerScenario5_3 } from "./scenarios/sellers/5.3";
 
 export const walkthroughs: Walkthrough[] = [
   {
@@ -150,6 +151,13 @@ export const walkthroughs: Walkthrough[] = [
         title: 'Project 2 Bid',
         roles: {
           seller: sellerScenario5_2,
+        },
+      },
+      {
+        id: '5.3',
+        title: '5.3 Project 1 & Project 2 XOR Bid',
+        roles: {
+          seller: sellerScenario5_3,
         },
       },
     ],
