@@ -2,15 +2,16 @@ import { motion } from "framer-motion";
 
 import { classNames } from "@/utils/index";
 
-import { Buyer as BuyerType, WalkthroughOptions } from "@/types/walkthrough";
+import { Project, WalkthroughOptions } from "@/types/walkthrough";
 import { fadeInDown } from "@/utils/animations";
 
 import HammerIcon from "../icons/HammerIcon";
 import PoundcashTag from "../icons/PoundcashTag";
 import { RoleId } from "@/types/roles";
+import { ProjectTitle } from "./ProjectTitle";
 
 type Props = {
-  buyer: BuyerType;
+  project: Project;
   stage: number;
   options: WalkthroughOptions;
   roleId: RoleId;
@@ -18,17 +19,17 @@ type Props = {
 };
 
 const Buyer = ({
-  buyer,
+  project,
   stage,
   options,
   className = "",
   roleId,
 }: Props) => {
-  const { bid, discount, pays, products, title, id } = buyer;
+  const { cost, discountOrBonus, products, title, isMyProject } = project;
   const { show_bids, show_surpluses, show_final_payments, highlight_me } =
     options;
 
-  const highlightMe = roleId === "buyer" && stage >= highlight_me && id === 1;
+  const highlightMe = roleId === "buyer" && stage >= highlight_me && isMyProject;
 
   return (
     <motion.div
@@ -36,14 +37,12 @@ const Buyer = ({
       initial="hidden"
       animate="visible"
       className={classNames(
-        "bg-brown px-10 py-5 rounded-lg flex gap-x-10 min-w-[736px]",
+        "bg-brown px-10 py-5 rounded-lg flex gap-x-10 min-w-[736px] flex items-center",
         highlightMe ? "border-2 border-black" : "",
         className
       )}
     >
-      <div>
-        <p className="text-black">{title}</p>
-      </div>
+      <ProjectTitle project={project} />
 
       {/* Products */}
       <div className="flex gap-x-10">
@@ -102,7 +101,7 @@ const Buyer = ({
             </div>
             <div className="text-center text-sm relative -mt-2">
               <p className="text-light-grey">Bid</p>
-              {bid && <p>£{bid}</p>}
+              <p>£{cost.toLocaleString()}</p>
             </div>
           </motion.div>
         )}
@@ -120,7 +119,7 @@ const Buyer = ({
             </div>
             <div className="text-center text-sm relative -mt-2">
               <p className="text-light-grey">Discount</p>
-              {discount && <p>£{discount}</p>}
+              <p>£{discountOrBonus.toLocaleString()}</p>
             </div>
           </motion.div>
         )}
@@ -138,7 +137,7 @@ const Buyer = ({
             </div>
             <div className="text-center text-sm relative -mt-2">
               <p className="text-light-grey">Received</p>
-              {pays && <p>£{pays}</p>}
+              <p>£{(cost - discountOrBonus).toLocaleString()}</p>
             </div>
           </motion.div>
         )}

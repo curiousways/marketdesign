@@ -3,41 +3,39 @@ import { sidebarContent1 } from "./sidebar-content/1";
 import { sidebarContent8 } from "./sidebar-content/8";
 
 export const buyerScenario2_2: WalkthroughData = {
-  "project_cost": "280,000",
-  "buyers": [
+  myProjects: [
     {
-      "id": 1,
-      "title": "My Project",
-      "bid": "280,000",
-      "pays": "150,000",
-      "discount": "130,000",
-      "products": { "biodiversity": 3, "nutrients": 3 }
+      title: 'My Project',
+      cost: 280000,
+      accepted: true,
+      discountOrBonus: 130000,
+      isMyProject: true,
+      products: { biodiversity: 3, nutrients: 3 }
+    },
+  ],
+  buyerProjects: [
+    {
+      title: 'Buyer 1',
+      cost: 240000,
+      accepted: false,
+      discountOrBonus: 0,
+      products: { biodiversity: 3, nutrients: 1 }
     },
     {
-      "id": 2,
-      "title": "Buyer 1",
-      "bid": "240,000",
-      "pays": "0",
-      "discount": "0",
-      "products": { "biodiversity": 3, "nutrients": 1 }
-    },
-    {
-      "id": 3,
-      "title": "Buyer 2",
-      "bid": "260,000",
-      "pays": "0",
-      "discount": "0",
-      "products": { "biodiversity": 4, "nutrients": 2 }
+      title: 'Buyer 2',
+      cost: 260000,
+      accepted: false,
+      discountOrBonus: 0,
+      products: { biodiversity: 4, nutrients: 2 }
     }
   ],
-  "sellers": [
+  sellerProjects: [
     {
-      "id": 1,
-      "title": "Seller 1",
-      "offer": "140,000",
-      "received": "150,000",
-      "bonus": "10,000",
-      "products": { "biodiversity": 4, "nutrients": 3 }
+      title: 'Seller 1',
+      cost: 140000,
+      accepted: true,
+      discountOrBonus: 10000,
+      products: { biodiversity: 4, nutrients: 3 }
     }
   ],
   sidebarContent: {

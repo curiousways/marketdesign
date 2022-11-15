@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { motion, usePresence } from "framer-motion";
+import React from "react";
+import { motion } from "framer-motion";
 
 import { WalkthroughData } from "@/types/walkthrough";
 import { fadeIn } from "@/utils/animations";
@@ -10,6 +10,7 @@ import BiodiversityIconGray from "@/components/walkthroughs/icons/BiodiversityIc
 import NutrientsIcon from "@/components/walkthroughs/icons/NutrientsIcon";
 import { RoleId } from "@/types/roles";
 import { roles } from "data/roles";
+import { classNames } from "@/utils/index";
 
 type Props = {
   next: () => void;
@@ -19,28 +20,13 @@ type Props = {
 };
 
 const Details = ({ data, stage, next, roleId }: Props) => {
-  const [price, setPrice] = useState("");
-
-  // Project cost
-  const projectCost = data.project_cost;
-
-  // User input price
-  const myPrice: string =
-    roleId === "seller"
-      ? data.sellers.find((seller) => seller.id === 1)?.offer!
-      : data.buyers.find((buyer) => buyer.id === 1)?.bid!;
+  const isFormDisabled = stage !== data.options.allow_button_click;
 
   // Proceed to next stage when submit button is clicked
-  const onButtonClick = (e: React.FormEvent) => {
+  const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     next();
   };
-
-  useEffect(() => {
-    if (stage >= data.options.set_my_price) {
-      setPrice(`£${myPrice}`);
-    }
-  }, [stage, data.options]);
 
   return (
     <motion.div
@@ -57,59 +43,67 @@ const Details = ({ data, stage, next, roleId }: Props) => {
         <p>{roles[roleId].label}</p>
       </div>
 
-      <div className="mt-3 flex justify-between">
-        {/* Vector */}
-        <>{roleId === "seller" ? <SellerVector /> : <BuyerVector />}</>
+      <form
+        onSubmit={onSubmit}
+        className="flex flex-col"
+      >
+        <ul>
+          {data.myProjects.map((project, projectIndex) => (
+            <li key={projectIndex}>
+              <div className="mt-3 flex gap-x-3 justify-between items-center">
+                {/* Vector */}
+                <>{roleId === "seller" ? <SellerVector /> : <BuyerVector />}</>
 
-        {/* Credits */}
-        <div className="flex gap-x-2 mt-2">
-          {/* Biodiversity */}
-          <div className="relative">
-            <span className="absolute -right-1 top-0 text-[10px] text-black font-bold border border-black rounded-full bg-white w-[14px] h-[14px] flex justify-center items-center">
-              2
+                {/* Credits */}
+                <div className="flex gap-x-2">
+                  {/* Biodiversity */}
+                  <div className="relative">
+                    <span className="absolute -right-1 top-0 text-[10px] text-black font-bold border border-black rounded-full bg-white w-[14px] h-[14px] flex justify-center items-center">
+                      {project.products.biodiversity}
+                    </span>
+                    <BiodiversityIconGray />
+                  </div>
+                  {/* Nutrients */}
+                  <div className="relative">
+                    <span className="absolute -right-1 top-0 text-[10px] text-black font-bold border border-black rounded-full bg-white w-[14px] h-[14px] flex justify-center items-center">
+                    {project.products.nutrients}
+                    </span>
+                    <NutrientsIcon />
+                  </div>
+                </div>
+
+                {/* Project Cost */}
+                <p className="font-light">£{project.cost.toLocaleString()}</p>
+
+                <input
+                  type="text"
+                  placeholder="Enter offer..."
+                  className="flex-1 text-sm text-center inline-block rounded-lg py-2 bg-[#e8e8e8]"
+                  value={stage >= data.options.set_my_price ? project.cost : ''}
+                />
+              </div>
+            </li>
+          ))}
+        </ul>
+        <div className="relative w-[100px] ml-auto">
+          {stage === data.options.allow_button_click && (
+            <span className="flex h-3 w-3 absolute -right-1 -top-1">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
             </span>
-            <BiodiversityIconGray />
-          </div>
-          {/* Nutrients */}
-          <div className="relative">
-            <span className="absolute -right-1 top-0 text-[10px] text-black font-bold border border-black rounded-full bg-white w-[14px] h-[14px] flex justify-center items-center">
-              2
-            </span>
-            <NutrientsIcon />
-          </div>
-        </div>
-
-        {/* Project Cost */}
-        <p className="font-light mt-2">£{projectCost}</p>
-
-        {/* Form */}
-        <form
-          className="space-y-4 flex flex-col items-end mt-1"
-          onSubmit={onButtonClick}
-        >
-          <input
-            type="text"
-            placeholder="Enter offer..."
-            className="w-[116px] text-sm text-center inline-block rounded-lg py-2 bg-[#e8e8e8]"
-            value={price}
-          />
-          <div className="relative w-[71px]">
-            {stage === data.options.allow_button_click && (
-              <span className="flex h-3 w-3 absolute right-0 -top-1">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-              </span>
+          )}
+          <button
+            type="submit"
+            disabled={isFormDisabled}
+            className={classNames(
+              'w-full rounded-lg bg-[#848484] text-white text-xs py-2',
+              isFormDisabled ? '' : 'hover:bg-black cursor-pointer',
             )}
-            <button
-              type="submit"
-              disabled={stage !== data.options.allow_button_click}
-              className="w-full rounded-lg bg-[#848484] hover:bg-black cursor-pointer text-white text-xs py-2"
-            >
-              Submit
-            </button>
-          </div>
-        </form>
-      </div>
+          >
+            Submit
+          </button>
+        </div>
+      </form>
     </motion.div>
   );
 };

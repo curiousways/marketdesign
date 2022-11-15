@@ -1,5 +1,3 @@
-import { RoleId } from "./roles";
-
 export interface WalkthroughOptions {
   total_bids: string;
   total_offers: string;
@@ -30,37 +28,29 @@ export interface WalkthroughOptions {
   highlight_me: number;
 };
 
-export interface WalkthroughData {
-  project_cost: string;
-  buyers: Buyer[];
-  sellers: Seller[];
-  sidebarContent?: {
-    [key: number]: JSX.Element;
-  },
-  options: WalkthroughOptions;
-}
-
-export interface Buyer {
-  id: number;
-  title: string;
-  bid: string;
-  pays: string;
-  discount: string;
-  products: Products;
-}
-
 export interface Products {
   biodiversity: number;
   nutrients: number;
 }
 
-export interface Seller {
-  id: number;
+export interface Project {
   title: string;
-  offer: string;
-  received: string;
-  bonus: string;
+  subtitle?: string;
+  cost: number;
+  accepted: boolean,
+  isMyProject?: boolean;
+  discountOrBonus: number;
   products: Products;
+}
+
+export interface WalkthroughData {
+  myProjects: [Project, ...Project[]]; // One or more
+  buyerProjects: Project[];
+  sellerProjects: Project[];
+  sidebarContent?: {
+    [key: number]: JSX.Element;
+  },
+  options: WalkthroughOptions;
 }
 
 export interface Scenario {

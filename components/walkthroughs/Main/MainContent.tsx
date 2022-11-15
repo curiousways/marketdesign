@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 import { container, fadeInDown } from "@/utils/animations";
 
-import { Buyer, WalkthroughData, Seller } from "@/types/walkthrough";
+import { WalkthroughData } from "@/types/walkthrough";
 
 import MarketOutcome from "./MarketOutcome";
 import LoadingOverlay from "./LoadingOverlay";
@@ -42,15 +42,19 @@ const MainContent = ({
     };
   }, [stage, data.options]);
 
-  // Lists excluding user
-  const sellersExcludingUser = data.sellers.filter((seller) => seller.id !== 1);
-  const buyersExcludingUser = data.buyers.filter((buyer) => buyer.id !== 1);
+  const sellerProjectsIncludingUser = roleId === 'seller'
+      ? [...data.sellerProjects, ...data.myProjects]
+      : data.sellerProjects;
 
-  // extract winners and losers for both buyers and sellers
-  const sellersLost = data.sellers.filter((seller) => seller.received === "0");
-  const buyersLost = data.buyers.filter((buyer) => buyer.pays === "0");
-  const sellersWon = data.sellers.filter((seller) => seller.received !== "0");
-  const buyersWon = data.buyers.filter((buyer) => buyer.pays !== "0");
+  const buyerProjectsIncludingUser = roleId === 'buyer'
+    ? [...data.buyerProjects, ...data.myProjects]
+    : data.buyerProjects;
+
+  // Extract winners and losers for both buyers and sellers
+  const sellerProjectsLost = sellerProjectsIncludingUser.filter((project) => !project.accepted);
+  const buyerProjectsLost = buyerProjectsIncludingUser.filter((project) => !project.accepted);
+  const sellerProjectsWon = sellerProjectsIncludingUser.filter((project) => project.accepted);
+  const buyersProjectsWon = buyerProjectsIncludingUser.filter((project) => project.accepted);
 
   return (
     <div className="border-l border-green-dark pt-4 pb-24 w-full relative flex justify-center">
@@ -69,8 +73,8 @@ const MainContent = ({
               animate="visible"
             >
               <ParticipantsList
-                sellers={sellersLost}
-                buyers={buyersLost}
+                sellerProjects={sellerProjectsLost}
+                buyerProjects={buyerProjectsLost}
                 type="losers"
                 stage={stage}
                 data={data}
@@ -88,25 +92,13 @@ const MainContent = ({
                 animate="visible"
                 className="space-y-5"
               >
-                {roleId === "seller" && (
-                  <ParticipantsList
-                    sellers={sellersExcludingUser}
-                    buyers={data.buyers}
-                    stage={stage}
-                    data={data}
-                    roleId={roleId}
-                  />
-                )}
-
-                {roleId === "buyer" && (
-                  <ParticipantsList
-                    sellers={data.sellers}
-                    buyers={buyersExcludingUser}
-                    stage={stage}
-                    data={data}
-                    roleId={roleId}
-                  />
-                )}
+                <ParticipantsList
+                  sellerProjects={data.sellerProjects}
+                  buyerProjects={data.buyerProjects}
+                  stage={stage}
+                  data={data}
+                  roleId={roleId}
+                />
               </motion.div>
             )}
 
@@ -120,8 +112,8 @@ const MainContent = ({
                   className="space-y-5"
                 >
                   <ParticipantsList
-                    sellers={data.sellers}
-                    buyers={data.buyers}
+                    sellerProjects={sellerProjectsIncludingUser}
+                    buyerProjects={buyerProjectsIncludingUser}
                     stage={stage}
                     data={data}
                     roleId={roleId}
@@ -138,8 +130,8 @@ const MainContent = ({
                 className="space-y-5"
               >
                 <ParticipantsList
-                  sellers={sellersWon}
-                  buyers={buyersWon}
+                  sellerProjects={sellerProjectsWon}
+                  buyerProjects={buyersProjectsWon}
                   stage={stage}
                   data={data}
                   roleId={roleId}

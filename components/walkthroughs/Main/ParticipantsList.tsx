@@ -3,37 +3,47 @@ import Seller from "./Seller";
 import BuyerLost from "./BuyerLost";
 import SellerLost from "./SellerLost";
 
-import { WalkthroughData, Seller as SellerType, Buyer as BuyerType } from "@/types/walkthrough";
+import { WalkthroughData, Project} from "@/types/walkthrough";
 import { RoleId } from "@/types/roles";
 
 type Props = {
-  buyers: BuyerType[];
-  sellers: SellerType[];
+  buyerProjects: Project[];
+  sellerProjects: Project[];
   stage: number;
   data: WalkthroughData;
   type?: "winners" | "losers";
   roleId: RoleId;
 };
 
+/**
+ * Sort to bring "my projects" to the top of the list.
+ */
+const sortMyProjects = (projects: Project[]) => (
+  projects.sort((a, b) => Number(b.isMyProject ?? 0) - Number(a.isMyProject ?? 0))
+);
+
 const ParticipantsList = ({
-  buyers,
-  sellers,
+  buyerProjects,
+  sellerProjects,
   stage,
   data,
   roleId,
   type = "winners",
 }: Props) => {
+  const sortedBuyerProjects = sortMyProjects(buyerProjects);
+  const sortedSellerProjects = sortMyProjects(sellerProjects);
+
   return (
     <>
       {type === "winners" && (
         <>
           {/* Sellers */}
           <div className="space-y-5">
-            {sellers.map((seller) => (
+            {sortedSellerProjects.map((project) => (
               <Seller
-                key={seller.id}
+                key={project.title}
                 stage={stage}
-                seller={seller}
+                project={project}
                 options={data.options}
                 roleId={roleId}
               />
@@ -42,11 +52,11 @@ const ParticipantsList = ({
 
           {/* Buyers */}
           <div className="space-y-5">
-            {buyers.map((buyer) => (
+            {sortedBuyerProjects.map((project) => (
               <Buyer
-                key={buyer.id}
+                key={project.title}
                 stage={stage}
-                buyer={buyer}
+                project={project}
                 options={data.options}
                 roleId={roleId}
               />
@@ -59,20 +69,20 @@ const ParticipantsList = ({
         <div className="space-y-2">
           {/* Sellers */}
           <div className="space-y-2">
-            {sellers.map((seller) => (
+            {sortedSellerProjects.map((project) => (
               <SellerLost
-                key={seller.id}
-                seller={seller}
+                key={project.title}
+                project={project}
               />
             ))}
           </div>
 
           {/* Buyers */}
           <div className="space-y-2">
-            {buyers.map((buyer) => (
+            {sortedBuyerProjects.map((project) => (
               <BuyerLost
-                key={buyer.id}
-                buyer={buyer}
+                key={project.title}
+                project={project}
               />
             ))}
           </div>
