@@ -64,7 +64,7 @@ export const walkthroughs: Walkthrough[] = [
     scenarios: [
       {
         id: '2.1',
-        title: 'Baland supply & demand',
+        title: 'Balanced supply & demand',
         roles: {
           buyer: buyerScenario2_1,
           seller: sellerScenario2_1,
