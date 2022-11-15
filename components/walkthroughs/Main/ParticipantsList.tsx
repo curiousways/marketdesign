@@ -67,7 +67,7 @@ const ParticipantsList = ({
       )}
 
       {type === "losers" && (
-        <div className="space-y-2">
+        <div className="space-y-2 px-1">
           {/* Sellers */}
           <div className="space-y-2">
             {sortedSellerProjects.map((project) => (

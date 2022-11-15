@@ -17,7 +17,7 @@ export const ProjectTitle: FunctionComponent<Props> = ({
     : null;
 
   return (
-    <div className="flex flex-col text-black text-center">
+    <div className="flex flex-col text-black text-center flex-[30%]">
       <p
         className={classNames(isMyProject ? 'font-bold' : '')}
       >

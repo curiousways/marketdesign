@@ -85,14 +85,14 @@ const Project = ({
       />
 
       {/* Content */}
-      <div className="z-10 items-center flex gap-x-10">
+      <div className="z-10 items-center flex gap-x-10 justify-between w-full">
         <ProjectTitle
           showAcceptedPercentage={showBids}
           project={project}
         />
 
         {/* Products */}
-        <div className="flex gap-x-10">
+        <div className="flex gap-x-10 flex-[20%]">
           {/* Biodiversity */}
           <div
             className={`h-[66px] w-[66px] rounded-lg flex items-center justify-center relative ${shadowColor}`}
@@ -140,7 +140,7 @@ const Project = ({
           </div>
         </div>
 
-        <div className="flex gap-x-10">
+        <div className="flex gap-x-10 flex-[50%]">
           {/* Bid */}
           {showBids && (
             <motion.div
