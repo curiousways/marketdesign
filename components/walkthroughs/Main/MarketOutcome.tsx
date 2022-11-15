@@ -4,16 +4,30 @@ import HammerIcon from "../icons/HammerIcon";
 import BalanceIcon from "../icons/BalanceIcon";
 import CartPlus from "../icons/CartPlus";
 import PoundcashTag from "../icons/PoundcashTag";
-import { WalkthroughOptions } from "@/types/walkthrough";
+import { WalkthroughOptions, WalkthroughProject } from "@/types/walkthrough";
 
 type Props = {
   stage: number;
   options: WalkthroughOptions;
   className?: string;
+  buyerProjects: WalkthroughProject[];
+  sellerProjects: WalkthroughProject[];
 };
 
-const MarketOutcome = ({ stage, options, className = "" }: Props) => {
+const sumProjectCosts = (projects: WalkthroughProject[]) => (
+  projects.reduce((acc, project) => acc + project.cost, 0)
+);
+
+const MarketOutcome = ({
+  stage,
+  options,
+  className = "",
+  buyerProjects,
+  sellerProjects,
+}: Props) => {
   const { show_balanced_market } = options;
+  const totalBids = sumProjectCosts(buyerProjects);
+  const totalOffers = sumProjectCosts(sellerProjects);
 
   return (
     <div
@@ -112,7 +126,7 @@ const MarketOutcome = ({ stage, options, className = "" }: Props) => {
             {/* Offer */}
             <div className="text-center text-sm relative -mt-2">
               <p className="text-white">Total Bids</p>
-              <p className="text-white">£{options.total_bids}</p>
+              <p className="text-white">£{totalBids.toLocaleString()}</p>
             </div>
           </div>
 
@@ -124,7 +138,7 @@ const MarketOutcome = ({ stage, options, className = "" }: Props) => {
 
             <div className="text-center text-sm relative -mt-2">
               <p className="text-white">Total Offers</p>
-              <p className="text-white">£{options.total_offers}</p>
+              <p className="text-white">£{totalOffers.toLocaleString()}</p>
             </div>
           </div>
         </div>
@@ -137,7 +151,7 @@ const MarketOutcome = ({ stage, options, className = "" }: Props) => {
 
           <div className="text-center text-sm relative -mt-2">
             <p className="text-light-grey">Surplus</p>
-            <p>£{options.surplus}</p>
+            <p>£{(totalBids - totalOffers).toLocaleString()}</p>
           </div>
         </div>
 
