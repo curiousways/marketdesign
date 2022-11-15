@@ -1,4 +1,6 @@
 import { WalkthroughData } from "@/types/walkthrough";
+import { sidebarContent1 } from "./sidebar-content/1";
+import { sidebarContent8 } from "./sidebar-content/8";
 
 export const buyerScenario2_2: WalkthroughData = {
   "title": "Restricted Supply",
@@ -39,6 +41,10 @@ export const buyerScenario2_2: WalkthroughData = {
       "products": { "biodiversity": 4, "nutrients": 3 }
     }
   ],
+  sidebarContent: {
+    1: sidebarContent1,
+    8: sidebarContent8,
+  },
   "options": {
     "total_bids": "280,000",
     "total_offers": "140,000",
