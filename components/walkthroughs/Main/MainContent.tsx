@@ -159,7 +159,7 @@ const MainContent = ({ stage, setStage, data }: Props) => {
         </>
       )}
 
-      {data.options.show_maps && stage < data.options.show_participants && (
+      {data.options.show_map?.includes(stage) && (
         <p className="text-4xl">MAP</p>
       )}
     </div>
