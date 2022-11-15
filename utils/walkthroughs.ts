@@ -1,7 +1,7 @@
 import { RoleId } from "@/types/roles";
 import { roles } from "data/roles";
 import { walkthroughs } from "data/walkthroughs";
-import { Scenario, WalkthroughData } from "../types/walkthrough";
+import { Scenario, Walkthrough, WalkthroughData } from "../types/walkthrough";
 
 const getAllScenarios = (): Scenario[] => {
   const scenarios: Scenario[] = [];
@@ -41,6 +41,18 @@ export const getScenarioByRole = (
   }
 
   return scenarioByRole;
+};
+
+export const getWalkthroughForScenario = (scenarioId: string): Walkthrough => {
+  const walkthrough = walkthroughs.find((walkthrough) => (
+    walkthrough.scenarios.some((scenario) => scenario.id === scenarioId)
+  ));
+
+  if (!walkthrough) {
+    throw new Error(`No walkthrough found for scenario with ID: ${scenarioId}`);
+  }
+
+  return walkthrough;
 };
 
 export const isValidScenarioId = (

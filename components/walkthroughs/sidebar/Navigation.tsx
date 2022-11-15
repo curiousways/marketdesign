@@ -6,6 +6,7 @@ import NextButton from "./NextButton";
 import PrevButton from "./PrevButton";
 
 type Props = {
+  title: string;
   scenarioId: string;
   stage: number;
   next: () => void;
@@ -13,7 +14,14 @@ type Props = {
   data: WalkthroughData;
 };
 
-const Navigation = ({ scenarioId, stage, next, previous, data }: Props) => {
+const Navigation = ({
+  title,
+  scenarioId,
+  stage,
+  next,
+  previous,
+  data,
+}: Props) => {
   return (
     <motion.div layout className="text-center text-xl w-full">
       <p className="text-green-dark">WALKTHROUGH {scenarioId}</p>
@@ -26,7 +34,7 @@ const Navigation = ({ scenarioId, stage, next, previous, data }: Props) => {
         />
 
         <div className="bg-green-dark text-white rounded-lg px-3 py-1 max-w-[285px]">
-          <p>Bidding Strategies for a Package Buyer</p>
+          <p>{title}</p>
         </div>
 
         {/* Next button */}

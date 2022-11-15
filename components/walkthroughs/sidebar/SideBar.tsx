@@ -9,6 +9,7 @@ import Details from "./Details";
 import Navigation from "./Navigation";
 
 type Props = {
+  title: string;
   scenarioId: string;
   stage: number;
   setStage: Dispatch<SetStateAction<number>>;
@@ -17,6 +18,7 @@ type Props = {
 };
 
 const SideBar = ({
+  title,
   scenarioId,
   stage,
   setStage,
@@ -65,6 +67,7 @@ const SideBar = ({
 
         {/* Navigation with next and previous buttons */}
         <Navigation
+          title={title}
           scenarioId={scenarioId}
           stage={stage}
           next={next}

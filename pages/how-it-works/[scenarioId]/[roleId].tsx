@@ -13,6 +13,7 @@ import {
   getAllScenarioIds,
   getScenario,
   getScenarioByRole,
+  getWalkthroughForScenario,
   isValidRoleId,
   isValidScenarioId,
 } from "@/utils/walkthroughs";
@@ -36,6 +37,7 @@ const HowItWorksWalthrough: NextPage<HowItWorksWalthroughProps> = ({
   const scenarioForRole = getScenarioByRole(scenarioId, roleId);
   const [stage, setStage] = useState(1);
   const sidebarContent = scenarioForRole.sidebarContent?.[stage];
+  const { title } = getWalkthroughForScenario(scenarioId);
 
   return (
     <main>
@@ -48,6 +50,7 @@ const HowItWorksWalthrough: NextPage<HowItWorksWalthroughProps> = ({
           setStage={setStage}
           data={scenarioForRole}
           sidebarContent={sidebarContent}
+          title={title}
         />
         <MainContent
           stage={stage}
