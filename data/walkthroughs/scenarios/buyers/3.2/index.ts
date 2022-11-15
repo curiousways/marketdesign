@@ -1,4 +1,7 @@
 import { WalkthroughData } from "@/types/walkthrough";
+import { sidebarContent1 } from "./sidebar-content/1";
+import { sidebarContent8 } from "./sidebar-content/8";
+import { sidebarContent9 } from "./sidebar-content/9";
 
 export const buyerScenario3_2: WalkthroughData = {
   myProjects: [
@@ -6,7 +9,7 @@ export const buyerScenario3_2: WalkthroughData = {
       title: 'My Project',
       cost: 60000,
       accepted: true,
-      discountOrBonus: 53000,
+      discountOrBonus: 15000,
       isMyProject: true,
       products: { biodiversity: 2, nutrients: 1 }
     },
@@ -16,14 +19,14 @@ export const buyerScenario3_2: WalkthroughData = {
       title: 'Buyer 1',
       cost: 200000,
       accepted: true,
-      discountOrBonus: 116000,
+      discountOrBonus: 23000,
       products: { biodiversity: 5, nutrients: 2 }
     },
     {
       title: 'Buyer 2',
       cost: 300000,
       accepted: true,
-      discountOrBonus: 73000,
+      discountOrBonus: 53000,
       products: { biodiversity: 4, nutrients: 7 }
     }
   ],
@@ -39,17 +42,22 @@ export const buyerScenario3_2: WalkthroughData = {
       title: 'Seller 2',
       cost: 150000,
       accepted: true,
-      discountOrBonus: 110000,
+      discountOrBonus: 98000,
       products: { biodiversity: 6, nutrients: 7 }
     },
     {
       title: 'Seller 3',
       cost: 210000,
       accepted: true,
-      discountOrBonus: 86000,
+      discountOrBonus: 10000,
       products: { biodiversity: 4, nutrients: 4 }
     }
   ],
+  sidebarContent: {
+    1: sidebarContent1,
+    8: sidebarContent8,
+    9: sidebarContent9,
+  },
   "options": {
     "total_bids": "560,000",
     "total_offers": "360,000",
