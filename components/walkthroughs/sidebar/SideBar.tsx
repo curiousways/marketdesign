@@ -44,13 +44,12 @@ const SideBar = ({
       <AnimatePresence>
         {/* Top */}
         {stage >= data.options.show_details_widget && (
-          <Details key={1} next={next} data={data} stage={stage} />
+          <Details next={next} data={data} stage={stage} />
         )}
 
         {/* Solve Market Button */}
         {stage === showSolveMarketBtn && (
           <motion.button
-            key={2}
             variants={fadeIn}
             initial="hidden"
             animate="visible"
@@ -66,7 +65,6 @@ const SideBar = ({
 
         {/* Navigation with next and previous buttons */}
         <Navigation
-          key={3}
           scenarioId={scenarioId}
           stage={stage}
           next={next}
@@ -75,10 +73,7 @@ const SideBar = ({
         />
 
         {/* Walkthrough Description text */}
-        <Description
-          key={4}
-          stage={stage}
-        >
+        <Description>
           {sidebarContent}
         </Description>
       </AnimatePresence>
