@@ -12,7 +12,7 @@ export const sellerScenario5_1: WalkthroughData = {
       title: 'My Project',
       subtitle: 'Project 1',
       cost: 140000,
-      discountOrBonus: 4400,
+      discountOrBonus: 44000,
       accepted: true,
       isMyProject: true,
       products: { biodiversity: 1, nutrients: 3 },
