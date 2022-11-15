@@ -14,7 +14,7 @@ const LoadingOverlay = ({ stage, data }: Props) => {
       variants={fadeInDown}
       initial="hidden"
       whileInView="visible"
-      className="absolute top-0 left-0 w-full h-full bg-black/70 z-10 flex justify-center items-center"
+      className="absolute top-0 left-0 w-full h-full bg-black/70 z-50 flex justify-center items-center"
     >
       <div className="flex flex-col items-center">
         {stage === data.options.show_calculating_winners && (

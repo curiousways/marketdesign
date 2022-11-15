@@ -37,7 +37,7 @@ export interface Project {
   title: string;
   subtitle?: string;
   cost: number;
-  accepted: boolean,
+  accepted: boolean | number,
   isMyProject?: boolean;
   discountOrBonus: number;
   products: Products;
