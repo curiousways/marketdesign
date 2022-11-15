@@ -1,4 +1,7 @@
 import { WalkthroughData } from "@/types/walkthrough";
+import { sidebarContent1 } from "./sidebar-content/1";
+import { sidebarContent8 } from "./sidebar-content/8";
+import { sidebarContent9 } from "./sidebar-content/9";
 
 export const buyerScenario3_2: WalkthroughData = {
   "title": "Poor fit bid",
@@ -8,24 +11,24 @@ export const buyerScenario3_2: WalkthroughData = {
       "id": 1,
       "title": "My Project",
       "bid": "60,000",
-      "pays": "296,000",
-      "discount": "53,000",
+      "pays": "45,000",
+      "discount": "15,000",
       "products": { "biodiversity": 2, "nutrients": 1 }
     },
     {
       "id": 2,
       "title": "Buyer 1",
       "bid": "200,000",
-      "pays": "164,000",
-      "discount": "116,000",
+      "pays": "177,000",
+      "discount": "23,000",
       "products": { "biodiversity": 5, "nutrients": 2 }
     },
     {
       "id": 3,
       "title": "Buyer 2",
       "bid": "300,000",
-      "pays": "73,000",
-      "discount": "73,000",
+      "pays": "247,000",
+      "discount": "53,000",
       "products": { "biodiversity": 4, "nutrients": 7 }
     }
   ],
@@ -42,19 +45,24 @@ export const buyerScenario3_2: WalkthroughData = {
       "id": 2,
       "title": "Seller 2",
       "offer": "150,000",
-      "received": "230,000",
-      "bonus": "110,000",
+      "received": "248,000",
+      "bonus": "98,000",
       "products": { "biodiversity": 6, "nutrients": 7 }
     },
     {
       "id": 3,
       "title": "Seller 3",
       "offer": "210,000",
-      "received": "166,000",
-      "bonus": "86,000",
+      "received": "220,000",
+      "bonus": "10,000",
       "products": { "biodiversity": 4, "nutrients": 4 }
     }
   ],
+  sidebarContent: {
+    1: sidebarContent1,
+    8: sidebarContent8,
+    9: sidebarContent9,
+  },
   "options": {
     "total_bids": "560,000",
     "total_offers": "360,000",
