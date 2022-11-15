@@ -54,7 +54,7 @@ const Details = ({ data, stage, next, roleId }: Props) => {
     >
       <div className="text-black text-xl">
         <p className="font-bold">My Project</p>
-        <p>{roles[roleId]}</p>
+        <p>{roles[roleId].label}</p>
       </div>
 
       <div className="mt-3 flex justify-between">
