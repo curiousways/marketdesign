@@ -25,7 +25,7 @@ const Navigation = ({
   return (
     <motion.div layout className="text-center text-xl w-full">
       <p className="text-green-dark">WALKTHROUGH {scenarioId}</p>
-      <div className="flex gap-x-4 items-center">
+      <div className="flex gap-x-4 items-center justify-between">
         {/* Previous button */}
         <PrevButton
           onClick={previous}
@@ -33,7 +33,9 @@ const Navigation = ({
           hideButton={data.options.hide_prev_button}
         />
 
-        <div className="bg-green-dark text-white rounded-lg px-3 py-1 max-w-[285px]">
+        <div
+          className="bg-green-dark text-white rounded-lg px-3 py-1 flex-1"
+        >
           <p>{title}</p>
         </div>
 
