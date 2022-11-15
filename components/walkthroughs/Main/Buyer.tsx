@@ -64,10 +64,10 @@ const Buyer = ({
     >
       {/* Percentage-based background colour */}
       <div
-        className={classNames(
-          'absolute h-full bg-brown top-0 left-0',
-          typeof accepted === 'number' ? `w-[${accepted}%]` : 'w-full'
-        )}
+        className="absolute h-full bg-brown top-0 left-0"
+        style={{
+          width: typeof accepted === 'number' ? `${accepted}%` : '100%'
+        }}
       />
 
       {/* Full-width background colour */}
