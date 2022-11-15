@@ -7,20 +7,28 @@ import { fadeInDown } from "@/utils/animations";
 
 import HammerIcon from "../icons/HammerIcon";
 import PoundcashTag from "../icons/PoundcashTag";
+import { RoleId } from "@/types/roles";
 
 type Props = {
   buyer: BuyerType;
   stage: number;
   options: WalkthroughOptions;
+  roleId: RoleId;
   className?: string;
 };
 
-const Buyer = ({ buyer, stage, options, className = "" }: Props) => {
+const Buyer = ({
+  buyer,
+  stage,
+  options,
+  className = "",
+  roleId,
+}: Props) => {
   const { bid, discount, pays, products, title, id } = buyer;
-  const { show_bids, show_surpluses, show_final_payments, highlight_me, role } =
+  const { show_bids, show_surpluses, show_final_payments, highlight_me } =
     options;
 
-  const highlightMe = role === "buyer" && stage >= highlight_me && id === 1;
+  const highlightMe = roleId === "buyer" && stage >= highlight_me && id === 1;
 
   return (
     <motion.div

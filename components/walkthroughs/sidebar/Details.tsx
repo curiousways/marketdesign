@@ -8,25 +8,25 @@ import SellerVector from "@/components/walkthroughs/icons/SellerVector";
 import BuyerVector from "@/components/walkthroughs/icons/BuyerVector";
 import BiodiversityIconGray from "@/components/walkthroughs/icons/BiodiversityIcon";
 import NutrientsIcon from "@/components/walkthroughs/icons/NutrientsIcon";
+import { RoleId } from "@/types/roles";
+import { roles } from "data/roles";
 
 type Props = {
   next: () => void;
   stage: number;
   data: WalkthroughData;
+  roleId: RoleId;
 };
 
-const Details = ({ data, stage, next }: Props) => {
+const Details = ({ data, stage, next, roleId }: Props) => {
   const [price, setPrice] = useState("");
-
-  // User role either buyer or seller
-  const role = data.options.role;
 
   // Project cost
   const projectCost = data.project_cost;
 
   // User input price
   const myPrice: string =
-    role === "seller"
+    roleId === "seller"
       ? data.sellers.find((seller) => seller.id === 1)?.offer!
       : data.buyers.find((buyer) => buyer.id === 1)?.bid!;
 
@@ -54,12 +54,12 @@ const Details = ({ data, stage, next }: Props) => {
     >
       <div className="text-black text-xl">
         <p className="font-bold">My Project</p>
-        <p>{role === "seller" ? "Landholder" : "Developer"}</p>
+        <p>{roles[roleId]}</p>
       </div>
 
       <div className="mt-3 flex justify-between">
         {/* Vector */}
-        <>{role === "seller" ? <SellerVector /> : <BuyerVector />}</>
+        <>{roleId === "seller" ? <SellerVector /> : <BuyerVector />}</>
 
         {/* Credits */}
         <div className="flex gap-x-2 mt-2">

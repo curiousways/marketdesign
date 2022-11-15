@@ -8,18 +8,21 @@ import { Buyer, WalkthroughData, Seller } from "@/types/walkthrough";
 import MarketOutcome from "./MarketOutcome";
 import LoadingOverlay from "./LoadingOverlay";
 import ParticipantsList from "./ParticipantsList";
+import { RoleId } from "@/types/roles";
 
 type Props = {
   stage: number;
   setStage: Dispatch<SetStateAction<number>>;
   data: WalkthroughData;
+  roleId: RoleId;
 };
 
-const filterUser = <
-  T extends (Seller | Buyer
-)[]>(arr: T) => arr.filter((item) => item.id !== 1)
-
-const MainContent = ({ stage, setStage, data }: Props) => {
+const MainContent = ({
+  stage,
+  setStage,
+  data,
+  roleId,
+}: Props) => {
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
 
@@ -38,12 +41,6 @@ const MainContent = ({ stage, setStage, data }: Props) => {
       clearTimeout(timer);
     };
   }, [stage, data.options]);
-
-  // Last stage of each walkthrough
-  const maxStage = data.options.stages;
-
-  // User role either buyer or seller
-  const role = data.options.role;
 
   // Lists excluding user
   const sellersExcludingUser = data.sellers.filter((seller) => seller.id !== 1);
@@ -77,6 +74,7 @@ const MainContent = ({ stage, setStage, data }: Props) => {
                 type="losers"
                 stage={stage}
                 data={data}
+                roleId={roleId}
               />
             </motion.div>
           )}
@@ -90,21 +88,23 @@ const MainContent = ({ stage, setStage, data }: Props) => {
                 animate="visible"
                 className="space-y-5"
               >
-                {role === "seller" && (
+                {roleId === "seller" && (
                   <ParticipantsList
                     sellers={sellersExcludingUser}
                     buyers={data.buyers}
                     stage={stage}
                     data={data}
+                    roleId={roleId}
                   />
                 )}
 
-                {role === "buyer" && (
+                {roleId === "buyer" && (
                   <ParticipantsList
                     sellers={data.sellers}
                     buyers={buyersExcludingUser}
                     stage={stage}
                     data={data}
+                    roleId={roleId}
                   />
                 )}
               </motion.div>
@@ -124,6 +124,7 @@ const MainContent = ({ stage, setStage, data }: Props) => {
                     buyers={data.buyers}
                     stage={stage}
                     data={data}
+                    roleId={roleId}
                   />
                 </motion.div>
               )}
@@ -141,6 +142,7 @@ const MainContent = ({ stage, setStage, data }: Props) => {
                   buyers={buyersWon}
                   stage={stage}
                   data={data}
+                  roleId={roleId}
                 />
               </motion.div>
             )}

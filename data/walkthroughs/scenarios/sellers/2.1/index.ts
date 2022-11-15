@@ -69,7 +69,6 @@ export const sellerScenario2_1: WalkthroughData = {
     "total_offers": "170,000",
     "surplus": "360,000",
     "stages": 10,
-    "role": "seller",
     "set_my_price": 3,
     "allow_button_click": 3,
     "show_calculating_overlay": [5, 7, 9],

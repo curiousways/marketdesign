@@ -61,7 +61,12 @@ const SideBar = ({
       <AnimatePresence>
         {/* Top */}
         {stage >= data.options.show_details_widget && (
-          <Details next={next} data={data} stage={stage} />
+          <Details
+            next={next}
+            data={data}
+            stage={stage}
+            roleId={roleId}
+          />
         )}
 
         {/* Solve Market Button */}

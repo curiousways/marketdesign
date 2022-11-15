@@ -4,6 +4,7 @@ import BuyerLost from "./BuyerLost";
 import SellerLost from "./SellerLost";
 
 import { WalkthroughData, Seller as SellerType, Buyer as BuyerType } from "@/types/walkthrough";
+import { RoleId } from "@/types/roles";
 
 type Props = {
   buyers: BuyerType[];
@@ -11,6 +12,7 @@ type Props = {
   stage: number;
   data: WalkthroughData;
   type?: "winners" | "losers";
+  roleId: RoleId;
 };
 
 const ParticipantsList = ({
@@ -18,6 +20,7 @@ const ParticipantsList = ({
   sellers,
   stage,
   data,
+  roleId,
   type = "winners",
 }: Props) => {
   return (
@@ -32,6 +35,7 @@ const ParticipantsList = ({
                 stage={stage}
                 seller={seller}
                 options={data.options}
+                roleId={roleId}
               />
             ))}
           </div>
@@ -44,6 +48,7 @@ const ParticipantsList = ({
                 stage={stage}
                 buyer={buyer}
                 options={data.options}
+                roleId={roleId}
               />
             ))}
           </div>

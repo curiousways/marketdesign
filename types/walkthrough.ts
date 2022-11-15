@@ -5,7 +5,6 @@ export interface WalkthroughOptions {
   total_offers: string;
   surplus: string;
   stages: number;
-  role: RoleId;
   set_my_price: number;
   allow_button_click: number;
   show_products_quantity?: number;

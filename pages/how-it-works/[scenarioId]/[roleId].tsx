@@ -57,6 +57,7 @@ const HowItWorksWalthrough: NextPage<HowItWorksWalthroughProps> = ({
           stage={stage}
           setStage={setStage}
           data={scenarioForRole}
+          roleId={roleId}
         />
       </div>
     </main>
