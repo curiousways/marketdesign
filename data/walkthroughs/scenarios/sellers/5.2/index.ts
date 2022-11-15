@@ -35,14 +35,14 @@ export const sellerScenario5_2: WalkthroughData = {
     {
       title: 'Buyer 2',
       cost: 120000,
-      accepted: true,
+      accepted: false,
       discountOrBonus: 0,
       products: { biodiversity: 3, nutrients: 0 }
     },
     {
       title: 'Buyer 3',
       cost: 100000,
-      accepted: false,
+      accepted: true,
       discountOrBonus: 40000,
       products: { biodiversity: 1, nutrients: 1 }
     }
