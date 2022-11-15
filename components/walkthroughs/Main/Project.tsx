@@ -10,6 +10,7 @@ import PoundcashTag from "../icons/PoundcashTag";
 import { RoleId } from "@/types/roles";
 import { ProjectTitle } from "./ProjectTitle";
 import AdjustedProductCount from "./AdjustedProductCount";
+import CartPlus from "../icons/CartPlus";
 
 type Props = {
   project: WalkthroughProject;
@@ -29,10 +30,15 @@ const calculatePayment = (
   cost: number,
   discountOrBonus: number,
   accepted: boolean | number,
+  projectRoleId: RoleId,
 ) => {
   const adjustedCost = getAdjustedCost(cost, accepted);
 
-  return adjustedCost - discountOrBonus;
+  if (projectRoleId === 'buyer') {
+    return adjustedCost - discountOrBonus;
+  }
+
+  return adjustedCost + discountOrBonus;
 }
 
 const Project = ({
@@ -153,7 +159,9 @@ const Project = ({
                 <HammerIcon />
               </div>
               <div className="text-center text-sm relative -mt-2">
-                <p className="text-light-grey">Bid</p>
+                <p className="text-light-grey">
+                  {isBuyer ? 'Bid' : 'Offer'}
+                </p>
                 <p>£{adjustedCost.toLocaleString()}</p>
                 {adjustedCost !== cost && (
                   <p className={`${textColor} opacity-50`}>
@@ -173,10 +181,14 @@ const Project = ({
               className="bg-white rounded-lg border border-black px-1 w-[95px]"
             >
               <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
-                <p className="text-black">-</p>
+                <p className="text-black">
+                  {isBuyer ? '-' : '+'}
+                </p>
               </div>
               <div className="text-center text-sm relative -mt-2">
-                <p className="text-light-grey">Discount</p>
+                <p className="text-light-grey">
+                  {isBuyer ? 'Discount' : 'Bonus'}
+                </p>
                 <p>£{discountOrBonus.toLocaleString()}</p>
               </div>
             </motion.div>
@@ -191,11 +203,18 @@ const Project = ({
               className="bg-white rounded-lg border border-black px-1 w-[95px]"
             >
               <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
-                <PoundcashTag />
+                {isBuyer ? <PoundcashTag /> : <CartPlus />}
               </div>
               <div className="text-center text-sm relative -mt-2">
-                <p className="text-light-grey">Pays</p>
-                <p>£{(calculatePayment(cost, discountOrBonus, accepted)).toLocaleString()}</p>
+                <p className="text-light-grey">
+                  {isBuyer ? 'Pays' : 'Received'}
+                </p>
+                <p>£{(calculatePayment(
+                  cost,
+                  discountOrBonus,
+                  accepted,
+                  projectRoleId,
+                )).toLocaleString()}</p>
               </div>
             </motion.div>
           )}
