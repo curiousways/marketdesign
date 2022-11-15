@@ -2,8 +2,9 @@ import { sidebarContentStage1 } from "./sidebar-content/1";
 import { sidebarContentStage2 } from "./sidebar-content/2";
 import { sidebarContentStage3 } from "./sidebar-content/3";
 import { sidebarContentStage10 } from "./sidebar-content/10";
+import { WalkthroughData } from "@/types/walkthrough";
 
-export const sellerScenario2_1 = {
+export const sellerScenario2_1: WalkthroughData = {
   "title": "Balanced Supply & Demand",
   "project_cost": "140,000",
   "buyers": [
@@ -68,7 +69,7 @@ export const sellerScenario2_1 = {
     "total_bids": "580,000",
     "total_offers": "170,000",
     "surplus": "360,000",
-    "next_walkthrough": 2.2,
+    "next_walkthrough": "2.2",
     "next_walkthrough_title": "Restricted Supply",
     "stages": 10,
     "role": "seller",

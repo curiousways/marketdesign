@@ -2,8 +2,9 @@ import { sidebarContentStage1 } from "./sidebar-content/1";
 import { sidebarContentStage2 } from "./sidebar-content/2";
 import { sidebarContentStage3 } from "./sidebar-content/3";
 import { sidebarContentStage10 } from "./sidebar-content/10";
+import { WalkthroughData } from "@/types/walkthrough";
 
-export const sellerScenario3_1 = {
+export const sellerScenario3_1: WalkthroughData = {
   "title": "Poor fit bid",
   "project_cost": "100,000",
   "buyers": [
@@ -68,7 +69,7 @@ export const sellerScenario3_1 = {
     "total_bids": "400,000",
     "total_offers": "120,000",
     "surplus": "280,000",
-    "next_walkthrough": 3.2,
+    "next_walkthrough": "3.2",
     "next_walkthrough_title": "Poor fit bid",
     "stages": 10,
     "role": "seller",

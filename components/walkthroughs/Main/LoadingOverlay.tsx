@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 
-import { Data } from "@/types/index";
+import { WalkthroughData } from "@/types/walkthrough";
 import { fadeInDown } from "@/utils/animations";
 
 type Props = {
   stage: number;
-  data: Data | undefined;
+  data: WalkthroughData;
 };
 
 const LoadingOverlay = ({ stage, data }: Props) => {
@@ -17,18 +17,18 @@ const LoadingOverlay = ({ stage, data }: Props) => {
       className="absolute top-0 left-0 w-full h-full bg-black/70 z-10 flex justify-center items-center"
     >
       <div className="flex flex-col items-center">
-        {stage === data?.options.show_calculating_winners && (
+        {stage === data.options.show_calculating_winners && (
           <p className="text-center text-white text-2xl font-bold">
             Determining Market Winners
           </p>
         )}
-        {stage === data?.options.show_distributing_surplus && (
+        {stage === data.options.show_distributing_surplus && (
           <p className="text-center text-white text-2xl font-bold">
             Distributing Market Surplus
           </p>
         )}
 
-        {stage === data?.options.show_calculating_final && (
+        {stage === data.options.show_calculating_final && (
           <p className="text-center text-white text-2xl font-bold">
             Calculating Final Payments
           </p>

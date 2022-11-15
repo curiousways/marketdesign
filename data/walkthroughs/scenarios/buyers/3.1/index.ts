@@ -1,4 +1,6 @@
-export const buyerScenario3_1 = {
+import { WalkthroughData } from "@/types/walkthrough";
+
+export const buyerScenario3_1: WalkthroughData = {
   "title": "Poor fit bid",
   "project_cost": "60,000",
   "buyers": [
@@ -57,7 +59,7 @@ export const buyerScenario3_1 = {
     "total_bids": "300,000",
     "total_offers": "150,000",
     "surplus": "150,000",
-    "next_walkthrough": 3.2,
+    "next_walkthrough": "3.2",
     "next_walkthrough_title": "Poor fit bid",
     "stages": 10,
     "role": "buyer",

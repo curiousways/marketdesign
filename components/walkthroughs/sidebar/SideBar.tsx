@@ -2,7 +2,7 @@ import React, { Dispatch, ReactNode, SetStateAction } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { fadeIn } from "@/utils/animations";
-import { Data } from "@/types/index";
+import { WalkthroughData } from "@/types/walkthrough";
 
 import Description from "./Description";
 import Details from "./Details";
@@ -12,7 +12,7 @@ type Props = {
   scenarioId: string;
   stage: number;
   setStage: Dispatch<SetStateAction<number>>;
-  data: Data | undefined;
+  data: WalkthroughData;
   sidebarContent: ReactNode;
 };
 
@@ -23,19 +23,19 @@ const SideBar = ({
   data,
   sidebarContent,
 }: Props) => {
-  const maxStage = data?.options?.stages;
-  const showSolveMarketBtn = data?.options?.show_solve_market;
+  const maxStage = data.options.stages;
+  const showSolveMarketBtn = data.options.show_solve_market;
 
   const previous = () => {
     if (stage > 1) setStage((prev) => prev - 1);
   };
 
   const next = () => {
-    if (stage < maxStage) setStage((prev) => prev + 1);
+    if (maxStage && stage < maxStage) setStage((prev) => prev + 1);
   };
 
   // const nextWalkthrough = () => {
-  //   setWalkthrough(data?.options?.next_walkthrough);
+  //   setWalkthrough(data.options.next_walkthrough);
   // };
 
   const onButtonClick = (e: React.FormEvent) => {
@@ -47,7 +47,7 @@ const SideBar = ({
     <div className="max-w-[434px] py-4 px-5 flex flex-col gap-y-8 items-center">
       <AnimatePresence>
         {/* Top */}
-        {stage >= data?.options?.show_details_widget && (
+        {stage >= data.options.show_details_widget && (
           <Details key={1} next={next} data={data} stage={stage} />
         )}
 
@@ -75,7 +75,7 @@ const SideBar = ({
           stage={stage}
           next={next}
           previous={previous}
-          data={data as Data}
+          data={data}
         />
 
         {/* Walkthrough Description text */}
@@ -83,7 +83,6 @@ const SideBar = ({
           key={4}
           // walkthrough={walkthrough}
           stage={stage}
-          data={data}
           // nextWalkthrough={nextWalkthrough}
         >
           {sidebarContent}

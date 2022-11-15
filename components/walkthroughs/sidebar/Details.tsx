@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, usePresence } from "framer-motion";
 
-import { Data } from "@/types/index";
+import { WalkthroughData } from "@/types/walkthrough";
 import { fadeIn } from "@/utils/animations";
 
 import SellerVector from "@/components/walkthroughs/icons/SellerVector";
@@ -12,24 +12,23 @@ import NutrientsIcon from "@/components/walkthroughs/icons/NutrientsIcon";
 type Props = {
   next: () => void;
   stage: number;
-  data: Data | undefined;
+  data: WalkthroughData;
 };
 
 const Details = ({ data, stage, next }: Props) => {
   const [price, setPrice] = useState("");
-  const [isPresent, safeToRemove] = usePresence()!;
 
   // User role either buyer or seller
-  const role = data?.options?.role!;
+  const role = data.options.role;
 
   // Project cost
-  const projectCost = data?.project_cost;
+  const projectCost = data.project_cost;
 
   // User input price
   const myPrice: string =
     role === "seller"
-      ? data?.sellers.find((seller) => seller.id === 1)?.offer!
-      : data?.buyers.find((buyer) => buyer.id === 1)?.bid!;
+      ? data.sellers.find((seller) => seller.id === 1)?.offer!
+      : data.buyers.find((buyer) => buyer.id === 1)?.bid!;
 
   // Proceed to next stage when submit button is clicked
   const onButtonClick = (e: React.FormEvent) => {
@@ -38,10 +37,10 @@ const Details = ({ data, stage, next }: Props) => {
   };
 
   useEffect(() => {
-    if (stage >= data?.options?.set_my_price) {
+    if (stage >= data.options.set_my_price) {
       setPrice(`£${myPrice}`);
     }
-  }, [stage, data?.options]);
+  }, [stage, data.options]);
 
   return (
     <motion.div
@@ -95,7 +94,7 @@ const Details = ({ data, stage, next }: Props) => {
             value={price}
           />
           <div className="relative w-[71px]">
-            {stage === data?.options.allow_button_click && (
+            {stage === data.options.allow_button_click && (
               <span className="flex h-3 w-3 absolute right-0 -top-1">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
@@ -103,7 +102,7 @@ const Details = ({ data, stage, next }: Props) => {
             )}
             <button
               type="submit"
-              disabled={stage !== data?.options.allow_button_click}
+              disabled={stage !== data.options.allow_button_click}
               className="w-full rounded-lg bg-[#848484] hover:bg-black cursor-pointer text-white text-xs py-2"
             >
               Submit

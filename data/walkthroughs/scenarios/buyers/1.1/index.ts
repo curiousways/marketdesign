@@ -1,6 +1,7 @@
-export const buyerScenario1_1 = {
+import { WalkthroughData } from "@/types/walkthrough";
+
+export const buyerScenario1_1: WalkthroughData = {
   "title": "Offer at cost and win",
-  "project_name": "My Project",
   "project_cost": "120,000",
   "buyers": [
     {
@@ -58,7 +59,7 @@ export const buyerScenario1_1 = {
     "total_bids": "300,000",
     "total_offers": "110,000",
     "surplus": "190,000",
-    "next_walkthrough": 1.2,
+    "next_walkthrough": "1.2",
     "next_walkthrough_title": "Offer above cost and win",
     "stages": 11,
     "role": "buyer",

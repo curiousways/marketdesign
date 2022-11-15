@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 import { classNames } from "@/utils/index";
 
-import { Buyer as BuyerType } from "@/types/index";
+import { Buyer as BuyerType, WalkthroughOptions } from "@/types/walkthrough";
 import { fadeInDown } from "@/utils/animations";
 
 import HammerIcon from "../icons/HammerIcon";
@@ -11,9 +11,7 @@ import PoundcashTag from "../icons/PoundcashTag";
 type Props = {
   buyer: BuyerType;
   stage: number;
-  options: {
-    [key: string]: any;
-  };
+  options: WalkthroughOptions;
   className?: string;
 };
 

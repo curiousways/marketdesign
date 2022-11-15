@@ -1,7 +1,8 @@
+import { WalkthroughData } from "@/types/walkthrough";
 import { sidebarContentStage1 } from "./sidebar-content/1";
 import { sidebarContentStage8 } from "./sidebar-content/8";
 
-export const sellerScenario2_2 = {
+export const sellerScenario2_2: WalkthroughData = {
   "title": "Restricted Supply",
   "project_cost": "140,000",
   "buyers": [
@@ -48,7 +49,7 @@ export const sellerScenario2_2 = {
     "total_bids": "280,000",
     "total_offers": "140,000",
     "surplus": "140,000",
-    "next_walkthrough": 2.3,
+    "next_walkthrough": "2.3",
     "next_walkthrough_title": "Restricted Surplus",
     "stages": 8,
     "role": "seller",

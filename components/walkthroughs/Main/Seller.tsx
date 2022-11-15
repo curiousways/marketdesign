@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 import { classNames } from "@/utils/index";
 
-import { Seller as SellerType } from "@/types/index";
+import { Seller as SellerType, WalkthroughOptions } from "@/types/walkthrough";
 import { fadeInDown } from "@/utils/animations";
 
 import HammerIcon from "../icons/HammerIcon";
@@ -11,9 +11,7 @@ import CartPlus from "../icons/CartPlus";
 type Props = {
   seller: SellerType;
   stage: number;
-  options: {
-    [key: string]: any;
-  };
+  options: WalkthroughOptions;
   className?: string;
 };
 

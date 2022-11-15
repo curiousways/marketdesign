@@ -1,14 +1,10 @@
-import { Seller } from "@/types/index";
+import { Seller } from "@/types/walkthrough";
 
 type Props = {
   seller: Seller;
-  options: {
-    [key: string]: any;
-  };
 };
-const SellerLost = ({ seller, options }: Props) => {
+const SellerLost = ({ seller }: Props) => {
   const { offer, products, title } = seller;
-  const {} = options;
 
   return (
     <div className="bg-green-light opacity-80 flex items-center justify-between gap-x-5 max-w-[300px] rounded-lg py-2 px-1">

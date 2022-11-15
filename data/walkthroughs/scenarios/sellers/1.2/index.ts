@@ -1,7 +1,8 @@
+import { WalkthroughData } from "@/types/walkthrough";
 import { sidebarContentStage1 } from "./sidebar-content/1";
 import { sidebarContentStage8 } from "./sidebar-content/8";
 
-export const sellerScenario1_2 = {
+export const sellerScenario1_2: WalkthroughData = {
   "title": "Offer above cost and win",
   "project_cost": "60,000",
   "buyers": [
@@ -64,7 +65,7 @@ export const sellerScenario1_2 = {
     "total_bids": "300,000",
     "total_offers": "130,000",
     "surplus": "170,000",
-    "next_walkthrough": 1.3,
+    "next_walkthrough": "1.3",
     "next_walkthrough_title": "Offer above cost and lose",
     "stages": 8,
     "role": "seller",

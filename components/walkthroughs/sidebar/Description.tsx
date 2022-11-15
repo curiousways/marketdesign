@@ -1,13 +1,11 @@
 import { motion } from "framer-motion";
 
-import { Data } from "@/types/index";
 import { fadeIn } from "@/utils/animations";
 import { ReactNode } from "react";
 
 type Props = {
   // walkthrough: number;
   stage: number;
-  data: Data | undefined;
   // nextWalkthrough: () => void;
   children: ReactNode;
 };
@@ -15,7 +13,6 @@ type Props = {
 const Navigation = ({
   // walkthrough,
   stage,
-  data,
   // nextWalkthrough,
   children,
 }: Props) => {
