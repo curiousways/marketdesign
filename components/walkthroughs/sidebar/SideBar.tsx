@@ -1,5 +1,5 @@
-import React, { Dispatch, SetStateAction } from "react";
-import { motion, usePresence, AnimatePresence } from "framer-motion";
+import React, { Dispatch, ReactNode, SetStateAction } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 import { fadeIn } from "@/utils/animations";
 import { Data } from "@/types/index";
@@ -9,24 +9,20 @@ import Details from "./Details";
 import Navigation from "./Navigation";
 
 type Props = {
-  walkthrough: number;
+  scenarioId: string;
   stage: number;
   setStage: Dispatch<SetStateAction<number>>;
-  setWalkthrough: Dispatch<SetStateAction<number>>;
   data: Data | undefined;
-  html: string;
+  sidebarContent: ReactNode;
 };
 
 const SideBar = ({
-  walkthrough,
+  scenarioId,
   stage,
   setStage,
-  setWalkthrough,
   data,
-  html,
+  sidebarContent,
 }: Props) => {
-  const [isPresent, safeToRemove] = usePresence();
-
   const maxStage = data?.options?.stages;
   const showSolveMarketBtn = data?.options?.show_solve_market;
 
@@ -38,9 +34,9 @@ const SideBar = ({
     if (stage < maxStage) setStage((prev) => prev + 1);
   };
 
-  const nextWalkthrough = () => {
-    setWalkthrough(data?.options?.next_walkthrough);
-  };
+  // const nextWalkthrough = () => {
+  //   setWalkthrough(data?.options?.next_walkthrough);
+  // };
 
   const onButtonClick = (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,7 +71,7 @@ const SideBar = ({
         {/* Navigation with next and previous buttons */}
         <Navigation
           key={3}
-          walkthrough={walkthrough}
+          scenarioId={scenarioId}
           stage={stage}
           next={next}
           previous={previous}
@@ -85,12 +81,13 @@ const SideBar = ({
         {/* Walkthrough Description text */}
         <Description
           key={4}
-          html={html}
-          walkthrough={walkthrough}
+          // walkthrough={walkthrough}
           stage={stage}
           data={data}
-          nextWalkthrough={nextWalkthrough}
-        />
+          // nextWalkthrough={nextWalkthrough}
+        >
+          {sidebarContent}
+        </Description>
       </AnimatePresence>
     </div>
   );

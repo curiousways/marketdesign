@@ -6,17 +6,17 @@ import NextButton from "./NextButton";
 import PrevButton from "./PrevButton";
 
 type Props = {
-  walkthrough: number;
+  scenarioId: string;
   stage: number;
   next: () => void;
   previous: () => void;
   data: Data;
 };
 
-const Navigation = ({ walkthrough, stage, next, previous, data }: Props) => {
+const Navigation = ({ scenarioId, stage, next, previous, data }: Props) => {
   return (
     <motion.div layout className="text-center text-xl w-full">
-      <p className="text-green-dark">WALKTHROUGH {walkthrough}</p>
+      <p className="text-green-dark">WALKTHROUGH {scenarioId}</p>
       <div className="flex gap-x-4 items-center">
         {/* Previous button */}
         <PrevButton
