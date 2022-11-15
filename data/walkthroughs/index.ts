@@ -7,6 +7,7 @@ import { buyerScenario2_2 } from "./scenarios/buyers/2.2";
 import { buyerScenario2_3 } from "./scenarios/buyers/2.3";
 import { buyerScenario3_1 } from "./scenarios/buyers/3.1";
 import { buyerScenario3_2 } from "./scenarios/buyers/3.2";
+import { genericScenario0_0 } from "./scenarios/generic/0.0";
 import { sellerScenario1_1 } from "./scenarios/sellers/1.1";
 import { sellerScenario1_2 } from "./scenarios/sellers/1.2";
 import { sellerScenario1_3 } from "./scenarios/sellers/1.3";
@@ -24,7 +25,9 @@ export const walkthroughs: Walkthrough[] = [
       {
         id: '0.0',
         title: 'Market Introduction',
-        roles: {},
+        roles: {
+          generic: genericScenario0_0,
+        },
       },
     ]
   },
