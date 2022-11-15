@@ -1,4 +1,8 @@
 import { WalkthroughData } from "@/types/walkthrough";
+import { sidebarContent1 } from "./sidebar-content/1";
+import { sidebarContent10 } from "./sidebar-content/10";
+import { sidebarContent2 } from "./sidebar-content/2";
+import { sidebarContent3 } from "./sidebar-content/3";
 
 export const buyerScenario3_1: WalkthroughData = {
   "project_cost": "60,000",
@@ -54,6 +58,12 @@ export const buyerScenario3_1: WalkthroughData = {
       "products": { "biodiversity": 4, "nutrients": 4 }
     }
   ],
+  sidebarContent: {
+    1: sidebarContent1,
+    2: sidebarContent2,
+    3: sidebarContent3,
+    10: sidebarContent10,
+  },
   "options": {
     "total_bids": "300,000",
     "total_offers": "150,000",
