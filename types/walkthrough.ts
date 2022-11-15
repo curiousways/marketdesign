@@ -12,7 +12,7 @@ export interface WalkthroughOptions {
   allow_button_click: number;
   show_products_quantity?: number;
   show_calculating_overlay: number[];
-  show_details_widget: number;
+  show_details_widget?: number;
   show_solve_market: number;
   show_market_outcome: number;
   show_calculating_winners: number;

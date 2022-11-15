@@ -25,6 +25,7 @@ const SideBar = ({
 }: Props) => {
   const maxStage = data.options.stages;
   const showSolveMarketBtn = data.options.show_solve_market;
+  const { show_details_widget } = data.options;
 
   const previous = () => {
     if (stage > 1) setStage((prev) => prev - 1);
@@ -47,7 +48,7 @@ const SideBar = ({
     <div className="max-w-[434px] py-4 px-5 flex flex-col gap-y-8 items-center">
       <AnimatePresence>
         {/* Top */}
-        {stage >= data.options.show_details_widget && (
+        {show_details_widget && stage >= show_details_widget && (
           <Details key={1} next={next} data={data} stage={stage} />
         )}
 
