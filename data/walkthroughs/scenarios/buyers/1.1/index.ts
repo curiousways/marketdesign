@@ -8,7 +8,6 @@ import { sidebarContent5 } from "./sidebar-content/5";
 import { sidebarContent6 } from "./sidebar-content/6";
 
 export const buyerScenario1_1: WalkthroughData = {
-  "title": "Offer at cost and win",
   "project_cost": "120,000",
   "buyers": [
     {

@@ -5,7 +5,6 @@ import { sidebarContentStage10 } from "./sidebar-content/10";
 import { WalkthroughData } from "@/types/walkthrough";
 
 export const sellerScenario2_1: WalkthroughData = {
-  "title": "Balanced Supply & Demand",
   "project_cost": "140,000",
   "buyers": [
     {

@@ -7,7 +7,6 @@ import { sidebarContentStage11 } from "./sidebar-content/11";
 import { WalkthroughData } from "@/types/walkthrough";
 
 export const sellerScenario1_1: WalkthroughData = {
-  "title": "Offer at cost and win",
   "project_cost": "60,000",
   "buyers": [
     {

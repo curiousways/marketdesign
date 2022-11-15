@@ -32,7 +32,6 @@ export interface WalkthroughOptions {
 };
 
 export interface WalkthroughData {
-  title: string;
   project_cost: string;
   buyers: Buyer[];
   sellers: Seller[];

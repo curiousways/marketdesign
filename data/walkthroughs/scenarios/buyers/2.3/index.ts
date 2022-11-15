@@ -4,7 +4,6 @@ import { sidebarContent8 } from "./sidebar-content/8";
 import {  sidebarContent9 } from "./sidebar-content/9";
 
 export const buyerScenario2_3: WalkthroughData = {
-  "title": "Restricted Surplus",
   "project_cost": "280,000",
   "buyers": [
     {

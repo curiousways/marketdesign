@@ -3,7 +3,6 @@ import { sidebarContentStage1 } from "./sidebar-content/1";
 import { sidebarContentStage8 } from "./sidebar-content/8";
 
 export const sellerScenario1_2: WalkthroughData = {
-  "title": "Offer above cost and win",
   "project_cost": "60,000",
   "buyers": [
     {
