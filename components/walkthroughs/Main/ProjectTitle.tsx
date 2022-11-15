@@ -1,9 +1,9 @@
-import type { Project } from '@/types/walkthrough';
+import type { WalkthroughProject } from '@/types/walkthrough';
 import { classNames } from '@/utils/index';
 import { FunctionComponent } from 'react';
 
 type Props = {
-  project: Project;
+  project: WalkthroughProject;
   showAcceptedPercentage?: boolean;
 }
 

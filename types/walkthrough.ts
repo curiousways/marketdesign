@@ -35,7 +35,7 @@ export interface Products {
   nutrients: number;
 }
 
-export interface Project {
+export interface WalkthroughProject {
   title: string;
   subtitle?: string;
   cost: number;
@@ -46,9 +46,9 @@ export interface Project {
 }
 
 export interface WalkthroughData {
-  myProjects: [Project, ...Project[]]; // One or more
-  buyerProjects: Project[];
-  sellerProjects: Project[];
+  myProjects: [WalkthroughProject, ...WalkthroughProject[]]; // One or more
+  buyerProjects: WalkthroughProject[];
+  sellerProjects: WalkthroughProject[];
   sidebarContent?: {
     [key: number]: JSX.Element;
   },

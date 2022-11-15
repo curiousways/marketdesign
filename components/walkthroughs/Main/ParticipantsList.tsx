@@ -1,14 +1,13 @@
-import Buyer from "./Buyer";
-import Seller from "./Seller";
 import BuyerLost from "./BuyerLost";
 import SellerLost from "./SellerLost";
 
-import { WalkthroughData, Project} from "@/types/walkthrough";
+import { WalkthroughData, WalkthroughProject} from "@/types/walkthrough";
 import { RoleId } from "@/types/roles";
+import Project from "./Project";
 
 type Props = {
-  buyerProjects: Project[];
-  sellerProjects: Project[];
+  buyerProjects: WalkthroughProject[];
+  sellerProjects: WalkthroughProject[];
   stage: number;
   data: WalkthroughData;
   type?: "winners" | "losers";
@@ -18,7 +17,7 @@ type Props = {
 /**
  * Sort to bring "my projects" to the top of the list.
  */
-const sortMyProjects = (projects: Project[]) => (
+const sortMyProjects = (projects: WalkthroughProject[]) => (
   projects.sort((a, b) => Number(b.isMyProject ?? 0) - Number(a.isMyProject ?? 0))
 );
 
@@ -40,8 +39,9 @@ const ParticipantsList = ({
           {/* Sellers */}
           <div className="space-y-5">
             {sortedSellerProjects.map((project) => (
-              <Seller
+              <Project
                 key={project.title}
+                projectRoleId="seller"
                 stage={stage}
                 project={project}
                 options={data.options}
@@ -53,8 +53,9 @@ const ParticipantsList = ({
           {/* Buyers */}
           <div className="space-y-5">
             {sortedBuyerProjects.map((project) => (
-              <Buyer
+              <Project
                 key={project.title}
+                projectRoleId="buyer"
                 stage={stage}
                 project={project}
                 options={data.options}

@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 import { classNames } from "@/utils/index";
 
-import { Project, WalkthroughOptions } from "@/types/walkthrough";
+import { WalkthroughProject, WalkthroughOptions } from "@/types/walkthrough";
 import { fadeInDown } from "@/utils/animations";
 
 import HammerIcon from "../icons/HammerIcon";
@@ -12,7 +12,8 @@ import { ProjectTitle } from "./ProjectTitle";
 import AdjustedProductCount from "./AdjustedProductCount";
 
 type Props = {
-  project: Project;
+  project: WalkthroughProject;
+  projectRoleId: 'buyer' | 'seller';
   stage: number;
   options: WalkthroughOptions;
   roleId: RoleId;
@@ -34,8 +35,9 @@ const calculatePayment = (
   return adjustedCost - discountOrBonus;
 }
 
-const Buyer = ({
+const Project = ({
   project,
+  projectRoleId,
   stage,
   options,
   className = "",
@@ -45,8 +47,15 @@ const Buyer = ({
   const { show_bids, show_surpluses, show_final_payments, highlight_me } =
     options;
 
-  const highlightMe = roleId === "buyer" && stage >= highlight_me && isMyProject;
+
+  const highlightMe = roleId === projectRoleId && stage >= highlight_me && isMyProject;
   const showBids = stage >= show_bids;
+  const isBuyer = projectRoleId === 'buyer';
+
+  // Define some colour classes.
+  const shadowColor = isBuyer ? 'neo-shadow-brown' : 'neo-shadow-green';
+  const backgroundColor = isBuyer ? 'bg-brown' : 'bg-green-light';
+  const textColor = isBuyer ? 'text-brown' : 'text-green-light';
 
   // Adjust metrics for projects that were only partially accepted.
   const adjustedCost = getAdjustedCost(cost, accepted);
@@ -64,7 +73,7 @@ const Buyer = ({
     >
       {/* Percentage-based background colour */}
       <div
-        className="absolute h-full bg-brown top-0 left-0"
+        className={`absolute h-full ${backgroundColor} top-0 left-0`}
         style={{
           width: typeof accepted === 'number' ? `${accepted}%` : '100%'
         }}
@@ -72,7 +81,7 @@ const Buyer = ({
 
       {/* Full-width background colour */}
       <div
-        className="absolute h-full w-full bg-brown top-0 left-0 opacity-50"
+        className={`absolute h-full w-full ${backgroundColor} top-0 left-0 opacity-50`}
       />
 
       {/* Content */}
@@ -85,7 +94,9 @@ const Buyer = ({
         {/* Products */}
         <div className="flex gap-x-10">
           {/* Biodiversity */}
-          <div className="h-[66px] w-[66px] neo-shadow-brown rounded-lg flex items-center justify-center relative">
+          <div
+            className={`h-[66px] w-[66px] rounded-lg flex items-center justify-center relative ${shadowColor}`}
+          >
           <AdjustedProductCount
               count={products.biodiversity}
               accepted={accepted}
@@ -106,7 +117,9 @@ const Buyer = ({
           </div>
 
           {/* Nutrients */}
-          <div className="h-[66px] w-[66px] neo-shadow-brown rounded-lg flex items-center justify-center relative">
+          <div
+            className={`h-[66px] w-[66px] ${shadowColor} rounded-lg flex items-center justify-center relative`}
+          >
             <AdjustedProductCount
               count={products.nutrients}
               accepted={accepted}
@@ -143,7 +156,9 @@ const Buyer = ({
                 <p className="text-light-grey">Bid</p>
                 <p>£{adjustedCost.toLocaleString()}</p>
                 {adjustedCost !== cost && (
-                  <p className="text-brown opacity-50">£{cost.toLocaleString()}</p>
+                  <p className={`${textColor} opacity-50`}>
+                    £{cost.toLocaleString()}
+                  </p>
                 )}
               </div>
             </motion.div>
@@ -190,4 +205,4 @@ const Buyer = ({
   );
 };
 
-export default Buyer;
+export default Project;
