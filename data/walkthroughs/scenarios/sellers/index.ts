@@ -7,9 +7,11 @@ import { sellerScenario2_2 } from "./2.2";
 import { sellerScenario2_3 } from "./2.3";
 import { sellerScenario3_1 } from "./3.1";
 import { sellerScenario3_2 } from "./3.2";
+import { sellerScenario4_1 } from "./4.1";
+import { sellerScenario4_2 } from "./4.2";
+import { sellerScenario4_3 } from "./4.3";
 import { sellerScenario5_1 } from "./5.1";
 import { sellerScenario5_2 } from "./5.2";
-import { sellerScenario5_3 } from "./5.3";
 
 export const sellerWalkthroughs: Walkthrough[] = [
   {
@@ -38,9 +40,16 @@ export const sellerWalkthroughs: Walkthrough[] = [
   {
     title: 'Project Options for the Same Field',
     scenarios: [
+      sellerScenario4_1,
+      sellerScenario4_2,
+      sellerScenario4_3,
+    ],
+  },
+  {
+    title: 'Combination Offers for Multiple Projects',
+    scenarios: [
       sellerScenario5_1,
       sellerScenario5_2,
-      sellerScenario5_3,
     ],
   },
 ];
