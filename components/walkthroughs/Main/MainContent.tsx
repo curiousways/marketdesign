@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 import { container, fadeInDown } from "@/utils/animations";
 
-import { WalkthroughData } from "@/types/walkthrough";
+import { WalkthroughScenario } from "@/types/walkthrough";
 
 import MarketOutcome from "./MarketOutcome";
 import LoadingOverlay from "./LoadingOverlay";
@@ -13,7 +13,7 @@ import { RoleId } from "@/types/roles";
 type Props = {
   stage: number;
   setStage: Dispatch<SetStateAction<number>>;
-  data: WalkthroughData;
+  data: WalkthroughScenario;
   roleId: RoleId;
 };
 

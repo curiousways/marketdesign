@@ -1,3 +1,5 @@
+import { RoleId } from "./roles";
+
 export interface WalkthroughOptions {
   stages: number;
   set_my_price: number;
@@ -43,7 +45,7 @@ export interface WalkthroughProject {
   products: Products;
 }
 
-export interface WalkthroughData {
+export interface WalkthroughScenario {
   myProjects: [WalkthroughProject, ...WalkthroughProject[]]; // One or more
   buyerProjects: WalkthroughProject[];
   sellerProjects: WalkthroughProject[];
@@ -53,18 +55,12 @@ export interface WalkthroughData {
   options: WalkthroughOptions;
 }
 
-export interface Scenario {
-  id: string,
-  title: string,
-  roles: {
-    buyer?: WalkthroughData;
-    seller?: WalkthroughData;
-    generic?: WalkthroughData;
-  }
+export interface Walkthrough {
+  title: string;
+  scenarios: WalkthroughScenario[];
 }
 
-export interface Walkthrough {
-  id: number;
-  title: string;
-  scenarios: Scenario[];
-}
+export type WalkthroughsByRole = {
+  roleId: RoleId;
+  walkthroughs: Walkthrough[];
+}[];

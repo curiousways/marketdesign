@@ -1,7 +1,7 @@
 import BuyerLost from "./BuyerLost";
 import SellerLost from "./SellerLost";
 
-import { WalkthroughData, WalkthroughProject} from "@/types/walkthrough";
+import { WalkthroughScenario, WalkthroughProject} from "@/types/walkthrough";
 import { RoleId } from "@/types/roles";
 import Project from "./Project";
 
@@ -9,7 +9,7 @@ type Props = {
   buyerProjects: WalkthroughProject[];
   sellerProjects: WalkthroughProject[];
   stage: number;
-  data: WalkthroughData;
+  data: WalkthroughScenario;
   type?: "winners" | "losers";
   roleId: RoleId;
 };

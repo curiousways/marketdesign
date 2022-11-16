@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
 
-import { WalkthroughData } from "@/types/walkthrough";
+import { WalkthroughScenario } from "@/types/walkthrough";
 
 import NextButton from "./NextButton";
 import PrevButton from "./PrevButton";
+import { parseScenarioId } from "@/utils/walkthroughs";
 
 type Props = {
   title: string;
@@ -11,7 +12,7 @@ type Props = {
   stage: number;
   next: () => void;
   previous: () => void;
-  data: WalkthroughData;
+  data: WalkthroughScenario;
 };
 
 const Navigation = ({
@@ -22,9 +23,11 @@ const Navigation = ({
   previous,
   data,
 }: Props) => {
+  const { walkthroughIndex } = parseScenarioId(scenarioId);
+
   return (
     <motion.div layout className="text-center text-xl w-full">
-      <p className="text-green-dark">WALKTHROUGH {scenarioId}</p>
+      <p className="text-green-dark">WALKTHROUGH {walkthroughIndex + 1}</p>
       <div className="flex gap-x-4 items-center justify-between">
         {/* Previous button */}
         <PrevButton

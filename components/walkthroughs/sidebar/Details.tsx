@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-import { WalkthroughData } from "@/types/walkthrough";
+import { WalkthroughScenario } from "@/types/walkthrough";
 import { fadeIn } from "@/utils/animations";
 
 import SellerVector from "@/components/walkthroughs/icons/SellerVector";
@@ -15,7 +15,7 @@ import { classNames } from "@/utils/index";
 type Props = {
   next: () => void;
   stage: number;
-  data: WalkthroughData;
+  data: WalkthroughScenario;
   roleId: RoleId;
 };
 
