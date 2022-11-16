@@ -9,10 +9,23 @@ import NutrientsIcon from "@/components/walkthroughs/icons/NutrientsIcon";
 import { roles } from "data/roles";
 import { classNames } from "@/utils/index";
 import { useWalkthroughContext } from "@/context/WalkthroughContext";
-import { WalkthroughMarketState } from "@/types/walkthrough";
+import { WalkthroughMarketState, WalkthroughProject } from "@/types/walkthrough";
 import Input from "./Input";
+import { RoleId } from "@/types/roles";
 
 const INPUT_NAME = 'project-cost';
+
+const getProjectValue = (project: WalkthroughProject, roleId: RoleId) => {
+  if (!Array.isArray(project.cost)) {
+    return project.cost;
+  }
+
+  if (roleId === 'buyer') {
+    return Math.max(...project.cost);
+  }
+
+  return Math.min(...project.cost);
+}
 
 const Details = () => {
   const {
@@ -21,7 +34,6 @@ const Details = () => {
     roleId,
     goToNextStage,
     setMarketState,
-    getProjectCost,
   } = useWalkthroughContext();
 
   const isFormEnabled = stage === scenario.options.allow_button_click;
@@ -57,9 +69,7 @@ const Details = () => {
       >
         <ul>
           {scenario.myProjects.map((project) => {
-            const projectValue = Array.isArray(project.cost)
-              ? Math.max(...project.cost)
-              : project.cost;
+            const projectValue = getProjectValue(project, roleId);
 
             return (
               <li
