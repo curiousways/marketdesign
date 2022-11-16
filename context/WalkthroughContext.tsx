@@ -62,7 +62,7 @@ export const WalkthroughProvider: FunctionComponent<WalkthroughProviderProps> = 
   const hasPreviousStage = stage > 1 && !isMarketSolving;
 
   const hasNextStage = (
-    (stage < scenario.options.stages - 1 || !!nextScenarioId)
+    (stage < scenario.options.stages || !!nextScenarioId)
     && !(
       stage === scenario.options.allow_button_click
       || marketState === WalkthroughMarketState.solvable
