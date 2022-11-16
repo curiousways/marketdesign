@@ -4,57 +4,53 @@ import { sidebarContent8 } from "./sidebar-content/8";
 import { sidebarContent9 } from "./sidebar-content/9";
 
 export const buyerScenario3_2: WalkthroughData = {
-  "project_cost": "60,000",
-  "buyers": [
+  myProjects: [
     {
-      "id": 1,
-      "title": "My Project",
-      "bid": "60,000",
-      "pays": "45,000",
-      "discount": "15,000",
-      "products": { "biodiversity": 2, "nutrients": 1 }
+      title: 'My Project',
+      cost: 60000,
+      accepted: true,
+      discountOrBonus: 15000,
+      isMyProject: true,
+      products: { biodiversity: 2, nutrients: 1 }
+    },
+  ],
+  buyerProjects: [
+    {
+      title: 'Buyer 1',
+      cost: 200000,
+      accepted: true,
+      discountOrBonus: 23000,
+      products: { biodiversity: 5, nutrients: 2 }
     },
     {
-      "id": 2,
-      "title": "Buyer 1",
-      "bid": "200,000",
-      "pays": "177,000",
-      "discount": "23,000",
-      "products": { "biodiversity": 5, "nutrients": 2 }
-    },
-    {
-      "id": 3,
-      "title": "Buyer 2",
-      "bid": "300,000",
-      "pays": "247,000",
-      "discount": "53,000",
-      "products": { "biodiversity": 4, "nutrients": 7 }
+      title: 'Buyer 2',
+      cost: 300000,
+      accepted: true,
+      discountOrBonus: 53000,
+      products: { biodiversity: 4, nutrients: 7 }
     }
   ],
-  "sellers": [
+  sellerProjects: [
     {
-      "id": 1,
-      "title": "Seller 1",
-      "offer": "100,000",
-      "received": "0",
-      "bonus": "0",
-      "products": { "biodiversity": 1, "nutrients": 2 }
+      title: 'Seller 1',
+      cost: 100000,
+      accepted: false,
+      discountOrBonus: 0,
+      products: { biodiversity: 1, nutrients: 2 }
     },
     {
-      "id": 2,
-      "title": "Seller 2",
-      "offer": "150,000",
-      "received": "248,000",
-      "bonus": "98,000",
-      "products": { "biodiversity": 6, "nutrients": 7 }
+      title: 'Seller 2',
+      cost: 150000,
+      accepted: true,
+      discountOrBonus: 98000,
+      products: { biodiversity: 6, nutrients: 7 }
     },
     {
-      "id": 3,
-      "title": "Seller 3",
-      "offer": "210,000",
-      "received": "220,000",
-      "bonus": "10,000",
-      "products": { "biodiversity": 4, "nutrients": 4 }
+      title: 'Seller 3',
+      cost: 210000,
+      accepted: true,
+      discountOrBonus: 10000,
+      products: { biodiversity: 4, nutrients: 4 }
     }
   ],
   sidebarContent: {

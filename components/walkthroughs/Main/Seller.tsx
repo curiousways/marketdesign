@@ -2,23 +2,24 @@ import { motion } from "framer-motion";
 
 import { classNames } from "@/utils/index";
 
-import { Seller as SellerType, WalkthroughOptions } from "@/types/walkthrough";
+import { Project, WalkthroughOptions } from "@/types/walkthrough";
 import { fadeInDown } from "@/utils/animations";
 
 import HammerIcon from "../icons/HammerIcon";
 import CartPlus from "../icons/CartPlus";
 import { RoleId } from "@/types/roles";
+import { ProjectTitle } from "./ProjectTitle";
 
 type Props = {
-  seller: SellerType;
+  project: Project;
   stage: number;
   options: WalkthroughOptions;
   className?: string;
   roleId: RoleId;
 };
 
-const Seller = ({ seller, stage, options, className = "", roleId }: Props) => {
-  const { offer, bonus, received, products, title, id } = seller;
+const Seller = ({ project, stage, options, className = "", roleId }: Props) => {
+  const { products, title, cost, discountOrBonus, isMyProject } = project;
   const {
     show_offers,
     show_surpluses,
@@ -26,7 +27,7 @@ const Seller = ({ seller, stage, options, className = "", roleId }: Props) => {
     highlight_me,
   } = options;
 
-  const highlightMe = roleId === "seller" && stage >= highlight_me && id === 1;
+  const highlightMe = roleId === "seller" && stage >= highlight_me && isMyProject;
 
   return (
     <motion.div
@@ -34,14 +35,12 @@ const Seller = ({ seller, stage, options, className = "", roleId }: Props) => {
       initial="hidden"
       animate="visible"
       className={classNames(
-        "bg-green-light px-10 py-5 rounded-lg flex gap-x-10 min-w-[736px]",
+        "bg-green-light px-10 py-5 rounded-lg flex gap-x-10 min-w-[736px] flex items-center",
         highlightMe ? "border-2 border-black" : "",
         className
       )}
     >
-      <div>
-        <p className="text-black">{title}</p>
-      </div>
+      <ProjectTitle project={project} />
 
       {/* Products */}
       <div className="flex gap-x-10">
@@ -104,7 +103,7 @@ const Seller = ({ seller, stage, options, className = "", roleId }: Props) => {
             {/* Offer */}
             <div className="text-center text-sm relative -mt-2">
               <p className="text-light-grey">Offer</p>
-              <p>£{offer}</p>
+              <p>£{cost.toLocaleString()}</p>
             </div>
           </motion.div>
         )}
@@ -122,7 +121,7 @@ const Seller = ({ seller, stage, options, className = "", roleId }: Props) => {
             </div>
             <div className="text-center text-sm relative -mt-2">
               <p className="text-light-grey">Bonus</p>
-              {bonus && <p>£{bonus}</p>}
+              <p>£{discountOrBonus.toLocaleString()}</p>
             </div>
           </motion.div>
         )}
@@ -140,7 +139,7 @@ const Seller = ({ seller, stage, options, className = "", roleId }: Props) => {
             </div>
             <div className="text-center text-sm relative -mt-2">
               <p className="text-light-grey">Received</p>
-              {received && <p>£{received}</p>}
+              <p>£{(cost + discountOrBonus).toLocaleString()}</p>
             </div>
           </motion.div>
         )}

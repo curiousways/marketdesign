@@ -1,17 +1,17 @@
-import { Buyer } from "@/types/walkthrough";
+import { Project } from "@/types/walkthrough";
 
 type Props = {
-  buyer: Buyer;
+  project: Project;
 };
 
-const BuyerLost = ({ buyer }: Props) => {
-  const { bid, products, title } = buyer;
+const BuyerLost = ({ project }: Props) => {
+  const { cost, products, title } = project;
 
   return (
     <div className="bg-brown opacity-80 flex items-center justify-between gap-x-5 max-w-[300px] rounded-lg py-2 px-1">
       <div>
         <p>{title}</p>
-        <p>{bid}</p>
+        <p>{cost.toLocaleString()}</p>
       </div>
 
       <div className="flex gap-x-2">
