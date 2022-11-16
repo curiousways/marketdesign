@@ -48,7 +48,7 @@ const ParticipantsList = ({
           <div className="space-y-5">
             {sortedSellerProjects.map((project) => (
               <Project
-                key={project.title}
+                key={project.title + project.subtitle}
                 projectRoleId="seller"
                 stage={stage}
                 project={project}
@@ -62,7 +62,7 @@ const ParticipantsList = ({
           <div className="space-y-5">
             {sortedBuyerProjects.map((project) => (
               <Project
-                key={project.title}
+              key={project.title + project.subtitle}
                 projectRoleId="buyer"
                 stage={stage}
                 project={project}
@@ -79,7 +79,7 @@ const ParticipantsList = ({
           {/* Sellers */}
           {sortedSellerProjects.map((project) => (
             <div
-              key={project.title}
+            key={project.title + project.subtitle}
               className="mb-2"
             >
               <SellerLost
@@ -91,11 +91,10 @@ const ParticipantsList = ({
           {/* Buyers */}
           {sortedBuyerProjects.map((project) => (
             <div
-              key={project.title}
+              key={project.title + project.subtitle}
               className="mb-2"
             >
               <BuyerLost
-                key={project.title}
                 project={project}
               />
             </div>
