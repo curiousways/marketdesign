@@ -1,7 +1,4 @@
 export interface WalkthroughOptions {
-  total_bids: string;
-  total_offers: string;
-  surplus: string;
   stages: number;
   set_my_price: number;
   allow_button_click: number;

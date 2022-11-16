@@ -148,7 +148,12 @@ const MainContent = ({
                 initial="hidden"
                 animate="visible"
               >
-                <MarketOutcome stage={stage} options={data.options} />
+                <MarketOutcome
+                  stage={stage}
+                  options={data.options}
+                  sellerProjects={sellerProjectsWon}
+                  buyerProjects={buyersProjectsWon}
+                />
               </motion.div>
             )}
           </div>

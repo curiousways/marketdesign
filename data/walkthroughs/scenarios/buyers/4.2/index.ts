@@ -59,9 +59,6 @@ export const buyerScenario4_2: WalkthroughData = {
     9: sidebarContent9,
   },
   options: {
-    total_bids: '230,000',
-    total_offers: '80,000',
-    surplus: '150,000',
     stages: 9,
     set_my_price: 1,
     allow_button_click: 1,
