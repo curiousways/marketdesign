@@ -10,6 +10,7 @@ import { sellerScenario3_2 } from "./3.2";
 import { sellerScenario4_1 } from "./4.1";
 import { sellerScenario4_2 } from "./4.2";
 import { sellerScenario4_3 } from "./4.3";
+import { sellerScenario5_1 } from "./5.1";
 
 export const sellerWalkthroughs: Walkthrough[] = [
   {
@@ -41,6 +42,12 @@ export const sellerWalkthroughs: Walkthrough[] = [
       sellerScenario4_1,
       sellerScenario4_2,
       sellerScenario4_3,
+    ],
+  },
+  {
+    title: 'Combination Offers for Multiple Projects',
+    scenarios: [
+      sellerScenario5_1,
     ],
   },
 ];
