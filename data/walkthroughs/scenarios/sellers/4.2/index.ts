@@ -11,7 +11,7 @@ export const sellerScenario4_2: WalkthroughScenario = {
       discountOrBonus: 0,
       accepted: false,
       isInactive: true,
-      products: { biodiversity: 1, nutrients: 3 },
+      products: { biodiversity: 4, nutrients: 1 },
     },
     {
       title: 'My Project',
