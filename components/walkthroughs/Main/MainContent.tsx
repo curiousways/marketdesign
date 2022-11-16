@@ -16,7 +16,6 @@ const MainContent = () => {
     isMarketSolving,
     roleId,
     marketState,
-    goToNextStage,
     goToNextMarketState,
   } = useWalkthroughContext();
 
