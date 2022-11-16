@@ -1,32 +1,33 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-import { WalkthroughScenario } from "@/types/walkthrough";
 import { fadeIn } from "@/utils/animations";
-
 import SellerVector from "@/components/walkthroughs/icons/SellerVector";
 import BuyerVector from "@/components/walkthroughs/icons/BuyerVector";
 import BiodiversityIconGray from "@/components/walkthroughs/icons/BiodiversityIcon";
 import NutrientsIcon from "@/components/walkthroughs/icons/NutrientsIcon";
-import { RoleId } from "@/types/roles";
 import { roles } from "data/roles";
 import { classNames } from "@/utils/index";
+import { useWalkthroughContext } from "@/context/WalkthroughContext";
+import { WalkthroughMarketState } from "@/types/walkthrough";
 
-type Props = {
-  next: () => void;
-  stage: number;
-  data: WalkthroughScenario;
-  roleId: RoleId;
-};
+const Details = () => {
+  const {
+    stage,
+    scenario,
+    roleId,
+    goToNextStage,
+    setMarketState,
+  } = useWalkthroughContext();
 
-const Details = ({ data, stage, next, roleId }: Props) => {
-  const isFormEnabled = stage === data.options.allow_button_click;
-  const isDivisibleInputEnabled = isFormEnabled && !!data.options.allow_division;
+  const isFormEnabled = stage === scenario.options.allow_button_click;
+  const isDivisibleInputEnabled = isFormEnabled && !!scenario.options.allow_division;
 
-  // Proceed to next stage when submit button is clicked
+  // Proceed to next market state when submit button is clicked.
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    next();
+    goToNextStage();
+    setMarketState(WalkthroughMarketState.solvable);
   };
 
   return (
@@ -41,7 +42,7 @@ const Details = ({ data, stage, next, roleId }: Props) => {
     >
       <div className="text-black text-xl">
         <p className="font-bold">
-          My Project{data.myProjects.length ? 's' : ''}
+          My Project{scenario.myProjects.length ? 's' : ''}
         </p>
         <p>{roles[roleId].label}</p>
       </div>
@@ -51,15 +52,15 @@ const Details = ({ data, stage, next, roleId }: Props) => {
         className="flex flex-col"
       >
         <ul>
-          {data.myProjects.map((project, projectIndex) => (
+          {scenario.myProjects.map((project, projectIndex) => (
             <li
               key={projectIndex}
               className={classNames(
                 'mt-3',
-                stage >= data.options.set_my_price && project.isInactive ? 'opacity-30' : '',
+                stage >= scenario.options.set_my_price && project.isInactive ? 'opacity-30' : '',
               )}
             >
-              {!!data.myProjects.length && !!project.subtitle && (
+              {!!scenario.myProjects.length && !!project.subtitle && (
                 <span className="flex justify-end	text-sm underline">
                   {project.subtitle}
                 </span>
@@ -94,7 +95,9 @@ const Details = ({ data, stage, next, roleId }: Props) => {
                     type="text"
                     placeholder="Enter offer..."
                     className="w-full text-sm inline-block rounded-lg py-2 px-3 bg-[#e8e8e8]"
-                    value={stage >= data.options.set_my_price && !project.isInactive ? project.cost : ''}
+                    defaultValue={
+                      stage >= scenario.options.set_my_price && !project.isInactive ? project.cost : ''
+                    }
                   />
                 </div>
               </div>
@@ -102,7 +105,7 @@ const Details = ({ data, stage, next, roleId }: Props) => {
           ))}
         </ul>
         <div className="flex items-center mt-3">
-          {data.options.show_divisible_input && (
+          {scenario.options.show_divisible_input && (
             <label
               className={classNames(
                 'flex',

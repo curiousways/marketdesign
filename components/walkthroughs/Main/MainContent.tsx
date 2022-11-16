@@ -1,158 +1,132 @@
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 
 import { container, fadeInDown } from "@/utils/animations";
-
-import { WalkthroughScenario } from "@/types/walkthrough";
-
 import MarketOutcome from "./MarketOutcome";
 import LoadingOverlay from "./LoadingOverlay";
 import ParticipantsList from "./ParticipantsList";
+import { useWalkthroughContext } from "@/context/WalkthroughContext";
+import { WalkthroughMarketState, WalkthroughProject } from "@/types/walkthrough";
 import { RoleId } from "@/types/roles";
 
-type Props = {
-  stage: number;
-  setStage: Dispatch<SetStateAction<number>>;
-  data: WalkthroughScenario;
-  roleId: RoleId;
-};
+const MainContent = () => {
+  const {
+    stage,
+    scenario,
+    isMarketSolving,
+    roleId,
+    marketState,
+    goToNextStage,
+    goToNextMarketState,
+  } = useWalkthroughContext();
 
-const MainContent = ({
-  stage,
-  setStage,
-  data,
-  roleId,
-}: Props) => {
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
 
     if (
-      stage === data.options.show_losers ||
-      stage === data.options.show_surpluses
+      marketState === WalkthroughMarketState.showing_winners ||
+      marketState === WalkthroughMarketState.showing_surpluses
     ) {
-      timer = setTimeout(() => setStage((prev) => prev + 1), 8000);
+      timer = setTimeout(goToNextMarketState, 5000);
+
+      return;
     }
 
-    if (data.options.show_calculating_overlay.includes(stage)) {
-      timer = setTimeout(() => setStage((prev) => prev + 1), 4000);
+    if (isMarketSolving) {
+      timer = setTimeout(goToNextMarketState, 4000);
     }
 
     return () => {
       clearTimeout(timer);
     };
-  }, [stage, data.options]);
+  }, [
+    isMarketSolving,
+    marketState,
+    goToNextMarketState,
+  ]);
 
-  const activeUserProjects = data.myProjects.filter((project) => !project.isInactive);
+  const activeUserProjects = scenario.myProjects.filter((project) => !project.isInactive);
 
-  const sellerProjectsIncludingUser = roleId === 'seller'
-      ? [...data.sellerProjects, ...activeUserProjects]
-      : data.sellerProjects;
+  const getWinningProjects = (projects: WalkthroughProject[]) => (
+    projects.filter((project) => project.accepted)
+  );
 
-  const buyerProjectsIncludingUser = roleId === 'buyer'
-    ? [...data.buyerProjects, ...activeUserProjects]
-    : data.buyerProjects;
+  const getLosingProjects = (projects: WalkthroughProject[]) => (
+    projects.filter((project) => !project.accepted)
+  );
 
-  // Extract winners and losers for both buyers and sellers
-  const sellerProjectsLost = sellerProjectsIncludingUser.filter((project) => !project.accepted);
-  const buyerProjectsLost = buyerProjectsIncludingUser.filter((project) => !project.accepted);
-  const sellerProjectsWon = sellerProjectsIncludingUser.filter((project) => project.accepted);
-  const buyersProjectsWon = buyerProjectsIncludingUser.filter((project) => project.accepted);
+  const getActiveProjects = (
+    projects: WalkthroughProject[],
+    projectRoleId: RoleId,
+  ): WalkthroughProject[] => {
+    if (marketState < WalkthroughMarketState.solvable) {
+      return projects;
+    }
+
+    if (marketState >= WalkthroughMarketState.showing_winners) {
+      getWinningProjects(projects);
+    }
+
+    if (projectRoleId === roleId) {
+      return [...projects, ...activeUserProjects];
+    }
+
+    return projects;
+  };
 
   return (
     <div className="border-l border-green-dark pt-4 pb-24 w-full relative flex justify-center">
-      {/* Loading Screen */}
-      {data.options.show_calculating_overlay.includes(stage) && (
-        <LoadingOverlay stage={stage} data={data} />
-      )}
+      <LoadingOverlay />
 
-      {stage >= data.options.show_participants && (
+      {stage >= scenario.options.show_participants && (
         <>
           {/* Losers list */}
-          {stage >= data.options.show_losers && (
+          {marketState >= WalkthroughMarketState.showing_winners && (
             <motion.div
+              key="losing-participants"
               variants={fadeInDown}
               initial="hidden"
               animate="visible"
             >
               <ParticipantsList
-                sellerProjects={sellerProjectsLost}
-                buyerProjects={buyerProjectsLost}
+                sellerProjects={getLosingProjects(scenario.sellerProjects)}
+                buyerProjects={getLosingProjects(scenario.buyerProjects)}
                 type="losers"
                 stage={stage}
-                data={data}
+                data={scenario}
                 roleId={roleId}
               />
             </motion.div>
           )}
 
           <div className="space-y-5">
-            {/* Partial List excluding user */}
-            {stage < data.options.highlight_me && (
-              <motion.div
-                variants={container}
-                initial="hidden"
-                animate="visible"
-                className="space-y-5"
-              >
-                <ParticipantsList
-                  sellerProjects={data.sellerProjects}
-                  buyerProjects={data.buyerProjects}
-                  stage={stage}
-                  data={data}
-                  roleId={roleId}
-                />
-              </motion.div>
-            )}
-
-            {/* Full List including user */}
-            {stage < data.options.show_losers &&
-              stage >= data.options.highlight_me && (
-                <motion.div
-                  variants={fadeInDown}
-                  initial="hidden"
-                  animate="visible"
-                  className="space-y-5"
-                >
-                  <ParticipantsList
-                    sellerProjects={sellerProjectsIncludingUser}
-                    buyerProjects={buyerProjectsIncludingUser}
-                    stage={stage}
-                    data={data}
-                    roleId={roleId}
-                  />
-                </motion.div>
-              )}
-
-            {/* Winners */}
-            {stage >= data.options.show_losers && (
-              <motion.div
-                variants={fadeInDown}
-                initial="hidden"
-                animate="visible"
-                className="space-y-5"
-              >
-                <ParticipantsList
-                  sellerProjects={sellerProjectsWon}
-                  buyerProjects={buyersProjectsWon}
-                  stage={stage}
-                  data={data}
-                  roleId={roleId}
-                />
-              </motion.div>
-            )}
+            <motion.div
+              key="all-participants"
+              variants={container}
+              initial="hidden"
+              animate="visible"
+              className="space-y-5"
+            >
+              <ParticipantsList
+                sellerProjects={getActiveProjects(scenario.sellerProjects, 'seller')}
+                buyerProjects={getActiveProjects(scenario.buyerProjects, 'buyer')}
+                stage={stage}
+                data={scenario}
+                roleId={roleId}
+              />
+            </motion.div>
 
             {/* Market Outcome */}
-            {stage >= data.options.show_market_outcome && (
+            {marketState >= WalkthroughMarketState.showing_winners && (
               <motion.div
+                key="market-outcome"
                 variants={fadeInDown}
                 initial="hidden"
                 animate="visible"
               >
                 <MarketOutcome
-                  stage={stage}
-                  options={data.options}
-                  sellerProjects={sellerProjectsWon}
-                  buyerProjects={buyersProjectsWon}
+                  sellerProjects={getWinningProjects(scenario.sellerProjects)}
+                  buyerProjects={getWinningProjects(scenario.buyerProjects)}
                 />
               </motion.div>
             )}
@@ -160,7 +134,7 @@ const MainContent = ({
         </>
       )}
 
-      {data.options.show_maps && stage < data.options.show_participants && (
+      {scenario.options.show_maps && stage < scenario.options.show_participants && (
         <p className="text-4xl">MAP</p>
       )}
     </div>
