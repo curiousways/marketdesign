@@ -42,12 +42,14 @@ const MainContent = ({
     };
   }, [stage, data.options]);
 
+  const activeUserProjects = data.myProjects.filter((project) => !project.isInactive);
+
   const sellerProjectsIncludingUser = roleId === 'seller'
-      ? [...data.sellerProjects, ...data.myProjects]
+      ? [...data.sellerProjects, ...activeUserProjects]
       : data.sellerProjects;
 
   const buyerProjectsIncludingUser = roleId === 'buyer'
-    ? [...data.buyerProjects, ...data.myProjects]
+    ? [...data.buyerProjects, ...activeUserProjects]
     : data.buyerProjects;
 
   // Extract winners and losers for both buyers and sellers
