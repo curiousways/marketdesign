@@ -51,8 +51,8 @@ const Project = ({
   className = "",
   roleId,
 }: Props) => {
-  const { marketState, scenario } = useWalkthroughContext();
-  const { cost, discountOrBonus, products, accepted } = project;
+  const { marketState, scenario, getProjectCost } = useWalkthroughContext();
+  const { discountOrBonus, products, accepted } = project;
   const { show_costs } = options;
 
   const highlightMe = (
@@ -69,8 +69,10 @@ const Project = ({
   const backgroundColor = isBuyer ? 'bg-brown' : 'bg-green-light';
   const textColor = isBuyer ? 'text-brown' : 'text-green-light';
 
+  const projectCost = getProjectCost(project);
+
   // Adjust metrics for projects that were only partially accepted.
-  const adjustedCost = getAdjustedCost(cost, accepted);
+  const adjustedCost = getAdjustedCost(projectCost, accepted(projectCost));
 
   return (
     <motion.div
@@ -111,7 +113,7 @@ const Project = ({
           >
           <AdjustedProductCount
               count={products.biodiversity}
-              accepted={accepted}
+              accepted={accepted(projectCost)}
             />
             <svg
               width="32"
@@ -134,7 +136,7 @@ const Project = ({
           >
             <AdjustedProductCount
               count={products.nutrients}
-              accepted={accepted}
+              accepted={accepted(projectCost)}
             />
             <svg
               width="22"
@@ -169,9 +171,9 @@ const Project = ({
                   {isBuyer ? 'Bid' : 'Offer'}
                 </p>
                 <p>£{adjustedCost.toLocaleString()}</p>
-                {adjustedCost !== cost && (
+                {adjustedCost !== projectCost && (
                   <p className={`${textColor} opacity-50`}>
-                    £{cost.toLocaleString()}
+                    £{projectCost.toLocaleString()}
                   </p>
                 )}
               </div>
@@ -216,9 +218,9 @@ const Project = ({
                   {isBuyer ? 'Pays' : 'Received'}
                 </p>
                 <p>£{(calculatePayment(
-                  cost,
+                  projectCost,
                   discountOrBonus,
-                  accepted,
+                  accepted(projectCost),
                   projectRoleId,
                 )).toLocaleString()}</p>
               </div>

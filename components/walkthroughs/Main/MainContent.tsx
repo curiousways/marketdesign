@@ -17,6 +17,7 @@ const MainContent = () => {
     roleId,
     marketState,
     goToNextMarketState,
+    getProjectCost,
   } = useWalkthroughContext();
 
   useEffect(() => {
@@ -61,14 +62,18 @@ const MainContent = () => {
     projects: WalkthroughProject[],
     projectRoleId: RoleId,
   ) => (
-    getAllProjects(projects, projectRoleId).filter((project) => project.accepted)
+    getAllProjects(projects, projectRoleId).filter((project) => (
+      project.accepted(getProjectCost(project))
+    ))
   );
 
   const getLosingProjects = (
     projects: WalkthroughProject[],
     projectRoleId: RoleId,
   ) => (
-    getAllProjects(projects, projectRoleId).filter((project) => !project.accepted)
+    getAllProjects(projects, projectRoleId).filter((project) => (
+      !project.accepted(getProjectCost(project))
+    ))
   );
 
   const getActiveProjects = (

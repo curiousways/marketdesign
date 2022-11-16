@@ -19,6 +19,7 @@ module.exports = {
         poppins: ["Poppins", ...defaultTheme.fontFamily.sans],
       },
       colors: {
+        "extra-light-grey": "#e8e8e8",
         "light-grey": "#BBBBBB",
         "dark-grey": "#7E7E7E",
         green: {

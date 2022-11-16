@@ -1,3 +1,4 @@
+import { WalkthroughProject } from "@/types/walkthrough";
 import ProductCount from "./ProductCount";
 
 type Props = {
