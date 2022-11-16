@@ -1,5 +1,5 @@
-import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { getAllScenarioIds, getScenario, isValidScenarioId } from "@/utils/walkthroughs";
+import type { GetServerSideProps, NextPage } from "next";
+import { getScenario, isValidScenarioId } from "@/utils/walkthroughs";
 import Link from "next/link";
 import { ParsedUrlQuery } from "querystring";
 import { roles } from "data/roles";
@@ -103,16 +103,7 @@ const HowItWorksScenario: NextPage<HowItWorksScenarioProps> = ({
   </main>
 );
 
-export const getStaticPaths: GetStaticPaths<HowItWorksScenarioParams> = async () => ({
-  fallback: false,
-  paths: getAllScenarioIds().map((scenarioId) => ({
-    params: {
-      scenarioId,
-    },
-  })),
-});
-
-export const getStaticProps: GetStaticProps<
+export const getServerSideProps: GetServerSideProps<
   HowItWorksScenarioProps,
   HowItWorksScenarioParams
 > = async ({ params }) => {
