@@ -62,7 +62,7 @@ export const buyerScenario1_4: WalkthroughScenario = {
     set_my_price: 1,
     allow_button_click: 1,
     show_details_widget: 1,
-    show_costs: 1,
+    show_costs: 3,
     show_maps: false,
     show_participants: 1,
   }
