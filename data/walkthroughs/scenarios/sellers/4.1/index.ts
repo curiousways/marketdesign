@@ -6,7 +6,7 @@ import { WalkthroughScenario } from "@/types/walkthrough";
 import { sidebarContentStage4 } from "./sidebar-content/4";
 import { sidebarContentStage5 } from "./sidebar-content/5";
 
-export const sellerScenario5_1: WalkthroughScenario = {
+export const sellerScenario4_1: WalkthroughScenario = {
   myProjects: [
     {
       title: 'My Project',
