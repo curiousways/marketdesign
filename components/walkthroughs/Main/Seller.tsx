@@ -7,25 +7,26 @@ import { fadeInDown } from "@/utils/animations";
 
 import HammerIcon from "../icons/HammerIcon";
 import CartPlus from "../icons/CartPlus";
+import { RoleId } from "@/types/roles";
 
 type Props = {
   seller: SellerType;
   stage: number;
   options: WalkthroughOptions;
   className?: string;
+  roleId: RoleId;
 };
 
-const Seller = ({ seller, stage, options, className = "" }: Props) => {
+const Seller = ({ seller, stage, options, className = "", roleId }: Props) => {
   const { offer, bonus, received, products, title, id } = seller;
   const {
     show_offers,
     show_surpluses,
     show_final_payments,
     highlight_me,
-    role,
   } = options;
 
-  const highlightMe = role === "seller" && stage >= highlight_me && id === 1;
+  const highlightMe = roleId === "seller" && stage >= highlight_me && id === 1;
 
   return (
     <motion.div

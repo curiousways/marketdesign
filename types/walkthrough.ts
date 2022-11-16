@@ -4,10 +4,7 @@ export interface WalkthroughOptions {
   total_bids: string;
   total_offers: string;
   surplus: string;
-  next_walkthrough: string;
-  next_walkthrough_title: string;
   stages: number;
-  role: RoleId;
   set_my_price: number;
   allow_button_click: number;
   show_products_quantity?: number;
@@ -34,7 +31,6 @@ export interface WalkthroughOptions {
 };
 
 export interface WalkthroughData {
-  title: string;
   project_cost: string;
   buyers: Buyer[];
   sellers: Seller[];
@@ -70,8 +66,11 @@ export interface Seller {
 export interface Scenario {
   id: string,
   title: string,
-  buyer: WalkthroughData,
-  seller: WalkthroughData,
+  roles: {
+    buyer?: WalkthroughData;
+    seller?: WalkthroughData;
+    generic?: WalkthroughData;
+  }
 }
 
 export interface Walkthrough {

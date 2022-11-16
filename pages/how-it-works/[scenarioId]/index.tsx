@@ -1,5 +1,5 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { getAllScenarioIds, isValidScenarioId } from "@/utils/walkthroughs";
+import { getAllScenarioIds, getScenario, isValidScenarioId } from "@/utils/walkthroughs";
 import Link from "next/link";
 import { ParsedUrlQuery } from "querystring";
 import { roles } from "data/roles";
@@ -123,6 +123,28 @@ export const getStaticProps: GetStaticProps<
     return {
       notFound: true,
     };
+  }
+
+  const scenario = getScenario(scenarioId);
+  const scenarioRoles = Object.keys(scenario.roles);
+
+  // 404 if no scenarios defined for any role.
+  if (!scenarioRoles.length) {
+    return {
+      notFound: true,
+    };
+  }
+
+  // If there is only one role for this scenario then redirect straight to the
+  // walkthrough for that role. Note that it is important for this to remain a
+  // non-permanent redirect for the case where we add more roles later!
+  if (scenarioRoles.length === 1) {
+    return {
+      redirect: {
+        destination: `/how-it-works/${scenarioId}/${scenarioRoles[0]}`,
+        permanent: false,
+      },
+    }
   }
 
   return {

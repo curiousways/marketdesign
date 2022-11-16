@@ -6,6 +6,7 @@ import NextButton from "./NextButton";
 import PrevButton from "./PrevButton";
 
 type Props = {
+  title: string;
   scenarioId: string;
   stage: number;
   next: () => void;
@@ -13,11 +14,18 @@ type Props = {
   data: WalkthroughData;
 };
 
-const Navigation = ({ scenarioId, stage, next, previous, data }: Props) => {
+const Navigation = ({
+  title,
+  scenarioId,
+  stage,
+  next,
+  previous,
+  data,
+}: Props) => {
   return (
     <motion.div layout className="text-center text-xl w-full">
       <p className="text-green-dark">WALKTHROUGH {scenarioId}</p>
-      <div className="flex gap-x-4 items-center">
+      <div className="flex gap-x-4 items-center justify-between">
         {/* Previous button */}
         <PrevButton
           onClick={previous}
@@ -25,8 +33,10 @@ const Navigation = ({ scenarioId, stage, next, previous, data }: Props) => {
           hideButton={data.options.hide_prev_button}
         />
 
-        <div className="bg-green-dark text-white rounded-lg px-3 py-1 max-w-[285px]">
-          <p>Bidding Strategies for a Package Buyer</p>
+        <div
+          className="bg-green-dark text-white rounded-lg px-3 py-1 flex-1"
+        >
+          <p>{title}</p>
         </div>
 
         {/* Next button */}

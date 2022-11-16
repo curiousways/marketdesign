@@ -5,7 +5,6 @@ import { sidebarContent2 } from "./sidebar-content/2";
 import { sidebarContent3 } from "./sidebar-content/3";
 
 export const buyerScenario2_1: WalkthroughData = {
-  "title": "Balanced Supply & Demand",
   "project_cost": "280,000",
   "buyers": [
     {
@@ -69,10 +68,7 @@ export const buyerScenario2_1: WalkthroughData = {
     "total_bids": "780,000",
     "total_offers": "420,000",
     "surplus": "360,000",
-    "next_walkthrough": "2.2",
-    "next_walkthrough_title": "Restricted Supply",
     "stages": 10,
-    "role": "buyer",
     "set_my_price": 3,
     "allow_button_click": 3,
     "show_calculating_overlay": [5, 7, 9],
@@ -92,7 +88,7 @@ export const buyerScenario2_1: WalkthroughData = {
     "show_full_map": 1,
     "show_highlighted_map": 2,
     "show_participants": 3,
-    "hide_next_button": [3, 4, 5, 6, 7, 8, 9, 10],
+    "hide_next_button": [3, 4, 5, 6, 7, 8, 9],
     "hide_prev_button": [1],
     "show_losers": 6,
     "highlight_me": 4

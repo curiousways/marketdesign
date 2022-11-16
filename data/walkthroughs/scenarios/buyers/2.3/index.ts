@@ -4,7 +4,6 @@ import { sidebarContent8 } from "./sidebar-content/8";
 import {  sidebarContent9 } from "./sidebar-content/9";
 
 export const buyerScenario2_3: WalkthroughData = {
-  "title": "Restricted Surplus",
   "project_cost": "280,000",
   "buyers": [
     {
@@ -51,10 +50,7 @@ export const buyerScenario2_3: WalkthroughData = {
     "total_bids": "280,000",
     "total_offers": "140,000",
     "surplus": "140,000",
-    "next_walkthrough": "3.1",
-    "next_walkthrough_title": "Poor fit bid",
     "stages": 9,
-    "role": "buyer",
     "set_my_price": 1,
     "allow_button_click": 1,
     "show_calculating_overlay": [3, 5, 7],

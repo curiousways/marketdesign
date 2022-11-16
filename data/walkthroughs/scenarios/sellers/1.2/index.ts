@@ -3,7 +3,6 @@ import { sidebarContentStage1 } from "./sidebar-content/1";
 import { sidebarContentStage8 } from "./sidebar-content/8";
 
 export const sellerScenario1_2: WalkthroughData = {
-  "title": "Offer above cost and win",
   "project_cost": "60,000",
   "buyers": [
     {
@@ -65,10 +64,7 @@ export const sellerScenario1_2: WalkthroughData = {
     "total_bids": "300,000",
     "total_offers": "130,000",
     "surplus": "170,000",
-    "next_walkthrough": "1.3",
-    "next_walkthrough_title": "Offer above cost and lose",
     "stages": 8,
-    "role": "seller",
     "set_my_price": 1,
     "allow_button_click": 1,
     "show_calculating_overlay": [3, 5, 7],
@@ -88,7 +84,7 @@ export const sellerScenario1_2: WalkthroughData = {
     "show_full_map": 1,
     "show_highlighted_map": 2,
     "show_participants": 1,
-    "hide_next_button": [1, 2, 3, 4, 5, 6, 7, 8],
+    "hide_next_button": [1, 2, 3, 4, 5, 6, 7],
     "hide_prev_button": [1],
     "show_losers": 4,
     "highlight_me": 2

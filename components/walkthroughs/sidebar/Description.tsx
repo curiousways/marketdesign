@@ -4,16 +4,10 @@ import { fadeIn } from "@/utils/animations";
 import { ReactNode } from "react";
 
 type Props = {
-  // walkthrough: number;
-  stage: number;
-  // nextWalkthrough: () => void;
   children: ReactNode;
 };
 
 const Navigation = ({
-  // walkthrough,
-  stage,
-  // nextWalkthrough,
   children,
 }: Props) => {
   const hide = !children;

@@ -8,7 +8,6 @@ import { sidebarContent5 } from "./sidebar-content/5";
 import { sidebarContent6 } from "./sidebar-content/6";
 
 export const buyerScenario1_1: WalkthroughData = {
-  "title": "Offer at cost and win",
   "project_cost": "120,000",
   "buyers": [
     {
@@ -75,10 +74,7 @@ export const buyerScenario1_1: WalkthroughData = {
     "total_bids": "220,000",
     "total_offers": "180,000",
     "surplus": "40,000",
-    "next_walkthrough": "1.2",
-    "next_walkthrough_title": "Offer above cost and win",
     "stages": 12,
-    "role": "buyer",
     "set_my_price": 5,
     "allow_button_click": 5,
     "show_calculating_overlay": [7, 9, 11],
@@ -97,7 +93,7 @@ export const buyerScenario1_1: WalkthroughData = {
     "show_full_map": 1,
     "show_highlighted_map": 2,
     "show_participants": 3,
-    "hide_next_button": [5, 6, 7, 8, 9, 10, 11, 12],
+    "hide_next_button": [5, 6, 7, 8, 9, 10, 11],
     "hide_prev_button": [1],
     "show_losers": 8,
     "highlight_me": 6

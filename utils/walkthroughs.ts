@@ -1,7 +1,7 @@
 import { RoleId } from "@/types/roles";
 import { roles } from "data/roles";
 import { walkthroughs } from "data/walkthroughs";
-import { Scenario } from "../types/walkthrough";
+import { Scenario, Walkthrough, WalkthroughData } from "../types/walkthrough";
 
 const getAllScenarios = (): Scenario[] => {
   const scenarios: Scenario[] = [];
@@ -27,6 +27,57 @@ export const getScenario = (scenarioId: string): Scenario => {
   }
 
   return scenario;
+};
+
+export const getScenarioByRole = (
+  scenarioId: string,
+  roleId: RoleId,
+): WalkthroughData => {
+  const scenario = getScenario(scenarioId);
+  const scenarioByRole = scenario.roles[roleId];
+
+  if (!scenarioByRole) {
+    throw new Error(`No scenario found ID ${scenarioId} and role: ${roleId}`);
+  }
+
+  return scenarioByRole;
+};
+
+export const getWalkthroughForScenario = (scenarioId: string): Walkthrough => {
+  const walkthrough = walkthroughs.find((walkthrough) => (
+    walkthrough.scenarios.some((scenario) => scenario.id === scenarioId)
+  ));
+
+  if (!walkthrough) {
+    throw new Error(`No walkthrough found for scenario with ID: ${scenarioId}`);
+  }
+
+  return walkthrough;
+};
+
+export const getNextScenario = (
+  scenarioId: string,
+  roleId: RoleId,
+): Scenario | undefined => {
+  const { scenarios } = getWalkthroughForScenario(scenarioId);
+  const currentIndex = scenarios.findIndex(({ id }) => id === scenarioId);
+
+  if (currentIndex < 0) {
+    throw new Error(`No scenario found with ID: ${scenarioId}`);
+  }
+
+  const nextScenario = scenarios[currentIndex + 1];
+
+  if (!nextScenario) {
+    return;
+  }
+
+  // There may be a next scenario, but not necessarily for the given role.
+  if (!Object.keys(nextScenario.roles).includes(roleId)) {
+    return;
+  }
+
+  return nextScenario;
 };
 
 export const isValidScenarioId = (

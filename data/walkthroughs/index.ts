@@ -18,26 +18,43 @@ import { sellerScenario3_2 } from "./scenarios/sellers/3.2";
 
 export const walkthroughs: Walkthrough[] = [
   {
+    id: 0,
+    title: 'Market Introduction',
+    scenarios: [
+      {
+        id: '0.0',
+        title: 'Market Introduction',
+        roles: {},
+      },
+    ]
+  },
+  {
     id: 1,
     title: 'Bidding High & Low',
     scenarios: [
       {
         id: '1.1',
         title: 'Offer at cost and win',
-        buyer: buyerScenario1_1,
-        seller: sellerScenario1_1,
+        roles: {
+          buyer: buyerScenario1_1,
+          seller: sellerScenario1_1,
+        },
       },
       {
         id: '1.2',
         title: 'Offer above cost and win',
-        buyer: buyerScenario1_2,
-        seller: sellerScenario1_2,
+        roles: {
+          buyer: buyerScenario1_2,
+          seller: sellerScenario1_2,
+        },
       },
       {
         id: '1.3',
         title: 'Offer above cost and lose',
-        buyer: buyerScenario1_3,
-        seller: sellerScenario1_3,
+        roles: {
+          buyer: buyerScenario1_3,
+          seller: sellerScenario1_3,
+        },
       },
     ]
   },
@@ -47,21 +64,27 @@ export const walkthroughs: Walkthrough[] = [
     scenarios: [
       {
         id: '2.1',
-        title: 'Baland supply & demand',
-        buyer: buyerScenario2_1,
-        seller: sellerScenario2_1,
+        title: 'Balanced supply & demand',
+        roles: {
+          buyer: buyerScenario2_1,
+          seller: sellerScenario2_1,
+        },
       },
       {
         id: '2.2',
         title: 'Resitricted supply',
-        buyer: buyerScenario2_2,
-        seller: sellerScenario2_2,
+        roles: {
+          buyer: buyerScenario2_2,
+          seller: sellerScenario2_2,
+        },
       },
       {
         id: '2.3',
         title: 'Resitricted Demand',
-        buyer: buyerScenario2_3,
-        seller: sellerScenario2_3,
+        roles: {
+          buyer: buyerScenario2_3,
+          seller: sellerScenario2_3,
+        },
       },
     ]
   },
@@ -72,14 +95,18 @@ export const walkthroughs: Walkthrough[] = [
       {
         id: '3.1',
         title: 'Poor fit bid',
-        buyer: buyerScenario3_1,
-        seller: sellerScenario3_1,
+        roles: {
+          buyer: buyerScenario3_1,
+          seller: sellerScenario3_1,
+        },
       },
       {
         id: '3.2',
         title: 'Good fit bid',
-        buyer: buyerScenario3_2,
-        seller: sellerScenario3_2,
+        roles: {
+          buyer: buyerScenario3_2,
+          seller: sellerScenario3_2,
+        },
       },
     ]
   },

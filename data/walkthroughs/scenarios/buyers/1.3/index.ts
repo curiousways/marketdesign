@@ -3,7 +3,6 @@ import { sidebarContent1 } from "./sidebar-content/1";
 import { sidebarContent8 } from "./sidebar-content/8";
 
 export const buyerScenario1_3: WalkthroughData = {
-  "title": "Offer above cost and lose",
   "project_cost": "120,000",
   "buyers": [
     {
@@ -65,10 +64,7 @@ export const buyerScenario1_3: WalkthroughData = {
     "total_bids": "210,000",
     "total_offers": "200,000",
     "surplus": "10,000",
-    "next_walkthrough": "2.1",
-    "next_walkthrough_title": "Balanced Supply & Demand",
     "stages": 8,
-    "role": "buyer",
     "set_my_price": 1,
     "allow_button_click": 1,
     "show_calculating_overlay": [3, 5, 7],

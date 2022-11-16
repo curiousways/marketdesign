@@ -5,7 +5,6 @@ import { sidebarContent2 } from "./sidebar-content/2";
 import { sidebarContent3 } from "./sidebar-content/3";
 
 export const buyerScenario3_1: WalkthroughData = {
-  "title": "Poor fit bid",
   "project_cost": "60,000",
   "buyers": [
     {
@@ -69,10 +68,7 @@ export const buyerScenario3_1: WalkthroughData = {
     "total_bids": "300,000",
     "total_offers": "150,000",
     "surplus": "150,000",
-    "next_walkthrough": "3.2",
-    "next_walkthrough_title": "Poor fit bid",
     "stages": 10,
-    "role": "buyer",
     "set_my_price": 3,
     "allow_button_click": 3,
     "show_calculating_overlay": [5, 7, 9],
@@ -91,7 +87,7 @@ export const buyerScenario3_1: WalkthroughData = {
     "show_full_map": 1,
     "show_highlighted_map": 2,
     "show_participants": 3,
-    "hide_next_button": [3, 4, 5, 6, 7, 8, 9, 10],
+    "hide_next_button": [3, 4, 5, 6, 7, 8, 9],
     "hide_prev_button": [1],
     "show_losers": 6,
     "highlight_me": 4

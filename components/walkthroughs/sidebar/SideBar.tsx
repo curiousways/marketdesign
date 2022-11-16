@@ -7,9 +7,14 @@ import { WalkthroughData } from "@/types/walkthrough";
 import Description from "./Description";
 import Details from "./Details";
 import Navigation from "./Navigation";
+import { getNextScenario } from "@/utils/walkthroughs";
+import { useRouter } from "next/router";
+import { RoleId } from "@/types/roles";
 
 type Props = {
+  title: string;
   scenarioId: string;
+  roleId: RoleId;
   stage: number;
   setStage: Dispatch<SetStateAction<number>>;
   data: WalkthroughData;
@@ -17,7 +22,9 @@ type Props = {
 };
 
 const SideBar = ({
+  title,
   scenarioId,
+  roleId,
   stage,
   setStage,
   data,
@@ -25,18 +32,24 @@ const SideBar = ({
 }: Props) => {
   const maxStage = data.options.stages;
   const showSolveMarketBtn = data.options.show_solve_market;
+  const nextScenario = getNextScenario(scenarioId, roleId);
+  const router = useRouter();
 
   const previous = () => {
     if (stage > 1) setStage((prev) => prev - 1);
   };
 
   const next = () => {
-    if (maxStage && stage < maxStage) setStage((prev) => prev + 1);
-  };
+    if (maxStage && stage < maxStage) {
+      setStage((prev) => prev + 1);
 
-  // const nextWalkthrough = () => {
-  //   setWalkthrough(data.options.next_walkthrough);
-  // };
+      return;
+    }
+
+    if (nextScenario) {
+      router.push(`/how-it-works/${nextScenario.id}/${roleId}`);
+    }
+  };
 
   const onButtonClick = (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,13 +61,17 @@ const SideBar = ({
       <AnimatePresence>
         {/* Top */}
         {stage >= data.options.show_details_widget && (
-          <Details key={1} next={next} data={data} stage={stage} />
+          <Details
+            next={next}
+            data={data}
+            stage={stage}
+            roleId={roleId}
+          />
         )}
 
         {/* Solve Market Button */}
         {stage === showSolveMarketBtn && (
           <motion.button
-            key={2}
             variants={fadeIn}
             initial="hidden"
             animate="visible"
@@ -70,7 +87,7 @@ const SideBar = ({
 
         {/* Navigation with next and previous buttons */}
         <Navigation
-          key={3}
+          title={title}
           scenarioId={scenarioId}
           stage={stage}
           next={next}
@@ -79,12 +96,7 @@ const SideBar = ({
         />
 
         {/* Walkthrough Description text */}
-        <Description
-          key={4}
-          // walkthrough={walkthrough}
-          stage={stage}
-          // nextWalkthrough={nextWalkthrough}
-        >
+        <Description>
           {sidebarContent}
         </Description>
       </AnimatePresence>
