@@ -1,7 +1,12 @@
 export const sidebarContentStage1 = (
-  <p>
-    This walkthrough examines bidding strategies for a landholder when they
-    have more than one option over the type of habitat change project they
-    might offer to the market.
-  </p>
+  <>
+    <p>
+      This walkthrough examines bidding strategies when a landholder has more
+      than one project to offer to the market.
+    </p>
+    <p>
+      Let's imagine that you are such a landholder and are considering projects
+      on the two separate fields shown on the map.
+    </p>
+  </>
 );
