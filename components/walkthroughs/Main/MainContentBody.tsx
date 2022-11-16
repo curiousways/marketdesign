@@ -6,11 +6,14 @@ import ParticipantsList from "./ParticipantsList";
 import { useWalkthroughContext } from "@/context/WalkthroughContext";
 import { WalkthroughMarketState, WalkthroughProject } from "@/types/walkthrough";
 import { RoleId } from "@/types/roles";
+import { getNextScenarioId } from "@/utils/walkthroughs";
+import Link from "next/link";
 
 const MainContentBody = () => {
   const {
     stage,
     scenario,
+    scenarioId,
     roleId,
     marketState,
   } = useWalkthroughContext();
@@ -56,6 +59,17 @@ const MainContentBody = () => {
 
     return getAllProjects(projects, projectRoleId);
   };
+
+  // Show the "return to index" link for the last stage of the last scenario.
+  if (stage === scenario.options.stages && !getNextScenarioId(scenarioId)) {
+    return (
+      <div className="flex items-center">
+        <Link href="/how-it-works">
+          <a className="text-xl font-bold">Return to Walkthrough index</a>
+        </Link>
+      </div>
+    )
+  }
 
   if (stage >= scenario.options.show_participants) {
     return (
