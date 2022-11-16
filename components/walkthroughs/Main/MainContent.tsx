@@ -47,12 +47,29 @@ const MainContent = () => {
 
   const activeUserProjects = scenario.myProjects.filter((project) => !project.isInactive);
 
-  const getWinningProjects = (projects: WalkthroughProject[]) => (
-    projects.filter((project) => project.accepted)
+  const getAllProjects = (
+    projects: WalkthroughProject[],
+    projectRoleId: RoleId,
+  ) => {
+    if (projectRoleId === roleId) {
+      return [...projects, ...activeUserProjects];
+    }
+
+    return projects;
+  }
+
+  const getWinningProjects = (
+    projects: WalkthroughProject[],
+    projectRoleId: RoleId,
+  ) => (
+    getAllProjects(projects, projectRoleId).filter((project) => project.accepted)
   );
 
-  const getLosingProjects = (projects: WalkthroughProject[]) => (
-    projects.filter((project) => !project.accepted)
+  const getLosingProjects = (
+    projects: WalkthroughProject[],
+    projectRoleId: RoleId,
+  ) => (
+    getAllProjects(projects, projectRoleId).filter((project) => !project.accepted)
   );
 
   const getActiveProjects = (
@@ -64,14 +81,10 @@ const MainContent = () => {
     }
 
     if (marketState >= WalkthroughMarketState.showing_winners) {
-      getWinningProjects(projects);
+      return getWinningProjects(projects, projectRoleId);
     }
 
-    if (projectRoleId === roleId) {
-      return [...projects, ...activeUserProjects];
-    }
-
-    return projects;
+    return getAllProjects(projects, projectRoleId);
   };
 
   return (
@@ -89,8 +102,8 @@ const MainContent = () => {
               animate="visible"
             >
               <ParticipantsList
-                sellerProjects={getLosingProjects(scenario.sellerProjects)}
-                buyerProjects={getLosingProjects(scenario.buyerProjects)}
+                sellerProjects={getLosingProjects(scenario.sellerProjects, 'seller')}
+                buyerProjects={getLosingProjects(scenario.buyerProjects, 'buyer')}
                 type="losers"
                 stage={stage}
                 data={scenario}
@@ -125,8 +138,8 @@ const MainContent = () => {
                 animate="visible"
               >
                 <MarketOutcome
-                  sellerProjects={getWinningProjects(scenario.sellerProjects)}
-                  buyerProjects={getWinningProjects(scenario.buyerProjects)}
+                  sellerProjects={getWinningProjects(scenario.sellerProjects, 'seller')}
+                  buyerProjects={getWinningProjects(scenario.buyerProjects, 'buyer')}
                 />
               </motion.div>
             )}
