@@ -62,6 +62,7 @@ const Project = ({
   );
 
   const showCosts = stage >= show_costs;
+  const showAcceptedPercentage = marketState >= WalkthroughMarketState.showing_winners;
   const isBuyer = projectRoleId === 'buyer';
 
   // Define some colour classes.
@@ -87,7 +88,7 @@ const Project = ({
       <div
         className={`absolute h-full ${backgroundColor} top-0 left-0`}
         style={{
-          width: typeof accepted === 'number' ? `${accepted}%` : '100%'
+          width: typeof accepted === 'number' && showAcceptedPercentage ? `${accepted}%` : '100%'
         }}
       />
 
@@ -99,7 +100,7 @@ const Project = ({
       {/* Content */}
       <div className="z-10 items-center flex gap-x-10 justify-between w-full">
         <ProjectTitle
-          showAcceptedPercentage={showCosts}
+          showAcceptedPercentage={showAcceptedPercentage}
           project={project}
         />
 
