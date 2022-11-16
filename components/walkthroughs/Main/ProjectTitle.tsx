@@ -1,21 +1,33 @@
-import type { Project } from '@/types/walkthrough';
+import type { WalkthroughProject } from '@/types/walkthrough';
 import { classNames } from '@/utils/index';
 import { FunctionComponent } from 'react';
 
 type Props = {
-  project: Project;
+  project: WalkthroughProject;
+  showAcceptedPercentage?: boolean;
 }
 
-export const ProjectTitle: FunctionComponent<Props> = ({ project }: Props) => {
-  const { title, subtitle, isMyProject } = project;
+export const ProjectTitle: FunctionComponent<Props> = ({
+  project,
+  showAcceptedPercentage,
+}: Props) => {
+  const { title, subtitle, isMyProject, accepted } = project;
+  const acceptedPercentage = showAcceptedPercentage && Number.isFinite(accepted)
+    ? accepted
+    : null;
+
   return (
-    <div className="flex flex-col text-black">
+    <div className="flex flex-col text-black text-center flex-[30%]">
       <p
         className={classNames(isMyProject ? 'font-bold' : '')}
       >
         {title}
       </p>
-      {subtitle && <p>{subtitle}</p>}
+      {acceptedPercentage ? (
+        <span className="bg-white rounded-full px-3 py-1 mt-1">
+          Accepted: {acceptedPercentage}%
+        </span>
+      ): subtitle && <p>{subtitle}</p>}
     </div>
   );
 };

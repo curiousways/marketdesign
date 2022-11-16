@@ -5,9 +5,11 @@ export interface WalkthroughOptions {
   stages: number;
   set_my_price: number;
   allow_button_click: number;
+  allow_division?: boolean,
   show_products_quantity?: number;
   show_calculating_overlay: number[];
   show_details_widget: number;
+  show_divisible_input?: boolean;
   show_solve_market: number;
   show_market_outcome: number;
   show_calculating_winners: number;
@@ -33,20 +35,20 @@ export interface Products {
   nutrients: number;
 }
 
-export interface Project {
+export interface WalkthroughProject {
   title: string;
   subtitle?: string;
   cost: number;
-  accepted: boolean,
+  accepted: boolean | number,
   isMyProject?: boolean;
   discountOrBonus: number;
   products: Products;
 }
 
 export interface WalkthroughData {
-  myProjects: [Project, ...Project[]]; // One or more
-  buyerProjects: Project[];
-  sellerProjects: Project[];
+  myProjects: [WalkthroughProject, ...WalkthroughProject[]]; // One or more
+  buyerProjects: WalkthroughProject[];
+  sellerProjects: WalkthroughProject[];
   sidebarContent?: {
     [key: number]: JSX.Element;
   },

@@ -20,7 +20,8 @@ type Props = {
 };
 
 const Details = ({ data, stage, next, roleId }: Props) => {
-  const isFormDisabled = stage !== data.options.allow_button_click;
+  const isFormEnabled = stage === data.options.allow_button_click;
+  const isDivisibleInputEnabled = isFormEnabled && !!data.options.allow_division;
 
   // Proceed to next stage when submit button is clicked
   const onSubmit = (e: React.FormEvent) => {
@@ -85,23 +86,39 @@ const Details = ({ data, stage, next, roleId }: Props) => {
             </li>
           ))}
         </ul>
-        <div className="relative w-[100px] ml-auto">
-          {stage === data.options.allow_button_click && (
-            <span className="flex h-3 w-3 absolute -right-1 -top-1">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-            </span>
+        <div className="flex items-center">
+          {data.options.show_divisible_input && (
+            <label
+              className={classNames(
+                'flex',
+                isDivisibleInputEnabled ? 'cursor-pointer' : ''
+              )}
+            >
+              <input
+                required type="checkbox"
+                disabled={!isDivisibleInputEnabled}
+              />
+              <span className="ml-2">Divisible</span>
+            </label>
           )}
-          <button
-            type="submit"
-            disabled={isFormDisabled}
-            className={classNames(
-              'w-full rounded-lg bg-[#848484] text-white text-xs py-2',
-              isFormDisabled ? '' : 'hover:bg-black cursor-pointer',
+          <div className="relative w-[100px] ml-auto">
+            {isFormEnabled && (
+              <span className="flex h-3 w-3 absolute -right-1 -top-1">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+              </span>
             )}
-          >
-            Submit
-          </button>
+            <button
+              type="submit"
+              disabled={!isFormEnabled}
+              className={classNames(
+                'w-full rounded-lg bg-[#848484] text-white text-xs py-2',
+                isFormEnabled ? 'hover:bg-black cursor-pointer' : '',
+              )}
+            >
+              Submit
+            </button>
+          </div>
         </div>
       </form>
     </motion.div>

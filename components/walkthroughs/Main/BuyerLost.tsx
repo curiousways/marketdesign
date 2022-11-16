@@ -1,7 +1,7 @@
-import { Project } from "@/types/walkthrough";
+import { WalkthroughProject } from "@/types/walkthrough";
 
 type Props = {
-  project: Project;
+  project: WalkthroughProject;
 };
 
 const BuyerLost = ({ project }: Props) => {
