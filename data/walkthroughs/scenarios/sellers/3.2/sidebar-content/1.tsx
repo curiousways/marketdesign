@@ -8,7 +8,7 @@ export const sidebarContentStage1 = (
     <p>
       While the bids and offers for the other market participants remain the same,
       rather than 2 biodiversity credit and 1 water quality credits your required
-      project now supplies for 1 biodiversity credits and 2 water quality credit,
+      project now supplies for 1 biodiversity credits and 2 water quality credits,
       again at a cost value to you of £100,000.
     </p>
 
