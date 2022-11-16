@@ -2,9 +2,9 @@ import { sidebarContentStage1 } from "./sidebar-content/1";
 import { sidebarContentStage2 } from "./sidebar-content/2";
 import { sidebarContentStage3 } from "./sidebar-content/3";
 import { sidebarContentStage10 } from "./sidebar-content/10";
-import { WalkthroughData } from "@/types/walkthrough";
+import { WalkthroughScenario } from "@/types/walkthrough";
 
-export const sellerScenario2_1: WalkthroughData = {
+export const sellerScenario2_1: WalkthroughScenario = {
   myProjects: [
     {
       title: 'My Project',

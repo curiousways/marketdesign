@@ -2,12 +2,12 @@ import React, { Dispatch, ReactNode, SetStateAction } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { fadeIn } from "@/utils/animations";
-import { WalkthroughData } from "@/types/walkthrough";
+import { WalkthroughScenario } from "@/types/walkthrough";
 
 import Description from "./Description";
 import Details from "./Details";
 import Navigation from "./Navigation";
-import { getNextScenario } from "@/utils/walkthroughs";
+import { getNextScenarioId } from "@/utils/walkthroughs";
 import { useRouter } from "next/router";
 import { RoleId } from "@/types/roles";
 
@@ -17,7 +17,7 @@ type Props = {
   roleId: RoleId;
   stage: number;
   setStage: Dispatch<SetStateAction<number>>;
-  data: WalkthroughData;
+  data: WalkthroughScenario;
   sidebarContent: ReactNode;
 };
 
@@ -32,7 +32,7 @@ const SideBar = ({
 }: Props) => {
   const maxStage = data.options.stages;
   const showSolveMarketBtn = data.options.show_solve_market;
-  const nextScenario = getNextScenario(scenarioId, roleId);
+  const nextScenarioId = getNextScenarioId(scenarioId);
   const router = useRouter();
 
   const previous = () => {
@@ -46,8 +46,8 @@ const SideBar = ({
       return;
     }
 
-    if (nextScenario) {
-      router.push(`/how-it-works/${nextScenario.id}/${roleId}`);
+    if (nextScenarioId) {
+      router.push(`/how-it-works/${nextScenarioId}`);
     }
   };
 

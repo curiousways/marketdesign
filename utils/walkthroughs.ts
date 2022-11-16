@@ -1,84 +1,9 @@
 import { RoleId } from "@/types/roles";
 import { roles } from "data/roles";
-import { walkthroughs } from "data/walkthroughs";
-import { Scenario, Walkthrough, WalkthroughData } from "../types/walkthrough";
+import { walkthroughsByRole } from "data/walkthroughs";
+import { Walkthrough, WalkthroughScenario } from "../types/walkthrough";
 
-const getAllScenarios = (): Scenario[] => {
-  const scenarios: Scenario[] = [];
-
-  walkthroughs.forEach((walkthrough) => {
-    walkthrough.scenarios.forEach((scenario) => {
-      scenarios.push(scenario);
-    });
-  });
-
-  return scenarios;
-};
-
-export const getAllScenarioIds = (): string[] => (
-  getAllScenarios().map(({ id }) => id)
-);
-
-export const getScenario = (scenarioId: string): Scenario => {
-  const scenario = getAllScenarios().find(({ id }) => id === scenarioId);
-
-  if (!scenario) {
-    throw new Error(`No scenario found with ID: ${scenarioId}`);
-  }
-
-  return scenario;
-};
-
-export const getScenarioByRole = (
-  scenarioId: string,
-  roleId: RoleId,
-): WalkthroughData => {
-  const scenario = getScenario(scenarioId);
-  const scenarioByRole = scenario.roles[roleId];
-
-  if (!scenarioByRole) {
-    throw new Error(`No scenario found ID ${scenarioId} and role: ${roleId}`);
-  }
-
-  return scenarioByRole;
-};
-
-export const getWalkthroughForScenario = (scenarioId: string): Walkthrough => {
-  const walkthrough = walkthroughs.find((walkthrough) => (
-    walkthrough.scenarios.some((scenario) => scenario.id === scenarioId)
-  ));
-
-  if (!walkthrough) {
-    throw new Error(`No walkthrough found for scenario with ID: ${scenarioId}`);
-  }
-
-  return walkthrough;
-};
-
-export const getNextScenario = (
-  scenarioId: string,
-  roleId: RoleId,
-): Scenario | undefined => {
-  const { scenarios } = getWalkthroughForScenario(scenarioId);
-  const currentIndex = scenarios.findIndex(({ id }) => id === scenarioId);
-
-  if (currentIndex < 0) {
-    throw new Error(`No scenario found with ID: ${scenarioId}`);
-  }
-
-  const nextScenario = scenarios[currentIndex + 1];
-
-  if (!nextScenario) {
-    return;
-  }
-
-  // There may be a next scenario, but not necessarily for the given role.
-  if (!Object.keys(nextScenario.roles).includes(roleId)) {
-    return;
-  }
-
-  return nextScenario;
-};
+const SCENARIO_ID_DELIMITER = '-';
 
 export const isValidScenarioId = (
   maybeScenarioId?: string,
@@ -91,3 +16,106 @@ export const isValidRoleId = (
 ): maybeRoleId is RoleId => (
   Object.keys(roles).includes(maybeRoleId as RoleId)
 );
+
+/**
+ * Create an ID to identify and subsequently locate the scenario.
+ *
+ * The ID is made up of the role, the index of the walkthrough (plus one) and
+ * the index of the scenario (plus one).
+ *
+ * If no scenario index is given we assume we want the first scenario of that
+ * walkthrough.
+ *
+ * @example buyer-1-1
+ * @example seller-2-1
+ */
+ export const createScenarioId = (
+  roleId: RoleId,
+  walkthroughIndex: number,
+  scenarioIndex: number = 0,
+) => [roleId, walkthroughIndex + 1, scenarioIndex + 1].join(SCENARIO_ID_DELIMITER);
+
+/**
+ * Parse a scenario ID to extract all the data about the scenario.
+ */
+export const parseScenarioId = (scenarioId: string): {
+  walkthrough: Walkthrough;
+  scenario: WalkthroughScenario;
+  roleId: RoleId;
+  walkthroughIndex: number;
+  scenarioIndex: number;
+} => {
+  const [
+    roleId,
+    walkthroughPart,
+    scenarioPart,
+  ] = scenarioId.split(SCENARIO_ID_DELIMITER);
+
+  const invalidScenarioIdErr = new Error(`Not a valid scenario ID: ${scenarioId}`);
+  const walkthroughNum = Number(walkthroughPart);
+  const scenarioNum = Number(scenarioPart);
+
+  if (
+    !isValidRoleId(roleId) ||
+    !Number.isFinite(walkthroughNum) ||
+    !Number.isFinite(scenarioNum)
+  ) {
+    throw invalidScenarioIdErr;
+  }
+
+  const { walkthroughs } = walkthroughsByRole.find((item) => item.roleId === roleId) ?? {};
+  const walkthroughIndex = walkthroughNum - 1;
+  const scenarioIndex = scenarioNum - 1;
+  const walkthrough = walkthroughs?.[walkthroughIndex];
+  const scenario = walkthrough?.scenarios[scenarioIndex];
+
+  if (!scenario) {
+    throw invalidScenarioIdErr;
+  }
+
+  return {
+    walkthrough,
+    scenario,
+    roleId,
+    walkthroughIndex,
+    scenarioIndex,
+  };
+};
+
+export const getAllScenarioIds = (): string[] => {
+  const scenarioIds: string[] = [];
+
+  walkthroughsByRole.forEach(({ roleId, walkthroughs }) => {
+    walkthroughs.forEach((walkthrough, walkthroughIndex) => {
+      walkthrough.scenarios.forEach((_, scenarioIndex) => {
+        scenarioIds.push(createScenarioId(
+          roleId,
+          walkthroughIndex,
+          scenarioIndex,
+        ));
+      });
+    });
+  });
+
+  return scenarioIds;
+};
+
+export const getNextScenarioId = (
+  scenarioId: string,
+): string | undefined => {
+  const {
+    walkthrough,
+    walkthroughIndex,
+    scenarioIndex,
+    roleId,
+  } = parseScenarioId(scenarioId);
+
+  const nextScenarioIndex = scenarioIndex + 1;
+  const nextScenario = walkthrough.scenarios[nextScenarioIndex];
+
+  if (!nextScenario) {
+    return;
+  }
+
+  return createScenarioId(roleId, walkthroughIndex, nextScenarioIndex);
+};

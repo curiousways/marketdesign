@@ -1,9 +1,9 @@
-import { WalkthroughData } from '@/types/walkthrough';
+import { WalkthroughScenario } from '@/types/walkthrough';
 import { sidebarContent1 } from './sidebar-content/1';
 import { sidebarContent8 } from './sidebar-content/8';
 import { sidebarContent9 } from './sidebar-content/9';
 
-export const buyerScenario4_2: WalkthroughData = {
+export const buyerScenario4_2: WalkthroughScenario = {
   myProjects: [
     {
       title: 'My Project',
