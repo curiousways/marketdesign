@@ -32,7 +32,7 @@ const MarketOutcome = ({
   return (
     <div
       className={classNames(
-        "bg-blue-light px-10 py-5 rounded-lg flex items-center gap-x-12 min-w-[736px]",
+        "bg-blue-light px-10 py-5 rounded-lg flex items-center gap-x-12",
         className
       )}
     >
