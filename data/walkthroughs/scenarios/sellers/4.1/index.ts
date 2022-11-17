@@ -14,7 +14,7 @@ export const sellerScenario4_1: WalkthroughScenario = {
       cost: 140000,
       discountOrBonus: 44000,
       accepted: () => true,
-      products: { biodiversity: 1, nutrients: 3 },
+      products: { biodiversity: 4, nutrients: 1 },
     },
     {
       title: 'My Project',

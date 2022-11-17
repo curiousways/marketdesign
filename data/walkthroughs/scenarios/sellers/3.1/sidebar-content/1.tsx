@@ -1,8 +1,8 @@
 export const sidebarContentStage1 = (
   <>
     <p>
-      In this walkthrough we explore how the outcome for a seller buyer may depend
-      on how well their project ‘fits’ with the market.
+      In this walkthrough we explore how the outcome for a seller may depend
+      on how well their project 'fits' with the market.
     </p>
 
     <p>
