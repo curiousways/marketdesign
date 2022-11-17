@@ -119,7 +119,7 @@ const Home: NextPage = () => {
                   understanding of how it works, how to participate and how to
                   maximise your opportunity as a buyer or seller.
                 </p>
-                <Button text="Take the tour" link="/" />
+                <Button text="Take the tour" link="/how-it-works" />
               </div>
             </div>
 
