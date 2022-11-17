@@ -12,10 +12,15 @@ import { useWalkthroughContext } from "@/context/WalkthroughContext";
 import { WalkthroughMarketState, WalkthroughProject } from "@/types/walkthrough";
 import Input from "./Input";
 import { RoleId } from "@/types/roles";
+import ProductCount from "./ProductCount";
 
 const INPUT_NAME = 'project-cost';
 
 const getProjectValue = (project: WalkthroughProject, roleId: RoleId) => {
+  if (project.costPerCredit) {
+    return project.costPerCredit;
+  }
+
   if (!Array.isArray(project.cost)) {
     return project.cost;
   }
@@ -86,30 +91,28 @@ const Details = () => {
                 )}
                 <div className="flex gap-x-3 justify-between items-center">
                   {/* Vector */}
-                  <>{roleId === "seller" ? <SellerVector /> : <BuyerVector />}</>
+                  {!project.costPerCredit && (
+                    roleId === "seller" ? <SellerVector /> : <BuyerVector />
+                  )}
 
                   {/* Credits */}
                   <div className="flex gap-x-2">
-                    {/* Biodiversity */}
-                    <div className="relative">
-                      <span className="absolute -right-1 top-0 text-[10px] text-black font-bold border border-black rounded-full bg-white w-[14px] h-[14px] flex justify-center items-center">
-                        {project.products.biodiversity}
-                      </span>
-                      <BiodiversityIconGray />
-                    </div>
-                    {/* Nutrients */}
-                    <div className="relative">
-                      <span className="absolute -right-1 top-0 text-[10px] text-black font-bold border border-black rounded-full bg-white w-[14px] h-[14px] flex justify-center items-center">
-                      {project.products.nutrients}
-                      </span>
-                      <NutrientsIcon />
-                    </div>
+                    <ProductCount
+                      productCount={project.products.biodiversity}
+                      costPerCredit={project.costPerCredit}
+                      Icon={<BiodiversityIconGray />}
+                    />
+                    <ProductCount
+                      productCount={project.products.nutrients}
+                      costPerCredit={project.costPerCredit}
+                      Icon={<NutrientsIcon />}
+                    />
                   </div>
 
                   {/* Project Value */}
                   <p className="font-light">£{projectValue.toLocaleString()}</p>
 
-                  <div className="flex-1">
+                  <div className="flex-1 max-w-[50%]">
                     <Input
                       project={project}
                       populate={stage >= scenario.options.set_my_price && !project.isInactive}

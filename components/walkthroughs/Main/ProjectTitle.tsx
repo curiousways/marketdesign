@@ -6,16 +6,18 @@ import { FunctionComponent } from 'react';
 
 type Props = {
   project: WalkthroughProject;
-  showAcceptedPercentage?: boolean;
+  acceptedCost: number | boolean;
+  showCosts?: boolean;
 }
 
 export const ProjectTitle: FunctionComponent<Props> = ({
   project,
-  showAcceptedPercentage,
+  acceptedCost,
+  showCosts,
 }: Props) => {
   const { scenario } = useWalkthroughContext();
   const { title, subtitle, accepted } = project;
-  const acceptedPercentage = showAcceptedPercentage && Number.isFinite(accepted)
+  const acceptedPercentage = showCosts && Number.isFinite(showCosts)
     ? accepted
     : null;
 

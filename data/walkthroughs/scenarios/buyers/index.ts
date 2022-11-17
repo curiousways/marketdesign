@@ -10,6 +10,8 @@ import { buyerScenario3_1 } from "./3.1";
 import { buyerScenario3_2 } from "./3.2";
 import { buyerScenario4_1 } from "./4.1";
 import { buyerScenario4_2 } from "./4.2";
+import { buyerScenario5_1 } from "./5.1";
+import { buyerScenario5_2 } from "./5.2";
 
 export const buyerWalkthroughs: Walkthrough[] = [
   {
@@ -41,6 +43,13 @@ export const buyerWalkthroughs: Walkthrough[] = [
     scenarios: [
       buyerScenario4_1,
       buyerScenario4_2,
+    ],
+  },
+  {
+    title: 'Investor Bidding',
+    scenarios: [
+      buyerScenario5_1,
+      buyerScenario5_2,
     ],
   },
 ];

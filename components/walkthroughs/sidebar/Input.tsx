@@ -46,7 +46,7 @@ const Input: FunctionComponent<Props> = ({ project, populate, name }: Props) => 
       placeholder="Enter offer..."
       className="w-full text-sm inline-block rounded-lg py-2 px-3 bg-extra-light-grey"
       name={name}
-      defaultValue={populate ? project.cost : ''}
+      defaultValue={populate ? (project.costPerCredit ?? project.cost) : ''}
     />
   );
 };
