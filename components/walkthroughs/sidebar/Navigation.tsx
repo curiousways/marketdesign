@@ -1,28 +1,21 @@
 import { motion } from "framer-motion";
 
-import { WalkthroughScenario } from "@/types/walkthrough";
-
 import NextButton from "./NextButton";
 import PrevButton from "./PrevButton";
 import { parseScenarioId } from "@/utils/walkthroughs";
+import { useWalkthroughContext } from "@/context/WalkthroughContext";
 
-type Props = {
-  title: string;
-  scenarioId: string;
-  stage: number;
-  next: () => void;
-  previous: () => void;
-  data: WalkthroughScenario;
-};
+const Navigation = () => {
+  const {
+    walkthrough,
+    scenarioId,
+    stage,
+    hasPreviousStage,
+    hasNextStage,
+    goToPreviousStage,
+    goToNextStage,
+  } = useWalkthroughContext();
 
-const Navigation = ({
-  title,
-  scenarioId,
-  stage,
-  next,
-  previous,
-  data,
-}: Props) => {
   const { walkthroughIndex } = parseScenarioId(scenarioId);
 
   return (
@@ -31,22 +24,22 @@ const Navigation = ({
       <div className="flex gap-x-4 items-center justify-between">
         {/* Previous button */}
         <PrevButton
-          onClick={previous}
+          onClick={goToPreviousStage}
           stage={stage}
-          hideButton={data.options.hide_prev_button}
+          hideButton={!hasPreviousStage}
         />
 
         <div
           className="bg-green-dark text-white rounded-lg px-3 py-1 flex-1"
         >
-          <p>{title}</p>
+          <p>{walkthrough.title}</p>
         </div>
 
         {/* Next button */}
         <NextButton
-          onClick={next}
+          onClick={goToNextStage}
           stage={stage}
-          hideButton={data.options.hide_next_button}
+          hideButton={!hasNextStage}
         />
       </div>
     </motion.div>

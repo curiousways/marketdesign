@@ -5,28 +5,11 @@ export interface WalkthroughOptions {
   set_my_price: number;
   allow_button_click: number;
   allow_division?: boolean,
-  show_products_quantity?: number;
-  show_calculating_overlay: number[];
   show_details_widget: number;
   show_divisible_input?: boolean;
-  show_solve_market: number;
-  show_market_outcome: number;
-  show_calculating_winners: number;
-  show_distributing_surplus: number;
-  show_calculating_final: number;
-  show_surpluses: number;
-  show_final_payments: number;
-  show_balanced_market: number;
-  show_bids: number;
-  show_offers: number;
+  show_costs: number;
   show_maps: boolean;
-  show_full_map: number;
-  show_highlighted_map: number;
   show_participants: number;
-  hide_next_button: number[];
-  hide_prev_button: number[];
-  show_losers: number;
-  highlight_me: number;
 };
 
 export interface Products {
@@ -39,7 +22,6 @@ export interface WalkthroughProject {
   subtitle?: string;
   cost: number;
   accepted: boolean | number,
-  isMyProject?: boolean;
   isInactive?: boolean;
   discountOrBonus: number;
   products: Products;
@@ -64,3 +46,14 @@ export type WalkthroughsByRole = {
   roleId: RoleId;
   walkthroughs: Walkthrough[];
 }[];
+
+export enum WalkthroughMarketState {
+  'pending',
+  'solvable',
+  'calculating_winners',
+  'showing_winners',
+  'distributing_surpluss',
+  'showing_surpluses',
+  'calculating_final_payments',
+  'solved',
+}

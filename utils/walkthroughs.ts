@@ -1,7 +1,7 @@
 import { RoleId } from "@/types/roles";
 import { roles } from "data/roles";
 import { walkthroughsByRole } from "data/walkthroughs";
-import { Walkthrough, WalkthroughScenario } from "../types/walkthrough";
+import { Walkthrough, WalkthroughProject, WalkthroughScenario } from "../types/walkthrough";
 
 const SCENARIO_ID_DELIMITER = '-';
 
@@ -119,3 +119,8 @@ export const getNextScenarioId = (
 
   return createScenarioId(roleId, walkthroughIndex, nextScenarioIndex);
 };
+
+export const isMyProject = (
+  scenario: WalkthroughScenario,
+  project: WalkthroughProject,
+) => scenario.myProjects.includes(project);

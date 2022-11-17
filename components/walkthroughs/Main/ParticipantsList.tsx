@@ -4,6 +4,8 @@ import SellerLost from "./SellerLost";
 import { WalkthroughScenario, WalkthroughProject} from "@/types/walkthrough";
 import { RoleId } from "@/types/roles";
 import Project from "./Project";
+import { useWalkthroughContext } from "@/context/WalkthroughContext";
+import { isMyProject } from "@/utils/walkthroughs";
 
 type Props = {
   buyerProjects: WalkthroughProject[];
@@ -17,8 +19,13 @@ type Props = {
 /**
  * Sort to bring "my projects" to the top of the list.
  */
-const sortMyProjects = (projects: WalkthroughProject[]) => (
-  projects.sort((a, b) => Number(b.isMyProject ?? 0) - Number(a.isMyProject ?? 0))
+const sortMyProjects = (
+  scenario: WalkthroughScenario,
+  allProjects: WalkthroughProject[],
+) => (
+  allProjects.sort((a, b) => (
+    Number(isMyProject(scenario, b) ?? 0) - Number(isMyProject(scenario, a) ?? 0)
+  ))
 );
 
 const ParticipantsList = ({
@@ -29,8 +36,9 @@ const ParticipantsList = ({
   roleId,
   type = "winners",
 }: Props) => {
-  const sortedBuyerProjects = sortMyProjects(buyerProjects);
-  const sortedSellerProjects = sortMyProjects(sellerProjects);
+  const { scenario } = useWalkthroughContext();
+  const sortedBuyerProjects = sortMyProjects(scenario, buyerProjects);
+  const sortedSellerProjects = sortMyProjects(scenario, sellerProjects);
 
   return (
     <>

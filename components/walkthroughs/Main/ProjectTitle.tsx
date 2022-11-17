@@ -1,5 +1,7 @@
+import { useWalkthroughContext } from '@/context/WalkthroughContext';
 import type { WalkthroughProject } from '@/types/walkthrough';
 import { classNames } from '@/utils/index';
+import { isMyProject } from '@/utils/walkthroughs';
 import { FunctionComponent } from 'react';
 
 type Props = {
@@ -11,7 +13,8 @@ export const ProjectTitle: FunctionComponent<Props> = ({
   project,
   showAcceptedPercentage,
 }: Props) => {
-  const { title, subtitle, isMyProject, accepted } = project;
+  const { scenario } = useWalkthroughContext();
+  const { title, subtitle, accepted } = project;
   const acceptedPercentage = showAcceptedPercentage && Number.isFinite(accepted)
     ? accepted
     : null;
@@ -19,7 +22,7 @@ export const ProjectTitle: FunctionComponent<Props> = ({
   return (
     <div className="flex flex-col text-black text-center flex-[30%]">
       <p
-        className={classNames(isMyProject ? 'font-bold' : '')}
+        className={classNames(isMyProject(scenario, project) ? 'font-bold' : '')}
       >
         {title}
       </p>

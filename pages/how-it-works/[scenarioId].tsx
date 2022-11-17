@@ -1,4 +1,3 @@
-import { useState } from "react";
 import type {
   GetStaticPaths,
   GetStaticProps,
@@ -11,8 +10,8 @@ import { ParsedUrlQuery } from "querystring";
 import {
   getAllScenarioIds,
   isValidScenarioId,
-  parseScenarioId,
 } from "@/utils/walkthroughs";
+import { WalkthroughProvider } from "@/context/WalkthroughContext";
 
 interface HowItWorksScenarioParams extends ParsedUrlQuery {
   scenarioId: string;
@@ -24,35 +23,20 @@ interface HowItWorksScenarioProps {
 
 const HowItWorksScenario: NextPage<HowItWorksScenarioProps> = ({
   scenarioId,
-}) => {
-  const { roleId, scenario, walkthrough } = parseScenarioId(scenarioId);
-  const [stage, setStage] = useState(1);
-  const sidebarContent = scenario.sidebarContent?.[stage];
-
-  return (
+}) => (
+  <WalkthroughProvider
+    scenarioId={scenarioId}
+  >
     <main>
       <div
         className="flex items-stretch font-poppins relative border-t border-green-dark min-h-screen"
       >
-        <SideBar
-          stage={stage}
-          scenarioId={scenarioId}
-          roleId={roleId}
-          setStage={setStage}
-          data={scenario}
-          sidebarContent={sidebarContent}
-          title={walkthrough.title}
-        />
-        <MainContent
-          stage={stage}
-          setStage={setStage}
-          data={scenario}
-          roleId={roleId}
-        />
+        <SideBar />
+        <MainContent />
       </div>
     </main>
-  );
-};
+  </WalkthroughProvider>
+);
 
 export const getStaticPaths: GetStaticPaths<HowItWorksScenarioParams> = async () => ({
   fallback: false,

@@ -1,16 +1,12 @@
 import { motion } from "framer-motion";
 
 import { fadeIn } from "@/utils/animations";
-import { ReactNode } from "react";
+import { useWalkthroughContext } from "@/context/WalkthroughContext";
 
-type Props = {
-  children: ReactNode;
-};
-
-const Navigation = ({
-  children,
-}: Props) => {
-  const hide = !children;
+const Description = () => {
+  const { scenario, stage } = useWalkthroughContext();
+  const sidebarContent = scenario.sidebarContent?.[stage];
+  const hide = !sidebarContent;
 
   return (
     <motion.div
@@ -24,11 +20,11 @@ const Navigation = ({
         <div
           className="space-y-5 text-white"
         >
-          {children}
+          {sidebarContent}
         </div>
       </div>
     </motion.div>
   );
 };
 
-export default Navigation;
+export default Description;
