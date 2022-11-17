@@ -85,7 +85,7 @@ const Details = () => {
                 )}
               >
                 {!!scenario.myProjects.length && !!project.subtitle && (
-                  <span className="flex justify-end	text-sm underline">
+                  <span className="flex justify-end text-sm underline">
                     {project.subtitle}
                   </span>
                 )}

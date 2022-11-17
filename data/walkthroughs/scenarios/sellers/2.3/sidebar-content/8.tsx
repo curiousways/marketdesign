@@ -2,8 +2,8 @@ export const sidebarContentStage8 = (
   <>
     <p>Not surprisingly, you are successful.</p>
     <p>
-      The market again generates a surplus of £14,000, but this time you are
-      rewarded with the lion’s share of that surplus as a bonus of £130,000. You get
+      The market again generates a surplus of £140,000, but this time you are
+      rewarded with the lion's share of that surplus as a bonus of £130,000. You get
       paid £270,000 for your project.
     </p>
     <p>

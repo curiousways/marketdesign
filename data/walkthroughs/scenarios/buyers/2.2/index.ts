@@ -8,7 +8,7 @@ export const buyerScenario2_2: WalkthroughScenario = {
       title: 'My Project',
       cost: 280000,
       accepted: () => true,
-      discountOrBonus: 130000,
+      discountOrBonus: 10000,
       products: { biodiversity: 3, nutrients: 3 }
     },
   ],

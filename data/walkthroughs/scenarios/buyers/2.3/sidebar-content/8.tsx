@@ -12,10 +12,5 @@ export const sidebarContent8 = (
       Your share of the surplus is high because, unlike in the previous market,
       your demand was critical to the creation of market surplus.
     </p>
-    <p>
-      The key lesson here is that how well a buyer fare's in the market not only
-      depends on how they bid but also on the level of competition that they
-      face in sourcing credits.
-    </p>
   </>
 );
