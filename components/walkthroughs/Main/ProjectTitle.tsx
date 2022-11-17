@@ -17,8 +17,8 @@ export const ProjectTitle: FunctionComponent<Props> = ({
 }: Props) => {
   const { scenario } = useWalkthroughContext();
   const { title, subtitle, accepted } = project;
-  const acceptedPercentage = showCosts && Number.isFinite(showCosts)
-    ? accepted
+  const acceptedPercentage = showCosts && Number.isFinite(acceptedCost)
+    ? acceptedCost
     : null;
 
   return (
