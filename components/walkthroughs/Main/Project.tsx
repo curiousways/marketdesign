@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 import { classNames } from "@/utils/index";
 
-import { WalkthroughProject, WalkthroughOptions } from "@/types/walkthrough";
+import { WalkthroughProject, WalkthroughOptions, WalkthroughMarketState } from "@/types/walkthrough";
 import { fadeInDown } from "@/utils/animations";
 
 import HammerIcon from "../icons/HammerIcon";
@@ -11,6 +11,8 @@ import { RoleId } from "@/types/roles";
 import { ProjectTitle } from "./ProjectTitle";
 import AdjustedProductCount from "./AdjustedProductCount";
 import CartPlus from "../icons/CartPlus";
+import { useWalkthroughContext } from "@/context/WalkthroughContext";
+import { isMyProject } from "@/utils/walkthroughs";
 
 type Props = {
   project: WalkthroughProject;
@@ -49,13 +51,18 @@ const Project = ({
   className = "",
   roleId,
 }: Props) => {
-  const { cost, discountOrBonus, products, isMyProject, accepted } = project;
-  const { show_bids, show_surpluses, show_final_payments, highlight_me } =
-    options;
+  const { marketState, scenario } = useWalkthroughContext();
+  const { cost, discountOrBonus, products, accepted } = project;
+  const { show_costs } = options;
 
+  const highlightMe = (
+    roleId === projectRoleId
+    && marketState >= WalkthroughMarketState.solvable
+    && isMyProject(scenario, project)
+  );
 
-  const highlightMe = roleId === projectRoleId && stage >= highlight_me && isMyProject;
-  const showBids = stage >= show_bids;
+  const showCosts = stage >= show_costs;
+  const showAcceptedPercentage = marketState >= WalkthroughMarketState.showing_winners;
   const isBuyer = projectRoleId === 'buyer';
 
   // Define some colour classes.
@@ -81,7 +88,7 @@ const Project = ({
       <div
         className={`absolute h-full ${backgroundColor} top-0 left-0`}
         style={{
-          width: typeof accepted === 'number' ? `${accepted}%` : '100%'
+          width: typeof accepted === 'number' && showAcceptedPercentage ? `${accepted}%` : '100%'
         }}
       />
 
@@ -93,7 +100,7 @@ const Project = ({
       {/* Content */}
       <div className="z-10 items-center flex gap-x-10 justify-between w-full">
         <ProjectTitle
-          showAcceptedPercentage={showBids}
+          showAcceptedPercentage={showAcceptedPercentage}
           project={project}
         />
 
@@ -148,7 +155,7 @@ const Project = ({
 
         <div className="flex gap-x-10 flex-[50%]">
           {/* Bid */}
-          {showBids && (
+          {showCosts && (
             <motion.div
               variants={fadeInDown}
               initial="hidden"
@@ -173,7 +180,7 @@ const Project = ({
           )}
 
           {/* Discount */}
-          {stage >= show_surpluses && (
+          {marketState >= WalkthroughMarketState.showing_surpluses && (
             <motion.div
               variants={fadeInDown}
               initial="hidden"
@@ -195,7 +202,7 @@ const Project = ({
           )}
 
           {/* Pays */}
-          {stage >= show_final_payments && (
+          {marketState === WalkthroughMarketState.solved && (
             <motion.div
               variants={fadeInDown}
               initial="hidden"

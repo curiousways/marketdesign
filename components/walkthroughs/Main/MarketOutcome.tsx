@@ -4,11 +4,10 @@ import HammerIcon from "../icons/HammerIcon";
 import BalanceIcon from "../icons/BalanceIcon";
 import CartPlus from "../icons/CartPlus";
 import PoundcashTag from "../icons/PoundcashTag";
-import { WalkthroughOptions, WalkthroughProject } from "@/types/walkthrough";
+import { WalkthroughMarketState, WalkthroughProject } from "@/types/walkthrough";
+import { useWalkthroughContext } from "@/context/WalkthroughContext";
 
 type Props = {
-  stage: number;
-  options: WalkthroughOptions;
   className?: string;
   buyerProjects: WalkthroughProject[];
   sellerProjects: WalkthroughProject[];
@@ -19,13 +18,11 @@ const sumProjectCosts = (projects: WalkthroughProject[]) => (
 );
 
 const MarketOutcome = ({
-  stage,
-  options,
   className = "",
   buyerProjects,
   sellerProjects,
 }: Props) => {
-  const { show_balanced_market } = options;
+  const { marketState } = useWalkthroughContext();
   const totalBids = sumProjectCosts(buyerProjects);
   const totalOffers = sumProjectCosts(sellerProjects);
 
@@ -156,7 +153,7 @@ const MarketOutcome = ({
         </div>
 
         {/* Balance */}
-        {stage >= show_balanced_market && (
+        {marketState === WalkthroughMarketState.solved && (
           <div className="bg-white rounded-lg px-1 w-[95px]">
             <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white shadow-custom">
               <BalanceIcon />
