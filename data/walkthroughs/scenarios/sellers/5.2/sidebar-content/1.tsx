@@ -12,7 +12,7 @@ export const sidebarContentStage1 = (
     <p>
       Doing both projects together is equivalent to a single big project
       offering 5 biodiversity credits and 3 water quality credits. This is now
-      shown as a third option in the My Project box above.
+      shown as a third option in the My Projects box above.
     </p>
   </>
 );

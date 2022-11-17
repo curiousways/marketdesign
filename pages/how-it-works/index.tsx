@@ -17,7 +17,11 @@ const HowItWorks: NextPage = () => (
       secondaryImageSrc={HeaderThumb}
     />
     {walkthroughsByRole.map(({ roleId, walkthroughs }) => (
-      <section key={roleId} className="mt-16">
+      <section
+        key={roleId}
+        className="mt-16"
+        id={roleId}
+      >
         <h2 className="heading-2 mx-6">{roles[roleId].label}</h2>
         <ul className="flex flex-wrap">
           {walkthroughs.map((walkthrough, walkthroughIndex) => (

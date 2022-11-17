@@ -53,7 +53,7 @@ export const sellerScenario1_3: WalkthroughScenario = {
   ],
   sidebarContent: {
     1: sidebarContentStage1,
-    2: sidebarContentStage8,
+    8: sidebarContentStage8,
   },
   options: {
     stages: 8,
