@@ -29,7 +29,7 @@ export interface WalkthroughProject {
 }
 
 export interface WalkthroughScenario {
-  myProjects: [WalkthroughProject, ...WalkthroughProject[]]; // One or more
+  myProjects: WalkthroughProject[];
   buyerProjects: WalkthroughProject[];
   sellerProjects: WalkthroughProject[];
   sidebarContent?: {

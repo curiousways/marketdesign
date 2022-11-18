@@ -1,4 +1,4 @@
-export const sidebarContent7 = (
+export const sidebarContent8 = (
   <>
     <p>
       The questions we need to answer now is which buyers and which sellers are
