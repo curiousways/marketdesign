@@ -54,12 +54,13 @@ export const WalkthroughProvider: FunctionComponent<WalkthroughProviderProps> = 
   scenarioId,
   children,
 })  => {
-  const { roleId, scenario, walkthrough } = parseScenarioId(scenarioId);
+  const { roleId, getScenario, walkthrough } = parseScenarioId(scenarioId);
   const [stage, setStage] = useState(1);
   const [dynamicProjectCosts, setDynamicProjectCosts] = useState<
     DynamicProjectCosts
   >([]);
 
+  const scenario = getScenario(stage);
   const router = useRouter();
   const [marketState, setMarketState] = useState<WalkthroughMarketState>(
     WalkthroughMarketState.pending,

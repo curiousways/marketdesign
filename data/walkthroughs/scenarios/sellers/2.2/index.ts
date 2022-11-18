@@ -1,8 +1,8 @@
-import { WalkthroughScenario } from "@/types/walkthrough";
+import { GetWalkthroughScenario } from "@/types/walkthrough";
 import { sidebarContentStage1 } from "./sidebar-content/1";
 import { sidebarContentStage8 } from "./sidebar-content/8";
 
-export const sellerScenario2_2: WalkthroughScenario = {
+export const getSellerScenario2_2: GetWalkthroughScenario = () => ({
   myProjects: [
     {
       title: 'My Project',
@@ -50,4 +50,4 @@ export const sellerScenario2_2: WalkthroughScenario = {
     show_maps: false,
     show_participants: 1,
   }
-}
+});

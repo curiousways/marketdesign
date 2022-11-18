@@ -2,11 +2,11 @@ import { sidebarContentStage1 } from "./sidebar-content/1";
 import { sidebarContentStage2 } from "./sidebar-content/2";
 import { sidebarContentStage3 } from "./sidebar-content/3";
 import { sidebarContentStage12 } from "./sidebar-content/12";
-import { WalkthroughScenario } from "@/types/walkthrough";
+import { GetWalkthroughScenario } from "@/types/walkthrough";
 import { sidebarContentStage4 } from "./sidebar-content/4";
 import { sidebarContentStage5 } from "./sidebar-content/5";
 
-export const sellerScenario4_1: WalkthroughScenario = {
+export const getSellerScenario4_1: GetWalkthroughScenario = () => ({
   myProjects: [
     {
       title: 'My Project',
@@ -75,4 +75,4 @@ export const sellerScenario4_1: WalkthroughScenario = {
     show_maps: true,
     show_participants: 4,
   }
-}
+});

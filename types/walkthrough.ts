@@ -38,9 +38,11 @@ export interface WalkthroughScenario {
   options: WalkthroughOptions;
 }
 
+export type GetWalkthroughScenario = (stage: number) => WalkthroughScenario;
+
 export interface Walkthrough {
   title: string;
-  scenarios: WalkthroughScenario[];
+  scenarios: GetWalkthroughScenario[];
 }
 
 export type WalkthroughsByRole = {
