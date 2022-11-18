@@ -20,7 +20,7 @@ const Navigation = () => {
 
   return (
     <motion.div layout className="text-center text-xl w-full">
-      <p className="text-green-dark">WALKTHROUGH {walkthroughIndex + 1} {stage}</p>
+      <p className="text-green-dark">WALKTHROUGH {walkthroughIndex + 1}</p>
       <div className="flex gap-x-4 items-center justify-between">
         {/* Previous button */}
         <PrevButton
