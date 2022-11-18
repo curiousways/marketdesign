@@ -1,15 +1,14 @@
 export const sidebarContent12 = (
   <>
     <p>
-      You were successful in the market!
+      The Lindsay Mechanism always avoids inefficiencies like the previous
+      examples. In fact, it has a clear rule for determining winners in the
+      market; it chooses the feasible solution that maximises the Market
+      Surplus.
     </p>
     <p>
-      You procure your desired bundle of credits and get your share of the
-      market surplus as a discount of £12,500.
-    </p>
-    <p>
-      Having made your most generous bid of £120,000, therefore, you get your
-      credits at a price of £107,500.
+      Now let’s see how the Linday Market Mechanism finds the optimal market
+      solution.
     </p>
   </>
 );

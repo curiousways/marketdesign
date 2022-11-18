@@ -71,6 +71,7 @@ export const WalkthroughProvider: FunctionComponent<WalkthroughProviderProps> = 
   const isMarketSolving = (
     marketState >= WalkthroughMarketState.calculating_winners
     && marketState < WalkthroughMarketState.solved
+    && typeof scenario.fixedMarketState === 'undefined'
   );
 
   const nextScenarioId = getNextScenarioId(scenarioId);
@@ -119,7 +120,6 @@ export const WalkthroughProvider: FunctionComponent<WalkthroughProviderProps> = 
   }, [dynamicProjectCosts]);
 
   const getProjectCost = useCallback((project: WalkthroughProject): number => {
-    console.log(dynamicProjectCosts);
     const { cost: dynamicProjectCost } = dynamicProjectCosts.find((item) => (
       isEqual(
         omit(item.project, ['accepted']),

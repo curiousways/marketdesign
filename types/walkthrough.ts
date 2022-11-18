@@ -36,6 +36,7 @@ export interface WalkthroughScenario {
     [key: number]: JSX.Element;
   },
   options: WalkthroughOptions;
+  fixedMarketState?: WalkthroughMarketState;
 }
 
 export type GetWalkthroughScenario = (stage: number) => WalkthroughScenario;
