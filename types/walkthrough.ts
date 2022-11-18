@@ -2,14 +2,14 @@ import { RoleId } from "./roles";
 
 export interface WalkthroughOptions {
   stages: number;
-  set_my_price: number;
-  allow_button_click: number;
-  allow_division?: boolean,
-  show_details_widget: number;
-  show_divisible_input?: boolean;
-  show_costs: number;
-  show_maps: boolean;
-  show_participants: number;
+  setMyPrice: boolean;
+  isFormEnabled: boolean;
+  allowDivision?: boolean,
+  showDetailsWidget: boolean;
+  showDivisibleInput?: boolean;
+  showCosts: boolean;
+  showMaps: boolean;
+  showParticipants: boolean;
 };
 
 export interface Products {

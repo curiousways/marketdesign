@@ -5,7 +5,7 @@ import { sidebarContent2 } from './sidebar-content/2';
 import { sidebarContent3 } from './sidebar-content/3';
 import { sidebarContent4 } from './sidebar-content/4';
 
-export const getBuyerScenario4_1: GetWalkthroughScenario = () => ({
+export const getBuyerScenario4_1: GetWalkthroughScenario = (stage: number) => ({
   myProjects: [
     {
       title: 'My Project',
@@ -64,13 +64,13 @@ export const getBuyerScenario4_1: GetWalkthroughScenario = () => ({
   },
   options: {
     stages: 10,
-    set_my_price: 3,
-    allow_button_click: 3,
-    allow_division: true,
-    show_details_widget: 2,
-    show_divisible_input: true,
-    show_costs: 3,
-    show_maps: true,
-    show_participants: 3,
+    setMyPrice: stage >= 3,
+    isFormEnabled: stage === 3,
+    allowDivision: true,
+    showDetailsWidget: stage >= 2,
+    showDivisibleInput: true,
+    showCosts: stage >= 3,
+    showMaps: true,
+    showParticipants: stage >= 3,
   },
 });

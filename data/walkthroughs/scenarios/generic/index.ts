@@ -1,11 +1,11 @@
 import { Walkthrough } from "@/types/walkthrough";
-import { getGenericScenario1_1 } from "./1.1";
+import { getGenericScenario0_0 } from "./1.1";
 
 export const genericWalkthroughs: Walkthrough[] = [
   {
     title: 'Market Introduction',
     scenarios: [
-      getGenericScenario1_1,
+      getGenericScenario0_0,
     ],
   },
 ];

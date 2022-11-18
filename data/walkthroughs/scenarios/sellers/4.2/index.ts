@@ -2,7 +2,7 @@ import { sidebarContentStage1 } from "./sidebar-content/1";
 import { GetWalkthroughScenario } from "@/types/walkthrough";
 import { sidebarContentStage8 } from "./sidebar-content/8";
 
-export const getSellerScenario4_2: GetWalkthroughScenario = () => ({
+export const getSellerScenario4_2: GetWalkthroughScenario = (stage: number) => ({
   myProjects: [
     {
       title: 'My Project',
@@ -60,11 +60,11 @@ export const getSellerScenario4_2: GetWalkthroughScenario = () => ({
   },
   options: {
     stages: 8,
-    set_my_price: 1,
-    allow_button_click: 1,
-    show_details_widget: 1,
-    show_costs: 1,
-    show_maps: false,
-    show_participants: 1,
+    setMyPrice: stage >= 1,
+    isFormEnabled: stage === 1,
+    showDetailsWidget: stage >= 1,
+    showCosts: stage >= 1,
+    showMaps: false,
+    showParticipants: stage >= 1,
   }
 });

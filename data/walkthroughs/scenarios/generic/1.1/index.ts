@@ -7,7 +7,7 @@ import { sidebarContent4 } from "./sidebar-content/4";
 import { sidebarContent5 } from "./sidebar-content/5";
 import { sidebarContent6 } from "./sidebar-content/6";
 
-export const getGenericScenario1_1: GetWalkthroughScenario = () => ({
+export const getGenericScenario0_0: GetWalkthroughScenario = (stage: number) => ({
   myProjects: [
     {
       title: 'My Project',
@@ -67,11 +67,11 @@ export const getGenericScenario1_1: GetWalkthroughScenario = () => ({
   },
   options: {
     stages: 12,
-    set_my_price: 5,
-    allow_button_click: 5,
-    show_details_widget: 2,
-    show_costs: 3,
-    show_maps: true,
-    show_participants: 3,
+    setMyPrice: stage >= 5,
+    isFormEnabled: stage === 5,
+    showDetailsWidget: stage >= 2,
+    showCosts: stage >= 3,
+    showMaps: true,
+    showParticipants: stage >= 3,
   },
 });

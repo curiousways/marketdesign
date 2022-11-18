@@ -91,7 +91,7 @@ const MainContentBody = () => {
     )
   }
 
-  if (stage >= scenario.options.show_participants) {
+  if (scenario.options.showParticipants) {
     return (
       <>
         {/* Losers list */}
@@ -149,7 +149,7 @@ const MainContentBody = () => {
     );
   };
 
-  if (scenario.options.show_maps) {
+  if (scenario.options.showMaps) {
     return (
       <p className="text-4xl">MAP</p>
     );

@@ -125,14 +125,12 @@ const Project = ({
 }: Props) => {
   const { marketState, scenario, getProjectCost } = useWalkthroughContext();
   const { discountOrBonus, products, accepted } = project;
-  const { show_costs } = options;
+  const { showCosts } = options;
 
   const showAcceptedState = marketState >= WalkthroughMarketState.showing_winners;
   const projectCost = getProjectCost(project);
   const acceptedCost = accepted(projectCost);
   const isNotAccepted = showAcceptedState && !acceptedCost;
-
-  const showCosts = stage >= show_costs;
   const isBuyer = projectRoleId === 'buyer';
 
   // Define some colour classes.
