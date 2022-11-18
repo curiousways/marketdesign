@@ -68,6 +68,12 @@ export const WalkthroughProvider: FunctionComponent<WalkthroughProviderProps> = 
     WalkthroughMarketState.pending,
   );
 
+  const isMarketCalculating = (
+    marketState === WalkthroughMarketState.calculating_winners
+    || marketState === WalkthroughMarketState.distributing_surpluss
+    || marketState === WalkthroughMarketState.calculating_final_payments
+  );
+
   const isMarketSolving = (
     marketState >= WalkthroughMarketState.calculating_winners
     && marketState < WalkthroughMarketState.solved
@@ -75,13 +81,14 @@ export const WalkthroughProvider: FunctionComponent<WalkthroughProviderProps> = 
   );
 
   const nextScenarioId = getNextScenarioId(scenarioId);
-  const hasPreviousStage = stage > 1 && !isMarketSolving;
+  const hasPreviousStage = stage > 1 && !isMarketSolving && !isMarketCalculating;
 
   const hasNextStage = (
     (stage < scenario.options.stages || !!nextScenarioId)
     && !(
       scenario.options.isFormEnabled
       || marketState === WalkthroughMarketState.solvable
+      || isMarketCalculating
       || isMarketSolving
     )
   );
