@@ -3,54 +3,54 @@ import { sidebarContent1 } from "./sidebar-content/1";
 import { sidebarContent8 } from "./sidebar-content/8";
 import { sidebarContent9 } from "./sidebar-content/9";
 
-export const buyerScenario1_4: WalkthroughScenario = {
+export const sellerScenario1_4: WalkthroughScenario = {
   myProjects: [
     {
       title: 'My Project',
-      cost: [120000, 100000, 80000],
-      discountOrBonus: 5000,
-      accepted: (value: number) => value === 120000,
-      products: { biodiversity: 1, nutrients: 3 },
+      cost: [60000, 80000, 100000],
+      discountOrBonus: 12000,
+      accepted: (value: number) => value === 60000,
+      products: { biodiversity: 2, nutrients: 3 },
     },
   ],
   buyerProjects: [
     {
       title: 'Buyer 1',
       cost: 120000,
-      accepted: () => true,
-      discountOrBonus: 2500,
-      products: { biodiversity: 3, nutrients: 1 }
+      accepted: () => false,
+      discountOrBonus: 0,
+      products: { biodiversity: 3, nutrients: 4 }
     },
     {
       title: 'Buyer 2',
-      cost: 140000,
+      cost: 180000,
       accepted: () => true,
-      discountOrBonus: 2500,
-      products: { biodiversity: 2, nutrients: 2 }
-    }
+      discountOrBonus: 37500,
+      products: { biodiversity: 3, nutrients: 2 }
+    },
+    {
+      title: 'Buyer 3',
+      cost: 70000,
+      accepted: () => true,
+      discountOrBonus: 4000,
+      products: { biodiversity: 1, nutrients: 3 }
+    },
   ],
   sellerProjects: [
     {
       title: 'Seller 1',
-      cost: 160000,
+      cost: 120000,
       accepted: () => true,
-      discountOrBonus: 2500,
-      products: { biodiversity: 5, nutrients: 2 }
+      discountOrBonus: 16000,
+      products: { biodiversity: 4, nutrients: 2 }
     },
     {
       title: 'Seller 2',
-      cost: 40000,
-      accepted: () => true,
-      discountOrBonus: 2500,
-      products: { biodiversity: 1, nutrients: 2 }
-    },
-    {
-      title: 'Seller 3',
-      cost: 100000,
-      accepted: () => true,
+      cost: 70000,
+      accepted: () => false,
       discountOrBonus: 0,
-      products: { biodiversity: 0, nutrients: 2 }
-    }
+      products: { biodiversity: 1, nutrients: 3 }
+    },
   ],
   sidebarContent: {
     1: sidebarContent1,

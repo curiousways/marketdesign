@@ -2,6 +2,7 @@ import { Walkthrough } from "@/types/walkthrough";
 import { sellerScenario1_1 } from "./1.1";
 import { sellerScenario1_2 } from "./1.2";
 import { sellerScenario1_3 } from "./1.3";
+import { sellerScenario1_4 } from "./1.4";
 import { sellerScenario2_1 } from "./2.1";
 import { sellerScenario2_2 } from "./2.2";
 import { sellerScenario2_3 } from "./2.3";
@@ -20,6 +21,7 @@ export const sellerWalkthroughs: Walkthrough[] = [
       sellerScenario1_1,
       sellerScenario1_2,
       sellerScenario1_3,
+      sellerScenario1_4,
     ],
   },
   {
