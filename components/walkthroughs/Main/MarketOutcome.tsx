@@ -13,8 +13,11 @@ type Props = {
   sellerProjects: WalkthroughProject[];
 };
 
-const sumProjectCosts = (projects: WalkthroughProject[]) => (
-  projects.reduce((acc, project) => acc + project.cost, 0)
+const sumProjectCosts = (
+  getProjectCost: (project: WalkthroughProject) => number,
+  projects: WalkthroughProject[]
+) => (
+  projects.reduce((acc, project) => acc + getProjectCost(project), 0)
 );
 
 const MarketOutcome = ({
@@ -22,9 +25,9 @@ const MarketOutcome = ({
   buyerProjects,
   sellerProjects,
 }: Props) => {
-  const { marketState } = useWalkthroughContext();
-  const totalBids = sumProjectCosts(buyerProjects);
-  const totalOffers = sumProjectCosts(sellerProjects);
+  const { marketState, getProjectCost } = useWalkthroughContext();
+  const totalBids = sumProjectCosts(getProjectCost, buyerProjects);
+  const totalOffers = sumProjectCosts(getProjectCost, sellerProjects);
 
   return (
     <div

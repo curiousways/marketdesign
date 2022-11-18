@@ -8,7 +8,7 @@ export const sellerScenario3_2: WalkthroughScenario = {
     {
       title: 'My Project',
       cost: 100000,
-      accepted: true,
+      accepted: () => true,
       discountOrBonus: 37000,
       products: { biodiversity: 1, nutrients: 2 }
     },
@@ -17,21 +17,21 @@ export const sellerScenario3_2: WalkthroughScenario = {
     {
       title: 'Buyer 1',
       cost: 350000,
-      accepted: true,
+      accepted: () => true,
       discountOrBonus: 53000,
       products: { biodiversity: 6, nutrients: 8 }
     },
     {
       title: 'Buyer 2',
       cost: 280000,
-      accepted: true,
+      accepted: () => true,
       discountOrBonus: 116000,
       products: { biodiversity: 3, nutrients: 4 }
     },
     {
       title: 'Buyer 3',
       cost: 120000,
-      accepted: true,
+      accepted: () => true,
       discountOrBonus: 73000,
       products: { biodiversity: 3, nutrients: 0 }
     }
@@ -40,14 +40,14 @@ export const sellerScenario3_2: WalkthroughScenario = {
     {
       title: 'Seller 1',
       cost: 120000,
-      accepted: true,
+      accepted: () => true,
       discountOrBonus: 110000,
       products: { biodiversity: 7, nutrients: 6 }
     },
     {
       title: 'Seller 2',
       cost: 80000,
-      accepted: true,
+      accepted: () => true,
       discountOrBonus: 86000,
       products: { biodiversity: 5, nutrients: 4 }
     }

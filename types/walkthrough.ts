@@ -20,8 +20,8 @@ export interface Products {
 export interface WalkthroughProject {
   title: string;
   subtitle?: string;
-  cost: number;
-  accepted: boolean | number,
+  cost: number | number[];
+  accepted: (value: number) => boolean | number,
   isInactive?: boolean;
   discountOrBonus: number;
   products: Products;

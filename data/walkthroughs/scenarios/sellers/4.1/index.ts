@@ -13,7 +13,7 @@ export const sellerScenario4_1: WalkthroughScenario = {
       subtitle: 'Project 1',
       cost: 140000,
       discountOrBonus: 44000,
-      accepted: true,
+      accepted: () => true,
       products: { biodiversity: 4, nutrients: 1 },
     },
     {
@@ -21,7 +21,7 @@ export const sellerScenario4_1: WalkthroughScenario = {
       subtitle: 'Project 2',
       cost: 180000,
       discountOrBonus: 0,
-      accepted: false,
+      accepted: () => false,
       isInactive: true,
       products: { biodiversity: 2, nutrients: 5 },
     },
@@ -30,21 +30,21 @@ export const sellerScenario4_1: WalkthroughScenario = {
     {
       title: 'Buyer 1',
       cost: 220000,
-      accepted: true,
+      accepted: () => true,
       discountOrBonus: 7000,
       products: { biodiversity: 1, nutrients: 4 }
     },
     {
       title: 'Buyer 2',
       cost: 120000,
-      accepted: true,
+      accepted: () => true,
       discountOrBonus: 44000,
       products: { biodiversity: 3, nutrients: 0 }
     },
     {
       title: 'Buyer 3',
       cost: 100000,
-      accepted: false,
+      accepted: () => false,
       discountOrBonus: 0,
       products: { biodiversity: 1, nutrients: 1 }
     }
@@ -53,7 +53,7 @@ export const sellerScenario4_1: WalkthroughScenario = {
     {
       title: 'Seller 1',
       cost: 90000,
-      accepted: true,
+      accepted: () => true,
       discountOrBonus: 14000,
       products: { biodiversity: 1, nutrients: 3 }
     },

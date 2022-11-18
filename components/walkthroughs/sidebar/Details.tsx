@@ -10,6 +10,9 @@ import { roles } from "data/roles";
 import { classNames } from "@/utils/index";
 import { useWalkthroughContext } from "@/context/WalkthroughContext";
 import { WalkthroughMarketState } from "@/types/walkthrough";
+import Input from "./Input";
+
+const INPUT_NAME = 'project-cost';
 
 const Details = () => {
   const {
@@ -18,6 +21,7 @@ const Details = () => {
     roleId,
     goToNextStage,
     setMarketState,
+    getProjectCost,
   } = useWalkthroughContext();
 
   const isFormEnabled = stage === scenario.options.allow_button_click;
@@ -52,57 +56,60 @@ const Details = () => {
         className="flex flex-col"
       >
         <ul>
-          {scenario.myProjects.map((project, projectIndex) => (
-            <li
-              key={projectIndex}
-              className={classNames(
-                'mt-3',
-                stage >= scenario.options.set_my_price && project.isInactive ? 'opacity-30' : '',
-              )}
-            >
-              {!!scenario.myProjects.length && !!project.subtitle && (
-                <span className="flex justify-end	text-sm underline">
-                  {project.subtitle}
-                </span>
-              )}
-              <div className="flex gap-x-3 justify-between items-center">
-                {/* Vector */}
-                <>{roleId === "seller" ? <SellerVector /> : <BuyerVector />}</>
+          {scenario.myProjects.map((project) => {
+            const projectValue = Array.isArray(project.cost)
+              ? Math.max(...project.cost)
+              : project.cost;
 
-                {/* Credits */}
-                <div className="flex gap-x-2">
-                  {/* Biodiversity */}
-                  <div className="relative">
-                    <span className="absolute -right-1 top-0 text-[10px] text-black font-bold border border-black rounded-full bg-white w-[14px] h-[14px] flex justify-center items-center">
-                      {project.products.biodiversity}
-                    </span>
-                    <BiodiversityIconGray />
+            return (
+              <li
+                key={project.title + project.subtitle}
+                className={classNames(
+                  'mt-3',
+                  stage >= scenario.options.set_my_price && project.isInactive ? 'opacity-30' : '',
+                )}
+              >
+                {!!scenario.myProjects.length && !!project.subtitle && (
+                  <span className="flex justify-end text-sm underline">
+                    {project.subtitle}
+                  </span>
+                )}
+                <div className="flex gap-x-3 justify-between items-center">
+                  {/* Vector */}
+                  <>{roleId === "seller" ? <SellerVector /> : <BuyerVector />}</>
+
+                  {/* Credits */}
+                  <div className="flex gap-x-2">
+                    {/* Biodiversity */}
+                    <div className="relative">
+                      <span className="absolute -right-1 top-0 text-[10px] text-black font-bold border border-black rounded-full bg-white w-[14px] h-[14px] flex justify-center items-center">
+                        {project.products.biodiversity}
+                      </span>
+                      <BiodiversityIconGray />
+                    </div>
+                    {/* Nutrients */}
+                    <div className="relative">
+                      <span className="absolute -right-1 top-0 text-[10px] text-black font-bold border border-black rounded-full bg-white w-[14px] h-[14px] flex justify-center items-center">
+                      {project.products.nutrients}
+                      </span>
+                      <NutrientsIcon />
+                    </div>
                   </div>
-                  {/* Nutrients */}
-                  <div className="relative">
-                    <span className="absolute -right-1 top-0 text-[10px] text-black font-bold border border-black rounded-full bg-white w-[14px] h-[14px] flex justify-center items-center">
-                    {project.products.nutrients}
-                    </span>
-                    <NutrientsIcon />
+
+                  {/* Project Value */}
+                  <p className="font-light">£{projectValue.toLocaleString()}</p>
+
+                  <div className="flex-1">
+                    <Input
+                      project={project}
+                      populate={stage >= scenario.options.set_my_price && !project.isInactive}
+                      name={INPUT_NAME}
+                    />
                   </div>
                 </div>
-
-                {/* Project Cost */}
-                <p className="font-light">£{project.cost.toLocaleString()}</p>
-
-                <div className="flex-1">
-                  <input
-                    type="text"
-                    placeholder="Enter offer..."
-                    className="w-full text-sm inline-block rounded-lg py-2 px-3 bg-[#e8e8e8]"
-                    defaultValue={
-                      stage >= scenario.options.set_my_price && !project.isInactive ? project.cost : ''
-                    }
-                  />
-                </div>
-              </div>
-            </li>
-          ))}
+              </li>
+            );
+          })}
         </ul>
         <div className="flex items-center mt-3">
           {scenario.options.show_divisible_input && (

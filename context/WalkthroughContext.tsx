@@ -2,6 +2,7 @@ import { RoleId } from "@/types/roles";
 import {
   Walkthrough,
   WalkthroughMarketState,
+  WalkthroughProject,
   WalkthroughScenario,
 } from "@/types/walkthrough";
 import { getNextScenarioId, parseScenarioId } from "@/utils/walkthroughs";
@@ -18,6 +19,11 @@ import {
   useCallback,
 } from "react";
 
+type DynamicProjectCosts = {
+  project: WalkthroughProject;
+  cost: number;
+}[];
+
 type WalkthroughContextType = {
   scenarioId: string;
   walkthrough: Walkthrough;
@@ -33,6 +39,8 @@ type WalkthroughContextType = {
   marketState: WalkthroughMarketState;
   goToNextMarketState: () => void;
   setMarketState: Dispatch<SetStateAction<WalkthroughMarketState>>;
+  getProjectCost: (project: WalkthroughProject) => number;
+  setProjectCost: (project: WalkthroughProject, cost: number) => void;
 };
 
 const WalkthroughContext = createContext<WalkthroughContextType | null>(null);
@@ -48,6 +56,10 @@ export const WalkthroughProvider: FunctionComponent<WalkthroughProviderProps> = 
 })  => {
   const { roleId, scenario, walkthrough } = parseScenarioId(scenarioId);
   const [stage, setStage] = useState(1);
+  const [dynamicProjectCosts, setDynamicProjectCosts] = useState<
+    DynamicProjectCosts
+  >([]);
+
   const router = useRouter();
   const [marketState, setMarketState] = useState<WalkthroughMarketState>(
     WalkthroughMarketState.pending,
@@ -93,6 +105,32 @@ export const WalkthroughProvider: FunctionComponent<WalkthroughProviderProps> = 
     setMarketState((prev) => prev + 1);
   }, []);
 
+  const setProjectCost = useCallback((
+    project: WalkthroughProject,
+    cost: number
+  ) => {
+    setDynamicProjectCosts([
+      { project, cost },
+      ...dynamicProjectCosts,
+    ])
+  }, [dynamicProjectCosts]);
+
+  const getProjectCost = useCallback((project: WalkthroughProject): number => {
+    const { cost: dynamicProjectCost } = dynamicProjectCosts.find((item) => (
+      item.project === project
+    )) ?? {};
+
+    if (dynamicProjectCost) {
+      return dynamicProjectCost;
+    }
+
+    if (Array.isArray(project.cost)) {
+      return 0;
+    }
+
+    return project.cost;
+  }, [dynamicProjectCosts]);
+
   const value = useMemo((): WalkthroughContextType => ({
     scenarioId,
     walkthrough,
@@ -108,6 +146,8 @@ export const WalkthroughProvider: FunctionComponent<WalkthroughProviderProps> = 
     isMarketSolving,
     marketState,
     goToNextMarketState,
+    getProjectCost,
+    setProjectCost,
   }), [
     scenarioId,
     walkthrough,
@@ -121,6 +161,8 @@ export const WalkthroughProvider: FunctionComponent<WalkthroughProviderProps> = 
     isMarketSolving,
     marketState,
     goToNextMarketState,
+    getProjectCost,
+    setProjectCost,
   ]);
 
   return (

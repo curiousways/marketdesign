@@ -27,7 +27,7 @@ const SideBar = () => {
   };
 
   return (
-    <div className="max-w-[434px] py-4 px-5">
+    <div className="w-1/3 max-w-[434px] py-4 px-5">
       <AnimatePresence>
         <div
           key="sidebar-animation"
