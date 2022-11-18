@@ -16,6 +16,7 @@ const MainContentBody = () => {
     scenarioId,
     roleId,
     marketState,
+    getProjectCost,
   } = useWalkthroughContext();
 
   const activeUserProjects = scenario.myProjects.filter((project) => !project.isInactive);
@@ -31,19 +32,38 @@ const MainContentBody = () => {
     return projects;
   }
 
+  const hasAcceptedUserProjects = (
+    projects: WalkthroughProject[],
+    projectRoleId: RoleId,
+  ) => getAllProjects(projects, projectRoleId)
+    .some((project) => (
+      project.accepted(getProjectCost(project))
+      && activeUserProjects.includes(project)
+    ));
+
   const getWinningProjects = (
     projects: WalkthroughProject[],
     projectRoleId: RoleId,
-  ) => (
-    getAllProjects(projects, projectRoleId).filter((project) => project.accepted)
-  );
+  ) => {
+    const hasUserProjects = hasAcceptedUserProjects(projects, projectRoleId);
+
+    return getAllProjects(projects, projectRoleId).filter((project) => (
+      project.accepted(getProjectCost(project))
+      || (hasUserProjects && activeUserProjects.includes(project))
+    ));
+  }
 
   const getLosingProjects = (
     projects: WalkthroughProject[],
     projectRoleId: RoleId,
-  ) => (
-    getAllProjects(projects, projectRoleId).filter((project) => !project.accepted)
-  );
+  ) => {
+    const hasUserProjects = hasAcceptedUserProjects(projects, projectRoleId);
+
+    return getAllProjects(projects, projectRoleId).filter((project) => (
+      !project.accepted(getProjectCost(project))
+      && !(hasUserProjects && activeUserProjects.includes(project))
+    ));
+  }
 
   const getActiveProjects = (
     projects: WalkthroughProject[],
