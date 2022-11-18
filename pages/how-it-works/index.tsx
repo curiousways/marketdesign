@@ -9,6 +9,7 @@ import { createScenarioId } from "@/utils/walkthroughs";
 import { walkthroughsByRole } from "data/walkthroughs";
 import { roles } from "data/roles";
 import Image from "next/image";
+import { classNames } from "@/utils/index";
 
 const HowItWorks: NextPage = () => (
   <>
@@ -19,14 +20,17 @@ const HowItWorks: NextPage = () => (
       secondaryImageSrc={HeaderThumb}
     />
     <div className="relative">
-
       {walkthroughsByRole.map(({ roleId, walkthroughs }) => (
         <section
           key={roleId}
           className="mt-16"
           id={roleId}
         >
-          <h2 className="heading-2 mx-6">{roles[roleId].label}</h2>
+          <h2
+            className={classNames('heading-2 mx-6', roleId === 'generic' ? 'hidden' : '')}
+          >
+            {roles[roleId].label}
+          </h2>
           <ul className="flex flex-wrap">
             {walkthroughs.map((walkthrough, walkthroughIndex) => (
               <li key={walkthrough.title} className="items-center w-full md:w-1/2 xl:w-1/3 p-5">
