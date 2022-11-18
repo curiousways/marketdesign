@@ -13,8 +13,8 @@ export interface WalkthroughOptions {
 };
 
 export interface Products {
-  biodiversity: number;
-  nutrients: number;
+  biodiversity?: number;
+  nutrients?: number;
 }
 
 export interface WalkthroughProject {
@@ -25,6 +25,7 @@ export interface WalkthroughProject {
   isInactive?: boolean;
   discountOrBonus: number;
   products: Products;
+  costPerCredit?: number;
 }
 
 export interface WalkthroughScenario {
