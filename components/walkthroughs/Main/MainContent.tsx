@@ -83,8 +83,12 @@ const MainContent = () => {
 
   return (
     <div className="border-l border-green-dark pt-4 w-full relative flex justify-center">
-      <LoadingOverlay />
-      <MainContentBody />
+      <div className="z-20">
+        <LoadingOverlay />
+      </div>
+      <div className="z-10">
+        <MainContentBody />
+      </div>
       <Background />
     </div>
   );
