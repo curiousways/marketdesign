@@ -71,6 +71,9 @@ export const getBuyerScenario4_1: GetWalkthroughScenario = (stage: number) => ({
     showDivisibleInput: true,
     showCosts: stage >= 3,
     showMaps: true,
+    highlightedMapRegions: {
+      buyer: stage >= 2 ? 21 : -1,
+    },
     showParticipants: stage >= 3,
   },
 });

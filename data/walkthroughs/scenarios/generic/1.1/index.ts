@@ -200,6 +200,21 @@ const getMarketState = (stage: number): WalkthroughMarketState => {
   return WalkthroughMarketState.pending;
 };
 
+const getHighlightedMapRegions = (stage: number) => {
+  if (stage === 3) {
+    return {
+      seller: 7,
+    };
+  }
+
+  if (stage === 5) {
+    return {
+      seller: 7,
+      buyer: 36,
+    };
+  }
+};
+
 export const getGenericScenario0_0: GetWalkthroughScenario = (stage: number) => ({
   myProjects: [],
   buyerProjects: getBuyerProjects(stage),
@@ -232,6 +247,7 @@ export const getGenericScenario0_0: GetWalkthroughScenario = (stage: number) => 
     showDetailsWidget: false,
     showCosts: true,
     showMaps: true,
+    highlightedMapRegions: getHighlightedMapRegions(stage),
     showParticipants: stage === 4 || (stage > 5 && stage < 12) || stage >= 13,
   },
 });
