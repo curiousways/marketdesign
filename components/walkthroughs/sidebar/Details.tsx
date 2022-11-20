@@ -1,47 +1,55 @@
-import React, { useState, useEffect } from "react";
-import { motion, usePresence } from "framer-motion";
+import React from "react";
+import { motion } from "framer-motion";
 
-import { Data } from "@/types/index";
 import { fadeIn } from "@/utils/animations";
-
 import SellerVector from "@/components/walkthroughs/icons/SellerVector";
 import BuyerVector from "@/components/walkthroughs/icons/BuyerVector";
 import BiodiversityIconGray from "@/components/walkthroughs/icons/BiodiversityIcon";
 import NutrientsIcon from "@/components/walkthroughs/icons/NutrientsIcon";
+import { roles } from "data/roles";
+import { classNames } from "@/utils/index";
+import { useWalkthroughContext } from "@/context/WalkthroughContext";
+import { WalkthroughMarketState, WalkthroughProject } from "@/types/walkthrough";
+import Input from "./Input";
+import { RoleId } from "@/types/roles";
+import ProductCount from "./ProductCount";
 
-type Props = {
-  next: () => void;
-  stage: number;
-  data: Data | undefined;
-};
+const INPUT_NAME = 'project-cost';
 
-const Details = ({ data, stage, next }: Props) => {
-  const [price, setPrice] = useState("");
-  const [isPresent, safeToRemove] = usePresence()!;
+const getProjectValue = (project: WalkthroughProject, roleId: RoleId) => {
+  if (project.costPerCredit) {
+    return project.costPerCredit;
+  }
 
-  // User role either buyer or seller
-  const role = data?.options?.role!;
+  if (!Array.isArray(project.cost)) {
+    return project.cost;
+  }
 
-  // Project cost
-  const projectCost = data?.project_cost;
+  if (roleId === 'buyer') {
+    return Math.max(...project.cost);
+  }
 
-  // User input price
-  const myPrice: string =
-    role === "seller"
-      ? data?.sellers.find((seller) => seller.id === 1)?.offer!
-      : data?.buyers.find((buyer) => buyer.id === 1)?.bid!;
+  return Math.min(...project.cost);
+}
 
-  // Proceed to next stage when submit button is clicked
-  const onButtonClick = (e: React.FormEvent) => {
+const Details = () => {
+  const {
+    stage,
+    scenario,
+    roleId,
+    goToNextStage,
+    setMarketState,
+  } = useWalkthroughContext();
+
+  const { isFormEnabled } = scenario.options;
+  const isDivisibleInputEnabled = isFormEnabled && !!scenario.options.allowDivision;
+
+  // Proceed to next market state when submit button is clicked.
+  const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    next();
+    goToNextStage();
+    setMarketState(WalkthroughMarketState.solvable);
   };
-
-  useEffect(() => {
-    if (stage >= data?.options?.set_my_price) {
-      setPrice(`£${myPrice}`);
-    }
-  }, [stage, data?.options]);
 
   return (
     <motion.div
@@ -54,63 +62,103 @@ const Details = ({ data, stage, next }: Props) => {
       className="border-2 border-black px-5 py-4 rounded-lg w-full"
     >
       <div className="text-black text-xl">
-        <p className="font-bold">My Project</p>
-        <p>{role === "seller" ? "Landholder" : "Developer"}</p>
+        <p className="font-bold">
+          My Project{scenario.myProjects.length ? 's' : ''}
+        </p>
+        <p>{roles[roleId].label}</p>
       </div>
 
-      <div className="mt-3 flex justify-between">
-        {/* Vector */}
-        <>{role === "seller" ? <SellerVector /> : <BuyerVector />}</>
+      <form
+        onSubmit={onSubmit}
+        className="flex flex-col"
+      >
+        <ul>
+          {scenario.myProjects.map((project) => {
+            const projectValue = getProjectValue(project, roleId);
 
-        {/* Credits */}
-        <div className="flex gap-x-2 mt-2">
-          {/* Biodiversity */}
-          <div className="relative">
-            <span className="absolute -right-1 top-0 text-[10px] text-black font-bold border border-black rounded-full bg-white w-[14px] h-[14px] flex justify-center items-center">
-              2
-            </span>
-            <BiodiversityIconGray />
-          </div>
-          {/* Nutrients */}
-          <div className="relative">
-            <span className="absolute -right-1 top-0 text-[10px] text-black font-bold border border-black rounded-full bg-white w-[14px] h-[14px] flex justify-center items-center">
-              2
-            </span>
-            <NutrientsIcon />
-          </div>
-        </div>
+            return (
+              <li
+                key={project.title + project.subtitle}
+                className={classNames(
+                  'mt-3',
+                  scenario.options.setMyPrice && project.isInactive ? 'opacity-30' : '',
+                )}
+              >
+                {!!scenario.myProjects.length && !!project.subtitle && (
+                  <span className="flex justify-end text-sm underline">
+                    {project.subtitle}
+                  </span>
+                )}
+                <div className="flex gap-x-3 justify-between items-center">
+                  {/* Vector */}
+                  {!project.costPerCredit && (
+                    roleId === "seller" ? <SellerVector /> : <BuyerVector />
+                  )}
 
-        {/* Project Cost */}
-        <p className="font-light mt-2">£{projectCost}</p>
+                  {/* Credits */}
+                  <div className="flex gap-x-2">
+                    <ProductCount
+                      productCount={project.products.biodiversity}
+                      costPerCredit={project.costPerCredit}
+                      Icon={<BiodiversityIconGray />}
+                    />
+                    <ProductCount
+                      productCount={project.products.nutrients}
+                      costPerCredit={project.costPerCredit}
+                      Icon={<NutrientsIcon />}
+                    />
+                  </div>
 
-        {/* Form */}
-        <form
-          className="space-y-4 flex flex-col items-end mt-1"
-          onSubmit={onButtonClick}
-        >
-          <input
-            type="text"
-            placeholder="Enter offer..."
-            className="w-[116px] text-sm text-center inline-block rounded-lg py-2 bg-[#e8e8e8]"
-            value={price}
-          />
-          <div className="relative w-[71px]">
-            {stage === data?.options.allow_button_click && (
-              <span className="flex h-3 w-3 absolute right-0 -top-1">
+                  {/* Project Value */}
+                  <p className="font-light">£{projectValue.toLocaleString()}</p>
+
+                  <div className="flex-1 max-w-[50%]">
+                    <Input
+                      project={project}
+                      populate={scenario.options.setMyPrice && !project.isInactive}
+                      name={INPUT_NAME}
+                    />
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+        <div className="flex items-center mt-3">
+          {scenario.options.showDivisibleInput && (
+            <label
+              className={classNames(
+                'flex',
+                isDivisibleInputEnabled ? 'cursor-pointer' : ''
+              )}
+            >
+              <input
+                required type="checkbox"
+                disabled={!isDivisibleInputEnabled}
+              />
+              <span className="ml-2">Divisible</span>
+            </label>
+          )}
+          <div className="relative w-[100px] ml-auto">
+            {isFormEnabled && (
+              <span className="flex h-3 w-3 absolute -right-1 -top-1">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
               </span>
             )}
             <button
               type="submit"
-              disabled={stage !== data?.options.allow_button_click}
-              className="w-full rounded-lg bg-[#848484] hover:bg-black cursor-pointer text-white text-xs py-2"
+              disabled={!isFormEnabled}
+              className={classNames(
+                'w-full rounded-lg bg-[#848484] text-white text-xs py-2',
+                isFormEnabled ? 'hover:bg-black cursor-pointer' : '',
+              )}
             >
               Submit
             </button>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </motion.div>
   );
 };

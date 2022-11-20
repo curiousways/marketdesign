@@ -1,81 +1,103 @@
-import Buyer from "./Buyer";
-import Seller from "./Seller";
 import BuyerLost from "./BuyerLost";
 import SellerLost from "./SellerLost";
 
-import { Data, Seller as SellerType, Buyer as BuyerType } from "@/types/index";
+import { WalkthroughScenario, WalkthroughProject} from "@/types/walkthrough";
+import { RoleId } from "@/types/roles";
+import Project from "./Project";
+import { useWalkthroughContext } from "@/context/WalkthroughContext";
+import { isMyProject } from "@/utils/walkthroughs";
 
 type Props = {
-  buyers: BuyerType[];
-  sellers: SellerType[];
-  stage?: number;
-  data?: Data;
+  buyerProjects: WalkthroughProject[];
+  sellerProjects: WalkthroughProject[];
+  stage: number;
+  data: WalkthroughScenario;
   type?: "winners" | "losers";
+  roleId: RoleId;
 };
 
+/**
+ * Sort to bring "my projects" to the top of the list.
+ */
+const sortMyProjects = (
+  scenario: WalkthroughScenario,
+  allProjects: WalkthroughProject[],
+) => (
+  allProjects.sort((a, b) => (
+    Number(isMyProject(scenario, b) ?? 0) - Number(isMyProject(scenario, a) ?? 0)
+  ))
+);
+
 const ParticipantsList = ({
-  buyers,
-  sellers,
+  buyerProjects,
+  sellerProjects,
   stage,
   data,
+  roleId,
   type = "winners",
 }: Props) => {
+  const { scenario } = useWalkthroughContext();
+  const sortedBuyerProjects = sortMyProjects(scenario, buyerProjects);
+  const sortedSellerProjects = sortMyProjects(scenario, sellerProjects);
+
   return (
-    <>
+    <div className="z-10 space-y-5">
       {type === "winners" && (
         <>
           {/* Sellers */}
-          <div className="space-y-5">
-            {sellers?.map((seller) => (
-              <Seller
-                key={seller.id}
-                stage={stage as number}
-                seller={seller}
-                options={data?.options as any}
-              />
-            ))}
-          </div>
+          {sortedSellerProjects.map((project) => (
+            <Project
+              key={project.title + project.subtitle}
+              projectRoleId="seller"
+              stage={stage}
+              project={project}
+              options={data.options}
+              roleId={roleId}
+            />
+          ))}
 
           {/* Buyers */}
-          <div className="space-y-5">
-            {buyers?.map((buyer) => (
-              <Buyer
-                key={buyer.id}
-                stage={stage as number}
-                buyer={buyer}
-                options={data?.options as any}
-              />
-            ))}
-          </div>
+          {sortedBuyerProjects.map((project) => (
+            <Project
+            key={project.title + project.subtitle}
+              projectRoleId="buyer"
+              stage={stage}
+              project={project}
+              options={data.options}
+              roleId={roleId}
+            />
+          ))}
         </>
       )}
 
       {type === "losers" && (
-        <div className="space-y-2">
+        <div className="px-2">
           {/* Sellers */}
-          <div className="space-y-2">
-            {sellers?.map((seller) => (
+          {sortedSellerProjects.map((project) => (
+            <div
+            key={project.title + project.subtitle}
+              className="mb-2"
+            >
               <SellerLost
-                key={seller.id}
-                seller={seller}
-                options={data?.options as any}
+                project={project}
               />
-            ))}
-          </div>
+            </div>
+          ))}
 
           {/* Buyers */}
-          <div className="space-y-2">
-            {buyers?.map((buyer) => (
+          {sortedBuyerProjects.map((project) => (
+            <div
+              key={project.title + project.subtitle}
+              className="mb-2"
+            >
               <BuyerLost
-                key={buyer.id}
-                buyer={buyer}
-                options={data?.options as any}
+                project={project}
               />
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       )}
-    </>
+    </div>
   );
 };
 

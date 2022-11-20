@@ -1,38 +1,42 @@
 import { motion } from "framer-motion";
 
-import { Data } from "@/types/index";
+import { WalkthroughMarketState } from "@/types/walkthrough";
 import { fadeInDown } from "@/utils/animations";
+import { useWalkthroughContext } from "@/context/WalkthroughContext";
 
-type Props = {
-  stage: number;
-  data: Data | undefined;
-};
+const getOverlayText = (marketState: WalkthroughMarketState) => {
+  if (marketState === WalkthroughMarketState.calculating_winners) {
+    return 'Determining Market Winners';
+  }
 
-const LoadingOverlay = ({ stage, data }: Props) => {
+  if (marketState === WalkthroughMarketState.distributing_surpluss) {
+    return 'Distributing Market Surplus';
+  }
+
+  if (marketState === WalkthroughMarketState.calculating_final_payments) {
+    return 'Calculating Final Payments';
+  }
+}
+
+const LoadingOverlay = () => {
+  const { marketState } = useWalkthroughContext();
+  const overlayText = getOverlayText(marketState);
+
+  if (!overlayText) {
+    return null;
+  }
+
   return (
     <motion.div
       variants={fadeInDown}
       initial="hidden"
       whileInView="visible"
-      className="absolute top-0 left-0 w-full h-full bg-black/70 z-10 flex justify-center items-center"
+      className="absolute top-0 left-0 w-full h-full bg-black/70 flex justify-center items-center"
     >
       <div className="flex flex-col items-center">
-        {stage === data?.options.show_calculating_winners && (
-          <p className="text-center text-white text-2xl font-bold">
-            Determining Market Winners
-          </p>
-        )}
-        {stage === data?.options.show_distributing_surplus && (
-          <p className="text-center text-white text-2xl font-bold">
-            Distributing Market Surplus
-          </p>
-        )}
-
-        {stage === data?.options.show_calculating_final && (
-          <p className="text-center text-white text-2xl font-bold">
-            Calculating Final Payments
-          </p>
-        )}
+        <p className="text-center text-white text-2xl font-bold">
+          {overlayText}
+        </p>
 
         <div className="lds-ellipsis inline-block relative w-[80px] h-[80px]">
           <div className="bg-green-light absolute top-[33px] left-[8px] w-[15px] h-[15px] rounded-full"></div>

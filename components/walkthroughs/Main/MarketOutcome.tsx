@@ -4,22 +4,37 @@ import HammerIcon from "../icons/HammerIcon";
 import BalanceIcon from "../icons/BalanceIcon";
 import CartPlus from "../icons/CartPlus";
 import PoundcashTag from "../icons/PoundcashTag";
+import { WalkthroughMarketState, WalkthroughProject } from "@/types/walkthrough";
+import { useWalkthroughContext } from "@/context/WalkthroughContext";
+import OfferIcon from "../icons/OfferIcon";
+import PoundIcon from "../icons/PoundIcon";
 
 type Props = {
-  stage: number;
-  options: {
-    [key: string]: any;
-  };
   className?: string;
+  buyerProjects: WalkthroughProject[];
+  sellerProjects: WalkthroughProject[];
 };
 
-const MarketOutcome = ({ stage, options, className = "" }: Props) => {
-  const { show_balanced_market } = options;
+const sumProjectCosts = (
+  getProjectCost: (project: WalkthroughProject) => number,
+  projects: WalkthroughProject[]
+) => (
+  projects.reduce((acc, project) => acc + getProjectCost(project), 0)
+);
+
+const MarketOutcome = ({
+  className = "",
+  buyerProjects,
+  sellerProjects,
+}: Props) => {
+  const { marketState, getProjectCost } = useWalkthroughContext();
+  const totalBids = sumProjectCosts(getProjectCost, buyerProjects);
+  const totalOffers = sumProjectCosts(getProjectCost, sellerProjects);
 
   return (
     <div
       className={classNames(
-        "bg-blue-light px-10 py-5 rounded-lg flex items-center gap-x-12 min-w-[736px]",
+        "bg-blue-light px-10 py-5 rounded-lg flex items-center gap-x-12",
         className
       )}
     >
@@ -113,19 +128,19 @@ const MarketOutcome = ({ stage, options, className = "" }: Props) => {
             {/* Offer */}
             <div className="text-center text-sm relative -mt-2">
               <p className="text-white">Total Bids</p>
-              <p className="text-white">£{options.total_bids}</p>
+              <p className="text-white">£{totalBids.toLocaleString()}</p>
             </div>
           </div>
 
           {/* Total Offers */}
           <div className="bg-green-light rounded-lg px-1 pb-1 w-[95px]">
             <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white shadow-custom">
-              <HammerIcon />
+              <OfferIcon />
             </div>
 
             <div className="text-center text-sm relative -mt-2">
               <p className="text-white">Total Offers</p>
-              <p className="text-white">£{options.total_offers}</p>
+              <p className="text-white">£{totalOffers.toLocaleString()}</p>
             </div>
           </div>
         </div>
@@ -133,17 +148,17 @@ const MarketOutcome = ({ stage, options, className = "" }: Props) => {
         {/* Surplus */}
         <div className="bg-white rounded-lg px-1 w-[95px]">
           <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white shadow-custom">
-            <HammerIcon />
+            <PoundIcon />
           </div>
 
           <div className="text-center text-sm relative -mt-2">
             <p className="text-light-grey">Surplus</p>
-            <p>£{options.surplus}</p>
+            <p>£{(totalBids - totalOffers).toLocaleString()}</p>
           </div>
         </div>
 
         {/* Balance */}
-        {stage >= show_balanced_market && (
+        {marketState === WalkthroughMarketState.solved && (
           <div className="bg-white rounded-lg px-1 w-[95px]">
             <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white shadow-custom">
               <BalanceIcon />

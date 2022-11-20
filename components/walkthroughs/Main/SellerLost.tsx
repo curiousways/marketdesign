@@ -1,20 +1,19 @@
-import { Seller } from "@/types/index";
+import { useWalkthroughContext } from "@/context/WalkthroughContext";
+import { WalkthroughProject } from "@/types/walkthrough";
 
 type Props = {
-  seller: Seller;
-  options: {
-    [key: string]: any;
-  };
+  project: WalkthroughProject;
 };
-const SellerLost = ({ seller, options }: Props) => {
-  const { offer, products, title } = seller;
-  const {} = options;
+const SellerLost = ({ project }: Props) => {
+  const { products, title } = project;
+  const { getProjectCost } = useWalkthroughContext();
+  const projectCost = getProjectCost(project);
 
   return (
     <div className="bg-green-light opacity-80 flex items-center justify-between gap-x-5 max-w-[300px] rounded-lg py-2 px-1">
       <div>
         <p>{title}</p>
-        <p>{offer}</p>
+        <p>{projectCost.toLocaleString()}</p>
       </div>
 
       <div className="flex gap-x-2">
