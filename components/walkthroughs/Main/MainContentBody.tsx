@@ -73,17 +73,13 @@ const MainContentBody = () => {
       return projects;
     }
 
-    if (marketState >= WalkthroughMarketState.showing_winners) {
-      return getWinningProjects(projects, projectRoleId);
-    }
-
     return getAllProjects(projects, projectRoleId);
   };
 
   // Show the "return to index" link for the last stage of the last scenario.
   if (stage === scenario.options.stages && !getNextScenarioId(scenarioId)) {
     return (
-      <div className="flex items-center">
+      <div className="flex items-center h-full">
         <Link href={`/how-it-works#${roleId}`}>
           <a className="text-xl font-bold">Return to Walkthrough index</a>
         </Link>
@@ -94,57 +90,35 @@ const MainContentBody = () => {
   if (scenario.options.showParticipants) {
     return (
       <>
-        {/* Losers list */}
+        <motion.div
+          key="losing-participants"
+          variants={fadeInDown}
+          initial="hidden"
+          animate="visible"
+        >
+          <ParticipantsList
+            sellerProjects={getActiveProjects(scenario.sellerProjects, 'seller')}
+            buyerProjects={getActiveProjects(scenario.buyerProjects, 'buyer')}
+            losingSellerProjects={getLosingProjects(scenario.sellerProjects, 'seller')}
+            losingBuyerProjects={getLosingProjects(scenario.buyerProjects, 'buyer')}
+            data={scenario}
+            roleId={roleId}
+          />
+        </motion.div>
+
         {marketState >= WalkthroughMarketState.showing_winners && (
           <motion.div
-            key="losing-participants"
+            key="market-outcome"
             variants={fadeInDown}
             initial="hidden"
             animate="visible"
           >
-            <ParticipantsList
-              sellerProjects={getLosingProjects(scenario.sellerProjects, 'seller')}
-              buyerProjects={getLosingProjects(scenario.buyerProjects, 'buyer')}
-              type="losers"
-              stage={stage}
-              data={scenario}
-              roleId={roleId}
+            <MarketOutcome
+              sellerProjects={getWinningProjects(scenario.sellerProjects, 'seller')}
+              buyerProjects={getWinningProjects(scenario.buyerProjects, 'buyer')}
             />
           </motion.div>
         )}
-
-        <div className="space-y-5">
-          <motion.div
-            key="all-participants"
-            variants={container}
-            initial="hidden"
-            animate="visible"
-            className="space-y-5"
-          >
-            <ParticipantsList
-              sellerProjects={getActiveProjects(scenario.sellerProjects, 'seller')}
-              buyerProjects={getActiveProjects(scenario.buyerProjects, 'buyer')}
-              stage={stage}
-              data={scenario}
-              roleId={roleId}
-            />
-          </motion.div>
-
-          {/* Market Outcome */}
-          {marketState >= WalkthroughMarketState.showing_winners && (
-            <motion.div
-              key="market-outcome"
-              variants={fadeInDown}
-              initial="hidden"
-              animate="visible"
-            >
-              <MarketOutcome
-                sellerProjects={getWinningProjects(scenario.sellerProjects, 'seller')}
-                buyerProjects={getWinningProjects(scenario.buyerProjects, 'buyer')}
-              />
-            </motion.div>
-          )}
-        </div>
       </>
     );
   };
