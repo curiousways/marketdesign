@@ -29,6 +29,21 @@ const faqs = [
   },
 ];
 
+const ChevronIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-7">
+    <title>Chevron Down</title>
+    <path
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="48"
+      d="M112 184l144 144 144-144"
+      className="text-green-dark"
+    />
+  </svg>
+);
+
 const Faqs = () => {
   return (
     <>
@@ -38,7 +53,7 @@ const Faqs = () => {
         <Accordion.Root type="multiple" className="space-y-5 overflow-auto">
           {faqs.map((faq, i) => (
             <Accordion.Item
-              key={i}
+              key={faq.question}
               value={`question-${i + 1}`}
               className="overflow-hidden cursor-pointer border-b border-flox-light-blue"
             >
@@ -61,18 +76,3 @@ const Faqs = () => {
 };
 
 export default Faqs;
-
-const ChevronIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-7">
-    <title>Chevron Down</title>
-    <path
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="48"
-      d="M112 184l144 144 144-144"
-      className="text-green-dark"
-    />
-  </svg>
-);

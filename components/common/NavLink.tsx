@@ -16,7 +16,7 @@ const NavLink = ({ children, href }: NavLinkProps) => {
 
   const handleClick = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    router.push(href);
+    void router.push(href);
   };
 
   return (

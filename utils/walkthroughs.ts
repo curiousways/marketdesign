@@ -12,14 +12,6 @@ import {
 
 const SCENARIO_ID_DELIMITER = '-';
 
-export const isValidScenarioId = (
-  maybeScenarioId?: string,
-): maybeScenarioId is string =>
-  !!maybeScenarioId && getAllScenarioIds().includes(maybeScenarioId);
-
-export const isValidRoleId = (maybeRoleId?: string): maybeRoleId is RoleId =>
-  Object.keys(roles).includes(maybeRoleId as RoleId);
-
 /**
  * Create an ID to identify and subsequently locate the scenario.
  *
@@ -38,6 +30,30 @@ export const createScenarioId = (
   scenarioIndex = 0,
 ) =>
   [roleId, walkthroughIndex + 1, scenarioIndex + 1].join(SCENARIO_ID_DELIMITER);
+
+export const getAllScenarioIds = (): string[] => {
+  const scenarioIds: string[] = [];
+
+  walkthroughsByRole.forEach(({ roleId, walkthroughs }) => {
+    walkthroughs.forEach((walkthrough, walkthroughIndex) => {
+      walkthrough.scenarios.forEach((_, scenarioIndex) => {
+        scenarioIds.push(
+          createScenarioId(roleId, walkthroughIndex, scenarioIndex),
+        );
+      });
+    });
+  });
+
+  return scenarioIds;
+};
+
+export const isValidScenarioId = (
+  maybeScenarioId?: string,
+): maybeScenarioId is string =>
+  !!maybeScenarioId && getAllScenarioIds().includes(maybeScenarioId);
+
+export const isValidRoleId = (maybeRoleId?: string): maybeRoleId is RoleId =>
+  Object.keys(roles).includes(maybeRoleId as RoleId);
 
 /**
  * Parse a scenario ID to extract all the data about the scenario.
@@ -87,22 +103,6 @@ export const parseScenarioId = (
     walkthroughIndex,
     scenarioIndex,
   };
-};
-
-export const getAllScenarioIds = (): string[] => {
-  const scenarioIds: string[] = [];
-
-  walkthroughsByRole.forEach(({ roleId, walkthroughs }) => {
-    walkthroughs.forEach((walkthrough, walkthroughIndex) => {
-      walkthrough.scenarios.forEach((_, scenarioIndex) => {
-        scenarioIds.push(
-          createScenarioId(roleId, walkthroughIndex, scenarioIndex),
-        );
-      });
-    });
-  });
-
-  return scenarioIds;
 };
 
 export const getNextScenarioId = (scenarioId: string): string | undefined => {

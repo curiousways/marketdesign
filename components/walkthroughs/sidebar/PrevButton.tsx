@@ -2,13 +2,13 @@ import { classNames } from '@/utils/index';
 
 type Props = {
   onClick: () => void;
-  stage: number;
   hideButton: boolean;
 };
 
-const PrevButton = ({ onClick, stage, hideButton }: Props) => {
+const PrevButton = ({ onClick, hideButton }: Props) => {
   return (
     <button
+      type="button"
       className={classNames(
         'w-10 h-10 bg-green-dark rounded-full flex justify-center items-center',
         hideButton ? 'invisible' : '',

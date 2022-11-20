@@ -1,4 +1,4 @@
-import { Role, RoleId } from './roles';
+import { RoleId } from './roles';
 
 export interface WalkthroughHighlightedMapRegions {
   buyer?: number;

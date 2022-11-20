@@ -36,7 +36,7 @@ const getProjectValue = (project: WalkthroughProject, roleId: RoleId) => {
 };
 
 const Details = () => {
-  const { stage, scenario, roleId, goToNextStage, setMarketState } =
+  const { scenario, roleId, goToNextStage, setMarketState } =
     useWalkthroughContext();
 
   const { isFormEnabled } = scenario.options;
@@ -126,6 +126,7 @@ const Details = () => {
         <div className="flex items-center mt-3">
           {scenario.options.showDivisibleInput && (
             <label
+              htmlFor="is-divisible"
               className={classNames(
                 'flex',
                 isDivisibleInputEnabled ? 'cursor-pointer' : '',
@@ -134,6 +135,7 @@ const Details = () => {
               <input
                 required
                 type="checkbox"
+                name="is-divisible"
                 disabled={!isDivisibleInputEnabled}
               />
               <span className="ml-2">Divisible</span>

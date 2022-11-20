@@ -71,6 +71,7 @@ const commmonRules = {
   'eslint-comments/no-unused-enable': 'off',
   'no-param-reassign': 'off',
   'jsx-a11y/anchor-is-valid': 'off', // does not play well with Next Link
+  'consistent-return': 'off', // clashes with TS
 };
 
 module.exports = {
@@ -121,8 +122,10 @@ module.exports = {
         '@typescript-eslint/no-unnecessary-type-arguments': 'error',
         '@typescript-eslint/prefer-string-starts-ends-with': 'error',
         '@typescript-eslint/switch-exhaustiveness-check': 'error',
+        '@typescript-eslint/no-unused-vars': 'error',
         '@typescript-eslint/unified-signatures': 'error',
         '@typescript-eslint/naming-convention': 'off',
+        '@typescript-eslint/no-unsafe-argument': 'off',
         '@typescript-eslint/no-misused-promises': [
           'error',
           { checksVoidReturn: false },

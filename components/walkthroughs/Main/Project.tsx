@@ -33,7 +33,6 @@ type Props = {
   project: WalkthroughProject;
   projectRoleId: 'buyer' | 'seller';
   options: WalkthroughOptions;
-  roleId: RoleId;
   isLoser: boolean;
   loserIndex?: number;
   className?: string;

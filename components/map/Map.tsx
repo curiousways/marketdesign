@@ -1,5 +1,4 @@
 import { FunctionComponent } from 'react';
-import { RoleId } from '@/types/roles';
 import { WalkthroughHighlightedMapRegions } from '@/types/walkthrough';
 
 type Props = {

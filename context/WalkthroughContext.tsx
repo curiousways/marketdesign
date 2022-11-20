@@ -107,7 +107,7 @@ export const WalkthroughProvider: FunctionComponent<
     }
 
     if (nextScenarioId) {
-      router.push(`/how-it-works/${nextScenarioId}`);
+      void router.push(`/how-it-works/${nextScenarioId}`);
     }
   }, [stage, maxStage, nextScenarioId, router]);
 

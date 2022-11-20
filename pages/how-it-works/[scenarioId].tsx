@@ -27,9 +27,7 @@ const HowItWorksScenario: NextPage<HowItWorksScenarioProps> = ({
   </WalkthroughProvider>
 );
 
-export const getStaticPaths: GetStaticPaths<
-  HowItWorksScenarioParams
-> = async () => ({
+export const getStaticPaths: GetStaticPaths<HowItWorksScenarioParams> = () => ({
   fallback: false,
   paths: getAllScenarioIds().map((scenarioId) => ({
     params: {
@@ -41,7 +39,7 @@ export const getStaticPaths: GetStaticPaths<
 export const getStaticProps: GetStaticProps<
   HowItWorksScenarioProps,
   HowItWorksScenarioParams
-> = async ({ params }) => {
+> = ({ params }) => {
   const { scenarioId } = params ?? {};
 
   // 404 if the scenario ID is invalid.

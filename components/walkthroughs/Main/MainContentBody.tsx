@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 
 import Link from 'next/link';
-import { container, fadeInDown } from '@/utils/animations';
+import { fadeInDown } from '@/utils/animations';
 import { useWalkthroughContext } from '@/context/WalkthroughContext';
 import {
   WalkthroughMarketState,

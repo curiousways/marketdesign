@@ -9,7 +9,7 @@ import Details from './Details';
 import Navigation from './Navigation';
 
 const SideBar = () => {
-  const { scenario, stage, marketState, goToNextMarketState } =
+  const { scenario, marketState, goToNextMarketState } =
     useWalkthroughContext();
 
   const showSolveMarketBtn = marketState === WalkthroughMarketState.solvable;

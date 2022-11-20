@@ -34,7 +34,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange);
     };
-  }, [router.events]);
+  }, [router.events, fathom, siteUrlhttpsStripped]);
 
   return (
     <>
