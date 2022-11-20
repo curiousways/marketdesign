@@ -32,6 +32,9 @@ type Props = {
   isLoser: boolean;
   loserIndex?: number;
   className?: string;
+  isMyFirstProject: boolean;
+  isMyLastProject: boolean;
+  isMySubsequentProject: boolean;
 };
 
 const getAdjustedCost = (
@@ -54,27 +57,11 @@ const calculatePayment = (
   return adjustedCost + discountOrBonus;
 }
 
-const isMyFirstProject = (
-  project: WalkthroughProject,
-  scenario: WalkthroughScenario,
-) => {
-  const projectIndex = scenario.myProjects.indexOf(project);
-
-  return projectIndex === 0;
-}
-
-const isMyLastProject = (
-  project: WalkthroughProject,
-  scenario: WalkthroughScenario,
-) => {
-  const projectIndex = scenario.myProjects.indexOf(project);
-
-  return projectIndex + 1 === scenario.myProjects.length;
-}
-
 const getMyProjectStyles = (
   project: WalkthroughProject,
   scenario: WalkthroughScenario,
+  isMyFirstProject: boolean,
+  isMyLastProject: boolean,
 ): CSSProperties => {
   const borderRadius = '0.5rem';
   const borderWidth = '2px';
@@ -94,10 +81,7 @@ const getMyProjectStyles = (
     borderLeftWidth: borderWidth,
   };
 
-  const isFirst = isMyFirstProject(project, scenario);
-  const isLast = isMyLastProject(project, scenario);
-
-  if (isFirst) {
+  if (isMyFirstProject) {
     Object.assign(myProjectStyles, {
       borderTopColor: borderColor,
       borderTopStyle: borderStyle,
@@ -107,7 +91,7 @@ const getMyProjectStyles = (
     });
   }
 
-  if (isLast) {
+  if (isMyLastProject) {
     Object.assign(myProjectStyles, {
       borderBottomColor: borderColor,
       borderBottomStyle: borderStyle,
@@ -116,7 +100,7 @@ const getMyProjectStyles = (
       borderBottomRightRadius: borderRadius,
     });
 
-    if (!isFirst) {
+    if (!isMyFirstProject) {
       Object.assign(myProjectStyles, {
         marginTop: 0,
       });
@@ -265,6 +249,9 @@ const Project = ({
   isLoser,
   loserIndex,
   className = "",
+  isMyFirstProject,
+  isMyLastProject,
+  isMySubsequentProject,
 }: Props) => {
   const { marketState, scenario, getProjectCost } = useWalkthroughContext();
   const { discountOrBonus, products, accepted } = project;
@@ -277,11 +264,6 @@ const Project = ({
   const showingWinners = marketState >= WalkthroughMarketState.showing_winners;
   const showLoserStyles = isLoser && showingWinners;
   const isNotAccepted = showingWinners && !acceptedCost;
-
-  const isMySubsequentProject = (
-    isMyProject(scenario, project) &&
-    !isMyFirstProject(project, scenario)
-  );
 
   const rowAnimation = useRowAnimation(
     showLoserStyles,
@@ -323,7 +305,12 @@ const Project = ({
       >
         <motion.div
           animate={projectAnimation}
-          style={getMyProjectStyles(project, scenario)}
+          style={getMyProjectStyles(
+            project,
+            scenario,
+            isMyFirstProject,
+            isMyLastProject,
+          )}
           className={classNames(
             "absolute flex overflow-hidden left-0 top-0",
             className,
