@@ -227,7 +227,6 @@ export const getGenericScenario0_0: GetWalkthroughScenario = (stage: number) => 
   fixedMarketState: getMarketState(stage),
   options: {
     stages: 22,
-    setMyPrice: false,
     isFormEnabled: false,
     showDetailsWidget: false,
     showCosts: true,

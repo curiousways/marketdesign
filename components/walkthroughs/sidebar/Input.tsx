@@ -4,15 +4,30 @@ import { useWalkthroughContext } from "@/context/WalkthroughContext";
 
 type Props = {
   project: WalkthroughProject;
-  populate: boolean;
   name: string;
 }
 
-const Input: FunctionComponent<Props> = ({ project, populate, name }: Props) => {
+const Input: FunctionComponent<Props> = ({
+  project,
+  name
+}: Props) => {
   const { marketState, setProjectCost, getProjectCost } = useWalkthroughContext();
+  const value = getProjectCost(project);
 
   const onSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setProjectCost(project, Number(event.target.value));
+  };
+
+  const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { target } = event;
+
+    if (Number(event.target.value) === value) {
+      target.setCustomValidity('');
+
+      return;
+    }
+
+    target.setCustomValidity(`Please enter a value of ${value} to proceed`);
   };
 
   if (Array.isArray(project.cost)) {
@@ -22,8 +37,8 @@ const Input: FunctionComponent<Props> = ({ project, populate, name }: Props) => 
         className="w-full text-sm inline-block rounded-lg py-2 px-3 bg-extra-light-grey"
         name={name}
         onChange={onSelectChange}
-        disabled={marketState > WalkthroughMarketState.solvable}
-        value={getProjectCost(project)}
+        disabled={marketState >= WalkthroughMarketState.solvable}
+        value={value}
       >
         <option />
         {project.cost.map((cost) => (
@@ -41,12 +56,12 @@ const Input: FunctionComponent<Props> = ({ project, populate, name }: Props) => 
   return (
     <input
       required
-      disabled
+      onChange={onInputChange}
+      disabled={marketState >= WalkthroughMarketState.solvable}
       type="text"
       placeholder="Enter offer..."
       className="w-full text-sm inline-block rounded-lg py-2 px-3 bg-extra-light-grey"
       name={name}
-      defaultValue={populate ? (project.costPerCredit ?? project.cost) : ''}
     />
   );
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 
 import { fadeIn } from "@/utils/animations";
@@ -13,8 +13,6 @@ import { WalkthroughMarketState, WalkthroughProject } from "@/types/walkthrough"
 import Input from "./Input";
 import { RoleId } from "@/types/roles";
 import ProductCount from "./ProductCount";
-
-const INPUT_NAME = 'project-cost';
 
 const getProjectValue = (project: WalkthroughProject, roleId: RoleId) => {
   if (project.costPerCredit) {
@@ -34,7 +32,7 @@ const getProjectValue = (project: WalkthroughProject, roleId: RoleId) => {
 
 const Details = () => {
   const {
-    stage,
+    marketState,
     scenario,
     roleId,
     goToNextStage,
@@ -43,6 +41,7 @@ const Details = () => {
 
   const { isFormEnabled } = scenario.options;
   const isDivisibleInputEnabled = isFormEnabled && !!scenario.options.allowDivision;
+  const isMarketSolvable = marketState >= WalkthroughMarketState.solvable;
 
   // Proceed to next market state when submit button is clicked.
   const onSubmit = (e: React.FormEvent) => {
@@ -51,6 +50,14 @@ const Details = () => {
     setMarketState(WalkthroughMarketState.solvable);
   };
 
+  useEffect(() => {
+    // For the case where the user submits the form and puts the market into a
+    // solveable state, then clicks the back button.
+    if (isFormEnabled) {
+      setMarketState(WalkthroughMarketState.pending);
+    }
+  }, [isFormEnabled, setMarketState]);
+
   return (
     <motion.div
       variants={fadeIn}
@@ -58,7 +65,6 @@ const Details = () => {
       animate="visible"
       exit="hidden"
       layout
-      // onAnimationComplete={() => !isPresent && safeToRemove()}
       className="border-2 border-black px-5 py-4 rounded-lg w-full"
     >
       <div className="text-black text-xl">
@@ -73,7 +79,7 @@ const Details = () => {
         className="flex flex-col"
       >
         <ul>
-          {scenario.myProjects.map((project) => {
+          {scenario.myProjects.map((project, projectIndex) => {
             const projectValue = getProjectValue(project, roleId);
 
             return (
@@ -81,7 +87,7 @@ const Details = () => {
                 key={project.title + project.subtitle}
                 className={classNames(
                   'mt-3',
-                  scenario.options.setMyPrice && project.isInactive ? 'opacity-30' : '',
+                  isMarketSolvable && project.isInactive ? 'opacity-30' : '',
                 )}
               >
                 {!!scenario.myProjects.length && !!project.subtitle && (
@@ -115,8 +121,7 @@ const Details = () => {
                   <div className="flex-1 max-w-[50%]">
                     <Input
                       project={project}
-                      populate={scenario.options.setMyPrice && !project.isInactive}
-                      name={INPUT_NAME}
+                      name={`project-${projectIndex}-price`}
                     />
                   </div>
                 </div>
@@ -148,7 +153,7 @@ const Details = () => {
             )}
             <button
               type="submit"
-              disabled={!isFormEnabled}
+              disabled={!isFormEnabled && !isMarketSolvable}
               className={classNames(
                 'w-full rounded-lg bg-[#848484] text-white text-xs py-2',
                 isFormEnabled ? 'hover:bg-black cursor-pointer' : '',

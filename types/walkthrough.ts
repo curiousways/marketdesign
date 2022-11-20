@@ -2,7 +2,6 @@ import { RoleId } from "./roles";
 
 export interface WalkthroughOptions {
   stages: number;
-  setMyPrice: boolean;
   isFormEnabled: boolean;
   allowDivision?: boolean,
   showDetailsWidget: boolean;
