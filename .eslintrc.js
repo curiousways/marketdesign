@@ -76,6 +76,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:jsx-a11y/recommended',
     'plugin:prettier/recommended',
+    'plugin:@next/next/recommended',
     'next/core-web-vitals',
   ],
   plugins: ['jsx-a11y', 'import'],
