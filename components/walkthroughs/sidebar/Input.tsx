@@ -1,16 +1,22 @@
-import React, { ChangeEvent, FunctionComponent } from "react";
-import { WalkthroughMarketState, WalkthroughProject } from "@/types/walkthrough";
-import { useWalkthroughContext } from "@/context/WalkthroughContext";
-import { classNames } from "@/utils/index";
-import { useEffect } from "react";
-import { useRef } from "react";
+import React, {
+  ChangeEvent,
+  FunctionComponent,
+  useEffect,
+  useRef,
+} from 'react';
+import {
+  WalkthroughMarketState,
+  WalkthroughProject,
+} from '@/types/walkthrough';
+import { useWalkthroughContext } from '@/context/WalkthroughContext';
+import { classNames } from '@/utils/index';
 
 type Props = {
   project: WalkthroughProject;
   name: string;
   animate: boolean;
   onChange: (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-}
+};
 
 const Input: FunctionComponent<Props> = ({
   project,
@@ -18,7 +24,8 @@ const Input: FunctionComponent<Props> = ({
   animate,
   onChange,
 }: Props) => {
-  const { marketState, setProjectCost, getProjectCost } = useWalkthroughContext();
+  const { marketState, setProjectCost, getProjectCost } =
+    useWalkthroughContext();
   const selectRef = useRef<HTMLSelectElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const value = getProjectCost(project);
@@ -34,9 +41,10 @@ const Input: FunctionComponent<Props> = ({
 
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
-    const msg = Number(event.target.value) === value
-      ? ''
-      : `Please enter a value of ${value} to proceed`;
+    const msg =
+      Number(event.target.value) === value
+        ? ''
+        : `Please enter a value of ${value} to proceed`;
 
     target.setCustomValidity(msg);
     onChange(event);
@@ -69,10 +77,7 @@ const Input: FunctionComponent<Props> = ({
       >
         <option />
         {project.cost.map((cost) => (
-          <option
-            key={cost}
-            value={cost}
-          >
+          <option key={cost} value={cost}>
             {cost}
           </option>
         ))}

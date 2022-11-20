@@ -1,19 +1,22 @@
-import BuyerLost from "./BuyerLost";
-import SellerLost from "./SellerLost";
-
-import { WalkthroughScenario, WalkthroughProject} from "@/types/walkthrough";
-import { RoleId } from "@/types/roles";
-import Project from "./Project";
-import { useWalkthroughContext } from "@/context/WalkthroughContext";
-import { isMyProject } from "@/utils/walkthroughs";
+import {
+  WalkthroughMarketState,
+  WalkthroughProject,
+  WalkthroughScenario,
+} from '@/types/walkthrough';
+import { useWalkthroughContext } from '@/context/WalkthroughContext';
+import {
+  findProjectIndex,
+  includesProject,
+  isMyProject,
+} from '@/utils/walkthroughs';
+import Project from './Project';
 
 type Props = {
   buyerProjects: WalkthroughProject[];
   sellerProjects: WalkthroughProject[];
-  stage: number;
+  losingBuyerProjects: WalkthroughProject[];
+  losingSellerProjects: WalkthroughProject[];
   data: WalkthroughScenario;
-  type?: "winners" | "losers";
-  roleId: RoleId;
 };
 
 /**
@@ -21,83 +24,103 @@ type Props = {
  */
 const sortMyProjects = (
   scenario: WalkthroughScenario,
-  allProjects: WalkthroughProject[],
-) => (
-  allProjects.sort((a, b) => (
-    Number(isMyProject(scenario, b) ?? 0) - Number(isMyProject(scenario, a) ?? 0)
-  ))
-);
+  buyerProjects: WalkthroughProject[],
+  sellerProjects: WalkthroughProject[],
+  losingProjects: WalkthroughProject[],
+  showingWinners: boolean,
+) =>
+  [...sellerProjects, ...buyerProjects].sort((a, b) => {
+    const isLoserA = showingWinners && includesProject(a, losingProjects);
+    const isLoserB = showingWinners && includesProject(b, losingProjects);
+    const isMyProjectA = isMyProject(scenario, a);
+    const isMyProjectB = isMyProject(scenario, b);
+
+    return (
+      Number(isLoserB ?? 0) - Number(isLoserA ?? 0) ||
+      Number(isMyProjectB ?? 0) - Number(isMyProjectA ?? 0)
+    );
+  });
+
+const getMyActiveProjects = (
+  projects: WalkthroughProject[],
+  scenario: WalkthroughScenario,
+) => scenario.myProjects.filter((project) => projects.includes(project));
+
+const getIsMyFirstProject = (
+  projects: WalkthroughProject[],
+  project: WalkthroughProject,
+  scenario: WalkthroughScenario,
+) => {
+  const projectIndex = getMyActiveProjects(projects, scenario).indexOf(project);
+
+  return projectIndex === 0;
+};
+
+const getIsMyLastProject = (
+  projects: WalkthroughProject[],
+  project: WalkthroughProject,
+  scenario: WalkthroughScenario,
+) => {
+  const activeProjects = getMyActiveProjects(projects, scenario);
+  const projectIndex = getMyActiveProjects(projects, scenario).indexOf(project);
+
+  return projectIndex + 1 === activeProjects.length;
+};
 
 const ParticipantsList = ({
   buyerProjects,
   sellerProjects,
-  stage,
+  losingBuyerProjects,
+  losingSellerProjects,
   data,
-  roleId,
-  type = "winners",
 }: Props) => {
-  const { scenario } = useWalkthroughContext();
-  const sortedBuyerProjects = sortMyProjects(scenario, buyerProjects);
-  const sortedSellerProjects = sortMyProjects(scenario, sellerProjects);
+  const { scenario, marketState } = useWalkthroughContext();
+  const showingWinners = marketState >= WalkthroughMarketState.showing_winners;
+  const allLosingProjects = [...losingSellerProjects, ...losingBuyerProjects];
+  const sortedProjects = sortMyProjects(
+    scenario,
+    buyerProjects,
+    sellerProjects,
+    allLosingProjects,
+    showingWinners,
+  );
 
   return (
-    <div className="z-10 space-y-5">
-      {type === "winners" && (
-        <>
-          {/* Sellers */}
-          {sortedSellerProjects.map((project) => (
+    <ul>
+      {sortedProjects.map((project) => {
+        const isMyFirstProject = getIsMyFirstProject(
+          sortedProjects,
+          project,
+          scenario,
+        );
+        const isMyLastProject = getIsMyLastProject(
+          sortedProjects,
+          project,
+          scenario,
+        );
+
+        return (
+          <li key={project.title + project.subtitle}>
             <Project
-              key={project.title + project.subtitle}
-              projectRoleId="seller"
-              stage={stage}
+              projectRoleId={
+                includesProject(project, buyerProjects) ? 'buyer' : 'seller'
+              }
               project={project}
               options={data.options}
-              roleId={roleId}
+              isLoser={includesProject(project, allLosingProjects)}
+              loserIndex={findProjectIndex(project, allLosingProjects)}
+              isMyFirstProject={isMyFirstProject}
+              isMyLastProject={isMyLastProject}
+              isMySubsequentProject={
+                getMyActiveProjects(sortedProjects, scenario).includes(
+                  project,
+                ) && !isMyFirstProject
+              }
             />
-          ))}
-
-          {/* Buyers */}
-          {sortedBuyerProjects.map((project) => (
-            <Project
-            key={project.title + project.subtitle}
-              projectRoleId="buyer"
-              stage={stage}
-              project={project}
-              options={data.options}
-              roleId={roleId}
-            />
-          ))}
-        </>
-      )}
-
-      {type === "losers" && (
-        <div className="px-2">
-          {/* Sellers */}
-          {sortedSellerProjects.map((project) => (
-            <div
-            key={project.title + project.subtitle}
-              className="mb-2"
-            >
-              <SellerLost
-                project={project}
-              />
-            </div>
-          ))}
-
-          {/* Buyers */}
-          {sortedBuyerProjects.map((project) => (
-            <div
-              key={project.title + project.subtitle}
-              className="mb-2"
-            >
-              <BuyerLost
-                project={project}
-              />
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+          </li>
+        );
+      })}
+    </ul>
   );
 };
 

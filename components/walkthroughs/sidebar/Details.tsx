@@ -1,18 +1,21 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 
-import { fadeIn } from "@/utils/animations";
-import SellerVector from "@/components/walkthroughs/icons/SellerVector";
-import BuyerVector from "@/components/walkthroughs/icons/BuyerVector";
-import BiodiversityIconGray from "@/components/walkthroughs/icons/BiodiversityIcon";
-import NutrientsIcon from "@/components/walkthroughs/icons/NutrientsIcon";
-import { roles } from "data/roles";
-import { classNames } from "@/utils/index";
-import { useWalkthroughContext } from "@/context/WalkthroughContext";
-import { WalkthroughMarketState, WalkthroughProject } from "@/types/walkthrough";
-import Input from "./Input";
-import { RoleId } from "@/types/roles";
-import ProductCount from "./ProductCount";
+import { fadeIn } from '@/utils/animations';
+import SellerVector from '@/components/walkthroughs/icons/SellerVector';
+import BuyerVector from '@/components/walkthroughs/icons/BuyerVector';
+import BiodiversityIconGray from '@/components/walkthroughs/icons/BiodiversityIcon';
+import NutrientsIcon from '@/components/walkthroughs/icons/NutrientsIcon';
+import { roles } from 'data/roles';
+import { classNames } from '@/utils/index';
+import { useWalkthroughContext } from '@/context/WalkthroughContext';
+import {
+  WalkthroughMarketState,
+  WalkthroughProject,
+} from '@/types/walkthrough';
+import { RoleId } from '@/types/roles';
+import Input from './Input';
+import ProductCount from './ProductCount';
 
 const getProjectValue = (project: WalkthroughProject, roleId: RoleId) => {
   if (project.costPerCredit) {
@@ -28,29 +31,25 @@ const getProjectValue = (project: WalkthroughProject, roleId: RoleId) => {
   }
 
   return Math.min(...project.cost);
-}
+};
 
 const Details = () => {
-  const {
-    marketState,
-    scenario,
-    roleId,
-    goToNextStage,
-    setMarketState,
-  } = useWalkthroughContext();
+  const { marketState, scenario, roleId, goToNextStage, setMarketState } =
+    useWalkthroughContext();
 
   const { isFormEnabled } = scenario.options;
-  const isDivisibleInputEnabled = isFormEnabled && !!scenario.options.allowDivision;
+  const isDivisibleInputEnabled =
+    isFormEnabled && !!scenario.options.allowDivision;
   const isMarketSolvable = marketState >= WalkthroughMarketState.solvable;
-  const priceInputNames = scenario
-    .myProjects
-    .map((_, index) => `project-${index}-price`);
+  const priceInputNames = scenario.myProjects.map(
+    (_, index) => `project-${index}-price`,
+  );
 
   const formRef = useRef<HTMLFormElement>(null);
   const submitButtonRef = useRef<HTMLButtonElement>(null);
-  const [animatedPriceInputName, setAnimatedPriceInputName] = useState<string | undefined>(
-    priceInputNames[0]
-  );
+  const [animatedPriceInputName, setAnimatedPriceInputName] = useState<
+    string | undefined
+  >(priceInputNames[0]);
 
   // Proceed to next market state when submit button is clicked.
   const onSubmit = (e: React.FormEvent) => {
@@ -104,12 +103,7 @@ const Details = () => {
         <p>{roles[roleId].label}</p>
       </div>
 
-      <form
-        ref={formRef}
-        onSubmit={onSubmit}
-        onChange={console.log}
-        className="flex flex-col"
-      >
+      <form ref={formRef} onSubmit={onSubmit} className="flex flex-col">
         <ul>
           {scenario.myProjects.map((project, projectIndex) => {
             const projectValue = getProjectValue(project, roleId);
@@ -129,9 +123,8 @@ const Details = () => {
                 )}
                 <div className="flex gap-x-3 justify-between items-center">
                   {/* Vector */}
-                  {!project.costPerCredit && (
-                    roleId === "seller" ? <SellerVector /> : <BuyerVector />
-                  )}
+                  {!project.costPerCredit &&
+                    (roleId === 'seller' ? <SellerVector /> : <BuyerVector />)}
 
                   {/* Credits */}
                   <div className="flex gap-x-2">
@@ -154,7 +147,10 @@ const Details = () => {
                     <Input
                       project={project}
                       name={priceInputNames[projectIndex]}
-                      animate={isFormEnabled && animatedPriceInputName === priceInputNames[projectIndex]}
+                      animate={
+                        isFormEnabled &&
+                        animatedPriceInputName === priceInputNames[projectIndex]
+                      }
                       onChange={onInputChange}
                     />
                   </div>
@@ -166,13 +162,16 @@ const Details = () => {
         <div className="flex items-center mt-3">
           {scenario.options.showDivisibleInput && (
             <label
+              htmlFor="is-divisible"
               className={classNames(
                 'flex',
-                isDivisibleInputEnabled ? 'cursor-pointer' : ''
+                isDivisibleInputEnabled ? 'cursor-pointer' : '',
               )}
             >
               <input
-                required type="checkbox"
+                required
+                type="checkbox"
+                name="is-divisible"
                 disabled={!isDivisibleInputEnabled}
               />
               <span className="ml-2">Divisible</span>
@@ -185,10 +184,10 @@ const Details = () => {
               disabled={!isFormEnabled}
               className={classNames(
                 'w-full rounded-lg bg-[#848484] text-white text-xs py-2',
-                isFormEnabled
-                  ? 'hover:bg-black cursor-pointer'
+                isFormEnabled ? 'hover:bg-black cursor-pointer' : '',
+                isFormEnabled && !animatedPriceInputName
+                  ? 'animate-scale-large'
                   : '',
-                isFormEnabled && !animatedPriceInputName ? 'animate-scale-large' : '',
               )}
             >
               Submit

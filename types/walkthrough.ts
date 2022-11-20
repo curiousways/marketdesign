@@ -1,15 +1,21 @@
-import { RoleId } from "./roles";
+import { RoleId } from './roles';
+
+export interface WalkthroughHighlightedMapRegions {
+  buyer?: number;
+  seller?: number;
+}
 
 export interface WalkthroughOptions {
   stages: number;
   isFormEnabled: boolean;
-  allowDivision?: boolean,
+  allowDivision?: boolean;
   showDetailsWidget: boolean;
   showDivisibleInput?: boolean;
   showCosts: boolean;
   showMaps: boolean;
+  highlightedMapRegions?: WalkthroughHighlightedMapRegions;
   showParticipants: boolean;
-};
+}
 
 export interface Products {
   biodiversity?: number;
@@ -20,7 +26,7 @@ export interface WalkthroughProject {
   title: string;
   subtitle?: string;
   cost: number | number[];
-  accepted: (value: number) => boolean | number,
+  accepted: (value: number) => boolean | number;
   isInactive?: boolean;
   discountOrBonus: number;
   products: Products;
@@ -33,7 +39,7 @@ export interface WalkthroughScenario {
   sellerProjects: WalkthroughProject[];
   sidebarContent?: {
     [key: number]: JSX.Element;
-  },
+  };
   options: WalkthroughOptions;
   fixedMarketState?: WalkthroughMarketState;
 }

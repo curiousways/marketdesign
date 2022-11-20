@@ -2,8 +2,8 @@ export const sidebarContentStage10 = (
   <>
     <p>
       The market solves and your bid was partially successful. The market
-      managed to provide you with 3 of the 4 biodiversity credits you wanted
-      and 1 of the 2 water quality credits you wanted.
+      managed to provide you with 3 of the 4 biodiversity credits you wanted and
+      1 of the 2 water quality credits you wanted.
     </p>
     <p>
       To understand better this market outcome, we have scaled down your bids to

@@ -6,8 +6,6 @@ export const sidebarContent4 = (
       fact that you are happy to get all or part of your bid fulfilled by the
       market.
     </p>
-    <p>
-      Go ahead and solve the market.
-    </p>
+    <p>Go ahead and solve the market.</p>
   </>
 );

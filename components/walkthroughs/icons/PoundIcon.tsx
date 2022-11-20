@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const PoundIcon = () => (
   <svg
@@ -9,11 +9,7 @@ const PoundIcon = () => (
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
   >
-    <rect
-      width="20"
-      height="20"
-      fill="url(#pound-icon)"
-    />
+    <rect width="20" height="20" fill="url(#pound-icon)" />
     <defs>
       <pattern
         id="pound-icon"
@@ -21,10 +17,7 @@ const PoundIcon = () => (
         width="1"
         height="1"
       >
-        <use
-          xlinkHref="#image0_1461_59519"
-          transform="scale(0.0104167)"
-        />
+        <use xlinkHref="#image0_1461_59519" transform="scale(0.0104167)" />
       </pattern>
       <image
         id="image0_1461_59519"

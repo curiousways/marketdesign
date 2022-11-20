@@ -9,8 +9,6 @@ export const sidebarContent10 = (
       sellers requested as payments is known as the Market Surplus. In this
       case, that is £20,000.
     </p>
-    <p>
-      Click next to view another feasible market outcome.
-    </p>
+    <p>Click next to view another feasible market outcome.</p>
   </>
 );

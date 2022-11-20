@@ -1,27 +1,27 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-import type { AppProps } from "next/app";
-import { useRouter } from "next/router";
-import { DefaultSeo } from "next-seo";
-import * as Fathom from "fathom-client";
+import type { AppProps } from 'next/app';
+import { useRouter } from 'next/router';
+import { DefaultSeo } from 'next-seo';
+import * as Fathom from 'fathom-client';
 
-import Footer from "@/components/common/Footer";
-import Nav from "@/components/common/Nav";
+import Footer from '@/components/common/Footer';
+import Nav from '@/components/common/Nav';
 
-import "../styles/globals.css"; // Global style sheet for css
+import '../styles/globals.css'; // Global style sheet for css
 
-function MyApp({ Component, pageProps }: AppProps) {
+const MyApp = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
   const siteUrl = process.env.SITE_URL as string;
   const siteTitle = process.env.SITE_TITLE;
-  const fathom = process.env.FATHOM_ANALYTICS_ID as string; //fathom analytics id
-  const siteUrlhttpsStripped = process.env.SITE_URL?.split("//")[1] as string;
+  const fathom = process.env.FATHOM_ANALYTICS_ID as string; // fathom analytics id
+  const siteUrlhttpsStripped = process.env.SITE_URL?.split('//')[1] as string;
 
   useEffect(() => {
     // Load fathom analytics
     Fathom.load(fathom, {
       includedDomains: [siteUrlhttpsStripped],
-      excludedDomains: ["localhost", "*.vercel.app"],
+      excludedDomains: ['localhost', '*.vercel.app'],
     });
 
     // Fathom Analytics
@@ -29,27 +29,28 @@ function MyApp({ Component, pageProps }: AppProps) {
       Fathom.trackPageview();
     };
 
-    router.events.on("routeChangeComplete", handleRouteChange);
+    router.events.on('routeChangeComplete', handleRouteChange);
+
     return () => {
-      router.events.off("routeChangeComplete", handleRouteChange);
+      router.events.off('routeChangeComplete', handleRouteChange);
     };
-  }, [router.events]);
+  }, [router.events, fathom, siteUrlhttpsStripped]);
 
   return (
     <>
       <DefaultSeo
         title={siteTitle}
         description="Enter description here"
-        canonical={`${siteUrl}${router.asPath === "/" ? "" : router.asPath}`}
+        canonical={`${siteUrl}${router.asPath === '/' ? '' : router.asPath}`}
         openGraph={{
-          type: "website",
-          url: `${siteUrl}${router.asPath === "/" ? "" : router.asPath}`,
+          type: 'website',
+          url: `${siteUrl}${router.asPath === '/' ? '' : router.asPath}`,
           site_name: siteTitle,
           title: siteTitle,
-          description: "Enter description here",
+          description: 'Enter description here',
           images: [
             {
-              url: "Enter social icon path here",
+              url: 'Enter social icon path here',
               width: 1200,
               height: 630,
               alt: `${siteTitle}`,
@@ -57,9 +58,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           ],
         }}
         twitter={{
-          handle: "@twitterhandle",
+          handle: '@twitterhandle',
           site: siteUrl,
-          cardType: "summary_large_image",
+          cardType: 'summary_large_image',
         }}
       />
       <Nav />
@@ -72,6 +73,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Footer />
     </>
   );
-}
+};
 
 export default MyApp;

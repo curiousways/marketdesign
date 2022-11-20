@@ -1,25 +1,27 @@
-import { RoleId } from "@/types/roles";
+import { useRouter } from 'next/router';
+import {
+  createContext,
+  Dispatch,
+  FunctionComponent,
+  ReactNode,
+  SetStateAction,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
+import { RoleId } from '@/types/roles';
 import {
   Walkthrough,
   WalkthroughMarketState,
   WalkthroughProject,
   WalkthroughScenario,
-} from "@/types/walkthrough";
-import { getNextScenarioId, parseScenarioId } from "@/utils/walkthroughs";
-import { useRouter } from "next/router";
-import isEqual from 'lodash.isequal';
-import omit from 'lodash.omit';
+} from '@/types/walkthrough';
 import {
-  createContext,
-  useState,
-  useContext,
-  FunctionComponent,
-  Dispatch,
-  SetStateAction,
-  useMemo,
-  ReactNode,
-  useCallback,
-} from "react";
+  getNextScenarioId,
+  isProjectEqual,
+  parseScenarioId,
+} from '@/utils/walkthroughs';
 
 type DynamicProjectCosts = {
   project: WalkthroughProject;
@@ -52,15 +54,13 @@ type WalkthroughProviderProps = {
   children: ReactNode;
 };
 
-export const WalkthroughProvider: FunctionComponent<WalkthroughProviderProps> = ({
-  scenarioId,
-  children,
-})  => {
+export const WalkthroughProvider: FunctionComponent<
+  WalkthroughProviderProps
+> = ({ scenarioId, children }) => {
   const { roleId, getScenario, walkthrough } = parseScenarioId(scenarioId);
   const [stage, setStage] = useState(1);
-  const [dynamicProjectCosts, setDynamicProjectCosts] = useState<
-    DynamicProjectCosts
-  >([]);
+  const [dynamicProjectCosts, setDynamicProjectCosts] =
+    useState<DynamicProjectCosts>([]);
 
   const scenario = getScenario(stage);
   const router = useRouter();
@@ -68,35 +68,35 @@ export const WalkthroughProvider: FunctionComponent<WalkthroughProviderProps> = 
     WalkthroughMarketState.pending,
   );
 
-  const isMarketCalculating = (
-    marketState === WalkthroughMarketState.calculating_winners
-    || marketState === WalkthroughMarketState.distributing_surpluss
-    || marketState === WalkthroughMarketState.calculating_final_payments
-  );
+  const isMarketCalculating =
+    marketState === WalkthroughMarketState.calculating_winners ||
+    marketState === WalkthroughMarketState.distributing_surpluss ||
+    marketState === WalkthroughMarketState.calculating_final_payments;
 
-  const isMarketSolving = (
-    marketState >= WalkthroughMarketState.calculating_winners
-    && marketState < WalkthroughMarketState.solved
-    && typeof scenario.fixedMarketState === 'undefined'
-  );
+  const isMarketSolving =
+    marketState >= WalkthroughMarketState.calculating_winners &&
+    marketState < WalkthroughMarketState.solved &&
+    typeof scenario.fixedMarketState === 'undefined';
 
   const nextScenarioId = getNextScenarioId(scenarioId);
-  const hasPreviousStage = stage > 1 && !isMarketSolving && !isMarketCalculating;
+  const hasPreviousStage =
+    stage > 1 && !isMarketSolving && !isMarketCalculating;
 
-  const hasNextStage = (
-    (stage < scenario.options.stages || !!nextScenarioId)
-    && !(
-      scenario.options.isFormEnabled
-      || marketState === WalkthroughMarketState.solvable
-      || isMarketCalculating
-      || isMarketSolving
-    )
-  );
+  const hasNextStage =
+    (stage < scenario.options.stages || !!nextScenarioId) &&
+    !(
+      scenario.options.isFormEnabled ||
+      marketState === WalkthroughMarketState.solvable ||
+      isMarketCalculating ||
+      isMarketSolving
+    );
 
   const maxStage = scenario.options.stages;
 
   const goToPreviousStage = useCallback(() => {
-    if (stage > 1) setStage((prev) => prev - 1);
+    if (stage > 1) {
+      setStage((prev) => prev - 1);
+    }
   }, [stage]);
 
   const goToNextStage = useCallback(() => {
@@ -107,7 +107,7 @@ export const WalkthroughProvider: FunctionComponent<WalkthroughProviderProps> = 
     }
 
     if (nextScenarioId) {
-      router.push(`/how-it-works/${nextScenarioId}`);
+      void router.push(`/how-it-works/${nextScenarioId}`);
     }
   }, [stage, maxStage, nextScenarioId, router]);
 
@@ -116,76 +116,76 @@ export const WalkthroughProvider: FunctionComponent<WalkthroughProviderProps> = 
     setMarketState((prev) => prev + 1);
   }, []);
 
-  const setProjectCost = useCallback((
-    project: WalkthroughProject,
-    cost: number
-  ) => {
-    setDynamicProjectCosts([
-      { project, cost },
-      ...dynamicProjectCosts,
-    ])
-  }, [dynamicProjectCosts]);
+  const setProjectCost = useCallback(
+    (project: WalkthroughProject, cost: number) => {
+      setDynamicProjectCosts([{ project, cost }, ...dynamicProjectCosts]);
+    },
+    [dynamicProjectCosts],
+  );
 
-  const getProjectCost = useCallback((project: WalkthroughProject): number => {
-    const { cost: dynamicProjectCost } = dynamicProjectCosts.find((item) => (
-      isEqual(
-        omit(item.project, ['accepted']),
-        omit(project, ['accepted']),
-      ))) ?? {};
+  const getProjectCost = useCallback(
+    (project: WalkthroughProject): number => {
+      const { cost: dynamicProjectCost } =
+        dynamicProjectCosts.find((item) =>
+          isProjectEqual(item.project, project),
+        ) ?? {};
 
-    if (dynamicProjectCost) {
-      return dynamicProjectCost;
-    }
+      if (dynamicProjectCost) {
+        return dynamicProjectCost;
+      }
 
-    if (Array.isArray(project.cost)) {
-      return 0;
-    }
+      if (Array.isArray(project.cost)) {
+        return 0;
+      }
 
-    return project.cost;
-  }, [dynamicProjectCosts]);
+      return project.cost;
+    },
+    [dynamicProjectCosts],
+  );
 
-  const value = useMemo((): WalkthroughContextType => ({
-    scenarioId,
-    walkthrough,
-    stage,
-    scenario,
-    roleId,
-    setStage,
-    setMarketState,
-    hasPreviousStage,
-    hasNextStage,
-    goToNextStage,
-    goToPreviousStage,
-    isMarketSolving,
-    marketState,
-    goToNextMarketState,
-    getProjectCost,
-    setProjectCost,
-  }), [
-    scenarioId,
-    walkthrough,
-    stage,
-    scenario,
-    roleId,
-    hasPreviousStage,
-    hasNextStage,
-    goToNextStage,
-    goToPreviousStage,
-    isMarketSolving,
-    marketState,
-    goToNextMarketState,
-    getProjectCost,
-    setProjectCost,
-  ]);
+  const value = useMemo(
+    (): WalkthroughContextType => ({
+      scenarioId,
+      walkthrough,
+      stage,
+      scenario,
+      roleId,
+      setStage,
+      setMarketState,
+      hasPreviousStage,
+      hasNextStage,
+      goToNextStage,
+      goToPreviousStage,
+      isMarketSolving,
+      marketState,
+      goToNextMarketState,
+      getProjectCost,
+      setProjectCost,
+    }),
+    [
+      scenarioId,
+      walkthrough,
+      stage,
+      scenario,
+      roleId,
+      hasPreviousStage,
+      hasNextStage,
+      goToNextStage,
+      goToPreviousStage,
+      isMarketSolving,
+      marketState,
+      goToNextMarketState,
+      getProjectCost,
+      setProjectCost,
+    ],
+  );
 
   return (
-    <WalkthroughContext.Provider
-      value={value}
-    >
+    <WalkthroughContext.Provider value={value}>
       {children}
     </WalkthroughContext.Provider>
   );
-}
+};
 
 export const useWalkthroughContext = (): WalkthroughContextType => {
   const context = useContext(WalkthroughContext);
@@ -197,4 +197,4 @@ export const useWalkthroughContext = (): WalkthroughContextType => {
   }
 
   return context;
-}
+};

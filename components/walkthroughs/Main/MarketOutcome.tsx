@@ -1,13 +1,16 @@
-import { classNames } from "@/utils/index";
+import { classNames } from '@/utils/index';
 
-import HammerIcon from "../icons/HammerIcon";
-import BalanceIcon from "../icons/BalanceIcon";
-import CartPlus from "../icons/CartPlus";
-import PoundcashTag from "../icons/PoundcashTag";
-import { WalkthroughMarketState, WalkthroughProject } from "@/types/walkthrough";
-import { useWalkthroughContext } from "@/context/WalkthroughContext";
-import OfferIcon from "../icons/OfferIcon";
-import PoundIcon from "../icons/PoundIcon";
+import {
+  WalkthroughMarketState,
+  WalkthroughProject,
+} from '@/types/walkthrough';
+import { useWalkthroughContext } from '@/context/WalkthroughContext';
+import HammerIcon from '../icons/HammerIcon';
+import BalanceIcon from '../icons/BalanceIcon';
+import CartPlus from '../icons/CartPlus';
+import PoundcashTag from '../icons/PoundcashTag';
+import OfferIcon from '../icons/OfferIcon';
+import PoundIcon from '../icons/PoundIcon';
 
 type Props = {
   className?: string;
@@ -17,13 +20,11 @@ type Props = {
 
 const sumProjectCosts = (
   getProjectCost: (project: WalkthroughProject) => number,
-  projects: WalkthroughProject[]
-) => (
-  projects.reduce((acc, project) => acc + getProjectCost(project), 0)
-);
+  projects: WalkthroughProject[],
+) => projects.reduce((acc, project) => acc + getProjectCost(project), 0);
 
 const MarketOutcome = ({
-  className = "",
+  className = '',
   buyerProjects,
   sellerProjects,
 }: Props) => {
@@ -34,8 +35,8 @@ const MarketOutcome = ({
   return (
     <div
       className={classNames(
-        "bg-blue-light px-10 py-5 rounded-lg flex items-center gap-x-12",
-        className
+        'bg-blue-light px-10 py-5 rounded-lg flex items-center gap-x-12',
+        className,
       )}
     >
       <div>

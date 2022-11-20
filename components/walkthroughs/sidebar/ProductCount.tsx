@@ -1,4 +1,4 @@
-import { classNames } from "@/utils/index";
+import { classNames } from '@/utils/index';
 
 type Props = {
   productCount?: number;
@@ -6,11 +6,7 @@ type Props = {
   Icon: JSX.Element;
 };
 
-const ProductCount = ({
-  productCount,
-  costPerCredit,
-  Icon,
-}: Props) => {
+const ProductCount = ({ productCount, costPerCredit, Icon }: Props) => {
   if (typeof productCount !== 'number') {
     return null;
   }

@@ -9,8 +9,6 @@ export const sidebarContentStage2 = (
       Enter offers at cost for each of these options and signal that you want
       these to be an Either/Or offer set.
     </p>
-    <p>
-      Submit your offer and then solve the market.
-    </p>
+    <p>Submit your offer and then solve the market.</p>
   </>
 );

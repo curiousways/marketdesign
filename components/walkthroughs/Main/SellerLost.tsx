@@ -1,9 +1,10 @@
-import { useWalkthroughContext } from "@/context/WalkthroughContext";
-import { WalkthroughProject } from "@/types/walkthrough";
+import { useWalkthroughContext } from '@/context/WalkthroughContext';
+import { WalkthroughProject } from '@/types/walkthrough';
 
 type Props = {
   project: WalkthroughProject;
 };
+
 const SellerLost = ({ project }: Props) => {
   const { products, title } = project;
   const { getProjectCost } = useWalkthroughContext();

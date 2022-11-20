@@ -7,8 +7,6 @@ export const sidebarContent17 = (
       contribute relatively more to the creation of the Market Surplus receive a
       relatively larger share as a bonus or discount.
     </p>
-    <p>
-      Click next to divide the surplus.
-    </p>
+    <p>Click next to divide the surplus.</p>
   </>
 );

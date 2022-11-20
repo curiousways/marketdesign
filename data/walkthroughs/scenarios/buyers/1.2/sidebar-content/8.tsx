@@ -1,8 +1,6 @@
 export const sidebarContent8 = (
   <>
-    <p>
-      You are successful again!
-    </p>
+    <p>You are successful again!</p>
     <p>
       Since you entered a lower bid, you generate less surplus for the market
       than when you bid at value.

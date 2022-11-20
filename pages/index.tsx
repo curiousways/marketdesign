@@ -1,16 +1,16 @@
-import type { NextPage } from "next";
+import type { NextPage } from 'next';
 
-import Image from "next/image";
+import Image from 'next/image';
 
-import Button from "@/components/common/Button";
-import Header from "@/components/common/Header";
-import Faqs from "@/components/home/Faqs";
+import Button from '@/components/common/Button';
+import Header from '@/components/common/Header';
+import Faqs from '@/components/home/Faqs';
 
-import UnderstandingTheModel from "../public/assets/images/home/understanding-the-model.png";
-import Frame from "../public/assets/images/home/frame.png";
-import Frame2 from "../public/assets/images/home/frame-2.png";
-import HeaderImg from "../public/assets/images/home/header.png";
-import HeaderThumb from "../public/assets/images/home/header-thumb.png";
+import UnderstandingTheModel from '../public/assets/images/home/understanding-the-model.png';
+import Frame from '../public/assets/images/home/frame.png';
+import Frame2 from '../public/assets/images/home/frame-2.png';
+import HeaderImg from '../public/assets/images/home/header.png';
+import HeaderThumb from '../public/assets/images/home/header-thumb.png';
 
 const Home: NextPage = () => {
   return (
@@ -56,7 +56,7 @@ const Home: NextPage = () => {
         {/* Understanding the model  */}
         <section className="lg:flex lg:gap-x-10 xl:gap-x-20 xl:space-y-16 mt-20">
           <div className="max-w-[833px] relative z-10">
-            <Image src={UnderstandingTheModel} />
+            <Image src={UnderstandingTheModel} alt="" />
           </div>
           <div className="max-w-[461px]">
             <h2 className="heading-2 max-w-[343px]">Understanding the model</h2>
@@ -88,7 +88,9 @@ const Home: NextPage = () => {
 
               <div className="max-w-[616px] relative pt-5 space-y-10">
                 <div className="space-y-10 mt-5">
-                  <h2 className="heading-2">Optimise the financial & environmental benefits</h2>
+                  <h2 className="heading-2">
+                    Optimise the financial & environmental benefits
+                  </h2>
                   <p>
                     The Exeter Lindsay market model applies robust and
                     innovative thinking to optimise financial and environmental
@@ -124,7 +126,7 @@ const Home: NextPage = () => {
             </div>
 
             <div className="absolute -top-36 right-0">
-              <Image src={Frame} />
+              <Image src={Frame} alt="" />
             </div>
           </div>
         </section>
@@ -132,7 +134,7 @@ const Home: NextPage = () => {
         {/* Give it a try  */}
         <section className="pr-20 2xl:pr-40 flex gap-x-4">
           <div>
-            <Image src={Frame2} />
+            <Image src={Frame2} alt="" />
           </div>
           <div>
             <div className="max-w-[430px] space-y-10 relative -mt-10 mb-28">
@@ -164,7 +166,9 @@ const Home: NextPage = () => {
               <div className="max-w-[430px] pt-12 space-y-32">
                 <h2 className="heading-2">How It Works</h2>
                 <div className="space-y-10">
-                  <h3 className="heading-3">Optimising Natural Capital Markets</h3>
+                  <h3 className="heading-3">
+                    Optimising Natural Capital Markets
+                  </h3>
                   <p>
                     The goal of the Exeter Lindsay model is to optimise trading
                     for buyers and sellers of environmental goods and services

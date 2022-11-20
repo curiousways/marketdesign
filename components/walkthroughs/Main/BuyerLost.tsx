@@ -1,5 +1,5 @@
-import { useWalkthroughContext } from "@/context/WalkthroughContext";
-import { WalkthroughProject } from "@/types/walkthrough";
+import { useWalkthroughContext } from '@/context/WalkthroughContext';
+import { WalkthroughProject } from '@/types/walkthrough';
 
 type Props = {
   project: WalkthroughProject;
