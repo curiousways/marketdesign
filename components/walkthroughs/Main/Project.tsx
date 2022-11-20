@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { AnimationProps, motion } from "framer-motion";
 
 import { classNames } from "@/utils/index";
 
@@ -9,19 +9,28 @@ import HammerIcon from "../icons/HammerIcon";
 import PoundcashTag from "../icons/PoundcashTag";
 import { RoleId } from "@/types/roles";
 import { ProjectTitle } from "./ProjectTitle";
-import AdjustedProductCount from "./AdjustedProductCount";
 import CartPlus from "../icons/CartPlus";
+import OfferIcon from "../icons/OfferIcon";
 import { useWalkthroughContext } from "@/context/WalkthroughContext";
 import { isMyProject } from "@/utils/walkthroughs";
-import { CSSProperties } from "react";
-import OfferIcon from "../icons/OfferIcon";
+import { CSSProperties, useEffect, useState } from "react";
+import ProjectBiodiversity from "./ProjectBiodiversity";
+import ProjectNutrients from "./ProjectNutrients";
+
+const PROJECT_HEIGHT = 120;
+const PROJECT_WIDTH = 800;
+const PROJECT_BOTTOM_MARGIN = 15;
+const COLLAPSED_PROJECT_HEIGHT = 60;
+const COLLAPSED_PROJECT_WIDTH = 250;
+const SHOW_LOSERS_MAX_SCREEN_WIDTH = 1800;
 
 type Props = {
   project: WalkthroughProject;
   projectRoleId: 'buyer' | 'seller';
-  stage: number;
   options: WalkthroughOptions;
   roleId: RoleId;
+  isLoser: boolean;
+  loserIndex?: number;
   className?: string;
 };
 
@@ -117,22 +126,171 @@ const getMyProjectStyles = (
   return myProjectStyles;
 };
 
+const useRowAnimation = (
+  showLoserStyles: boolean,
+  isMySubsequentProject: boolean,
+  fade: boolean,
+) => {
+  const [animation, setAnimation] = useState<AnimationProps['animate']>();
+
+  useEffect(() => {
+    const commonStyles: AnimationProps['animate'] = {
+      opacity: fade ? .5 : 1,
+      width: PROJECT_WIDTH,
+    };
+
+    const marginTop = isMySubsequentProject ? -PROJECT_BOTTOM_MARGIN : 0;
+
+    if (!showLoserStyles) {
+      setAnimation({
+        height: PROJECT_HEIGHT,
+        marginBottom: PROJECT_BOTTOM_MARGIN,
+        marginTop,
+        ...commonStyles,
+      });
+
+      return;
+    }
+
+    setAnimation({
+      height: [
+        PROJECT_HEIGHT,
+        PROJECT_HEIGHT,
+        PROJECT_HEIGHT,
+        PROJECT_HEIGHT,
+        PROJECT_HEIGHT,
+        PROJECT_HEIGHT,
+        0,
+        0,
+      ],
+      marginBottom: [
+        PROJECT_BOTTOM_MARGIN,
+        PROJECT_BOTTOM_MARGIN,
+        PROJECT_BOTTOM_MARGIN,
+        PROJECT_BOTTOM_MARGIN,
+        PROJECT_BOTTOM_MARGIN,
+        PROJECT_BOTTOM_MARGIN,
+        0,
+        0,
+      ],
+      ...commonStyles,
+    });
+  }, [showLoserStyles, isMySubsequentProject, fade]);
+
+  return animation;
+};
+
+const useProjectAnimation = (
+  showLoserStyles: boolean,
+  loserIndex: number = 0,
+) => {
+  const [animation, setAnimation] = useState<AnimationProps['animate']>();
+
+  useEffect(() => {
+    const commonStyles: AnimationProps['animate'] = {
+      opacity: 1,
+    };
+
+    const spacing = 10;
+    const defaultTransform = 'translate3d(0px, 0px, 0px)';
+    const collapsedTransformX = `-${COLLAPSED_PROJECT_WIDTH + spacing}px`;
+    const collapsedTransformY = `${(
+      (loserIndex * COLLAPSED_PROJECT_HEIGHT) + (loserIndex ? loserIndex * spacing : 0)
+    )}px`;
+
+    const collapsedTransform1 = `translate3d(0px, ${collapsedTransformY}, 0px)`;
+    const collapsedTransform2 = `translate3d(${[
+      collapsedTransformX,
+      collapsedTransformY,
+      '0px',
+    ].join(', ')})`;
+
+    if (!showLoserStyles) {
+      setAnimation({
+        height: PROJECT_HEIGHT,
+        width: PROJECT_WIDTH,
+        transform: defaultTransform,
+        ...commonStyles,
+      });
+
+      return;
+    }
+
+    const styles = {
+      height: [
+        PROJECT_HEIGHT,
+        PROJECT_HEIGHT,
+        COLLAPSED_PROJECT_HEIGHT,
+        COLLAPSED_PROJECT_HEIGHT,
+        COLLAPSED_PROJECT_HEIGHT,
+        COLLAPSED_PROJECT_HEIGHT,
+        COLLAPSED_PROJECT_HEIGHT,
+      ],
+      width: [
+        PROJECT_WIDTH,
+        PROJECT_WIDTH,
+        COLLAPSED_PROJECT_WIDTH,
+        COLLAPSED_PROJECT_WIDTH,
+        COLLAPSED_PROJECT_WIDTH,
+        COLLAPSED_PROJECT_WIDTH,
+        COLLAPSED_PROJECT_WIDTH,
+      ],
+      ...commonStyles,
+    };
+
+    if (window.innerWidth >= SHOW_LOSERS_MAX_SCREEN_WIDTH) {
+      styles.transform = [
+        defaultTransform,
+        defaultTransform,
+        collapsedTransform1,
+        collapsedTransform1,
+        collapsedTransform1,
+        collapsedTransform2,
+        collapsedTransform2,
+      ];
+    };
+
+    setAnimation(styles);
+  }, [showLoserStyles, loserIndex]);
+
+  return animation;
+};
+
 const Project = ({
   project,
   projectRoleId,
-  stage,
   options,
+  isLoser,
+  loserIndex,
   className = "",
 }: Props) => {
   const { marketState, scenario, getProjectCost } = useWalkthroughContext();
   const { discountOrBonus, products, accepted } = project;
   const { showCosts } = options;
 
-  const showAcceptedState = marketState >= WalkthroughMarketState.showing_winners;
   const projectCost = getProjectCost(project);
   const acceptedCost = accepted(projectCost);
-  const isNotAccepted = showAcceptedState && !acceptedCost;
   const isBuyer = projectRoleId === 'buyer';
+
+  const showingWinners = marketState >= WalkthroughMarketState.showing_winners;
+  const showLoserStyles = isLoser && showingWinners;
+  const isNotAccepted = showingWinners && !acceptedCost;
+
+  const isMySubsequentProject = (
+    isMyProject(scenario, project) &&
+    !isMyFirstProject(project, scenario)
+  );
+
+  const rowAnimation = useRowAnimation(
+    showLoserStyles,
+    isMySubsequentProject,
+    isNotAccepted,
+  );
+
+  const projectAnimation = useProjectAnimation(
+    showLoserStyles,
+    loserIndex,
+  );
 
   // Define some colour classes.
   const shadowColor = isBuyer ? 'neo-shadow-brown' : 'neo-shadow-green';
@@ -143,182 +301,166 @@ const Project = ({
   // Adjust metrics for projects that were only partially accepted.
   const adjustedCost = getAdjustedCost(projectCost, acceptedCost);
 
-  const isMySubsequentProject = (
-    isMyProject(scenario, project) &&
-    !isMyFirstProject(project, scenario)
-  );
-
   return (
     <motion.div
       variants={fadeInDown}
       initial="hidden"
-      animate="visible"
-      style={getMyProjectStyles(project, scenario)}
+      animate={rowAnimation}
+      style={{ overflow: 'visible' }}
       className="overflow-hidden"
     >
       {/* Add a divider between multiple user projects. */}
       {isMySubsequentProject && (
-        <div className={`border-t-2 border-dashed ${dividerColor} w-full`} />
+        <div className="border-black border-l-2 border-r-2 relative h-[2px] z-10 bg-white">
+          <div className={`border-t-2 border-dashed ${dividerColor} w-full absolute`} />
+        </div>
       )}
 
       <div
-        className={classNames(
-          "relative px-10 py-5 flex",
-          isNotAccepted ? 'opacity-30' : '',
-          className,
-        )}
+        className="relative flex flex-col items-center"
       >
-        {/* Percentage-based background colour */}
-        <div
-          className={`absolute h-full ${backgroundColor} top-0 left-0`}
-          style={{
-            width: typeof acceptedCost === 'number' && showAcceptedState
-              ? `${acceptedCost}%`
-              : '100%'
-          }}
-        />
-
-        {/* Full-width background colour */}
-        <div
-          className={`absolute h-full w-full ${backgroundColor} top-0 left-0 opacity-50`}
-        />
-
-        {/* Content */}
-        <div className="z-10 items-center flex gap-x-10 justify-between w-full">
-          <ProjectTitle
-            acceptedCost={acceptedCost}
-            showCosts={showCosts}
-            project={project}
-            hideMainTitle={isMySubsequentProject}
+        <motion.div
+          animate={projectAnimation}
+          style={getMyProjectStyles(project, scenario)}
+          className={classNames(
+            "absolute p-5 flex overflow-hidden left-0 top-0",
+            className,
+          )}
+        >
+          {/* Percentage-based background colour */}
+          <div
+            className={`absolute h-full ${backgroundColor} top-0 left-0`}
+            style={{
+              width: typeof acceptedCost === 'number' && showingWinners
+                ? `${acceptedCost}%`
+                : '100%'
+            }}
           />
 
-          {/* Products */}
-          <div className="flex gap-x-10 flex-[20%]">
-            {/* Biodiversity */}
-            {typeof products.biodiversity === 'number' && (
-              <div
-                className={`h-[66px] w-[66px] rounded-lg flex items-center justify-center relative ${shadowColor}`}
-              >
-                <AdjustedProductCount
-                  count={products.biodiversity}
-                  accepted={acceptedCost}
-                />
-                <svg
-                  width="32"
-                  height="32"
-                  viewBox="0 0 32 32"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    opacity="0.7"
-                    d="M8.81169 7.68831C8.81169 3.71831 12.03 0.5 16 0.5C19.97 0.5 23.1884 3.71832 23.1884 7.68831C23.1884 8.30864 23.6912 8.81169 24.3116 8.81169C28.2817 8.81169 31.5 12.03 31.5 16C31.5 19.97 28.2817 23.1884 24.3116 23.1884C23.6913 23.1884 23.1884 23.6913 23.1884 24.3116C23.1884 28.2817 19.97 31.5 16 31.5C12.03 31.5 8.81169 28.2817 8.81169 24.3116C8.81169 23.6912 8.30864 23.1884 7.68831 23.1884C3.71832 23.1884 0.5 19.97 0.5 16C0.5 12.03 3.71831 8.81169 7.68831 8.81169C8.30873 8.81169 8.81169 8.30873 8.81169 7.68831Z"
-                    stroke="white"
-                  />
-                </svg>
-              </div>
-            )}
+          {/* Full-width background colour */}
+          <div
+            className={`absolute h-full w-full ${backgroundColor} top-0 left-0 opacity-50`}
+          />
 
-            {/* Nutrients */}
-            {typeof products.nutrients === 'number' && (
-              <div
-                className={`h-[66px] w-[66px] ${shadowColor} rounded-lg flex items-center justify-center relative`}
-              >
-                <AdjustedProductCount
-                  count={products.nutrients}
-                  accepted={acceptedCost}
-                />
-                <svg
-                  width="22"
-                  height="32"
-                  viewBox="0 0 22 32"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+          {/* Content */}
+          <div className={classNames(
+            "z-10 items-center flex justify-between w-full",
+            showLoserStyles ? 'gap-x-4' : 'gap-x-10',
+          )}>
+            <ProjectTitle
+              acceptedCost={acceptedCost}
+              showAcceptedCosts={showCosts && showingWinners}
+              project={project}
+              projectCost={projectCost}
+              hideMainTitle={isMySubsequentProject}
+              showLoserStyles={showLoserStyles}
+            />
+
+            {/* Products */}
+            <div className={classNames(
+              'flex',
+              showLoserStyles ? 'gap-x-2' : 'gap-x-10 flex-[20%]',
+            )}>
+              {/* Biodiversity */}
+              <ProjectBiodiversity
+                count={products.biodiversity}
+                accepted={acceptedCost}
+                shadowColor={shadowColor}
+                showLoserStyles={showLoserStyles}
+              />
+
+              {/* Nutrients */}
+              <ProjectNutrients
+                count={products.nutrients}
+                accepted={acceptedCost}
+                shadowColor={shadowColor}
+                showLoserStyles={showLoserStyles}
+              />
+            </div>
+
+            {!showLoserStyles && (
+              <div className="flex gap-x-10 flex-[50%]">
+                {/* Bid */}
+                <motion.div
+                  variants={fadeInDown}
+                  initial="hidden"
+                  animate={showCosts ? 'visible' : '' }
+                  className="bg-white rounded-lg border border-black px-1 w-[95px]"
                 >
-                  <path
-                    opacity="0.7"
-                    d="M3.55382 28.7654L3.5538 28.7654C1.58991 27.0217 0.5 24.6703 0.5 22.2332C0.5 18.4038 2.4831 15.5249 5.04685 11.8362L5.05338 11.8268C6.98602 9.04625 9.20932 5.84757 10.9755 1.52781L10.9998 1.60143L11.0243 1.52726C12.7905 5.8473 15.0139 9.04614 16.9466 11.8268L16.9531 11.8361C19.5168 15.5249 21.5 18.4038 21.5 22.2332C21.5 24.6703 20.4101 27.0217 18.4462 28.7654C16.4949 30.498 13.7822 31.5 11 31.5C8.19741 31.5 5.51957 30.511 3.55382 28.7654Z"
-                    stroke="white"
-                  />
-                </svg>
+                  <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
+                    {isBuyer ? <HammerIcon /> : <OfferIcon />}
+                  </div>
+                  <div className="text-center text-sm relative -mt-2">
+                    <p className="text-light-grey">
+                      {isBuyer ? 'Bid' : 'Offer'}
+                    </p>
+                    <p>£{adjustedCost.toLocaleString()}</p>
+                    {adjustedCost !== projectCost && (
+                      <p className={`${textColor} opacity-50`}>
+                        £{projectCost.toLocaleString()}
+                      </p>
+                    )}
+                  </div>
+                </motion.div>
+
+                {/* Discount */}
+                <motion.div
+                  variants={fadeInDown}
+                  initial="hidden"
+                  animate={
+                    (
+                      marketState >= WalkthroughMarketState.showing_surpluses &&
+                      !isNotAccepted
+                    ) ? 'visible' : ''
+                  }
+                  className="bg-white rounded-lg border border-black px-1 w-[95px]"
+                >
+                  <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
+                    <p className="text-black">
+                      {isBuyer ? '-' : '+'}
+                    </p>
+                  </div>
+                  <div className="text-center text-sm relative -mt-2">
+                    <p className="text-light-grey">
+                      {isBuyer ? 'Discount' : 'Bonus'}
+                    </p>
+                    <p>£{discountOrBonus.toLocaleString()}</p>
+                  </div>
+                </motion.div>
+
+                {/* Pays */}
+                <motion.div
+                  variants={fadeInDown}
+                  initial="hidden"
+                  animate={
+                    (
+                      marketState === WalkthroughMarketState.solved
+                      && !isNotAccepted
+                    ) ? 'visible' : ''
+                  }
+                  className="bg-white rounded-lg border border-black px-1 w-[95px]"
+                >
+                  <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
+                    {isBuyer ? <PoundcashTag /> : <CartPlus />}
+                  </div>
+                  <div className="text-center text-sm relative -mt-2">
+                    <p className="text-light-grey">
+                      {isBuyer ? 'Pays' : 'Received'}
+                    </p>
+                    <p>
+                      £{(calculatePayment(
+                        projectCost,
+                        discountOrBonus,
+                        accepted(projectCost),
+                        projectRoleId,
+                      )).toLocaleString()}
+                    </p>
+                  </div>
+                </motion.div>
               </div>
             )}
           </div>
-
-          <div className="flex gap-x-10 flex-[50%]">
-            {/* Bid */}
-            <motion.div
-              variants={fadeInDown}
-              initial="hidden"
-              animate={showCosts ? 'visible' : '' }
-              className="bg-white rounded-lg border border-black px-1 w-[95px]"
-            >
-              <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
-                {isBuyer ? <HammerIcon /> : <OfferIcon />}
-              </div>
-              <div className="text-center text-sm relative -mt-2">
-                <p className="text-light-grey">
-                  {isBuyer ? 'Bid' : 'Offer'}
-                </p>
-                <p>£{adjustedCost.toLocaleString()}</p>
-                {adjustedCost !== projectCost && (
-                  <p className={`${textColor} opacity-50`}>
-                    £{projectCost.toLocaleString()}
-                  </p>
-                )}
-              </div>
-            </motion.div>
-
-            {/* Discount */}
-            <motion.div
-              variants={fadeInDown}
-              initial="hidden"
-              animate={
-                marketState >= WalkthroughMarketState.showing_surpluses && !isNotAccepted ? 'visible' : ''
-              }
-              className="bg-white rounded-lg border border-black px-1 w-[95px]"
-            >
-              <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
-                <p className="text-black">
-                  {isBuyer ? '-' : '+'}
-                </p>
-              </div>
-              <div className="text-center text-sm relative -mt-2">
-                <p className="text-light-grey">
-                  {isBuyer ? 'Discount' : 'Bonus'}
-                </p>
-                <p>£{discountOrBonus.toLocaleString()}</p>
-              </div>
-            </motion.div>
-
-            {/* Pays */}
-            <motion.div
-              variants={fadeInDown}
-              initial="hidden"
-              animate={
-                marketState === WalkthroughMarketState.solved && !isNotAccepted ? 'visible' : ''
-              }
-              className="bg-white rounded-lg border border-black px-1 w-[95px]"
-            >
-              <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
-                {isBuyer ? <PoundcashTag /> : <CartPlus />}
-              </div>
-              <div className="text-center text-sm relative -mt-2">
-                <p className="text-light-grey">
-                  {isBuyer ? 'Pays' : 'Received'}
-                </p>
-                <p>
-                  £{(calculatePayment(
-                    projectCost,
-                    discountOrBonus,
-                    accepted(projectCost),
-                    projectRoleId,
-                  )).toLocaleString()}
-                </p>
-              </div>
-            </motion.div>
-          </div>
-        </div>
+        </motion.div>
       </div>
     </motion.div>
   );
