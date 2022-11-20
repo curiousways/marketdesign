@@ -93,6 +93,7 @@ const ParticipantsList = ({
           project,
           scenario,
         );
+
         const isMyLastProject = getIsMyLastProject(
           sortedProjects,
           project,

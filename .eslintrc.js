@@ -39,11 +39,6 @@ const commmonRules = {
       next: ['*'],
     },
     { blankLine: 'any', prev: ['default'], next: ['case'] },
-    {
-      blankLine: 'any',
-      prev: ['const', 'let', 'var'],
-      next: ['const', 'let', 'var'],
-    },
   ],
   'no-void': ['error', { allowAsStatement: true }], // This allows us to write `void myAsyncFunction()`
   'no-console': 'error',
