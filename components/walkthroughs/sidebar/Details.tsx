@@ -96,7 +96,7 @@ const Details = () => {
       layout
       className="border-2 border-black px-5 py-4 rounded-lg w-full"
     >
-      <div className="text-black text-xl">
+      <div className="text-black text-l">
         <p className="font-bold">
           My Project{scenario.myProjects.length ? 's' : ''}
         </p>
@@ -112,7 +112,7 @@ const Details = () => {
               <li
                 key={project.title + project.subtitle}
                 className={classNames(
-                  'mt-3',
+                  'mb-3',
                   isMarketSolvable && project.isInactive ? 'opacity-30' : '',
                 )}
               >
@@ -159,7 +159,7 @@ const Details = () => {
             );
           })}
         </ul>
-        <div className="flex items-center mt-3">
+        <div className="flex items-center">
           {scenario.options.showDivisibleInput && (
             <label
               htmlFor="is-divisible"

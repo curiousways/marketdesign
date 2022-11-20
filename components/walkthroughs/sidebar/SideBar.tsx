@@ -24,7 +24,7 @@ const SideBar = () => {
       <AnimatePresence>
         <div
           key="sidebar-animation"
-          className="gap-y-6 flex flex-col items-center"
+          className="gap-y-4 flex flex-col items-center"
         >
           {/* Top */}
           {scenario.options.showDetailsWidget && <Details />}
@@ -40,7 +40,7 @@ const SideBar = () => {
               layout
               // onAnimationComplete={() => !isPresent && safeToRemove()}
               onClick={onSolveMarketClick}
-              className="text-center border-2 border-black rounded-lg p-3 text-black text-xl hover:bg-black hover:text-white duration-300 animate-scale"
+              className="text-center border-2 border-black rounded-lg p-3 text-black text-l hover:bg-black hover:text-white duration-300 animate-scale"
             >
               Solve Market
             </motion.button>

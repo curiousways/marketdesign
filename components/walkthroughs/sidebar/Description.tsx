@@ -14,9 +14,9 @@ const Description = () => {
       initial="hidden"
       animate={hide ? 'hidden' : 'visible'}
       layout
-      className="space-y-4 text-xl"
+      className="text-l"
     >
-      <div className="bg-green-dark py-7 px-3 rounded-lg text-white">
+      <div className="bg-green-dark py-5 px-3 rounded-lg text-white">
         <div className="space-y-5 text-white">{sidebarContent}</div>
       </div>
     </motion.div>
