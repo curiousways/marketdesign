@@ -41,36 +41,32 @@ const ParticipantsList = ({
   const sortedSellerProjects = sortMyProjects(scenario, sellerProjects);
 
   return (
-    <>
+    <div className="z-10 space-y-5">
       {type === "winners" && (
         <>
           {/* Sellers */}
-          <div className="space-y-5">
-            {sortedSellerProjects.map((project) => (
-              <Project
-                key={project.title + project.subtitle}
-                projectRoleId="seller"
-                stage={stage}
-                project={project}
-                options={data.options}
-                roleId={roleId}
-              />
-            ))}
-          </div>
+          {sortedSellerProjects.map((project) => (
+            <Project
+              key={project.title + project.subtitle}
+              projectRoleId="seller"
+              stage={stage}
+              project={project}
+              options={data.options}
+              roleId={roleId}
+            />
+          ))}
 
           {/* Buyers */}
-          <div className="space-y-5">
-            {sortedBuyerProjects.map((project) => (
-              <Project
-              key={project.title + project.subtitle}
-                projectRoleId="buyer"
-                stage={stage}
-                project={project}
-                options={data.options}
-                roleId={roleId}
-              />
-            ))}
-          </div>
+          {sortedBuyerProjects.map((project) => (
+            <Project
+            key={project.title + project.subtitle}
+              projectRoleId="buyer"
+              stage={stage}
+              project={project}
+              options={data.options}
+              roleId={roleId}
+            />
+          ))}
         </>
       )}
 
@@ -101,7 +97,7 @@ const ParticipantsList = ({
           ))}
         </div>
       )}
-    </>
+    </div>
   );
 };
 

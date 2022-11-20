@@ -2,14 +2,14 @@ import { RoleId } from "./roles";
 
 export interface WalkthroughOptions {
   stages: number;
-  set_my_price: number;
-  allow_button_click: number;
-  allow_division?: boolean,
-  show_details_widget: number;
-  show_divisible_input?: boolean;
-  show_costs: number;
-  show_maps: boolean;
-  show_participants: number;
+  setMyPrice: boolean;
+  isFormEnabled: boolean;
+  allowDivision?: boolean,
+  showDetailsWidget: boolean;
+  showDivisibleInput?: boolean;
+  showCosts: boolean;
+  showMaps: boolean;
+  showParticipants: boolean;
 };
 
 export interface Products {
@@ -29,18 +29,21 @@ export interface WalkthroughProject {
 }
 
 export interface WalkthroughScenario {
-  myProjects: [WalkthroughProject, ...WalkthroughProject[]]; // One or more
+  myProjects: WalkthroughProject[];
   buyerProjects: WalkthroughProject[];
   sellerProjects: WalkthroughProject[];
   sidebarContent?: {
     [key: number]: JSX.Element;
   },
   options: WalkthroughOptions;
+  fixedMarketState?: WalkthroughMarketState;
 }
+
+export type GetWalkthroughScenario = (stage: number) => WalkthroughScenario;
 
 export interface Walkthrough {
   title: string;
-  scenarios: WalkthroughScenario[];
+  scenarios: GetWalkthroughScenario[];
 }
 
 export type WalkthroughsByRole = {

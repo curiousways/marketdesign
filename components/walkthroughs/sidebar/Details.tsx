@@ -41,8 +41,8 @@ const Details = () => {
     setMarketState,
   } = useWalkthroughContext();
 
-  const isFormEnabled = stage === scenario.options.allow_button_click;
-  const isDivisibleInputEnabled = isFormEnabled && !!scenario.options.allow_division;
+  const { isFormEnabled } = scenario.options;
+  const isDivisibleInputEnabled = isFormEnabled && !!scenario.options.allowDivision;
 
   // Proceed to next market state when submit button is clicked.
   const onSubmit = (e: React.FormEvent) => {
@@ -81,7 +81,7 @@ const Details = () => {
                 key={project.title + project.subtitle}
                 className={classNames(
                   'mt-3',
-                  stage >= scenario.options.set_my_price && project.isInactive ? 'opacity-30' : '',
+                  scenario.options.setMyPrice && project.isInactive ? 'opacity-30' : '',
                 )}
               >
                 {!!scenario.myProjects.length && !!project.subtitle && (
@@ -115,7 +115,7 @@ const Details = () => {
                   <div className="flex-1 max-w-[50%]">
                     <Input
                       project={project}
-                      populate={stage >= scenario.options.set_my_price && !project.isInactive}
+                      populate={scenario.options.setMyPrice && !project.isInactive}
                       name={INPUT_NAME}
                     />
                   </div>
@@ -125,7 +125,7 @@ const Details = () => {
           })}
         </ul>
         <div className="flex items-center mt-3">
-          {scenario.options.show_divisible_input && (
+          {scenario.options.showDivisibleInput && (
             <label
               className={classNames(
                 'flex',

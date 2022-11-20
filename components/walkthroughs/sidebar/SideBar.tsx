@@ -18,7 +18,6 @@ const SideBar = () => {
 
   const showSolveMarketBtn = (
     marketState === WalkthroughMarketState.solvable
-    && stage > scenario.options.allow_button_click
   );
 
   const onSolveMarketClick = (e: React.FormEvent) => {
@@ -34,7 +33,7 @@ const SideBar = () => {
           className="gap-y-6 flex flex-col items-center"
         >
           {/* Top */}
-          {stage >= scenario.options.show_details_widget && (
+          {scenario.options.showDetailsWidget && (
             <Details />
           )}
 

@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FunctionComponent } from "react";
-import { WalkthroughProject } from "@/types/walkthrough";
+import { WalkthroughMarketState, WalkthroughProject } from "@/types/walkthrough";
 import { useWalkthroughContext } from "@/context/WalkthroughContext";
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
 }
 
 const Input: FunctionComponent<Props> = ({ project, populate, name }: Props) => {
-  const { marketState, setProjectCost, getProjectCost, scenario } = useWalkthroughContext();
+  const { marketState, setProjectCost, getProjectCost } = useWalkthroughContext();
 
   const onSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setProjectCost(project, Number(event.target.value));
@@ -21,8 +21,8 @@ const Input: FunctionComponent<Props> = ({ project, populate, name }: Props) => 
         required
         className="w-full text-sm inline-block rounded-lg py-2 px-3 bg-extra-light-grey"
         name={name}
-        disabled={marketState > scenario.options.allow_button_click}
         onChange={onSelectChange}
+        disabled={marketState > WalkthroughMarketState.solvable}
         value={getProjectCost(project)}
       >
         <option />

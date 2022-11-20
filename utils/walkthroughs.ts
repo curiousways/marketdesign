@@ -1,7 +1,7 @@
 import { RoleId } from "@/types/roles";
 import { roles } from "data/roles";
 import { walkthroughsByRole } from "data/walkthroughs";
-import { Walkthrough, WalkthroughProject, WalkthroughScenario } from "../types/walkthrough";
+import { GetWalkthroughScenario, Walkthrough, WalkthroughProject, WalkthroughScenario } from "../types/walkthrough";
 
 const SCENARIO_ID_DELIMITER = '-';
 
@@ -40,7 +40,7 @@ export const isValidRoleId = (
  */
 export const parseScenarioId = (scenarioId: string): {
   walkthrough: Walkthrough;
-  scenario: WalkthroughScenario;
+  getScenario: GetWalkthroughScenario;
   roleId: RoleId;
   walkthroughIndex: number;
   scenarioIndex: number;
@@ -67,15 +67,15 @@ export const parseScenarioId = (scenarioId: string): {
   const walkthroughIndex = walkthroughNum - 1;
   const scenarioIndex = scenarioNum - 1;
   const walkthrough = walkthroughs?.[walkthroughIndex];
-  const scenario = walkthrough?.scenarios[scenarioIndex];
+  const getScenario = walkthrough?.scenarios[scenarioIndex];
 
-  if (!scenario) {
+  if (!getScenario) {
     throw invalidScenarioIdErr;
   }
 
   return {
     walkthrough,
-    scenario,
+    getScenario,
     roleId,
     walkthroughIndex,
     scenarioIndex,

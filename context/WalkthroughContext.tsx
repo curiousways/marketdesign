@@ -7,6 +7,8 @@ import {
 } from "@/types/walkthrough";
 import { getNextScenarioId, parseScenarioId } from "@/utils/walkthroughs";
 import { useRouter } from "next/router";
+import isEqual from 'lodash.isequal';
+import omit from 'lodash.omit';
 import {
   createContext,
   useState,
@@ -54,30 +56,39 @@ export const WalkthroughProvider: FunctionComponent<WalkthroughProviderProps> = 
   scenarioId,
   children,
 })  => {
-  const { roleId, scenario, walkthrough } = parseScenarioId(scenarioId);
+  const { roleId, getScenario, walkthrough } = parseScenarioId(scenarioId);
   const [stage, setStage] = useState(1);
   const [dynamicProjectCosts, setDynamicProjectCosts] = useState<
     DynamicProjectCosts
   >([]);
 
+  const scenario = getScenario(stage);
   const router = useRouter();
   const [marketState, setMarketState] = useState<WalkthroughMarketState>(
     WalkthroughMarketState.pending,
   );
 
+  const isMarketCalculating = (
+    marketState === WalkthroughMarketState.calculating_winners
+    || marketState === WalkthroughMarketState.distributing_surpluss
+    || marketState === WalkthroughMarketState.calculating_final_payments
+  );
+
   const isMarketSolving = (
     marketState >= WalkthroughMarketState.calculating_winners
     && marketState < WalkthroughMarketState.solved
+    && typeof scenario.fixedMarketState === 'undefined'
   );
 
   const nextScenarioId = getNextScenarioId(scenarioId);
-  const hasPreviousStage = stage > 1 && !isMarketSolving;
+  const hasPreviousStage = stage > 1 && !isMarketSolving && !isMarketCalculating;
 
   const hasNextStage = (
     (stage < scenario.options.stages || !!nextScenarioId)
     && !(
-      stage === scenario.options.allow_button_click
+      scenario.options.isFormEnabled
       || marketState === WalkthroughMarketState.solvable
+      || isMarketCalculating
       || isMarketSolving
     )
   );
@@ -117,8 +128,10 @@ export const WalkthroughProvider: FunctionComponent<WalkthroughProviderProps> = 
 
   const getProjectCost = useCallback((project: WalkthroughProject): number => {
     const { cost: dynamicProjectCost } = dynamicProjectCosts.find((item) => (
-      item.project === project
-    )) ?? {};
+      isEqual(
+        omit(item.project, ['accepted']),
+        omit(project, ['accepted']),
+      ))) ?? {};
 
     if (dynamicProjectCost) {
       return dynamicProjectCost;

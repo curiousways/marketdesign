@@ -1,11 +1,11 @@
 import { sidebarContentStage1 } from "./sidebar-content/1";
 import { sidebarContentStage2 } from "./sidebar-content/2";
 import { sidebarContentStage3 } from "./sidebar-content/3";
-import { WalkthroughScenario } from "@/types/walkthrough";
+import { GetWalkthroughScenario } from "@/types/walkthrough";
 import { sidebarContentStage11 } from "./sidebar-content/11";
 import { sidebarContentStage10 } from "./sidebar-content/10";
 
-export const buyerScenario5_2: WalkthroughScenario = {
+export const getBuyerScenario5_2: GetWalkthroughScenario = (stage: number) => ({
   myProjects: [
     {
       title: 'My Project',
@@ -67,11 +67,11 @@ export const buyerScenario5_2: WalkthroughScenario = {
   },
   options: {
     stages: 11,
-    set_my_price: 3,
-    allow_button_click: 3,
-    show_details_widget: 2,
-    show_costs: 3,
-    show_maps: true,
-    show_participants: 3,
+    setMyPrice: stage >= 3,
+    isFormEnabled: stage === 3,
+    showDetailsWidget: stage >= 2,
+    showCosts: stage >= 3,
+    showMaps: true,
+    showParticipants: stage >= 3,
   },
-}
+});
