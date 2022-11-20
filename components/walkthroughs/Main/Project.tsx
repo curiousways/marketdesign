@@ -291,7 +291,7 @@ const Project = ({
       initial="hidden"
       animate={rowAnimation}
       style={{ overflow: 'visible' }}
-      className="overflow-hidden bg-white"
+      className="overflow-hidden bg-white select-none"
     >
       {/* Add a divider between multiple user projects. */}
       {isMySubsequentProject && (
