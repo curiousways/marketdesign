@@ -47,7 +47,7 @@ const Details = () => {
 
   const formRef = useRef<HTMLFormElement>(null);
   const submitButtonRef = useRef<HTMLButtonElement>(null);
-  const [animatedPriceInputName, setAnimatedPriceInputName] = useState<
+  const [animatedInputName, setAnimatedInputName] = useState<
     string | undefined
   >(priceInputNames[0]);
 
@@ -66,7 +66,7 @@ const Details = () => {
     const inputs = [...formRef.current.querySelectorAll('input')];
     const firstInvalidInput = inputs.find((input) => !input.checkValidity());
 
-    setAnimatedPriceInputName(firstInvalidInput?.name);
+    setAnimatedInputName(firstInvalidInput?.name);
   };
 
   useEffect(() => {
@@ -76,16 +76,6 @@ const Details = () => {
       setMarketState(WalkthroughMarketState.pending);
     }
   }, [isFormEnabled, setMarketState]);
-
-  useEffect(() => {
-    if (animatedPriceInputName) {
-      return;
-    }
-
-    if (submitButtonRef.current) {
-      submitButtonRef.current.focus();
-    }
-  }, [animatedPriceInputName]);
 
   return (
     <motion.div
@@ -149,7 +139,7 @@ const Details = () => {
                       name={priceInputNames[projectIndex]}
                       animate={
                         isFormEnabled &&
-                        animatedPriceInputName === priceInputNames[projectIndex]
+                        animatedInputName === priceInputNames[projectIndex]
                       }
                       onChange={onInputChange}
                     />
@@ -166,14 +156,22 @@ const Details = () => {
               className={classNames(
                 'flex select-none',
                 isDivisibleInputEnabled ? 'cursor-pointer' : '',
+                isFormEnabled &&
+                  animatedInputName === 'is-divisible' &&
+                  isDivisibleInputEnabled
+                  ? 'animate-scale-large'
+                  : '',
               )}
             >
-              <input
-                required
-                type="checkbox"
-                name="is-divisible"
-                disabled={!isDivisibleInputEnabled}
-              />
+              <span>
+                <input
+                  required={isDivisibleInputEnabled}
+                  type="checkbox"
+                  name="is-divisible"
+                  disabled={!isDivisibleInputEnabled}
+                  onChange={onInputChange}
+                />
+              </span>
               <span className="ml-2">Divisible</span>
             </label>
           )}
@@ -185,7 +183,7 @@ const Details = () => {
               className={classNames(
                 'w-full rounded-lg bg-[#848484] text-white text-xs py-2',
                 isFormEnabled ? 'hover:bg-black cursor-pointer' : '',
-                isFormEnabled && !animatedPriceInputName
+                isFormEnabled && !animatedInputName
                   ? 'animate-scale-large'
                   : '',
               )}

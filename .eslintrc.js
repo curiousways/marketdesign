@@ -71,7 +71,6 @@ const commmonRules = {
   'eslint-comments/no-unused-enable': 'off',
   'no-param-reassign': 'off',
   'jsx-a11y/anchor-is-valid': 'off', // does not play well with Next Link
-  'jsx-a11y/no-autofocus': 'off',
   'consistent-return': 'off', // clashes with TS
 };
 

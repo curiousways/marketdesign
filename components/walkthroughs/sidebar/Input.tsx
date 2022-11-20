@@ -35,7 +35,7 @@ const Input: FunctionComponent<Props> = ({
 
   const inputClassNames = classNames(
     'w-full text-sm inline-block rounded-lg py-2 px-3 bg-extra-light-grey',
-    animate ? 'animate-scale-small' : '',
+    animate ? 'animate-scale' : '',
   );
 
   const onSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -64,19 +64,7 @@ const Input: FunctionComponent<Props> = ({
     if (inputRef.current) {
       validateInput(inputRef.current);
     }
-
-    if (!animate) {
-      return;
-    }
-
-    if (selectRef.current) {
-      selectRef.current.focus();
-    }
-
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [animate, validateInput]);
+  }, [validateInput]);
 
   if (Array.isArray(project.cost)) {
     return (
