@@ -1,6 +1,7 @@
 import React, {
   ChangeEvent,
   FunctionComponent,
+  useCallback,
   useEffect,
   useRef,
 } from 'react';
@@ -39,18 +40,28 @@ const Input: FunctionComponent<Props> = ({
     onChange(event);
   };
 
-  const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { target } = event;
-    const msg =
-      Number(event.target.value) === value
-        ? ''
-        : `Please enter a value of ${value} to proceed`;
+  const validateInput = useCallback(
+    (element: HTMLInputElement) => {
+      const msg =
+        Number(element.value) === value
+          ? ''
+          : `Please enter a value of ${value} to proceed`;
 
-    target.setCustomValidity(msg);
+      element.setCustomValidity(msg);
+    },
+    [value],
+  );
+
+  const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    validateInput(event.target);
     onChange(event);
   };
 
   useEffect(() => {
+    if (inputRef.current) {
+      validateInput(inputRef.current);
+    }
+
     if (!animate) {
       return;
     }
@@ -62,7 +73,7 @@ const Input: FunctionComponent<Props> = ({
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, [animate]);
+  }, [animate, validateInput]);
 
   if (Array.isArray(project.cost)) {
     return (
