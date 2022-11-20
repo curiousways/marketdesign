@@ -144,12 +144,10 @@ const useRowAnimation = (
         PROJECT_HEIGHT,
         PROJECT_HEIGHT,
         PROJECT_HEIGHT,
-        PROJECT_HEIGHT,
         0,
         0,
       ],
       marginBottom: [
-        PROJECT_BOTTOM_MARGIN,
         PROJECT_BOTTOM_MARGIN,
         PROJECT_BOTTOM_MARGIN,
         PROJECT_BOTTOM_MARGIN,
@@ -185,7 +183,7 @@ const useProjectAnimation = (
       (loserIndex ? loserIndex * spacing : 0)
     }px`;
 
-    const collapsedTransform1 = `translate3d(0px, ${collapsedTransformY}, 0px)`;
+    const collapsedTransform1 = `translate3d(${collapsedTransformX}, 0px, 0px)`;
     const collapsedTransform2 = `translate3d(${[
       collapsedTransformX,
       collapsedTransformY,
