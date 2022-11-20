@@ -7,6 +7,7 @@ import MainContentBody from "./MainContentBody";
 import { WalkthroughBackgroundRight } from "../icons/WalkthroughBackground";
 import { WalkthroughBackgroundLeft } from "../icons/WalkthroughBackgroundLeft";
 import Background from "./Background";
+import { TopProgressBar } from "./TopProgressBar";
 
 const MARKET_SOLVING_TIMEOUT = 4000;
 
@@ -84,6 +85,7 @@ const MainContent = () => {
   return (
     <div className="border-l border-green-dark pt-4 w-full relative flex justify-center">
       <div className="z-20">
+        <TopProgressBar />
         <LoadingOverlay />
       </div>
       <div className="z-10">
