@@ -6,6 +6,8 @@ import CartPlus from "../icons/CartPlus";
 import PoundcashTag from "../icons/PoundcashTag";
 import { WalkthroughMarketState, WalkthroughProject } from "@/types/walkthrough";
 import { useWalkthroughContext } from "@/context/WalkthroughContext";
+import OfferIcon from "../icons/OfferIcon";
+import PoundIcon from "../icons/PoundIcon";
 
 type Props = {
   className?: string;
@@ -133,7 +135,7 @@ const MarketOutcome = ({
           {/* Total Offers */}
           <div className="bg-green-light rounded-lg px-1 pb-1 w-[95px]">
             <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white shadow-custom">
-              <HammerIcon />
+              <OfferIcon />
             </div>
 
             <div className="text-center text-sm relative -mt-2">
@@ -146,7 +148,7 @@ const MarketOutcome = ({
         {/* Surplus */}
         <div className="bg-white rounded-lg px-1 w-[95px]">
           <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white shadow-custom">
-            <HammerIcon />
+            <PoundIcon />
           </div>
 
           <div className="text-center text-sm relative -mt-2">

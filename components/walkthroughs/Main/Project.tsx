@@ -14,6 +14,7 @@ import CartPlus from "../icons/CartPlus";
 import { useWalkthroughContext } from "@/context/WalkthroughContext";
 import { isMyProject } from "@/utils/walkthroughs";
 import { CSSProperties } from "react";
+import OfferIcon from "../icons/OfferIcon";
 
 type Props = {
   project: WalkthroughProject;
@@ -255,7 +256,7 @@ const Project = ({
               className="bg-white rounded-lg border border-black px-1 w-[95px]"
             >
               <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
-                <HammerIcon />
+                {isBuyer ? <HammerIcon /> : <OfferIcon />}
               </div>
               <div className="text-center text-sm relative -mt-2">
                 <p className="text-light-grey">
