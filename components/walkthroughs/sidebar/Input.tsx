@@ -55,7 +55,6 @@ const Input: FunctionComponent<Props> = ({
 
   return (
     <input
-      required
       onChange={onInputChange}
       disabled={marketState >= WalkthroughMarketState.solvable}
       type="text"
