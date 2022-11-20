@@ -43,7 +43,15 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        'scale-small': {
+          '0%, 100%': { transform: 'scale(1, 1)' },
+          '50%': { transform: 'scale(1.03, 1.03)' },
+        },
         scale: {
+          '0%, 100%': { transform: 'scale(1, 1)' },
+          '50%': { transform: 'scale(1.05, 1.05)' },
+        },
+        'scale-large': {
           '0%, 100%': { transform: 'scale(1, 1)' },
           '50%': { transform: 'scale(1.1, 1.1)' },
         },
@@ -51,7 +59,9 @@ module.exports = {
       animation: {
         open: 'open .3s ease-in-out',
         close: 'close .4s ease-in-out',
+        'scale-small': 'scale-small 1s ease-in-out infinite',
         scale: 'scale 1s ease-in-out infinite',
+        'scale-large': 'scale-large 1s ease-in-out infinite',
       },
     },
   },

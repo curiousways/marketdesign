@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 import { fadeIn } from "@/utils/animations";
@@ -42,12 +42,32 @@ const Details = () => {
   const { isFormEnabled } = scenario.options;
   const isDivisibleInputEnabled = isFormEnabled && !!scenario.options.allowDivision;
   const isMarketSolvable = marketState >= WalkthroughMarketState.solvable;
+  const priceInputNames = scenario
+    .myProjects
+    .map((_, index) => `project-${index}-price`);
+
+  const formRef = useRef<HTMLFormElement>(null);
+  const submitButtonRef = useRef<HTMLButtonElement>(null);
+  const [animatedPriceInputName, setAnimatedPriceInputName] = useState<string | undefined>(
+    priceInputNames[0]
+  );
 
   // Proceed to next market state when submit button is clicked.
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     goToNextStage();
     setMarketState(WalkthroughMarketState.solvable);
+  };
+
+  const onInputChange = () => {
+    if (!formRef.current) {
+      return;
+    }
+
+    const inputs = [...formRef.current.querySelectorAll('input')];
+    const firstInvalidInput = inputs.find((input) => !input.checkValidity());
+
+    setAnimatedPriceInputName(firstInvalidInput?.name);
   };
 
   useEffect(() => {
@@ -57,6 +77,16 @@ const Details = () => {
       setMarketState(WalkthroughMarketState.pending);
     }
   }, [isFormEnabled, setMarketState]);
+
+  useEffect(() => {
+    if (animatedPriceInputName) {
+      return;
+    }
+
+    if (submitButtonRef.current) {
+      submitButtonRef.current.focus();
+    }
+  }, [animatedPriceInputName]);
 
   return (
     <motion.div
@@ -75,7 +105,9 @@ const Details = () => {
       </div>
 
       <form
+        ref={formRef}
         onSubmit={onSubmit}
+        onChange={console.log}
         className="flex flex-col"
       >
         <ul>
@@ -121,7 +153,9 @@ const Details = () => {
                   <div className="flex-1 max-w-[50%]">
                     <Input
                       project={project}
-                      name={`project-${projectIndex}-price`}
+                      name={priceInputNames[projectIndex]}
+                      animate={isFormEnabled && animatedPriceInputName === priceInputNames[projectIndex]}
+                      onChange={onInputChange}
                     />
                   </div>
                 </div>
@@ -146,13 +180,15 @@ const Details = () => {
           )}
           <div className="relative w-[100px] ml-auto">
             <button
+              ref={submitButtonRef}
               type="submit"
               disabled={!isFormEnabled && !isMarketSolvable}
               className={classNames(
                 'w-full rounded-lg bg-[#848484] text-white text-xs py-2',
                 isFormEnabled
-                  ? 'hover:bg-black cursor-pointer animate-scale'
+                  ? 'hover:bg-black cursor-pointer'
                   : '',
+                isFormEnabled && !animatedPriceInputName ? 'animate-scale-large' : '',
               )}
             >
               Submit
