@@ -1,15 +1,15 @@
-import type { NextPage } from "next";
-import Link from "next/link";
-import Header from "@/components/common/Header";
-import HeaderImg from "../../public/assets/images/how-it-works/header.png";
-import HeaderThumb from "../../public/assets/images/how-it-works/header-thumb.png";
-import FieldsImg from "../../public/assets/images/how-it-works/fields.png";
-import { Splodge } from "@/components/common/Splodge";
-import { createScenarioId } from "@/utils/walkthroughs";
-import { walkthroughsByRole } from "data/walkthroughs";
-import { roles } from "data/roles";
-import Image from "next/image";
-import { classNames } from "@/utils/index";
+import type { NextPage } from 'next';
+import Link from 'next/link';
+import Image from 'next/image';
+import Header from '@/components/common/Header';
+import { Splodge } from '@/components/common/Splodge';
+import { createScenarioId } from '@/utils/walkthroughs';
+import { walkthroughsByRole } from 'data/walkthroughs';
+import { roles } from 'data/roles';
+import { classNames } from '@/utils/index';
+import FieldsImg from '../../public/assets/images/how-it-works/fields.png';
+import HeaderThumb from '../../public/assets/images/how-it-works/header-thumb.png';
+import HeaderImg from '../../public/assets/images/how-it-works/header.png';
 
 const HowItWorks: NextPage = () => (
   <>
@@ -21,19 +21,21 @@ const HowItWorks: NextPage = () => (
     />
     <div className="relative">
       {walkthroughsByRole.map(({ roleId, walkthroughs }) => (
-        <section
-          key={roleId}
-          className="mt-16"
-          id={roleId}
-        >
+        <section key={roleId} className="mt-16" id={roleId}>
           <h2
-            className={classNames('heading-2 mx-6', roleId === 'generic' ? 'hidden' : '')}
+            className={classNames(
+              'heading-2 mx-6',
+              roleId === 'generic' ? 'hidden' : '',
+            )}
           >
             {roles[roleId].label}
           </h2>
           <ul className="flex flex-wrap">
             {walkthroughs.map((walkthrough, walkthroughIndex) => (
-              <li key={walkthrough.title} className="items-center w-full md:w-1/2 xl:w-1/3 p-5">
+              <li
+                key={walkthrough.title}
+                className="items-center w-full md:w-1/2 xl:w-1/3 p-5"
+              >
                 <Link
                   href={{
                     pathname: '/how-it-works/[scenarioId]',
@@ -52,9 +54,7 @@ const HowItWorks: NextPage = () => (
                       <p className="text-3xl font-bold text-white">
                         Walkthrough {walkthroughIndex + 1}
                       </p>
-                      <p className="text-xl text-white">
-                        {walkthrough.title}
-                      </p>
+                      <p className="text-xl text-white">{walkthrough.title}</p>
                     </Splodge>
                   </a>
                 </Link>
@@ -63,9 +63,7 @@ const HowItWorks: NextPage = () => (
           </ul>
         </section>
       ))}
-      <div
-        className="absolute bottom-0 right-0 -z-10 flex"
-      >
+      <div className="absolute bottom-0 right-0 -z-10 flex">
         <Image src={FieldsImg} alt="" />
       </div>
     </div>

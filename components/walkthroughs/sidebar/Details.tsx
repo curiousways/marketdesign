@@ -1,18 +1,21 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React from 'react';
+import { motion } from 'framer-motion';
 
-import { fadeIn } from "@/utils/animations";
-import SellerVector from "@/components/walkthroughs/icons/SellerVector";
-import BuyerVector from "@/components/walkthroughs/icons/BuyerVector";
-import BiodiversityIconGray from "@/components/walkthroughs/icons/BiodiversityIcon";
-import NutrientsIcon from "@/components/walkthroughs/icons/NutrientsIcon";
-import { roles } from "data/roles";
-import { classNames } from "@/utils/index";
-import { useWalkthroughContext } from "@/context/WalkthroughContext";
-import { WalkthroughMarketState, WalkthroughProject } from "@/types/walkthrough";
-import Input from "./Input";
-import { RoleId } from "@/types/roles";
-import ProductCount from "./ProductCount";
+import { fadeIn } from '@/utils/animations';
+import SellerVector from '@/components/walkthroughs/icons/SellerVector';
+import BuyerVector from '@/components/walkthroughs/icons/BuyerVector';
+import BiodiversityIconGray from '@/components/walkthroughs/icons/BiodiversityIcon';
+import NutrientsIcon from '@/components/walkthroughs/icons/NutrientsIcon';
+import { roles } from 'data/roles';
+import { classNames } from '@/utils/index';
+import { useWalkthroughContext } from '@/context/WalkthroughContext';
+import {
+  WalkthroughMarketState,
+  WalkthroughProject,
+} from '@/types/walkthrough';
+import { RoleId } from '@/types/roles';
+import Input from './Input';
+import ProductCount from './ProductCount';
 
 const INPUT_NAME = 'project-cost';
 
@@ -30,19 +33,15 @@ const getProjectValue = (project: WalkthroughProject, roleId: RoleId) => {
   }
 
   return Math.min(...project.cost);
-}
+};
 
 const Details = () => {
-  const {
-    stage,
-    scenario,
-    roleId,
-    goToNextStage,
-    setMarketState,
-  } = useWalkthroughContext();
+  const { stage, scenario, roleId, goToNextStage, setMarketState } =
+    useWalkthroughContext();
 
   const { isFormEnabled } = scenario.options;
-  const isDivisibleInputEnabled = isFormEnabled && !!scenario.options.allowDivision;
+  const isDivisibleInputEnabled =
+    isFormEnabled && !!scenario.options.allowDivision;
 
   // Proceed to next market state when submit button is clicked.
   const onSubmit = (e: React.FormEvent) => {
@@ -68,10 +67,7 @@ const Details = () => {
         <p>{roles[roleId].label}</p>
       </div>
 
-      <form
-        onSubmit={onSubmit}
-        className="flex flex-col"
-      >
+      <form onSubmit={onSubmit} className="flex flex-col">
         <ul>
           {scenario.myProjects.map((project) => {
             const projectValue = getProjectValue(project, roleId);
@@ -81,7 +77,9 @@ const Details = () => {
                 key={project.title + project.subtitle}
                 className={classNames(
                   'mt-3',
-                  scenario.options.setMyPrice && project.isInactive ? 'opacity-30' : '',
+                  scenario.options.setMyPrice && project.isInactive
+                    ? 'opacity-30'
+                    : '',
                 )}
               >
                 {!!scenario.myProjects.length && !!project.subtitle && (
@@ -91,9 +89,8 @@ const Details = () => {
                 )}
                 <div className="flex gap-x-3 justify-between items-center">
                   {/* Vector */}
-                  {!project.costPerCredit && (
-                    roleId === "seller" ? <SellerVector /> : <BuyerVector />
-                  )}
+                  {!project.costPerCredit &&
+                    (roleId === 'seller' ? <SellerVector /> : <BuyerVector />)}
 
                   {/* Credits */}
                   <div className="flex gap-x-2">
@@ -115,7 +112,9 @@ const Details = () => {
                   <div className="flex-1 max-w-[50%]">
                     <Input
                       project={project}
-                      populate={scenario.options.setMyPrice && !project.isInactive}
+                      populate={
+                        scenario.options.setMyPrice && !project.isInactive
+                      }
                       name={INPUT_NAME}
                     />
                   </div>
@@ -129,11 +128,12 @@ const Details = () => {
             <label
               className={classNames(
                 'flex',
-                isDivisibleInputEnabled ? 'cursor-pointer' : ''
+                isDivisibleInputEnabled ? 'cursor-pointer' : '',
               )}
             >
               <input
-                required type="checkbox"
+                required
+                type="checkbox"
                 disabled={!isDivisibleInputEnabled}
               />
               <span className="ml-2">Divisible</span>
@@ -142,8 +142,8 @@ const Details = () => {
           <div className="relative w-[100px] ml-auto">
             {isFormEnabled && (
               <span className="flex h-3 w-3 absolute -right-1 -top-1">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500" />
               </span>
             )}
             <button

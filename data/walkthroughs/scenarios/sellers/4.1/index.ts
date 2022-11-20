@@ -1,12 +1,14 @@
-import { sidebarContentStage1 } from "./sidebar-content/1";
-import { sidebarContentStage2 } from "./sidebar-content/2";
-import { sidebarContentStage3 } from "./sidebar-content/3";
-import { sidebarContentStage12 } from "./sidebar-content/12";
-import { GetWalkthroughScenario } from "@/types/walkthrough";
-import { sidebarContentStage4 } from "./sidebar-content/4";
-import { sidebarContentStage5 } from "./sidebar-content/5";
+import { GetWalkthroughScenario } from '@/types/walkthrough';
+import { sidebarContentStage1 } from './sidebar-content/1';
+import { sidebarContentStage2 } from './sidebar-content/2';
+import { sidebarContentStage3 } from './sidebar-content/3';
+import { sidebarContentStage12 } from './sidebar-content/12';
+import { sidebarContentStage4 } from './sidebar-content/4';
+import { sidebarContentStage5 } from './sidebar-content/5';
 
-export const getSellerScenario4_1: GetWalkthroughScenario = (stage: number) => ({
+export const getSellerScenario4_1: GetWalkthroughScenario = (
+  stage: number,
+) => ({
   myProjects: [
     {
       title: 'My Project',
@@ -32,22 +34,22 @@ export const getSellerScenario4_1: GetWalkthroughScenario = (stage: number) => (
       cost: 220000,
       accepted: () => true,
       discountOrBonus: 7000,
-      products: { biodiversity: 1, nutrients: 4 }
+      products: { biodiversity: 1, nutrients: 4 },
     },
     {
       title: 'Buyer 2',
       cost: 120000,
       accepted: () => true,
       discountOrBonus: 44000,
-      products: { biodiversity: 3, nutrients: 0 }
+      products: { biodiversity: 3, nutrients: 0 },
     },
     {
       title: 'Buyer 3',
       cost: 100000,
       accepted: () => false,
       discountOrBonus: 0,
-      products: { biodiversity: 1, nutrients: 1 }
-    }
+      products: { biodiversity: 1, nutrients: 1 },
+    },
   ],
   sellerProjects: [
     {
@@ -55,7 +57,7 @@ export const getSellerScenario4_1: GetWalkthroughScenario = (stage: number) => (
       cost: 90000,
       accepted: () => true,
       discountOrBonus: 14000,
-      products: { biodiversity: 1, nutrients: 3 }
+      products: { biodiversity: 1, nutrients: 3 },
     },
   ],
   sidebarContent: {
@@ -77,5 +79,5 @@ export const getSellerScenario4_1: GetWalkthroughScenario = (stage: number) => (
       seller: stage >= 2 ? 3 : -1,
     },
     showParticipants: stage >= 4,
-  }
+  },
 });

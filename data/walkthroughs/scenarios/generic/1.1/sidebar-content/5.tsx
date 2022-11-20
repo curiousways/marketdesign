@@ -9,12 +9,8 @@ export const sidebarContent5 = (
       to proceed if the developer sources:
     </p>
     <ul>
-      <li>
-        1 biodiversity credit
-      </li>
-      <li>
-        2 water quality credits
-      </li>
+      <li>1 biodiversity credit</li>
+      <li>2 water quality credits</li>
     </ul>
   </>
 );

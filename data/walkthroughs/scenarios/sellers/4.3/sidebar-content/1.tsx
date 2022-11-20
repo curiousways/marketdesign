@@ -11,8 +11,6 @@ export const sidebarContentStage1 = (
       both projects on the same field, the market knows this is an Either/Or
       offer.
     </p>
-    <p>
-      Submit your Either/Or offer and then solve the market.
-    </p>
+    <p>Submit your Either/Or offer and then solve the market.</p>
   </>
 );

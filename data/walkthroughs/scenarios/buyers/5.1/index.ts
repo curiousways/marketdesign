@@ -1,10 +1,10 @@
-import { sidebarContentStage1 } from "./sidebar-content/1";
-import { sidebarContentStage2 } from "./sidebar-content/2";
-import { sidebarContentStage3 } from "./sidebar-content/3";
-import { sidebarContentStage4 } from "./sidebar-content/4";
-import { GetWalkthroughScenario } from "@/types/walkthrough";
-import { sidebarContentStage10 } from "./sidebar-content/10";
-import { sidebarContentStage11 } from "./sidebar-content/11";
+import { GetWalkthroughScenario } from '@/types/walkthrough';
+import { sidebarContentStage1 } from './sidebar-content/1';
+import { sidebarContentStage2 } from './sidebar-content/2';
+import { sidebarContentStage3 } from './sidebar-content/3';
+import { sidebarContentStage4 } from './sidebar-content/4';
+import { sidebarContentStage10 } from './sidebar-content/10';
+import { sidebarContentStage11 } from './sidebar-content/11';
 
 export const getBuyerScenario5_1: GetWalkthroughScenario = (stage: number) => ({
   myProjects: [

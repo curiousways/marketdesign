@@ -1,9 +1,9 @@
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 
-import NextButton from "./NextButton";
-import PrevButton from "./PrevButton";
-import { parseScenarioId } from "@/utils/walkthroughs";
-import { useWalkthroughContext } from "@/context/WalkthroughContext";
+import { parseScenarioId } from '@/utils/walkthroughs';
+import { useWalkthroughContext } from '@/context/WalkthroughContext';
+import NextButton from './NextButton';
+import PrevButton from './PrevButton';
 
 const Navigation = () => {
   const {
@@ -29,9 +29,7 @@ const Navigation = () => {
           hideButton={!hasPreviousStage}
         />
 
-        <div
-          className="bg-green-dark text-white rounded-lg px-3 py-1 flex-1"
-        >
+        <div className="bg-green-dark text-white rounded-lg px-3 py-1 flex-1">
           <p>{walkthrough.title}</p>
         </div>
 

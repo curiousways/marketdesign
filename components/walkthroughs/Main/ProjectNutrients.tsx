@@ -1,4 +1,4 @@
-import AdjustedProductCount from "./AdjustedProductCount";
+import AdjustedProductCount from './AdjustedProductCount';
 
 type Props = {
   count?: number;
@@ -38,17 +38,14 @@ const ProjectNutrients = ({
           {count}
         </div>
       </div>
-    )
+    );
   }
 
   return (
     <div
       className={`h-[66px] w-[66px] ${shadowColor} rounded-lg flex items-center justify-center relative`}
     >
-      <AdjustedProductCount
-        count={count}
-        accepted={accepted}
-      />
+      <AdjustedProductCount count={count} accepted={accepted} />
       <svg
         width="22"
         height="32"
@@ -63,7 +60,7 @@ const ProjectNutrients = ({
         />
       </svg>
     </div>
-  )
-}
+  );
+};
 
 export default ProjectNutrients;

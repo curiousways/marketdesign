@@ -1,26 +1,25 @@
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 
-import { container, fadeInDown } from "@/utils/animations";
-import MarketOutcome from "./MarketOutcome";
-import ParticipantsList from "./ParticipantsList";
-import { useWalkthroughContext } from "@/context/WalkthroughContext";
-import { WalkthroughMarketState, WalkthroughProject } from "@/types/walkthrough";
-import { RoleId } from "@/types/roles";
-import { getNextScenarioId } from "@/utils/walkthroughs";
-import Link from "next/link";
-import { Map } from "@/components/map/Map";
+import Link from 'next/link';
+import { container, fadeInDown } from '@/utils/animations';
+import { useWalkthroughContext } from '@/context/WalkthroughContext';
+import {
+  WalkthroughMarketState,
+  WalkthroughProject,
+} from '@/types/walkthrough';
+import { RoleId } from '@/types/roles';
+import { getNextScenarioId } from '@/utils/walkthroughs';
+import { Map } from '@/components/map/Map';
+import ParticipantsList from './ParticipantsList';
+import MarketOutcome from './MarketOutcome';
 
 const MainContentBody = () => {
-  const {
-    stage,
-    scenario,
-    scenarioId,
-    roleId,
-    marketState,
-    getProjectCost,
-  } = useWalkthroughContext();
+  const { stage, scenario, scenarioId, roleId, marketState, getProjectCost } =
+    useWalkthroughContext();
 
-  const activeUserProjects = scenario.myProjects.filter((project) => !project.isInactive);
+  const activeUserProjects = scenario.myProjects.filter(
+    (project) => !project.isInactive,
+  );
 
   const getAllProjects = (
     projects: WalkthroughProject[],
@@ -31,16 +30,17 @@ const MainContentBody = () => {
     }
 
     return projects;
-  }
+  };
 
   const hasAcceptedUserProjects = (
     projects: WalkthroughProject[],
     projectRoleId: RoleId,
-  ) => getAllProjects(projects, projectRoleId)
-    .some((project) => (
-      project.accepted(getProjectCost(project))
-      && activeUserProjects.includes(project)
-    ));
+  ) =>
+    getAllProjects(projects, projectRoleId).some(
+      (project) =>
+        project.accepted(getProjectCost(project)) &&
+        activeUserProjects.includes(project),
+    );
 
   const getWinningProjects = (
     projects: WalkthroughProject[],
@@ -48,11 +48,12 @@ const MainContentBody = () => {
   ) => {
     const hasUserProjects = hasAcceptedUserProjects(projects, projectRoleId);
 
-    return getAllProjects(projects, projectRoleId).filter((project) => (
-      project.accepted(getProjectCost(project))
-      || (hasUserProjects && activeUserProjects.includes(project))
-    ));
-  }
+    return getAllProjects(projects, projectRoleId).filter(
+      (project) =>
+        project.accepted(getProjectCost(project)) ||
+        (hasUserProjects && activeUserProjects.includes(project)),
+    );
+  };
 
   const getLosingProjects = (
     projects: WalkthroughProject[],
@@ -60,11 +61,12 @@ const MainContentBody = () => {
   ) => {
     const hasUserProjects = hasAcceptedUserProjects(projects, projectRoleId);
 
-    return getAllProjects(projects, projectRoleId).filter((project) => (
-      !project.accepted(getProjectCost(project))
-      && !(hasUserProjects && activeUserProjects.includes(project))
-    ));
-  }
+    return getAllProjects(projects, projectRoleId).filter(
+      (project) =>
+        !project.accepted(getProjectCost(project)) &&
+        !(hasUserProjects && activeUserProjects.includes(project)),
+    );
+  };
 
   const getActiveProjects = (
     projects: WalkthroughProject[],
@@ -85,7 +87,7 @@ const MainContentBody = () => {
           <a className="text-xl font-bold">Return to Walkthrough index</a>
         </Link>
       </div>
-    )
+    );
   }
 
   if (scenario.options.showParticipants) {
@@ -98,10 +100,19 @@ const MainContentBody = () => {
           animate="visible"
         >
           <ParticipantsList
-            sellerProjects={getActiveProjects(scenario.sellerProjects, 'seller')}
+            sellerProjects={getActiveProjects(
+              scenario.sellerProjects,
+              'seller',
+            )}
             buyerProjects={getActiveProjects(scenario.buyerProjects, 'buyer')}
-            losingSellerProjects={getLosingProjects(scenario.sellerProjects, 'seller')}
-            losingBuyerProjects={getLosingProjects(scenario.buyerProjects, 'buyer')}
+            losingSellerProjects={getLosingProjects(
+              scenario.sellerProjects,
+              'seller',
+            )}
+            losingBuyerProjects={getLosingProjects(
+              scenario.buyerProjects,
+              'buyer',
+            )}
             data={scenario}
             roleId={roleId}
           />
@@ -115,21 +126,25 @@ const MainContentBody = () => {
             animate="visible"
           >
             <MarketOutcome
-              sellerProjects={getWinningProjects(scenario.sellerProjects, 'seller')}
-              buyerProjects={getWinningProjects(scenario.buyerProjects, 'buyer')}
+              sellerProjects={getWinningProjects(
+                scenario.sellerProjects,
+                'seller',
+              )}
+              buyerProjects={getWinningProjects(
+                scenario.buyerProjects,
+                'buyer',
+              )}
             />
           </motion.div>
         )}
       </>
     );
-  };
+  }
 
   if (scenario.options.showMaps) {
     return (
       <div className="m-5">
-        <Map
-          highlightedMapRegions={scenario.options.highlightedMapRegions}
-        />
+        <Map highlightedMapRegions={scenario.options.highlightedMapRegions} />
       </div>
     );
   }

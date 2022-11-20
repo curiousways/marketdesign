@@ -1,17 +1,17 @@
+import { FunctionComponent } from 'react';
 import { useWalkthroughContext } from '@/context/WalkthroughContext';
 import type { WalkthroughProject } from '@/types/walkthrough';
 import { classNames } from '@/utils/index';
 import { isMyProject } from '@/utils/walkthroughs';
-import { FunctionComponent } from 'react';
 
 type Props = {
   project: WalkthroughProject;
-  projectCost: number,
+  projectCost: number;
   acceptedCost: number | boolean;
   hideMainTitle: boolean;
   showLoserStyles: boolean;
   showAcceptedCosts?: boolean;
-}
+};
 
 export const ProjectTitle: FunctionComponent<Props> = ({
   project,
@@ -23,17 +23,18 @@ export const ProjectTitle: FunctionComponent<Props> = ({
 }: Props) => {
   const { scenario } = useWalkthroughContext();
   const { title, subtitle } = project;
-  const acceptedPercentage = showAcceptedCosts && Number.isFinite(acceptedCost)
-    ? acceptedCost
-    : null;
+  const acceptedPercentage =
+    showAcceptedCosts && Number.isFinite(acceptedCost) ? acceptedCost : null;
 
   const commonTextClassNames = 'overflow-hidden text-left text-ellipsis';
 
   return (
-    <div className={classNames(
-      'flex flex-col text-black text-center whitespace-nowrap',
-      showLoserStyles ? 'w-[100px]' : 'flex-[30%] min-w-[125px]',
-    )}>
+    <div
+      className={classNames(
+        'flex flex-col text-black text-center whitespace-nowrap',
+        showLoserStyles ? 'w-[100px]' : 'flex-[30%] min-w-[125px]',
+      )}
+    >
       {!hideMainTitle && (
         <div className="flex flex-col">
           <p
@@ -52,13 +53,14 @@ export const ProjectTitle: FunctionComponent<Props> = ({
           )}
         </div>
       )}
-      {!showLoserStyles && (
-        acceptedPercentage ? (
+      {!showLoserStyles &&
+        (acceptedPercentage ? (
           <span className="bg-white rounded-full px-3 py-1 mt-1">
             Accepted: {acceptedPercentage}%
           </span>
-        ): subtitle && <p className={commonTextClassNames}>{subtitle}</p>
-      )}
+        ) : (
+          subtitle && <p className={commonTextClassNames}>{subtitle}</p>
+        ))}
     </div>
   );
 };

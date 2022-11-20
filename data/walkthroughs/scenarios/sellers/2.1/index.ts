@@ -1,17 +1,19 @@
-import { sidebarContentStage1 } from "./sidebar-content/1";
-import { sidebarContentStage2 } from "./sidebar-content/2";
-import { sidebarContentStage3 } from "./sidebar-content/3";
-import { sidebarContentStage10 } from "./sidebar-content/10";
-import { GetWalkthroughScenario } from "@/types/walkthrough";
+import { GetWalkthroughScenario } from '@/types/walkthrough';
+import { sidebarContentStage1 } from './sidebar-content/1';
+import { sidebarContentStage2 } from './sidebar-content/2';
+import { sidebarContentStage3 } from './sidebar-content/3';
+import { sidebarContentStage10 } from './sidebar-content/10';
 
-export const getSellerScenario2_1: GetWalkthroughScenario = (stage: number) => ({
+export const getSellerScenario2_1: GetWalkthroughScenario = (
+  stage: number,
+) => ({
   myProjects: [
     {
       title: 'My Project',
       cost: 140000,
       accepted: () => true,
       discountOrBonus: 84000,
-      products: { biodiversity: 4, nutrients: 3 }
+      products: { biodiversity: 4, nutrients: 3 },
     },
   ],
   buyerProjects: [
@@ -20,22 +22,22 @@ export const getSellerScenario2_1: GetWalkthroughScenario = (stage: number) => (
       cost: 240000,
       accepted: () => true,
       discountOrBonus: 61000,
-      products: { biodiversity: 3, nutrients: 1 }
+      products: { biodiversity: 3, nutrients: 1 },
     },
     {
       title: 'Buyer 2',
       cost: 260000,
       accepted: () => true,
       discountOrBonus: 45000,
-      products: { biodiversity: 4, nutrients: 2 }
+      products: { biodiversity: 4, nutrients: 2 },
     },
     {
       title: 'Buyer 3',
       cost: 280000,
       accepted: () => true,
       discountOrBonus: 72000,
-      products: { biodiversity: 3, nutrients: 3 }
-    }
+      products: { biodiversity: 3, nutrients: 3 },
+    },
   ],
   sellerProjects: [
     {
@@ -43,15 +45,15 @@ export const getSellerScenario2_1: GetWalkthroughScenario = (stage: number) => (
       cost: 120000,
       accepted: () => true,
       discountOrBonus: 53000,
-      products: { biodiversity: 3, nutrients: 2 }
+      products: { biodiversity: 3, nutrients: 2 },
     },
     {
       title: 'Seller 2',
       cost: 160000,
       accepted: () => true,
       discountOrBonus: 45000,
-      products: { biodiversity: 3, nutrients: 3 }
-    }
+      products: { biodiversity: 3, nutrients: 3 },
+    },
   ],
   sidebarContent: {
     1: sidebarContentStage1,
@@ -70,5 +72,5 @@ export const getSellerScenario2_1: GetWalkthroughScenario = (stage: number) => (
       seller: stage >= 2 ? 3 : -1,
     },
     showParticipants: stage >= 3,
-  }
+  },
 });

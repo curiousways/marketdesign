@@ -1,15 +1,23 @@
-import React, { ChangeEvent, FunctionComponent } from "react";
-import { WalkthroughMarketState, WalkthroughProject } from "@/types/walkthrough";
-import { useWalkthroughContext } from "@/context/WalkthroughContext";
+import React, { ChangeEvent, FunctionComponent } from 'react';
+import {
+  WalkthroughMarketState,
+  WalkthroughProject,
+} from '@/types/walkthrough';
+import { useWalkthroughContext } from '@/context/WalkthroughContext';
 
 type Props = {
   project: WalkthroughProject;
   populate: boolean;
   name: string;
-}
+};
 
-const Input: FunctionComponent<Props> = ({ project, populate, name }: Props) => {
-  const { marketState, setProjectCost, getProjectCost } = useWalkthroughContext();
+const Input: FunctionComponent<Props> = ({
+  project,
+  populate,
+  name,
+}: Props) => {
+  const { marketState, setProjectCost, getProjectCost } =
+    useWalkthroughContext();
 
   const onSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setProjectCost(project, Number(event.target.value));
@@ -27,10 +35,7 @@ const Input: FunctionComponent<Props> = ({ project, populate, name }: Props) => 
       >
         <option />
         {project.cost.map((cost) => (
-          <option
-            key={cost}
-            value={cost}
-          >
+          <option key={cost} value={cost}>
             {cost}
           </option>
         ))}
@@ -46,7 +51,7 @@ const Input: FunctionComponent<Props> = ({ project, populate, name }: Props) => 
       placeholder="Enter offer..."
       className="w-full text-sm inline-block rounded-lg py-2 px-3 bg-extra-light-grey"
       name={name}
-      defaultValue={populate ? (project.costPerCredit ?? project.cost) : ''}
+      defaultValue={populate ? project.costPerCredit ?? project.cost : ''}
     />
   );
 };

@@ -1,31 +1,31 @@
-import * as Accordion from "@radix-ui/react-accordion";
+import * as Accordion from '@radix-ui/react-accordion';
 
 const faqs = [
   {
-    question: "Who can participate?",
+    question: 'Who can participate?',
     answer:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis totam laudantium dolorem explicabo fugit distinctio cum, quia voluptas provident quaerat.",
+      'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis totam laudantium dolorem explicabo fugit distinctio cum, quia voluptas provident quaerat.',
   },
   {
-    question: "What can be traded?",
+    question: 'What can be traded?',
     answer:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis totam laudantium dolorem explicabo fugit distinctio cum, quia voluptas provident quaerat.",
+      'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis totam laudantium dolorem explicabo fugit distinctio cum, quia voluptas provident quaerat.',
   },
   {
-    question: "Bids and offers",
+    question: 'Bids and offers',
     answer:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis totam laudantium dolorem explicabo fugit distinctio cum, quia voluptas provident quaerat.",
+      'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis totam laudantium dolorem explicabo fugit distinctio cum, quia voluptas provident quaerat.',
   },
   {
-    question: "5 Basic rules",
+    question: '5 Basic rules',
     answer:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis totam laudantium dolorem explicabo fugit distinctio cum, quia voluptas provident quaerat.",
+      'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis totam laudantium dolorem explicabo fugit distinctio cum, quia voluptas provident quaerat.',
   },
   {
     question:
-      "How fair settlement leads to efficient resource allocation, accurate price discovery and equitable?",
+      'How fair settlement leads to efficient resource allocation, accurate price discovery and equitable?',
     answer:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis totam laudantium dolorem explicabo fugit distinctio cum, quia voluptas provident quaerat.",
+      'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis totam laudantium dolorem explicabo fugit distinctio cum, quia voluptas provident quaerat.',
   },
 ];
 
@@ -43,7 +43,7 @@ const Faqs = () => {
               className="overflow-hidden cursor-pointer border-b border-flox-light-blue"
             >
               <Accordion.Header className="accordion-header duration-500 pb-4 relative flex items-center justify-between">
-                <Accordion.Trigger className="w-full h-full absolute top-0 left-0 z-10"></Accordion.Trigger>
+                <Accordion.Trigger className="w-full h-full absolute top-0 left-0 z-10" />
                 <span className="md:text-[26px] leading-[26px] max-w-[750px]">
                   {faq.question}
                 </span>

@@ -1,21 +1,26 @@
-import { AnimationProps, motion } from "framer-motion";
+import { AnimationProps, motion } from 'framer-motion';
 
-import { classNames } from "@/utils/index";
+import { CSSProperties, useEffect, useState } from 'react';
+import { classNames } from '@/utils/index';
 
-import { WalkthroughProject, WalkthroughOptions, WalkthroughMarketState, WalkthroughScenario } from "@/types/walkthrough";
-import { fadeInDown } from "@/utils/animations";
+import {
+  WalkthroughMarketState,
+  WalkthroughOptions,
+  WalkthroughProject,
+  WalkthroughScenario,
+} from '@/types/walkthrough';
+import { fadeInDown } from '@/utils/animations';
 
-import HammerIcon from "../icons/HammerIcon";
-import PoundcashTag from "../icons/PoundcashTag";
-import { RoleId } from "@/types/roles";
-import { ProjectTitle } from "./ProjectTitle";
-import CartPlus from "../icons/CartPlus";
-import OfferIcon from "../icons/OfferIcon";
-import { useWalkthroughContext } from "@/context/WalkthroughContext";
-import { isMyProject } from "@/utils/walkthroughs";
-import { CSSProperties, useEffect, useState } from "react";
-import ProjectBiodiversity from "./ProjectBiodiversity";
-import ProjectNutrients from "./ProjectNutrients";
+import { RoleId } from '@/types/roles';
+import { useWalkthroughContext } from '@/context/WalkthroughContext';
+import { isMyProject } from '@/utils/walkthroughs';
+import HammerIcon from '../icons/HammerIcon';
+import PoundcashTag from '../icons/PoundcashTag';
+import { ProjectTitle } from './ProjectTitle';
+import CartPlus from '../icons/CartPlus';
+import OfferIcon from '../icons/OfferIcon';
+import ProjectBiodiversity from './ProjectBiodiversity';
+import ProjectNutrients from './ProjectNutrients';
 
 const PROJECT_HEIGHT = 120;
 const PROJECT_WIDTH = 800;
@@ -37,10 +42,8 @@ type Props = {
   isMySubsequentProject: boolean;
 };
 
-const getAdjustedCost = (
-  cost: number,
-  accepted: boolean | number,
-) => typeof accepted === 'number' ? (accepted / 100) * cost : cost;
+const getAdjustedCost = (cost: number, accepted: boolean | number) =>
+  typeof accepted === 'number' ? (accepted / 100) * cost : cost;
 
 const calculatePayment = (
   cost: number,
@@ -55,7 +58,7 @@ const calculatePayment = (
   }
 
   return adjustedCost + discountOrBonus;
-}
+};
 
 const getMyProjectStyles = (
   project: WalkthroughProject,
@@ -69,7 +72,7 @@ const getMyProjectStyles = (
   const borderStyle = 'solid';
 
   if (!isMyProject(scenario, project)) {
-    return { borderRadius }
+    return { borderRadius };
   }
 
   const myProjectStyles: CSSProperties = {
@@ -119,7 +122,7 @@ const useRowAnimation = (
 
   useEffect(() => {
     const commonStyles: AnimationProps['animate'] = {
-      opacity: fade ? .5 : 1,
+      opacity: fade ? 0.5 : 1,
       width: PROJECT_WIDTH,
     };
 
@@ -164,10 +167,7 @@ const useRowAnimation = (
   return animation;
 };
 
-const useProjectAnimation = (
-  showLoserStyles: boolean,
-  loserIndex: number = 0,
-) => {
+const useProjectAnimation = (showLoserStyles: boolean, loserIndex = 0) => {
   const [animation, setAnimation] = useState<AnimationProps['animate']>();
 
   useEffect(() => {
@@ -178,9 +178,10 @@ const useProjectAnimation = (
     const spacing = 10;
     const defaultTransform = 'translate3d(0px, 0px, 0px)';
     const collapsedTransformX = `-${COLLAPSED_PROJECT_WIDTH + spacing}px`;
-    const collapsedTransformY = `${(
-      (loserIndex * COLLAPSED_PROJECT_HEIGHT) + (loserIndex ? loserIndex * spacing : 0)
-    )}px`;
+    const collapsedTransformY = `${
+      loserIndex * COLLAPSED_PROJECT_HEIGHT +
+      (loserIndex ? loserIndex * spacing : 0)
+    }px`;
 
     const collapsedTransform1 = `translate3d(0px, ${collapsedTransformY}, 0px)`;
     const collapsedTransform2 = `translate3d(${[
@@ -234,7 +235,7 @@ const useProjectAnimation = (
         collapsedTransform2,
         collapsedTransform2,
       ];
-    };
+    }
 
     setAnimation(styles);
   }, [showLoserStyles, loserIndex]);
@@ -248,7 +249,7 @@ const Project = ({
   options,
   isLoser,
   loserIndex,
-  className = "",
+  className = '',
   isMyFirstProject,
   isMyLastProject,
   isMySubsequentProject,
@@ -271,10 +272,7 @@ const Project = ({
     isNotAccepted,
   );
 
-  const projectAnimation = useProjectAnimation(
-    showLoserStyles,
-    loserIndex,
-  );
+  const projectAnimation = useProjectAnimation(showLoserStyles, loserIndex);
 
   // Define some colour classes.
   const shadowColor = isBuyer ? 'neo-shadow-brown' : 'neo-shadow-green';
@@ -296,13 +294,13 @@ const Project = ({
       {/* Add a divider between multiple user projects. */}
       {isMySubsequentProject && (
         <div className="border-black border-l-2 border-r-2 relative h-[2px] z-10 bg-white">
-          <div className={`border-t-2 border-dashed ${dividerColor} w-full absolute`} />
+          <div
+            className={`border-t-2 border-dashed ${dividerColor} w-full absolute`}
+          />
         </div>
       )}
 
-      <div
-        className="relative flex flex-col items-center"
-      >
+      <div className="relative flex flex-col items-center">
         <motion.div
           animate={projectAnimation}
           style={getMyProjectStyles(
@@ -312,7 +310,7 @@ const Project = ({
             isMyLastProject,
           )}
           className={classNames(
-            "absolute flex overflow-hidden left-0 top-0",
+            'absolute flex overflow-hidden left-0 top-0',
             className,
           )}
         >
@@ -320,9 +318,10 @@ const Project = ({
           <div
             className={`absolute h-full ${backgroundColor} top-0 left-0`}
             style={{
-              width: typeof acceptedCost === 'number' && showingWinners
-                ? `${acceptedCost}%`
-                : '100%'
+              width:
+                typeof acceptedCost === 'number' && showingWinners
+                  ? `${acceptedCost}%`
+                  : '100%',
             }}
           />
 
@@ -332,10 +331,12 @@ const Project = ({
           />
 
           {/* Content */}
-          <div className={classNames(
-            "z-10 items-center flex justify-between w-full",
-            showLoserStyles ? 'gap-x-2' : 'gap-x-10',
-          )}>
+          <div
+            className={classNames(
+              'z-10 items-center flex justify-between w-full',
+              showLoserStyles ? 'gap-x-2' : 'gap-x-10',
+            )}
+          >
             <ProjectTitle
               acceptedCost={acceptedCost}
               showAcceptedCosts={showCosts && showingWinners}
@@ -346,10 +347,12 @@ const Project = ({
             />
 
             {/* Products */}
-            <div className={classNames(
-              'flex',
-              showLoserStyles ? 'gap-x-2' : 'gap-x-10 flex-[20%]',
-            )}>
+            <div
+              className={classNames(
+                'flex',
+                showLoserStyles ? 'gap-x-2' : 'gap-x-10 flex-[20%]',
+              )}
+            >
               {/* Biodiversity */}
               <ProjectBiodiversity
                 count={products.biodiversity}
@@ -373,7 +376,7 @@ const Project = ({
                 <motion.div
                   variants={fadeInDown}
                   initial="hidden"
-                  animate={showCosts ? 'visible' : '' }
+                  animate={showCosts ? 'visible' : ''}
                   className="bg-white rounded-lg border border-black px-1 w-[95px]"
                 >
                   <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
@@ -397,17 +400,15 @@ const Project = ({
                   variants={fadeInDown}
                   initial="hidden"
                   animate={
-                    (
-                      marketState >= WalkthroughMarketState.showing_surpluses &&
-                      !isNotAccepted
-                    ) ? 'visible' : ''
+                    marketState >= WalkthroughMarketState.showing_surpluses &&
+                    !isNotAccepted
+                      ? 'visible'
+                      : ''
                   }
                   className="bg-white rounded-lg border border-black px-1 w-[95px]"
                 >
                   <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
-                    <p className="text-black">
-                      {isBuyer ? '-' : '+'}
-                    </p>
+                    <p className="text-black">{isBuyer ? '-' : '+'}</p>
                   </div>
                   <div className="text-center text-sm relative -mt-2">
                     <p className="text-light-grey">
@@ -422,10 +423,10 @@ const Project = ({
                   variants={fadeInDown}
                   initial="hidden"
                   animate={
-                    (
-                      marketState === WalkthroughMarketState.solved
-                      && !isNotAccepted
-                    ) ? 'visible' : ''
+                    marketState === WalkthroughMarketState.solved &&
+                    !isNotAccepted
+                      ? 'visible'
+                      : ''
                   }
                   className="bg-white rounded-lg border border-black px-1 w-[95px]"
                 >
@@ -437,12 +438,13 @@ const Project = ({
                       {isBuyer ? 'Pays' : 'Received'}
                     </p>
                     <p>
-                      £{(calculatePayment(
+                      £
+                      {calculatePayment(
                         projectCost,
                         discountOrBonus,
                         accepted(projectCost),
                         projectRoleId,
-                      )).toLocaleString()}
+                      ).toLocaleString()}
                     </p>
                   </div>
                 </motion.div>

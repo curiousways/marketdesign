@@ -1,7 +1,7 @@
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 
-import { fadeIn } from "@/utils/animations";
-import { useWalkthroughContext } from "@/context/WalkthroughContext";
+import { fadeIn } from '@/utils/animations';
+import { useWalkthroughContext } from '@/context/WalkthroughContext';
 
 const Description = () => {
   const { scenario, stage } = useWalkthroughContext();
@@ -12,16 +12,12 @@ const Description = () => {
     <motion.div
       variants={fadeIn}
       initial="hidden"
-      animate={hide ? "hidden" : "visible"}
+      animate={hide ? 'hidden' : 'visible'}
       layout
       className="space-y-4 text-xl"
     >
       <div className="bg-green-dark py-7 px-3 rounded-lg text-white">
-        <div
-          className="space-y-5 text-white"
-        >
-          {sidebarContent}
-        </div>
+        <div className="space-y-5 text-white">{sidebarContent}</div>
       </div>
     </motion.div>
   );

@@ -5,8 +5,8 @@ export const sidebarContentStage1 = (
       both projects together.
     </p>
     <p>
-      While the Field 1 project on its own would cost you £140,000 and the
-      Field 2 project £70,000, if you execute both projects your costs are only
+      While the Field 1 project on its own would cost you £140,000 and the Field
+      2 project £70,000, if you execute both projects your costs are only
       £170,000.
     </p>
     <p>

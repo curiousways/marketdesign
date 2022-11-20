@@ -1,24 +1,18 @@
-import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
-import { fadeIn } from "@/utils/animations";
-import Description from "./Description";
-import Details from "./Details";
-import Navigation from "./Navigation";
-import { useWalkthroughContext } from "@/context/WalkthroughContext";
-import { WalkthroughMarketState } from "@/types/walkthrough";
+import { fadeIn } from '@/utils/animations';
+import { useWalkthroughContext } from '@/context/WalkthroughContext';
+import { WalkthroughMarketState } from '@/types/walkthrough';
+import Description from './Description';
+import Details from './Details';
+import Navigation from './Navigation';
 
 const SideBar = () => {
-  const {
-    scenario,
-    stage,
-    marketState,
-    goToNextMarketState,
-  } = useWalkthroughContext();
+  const { scenario, stage, marketState, goToNextMarketState } =
+    useWalkthroughContext();
 
-  const showSolveMarketBtn = (
-    marketState === WalkthroughMarketState.solvable
-  );
+  const showSolveMarketBtn = marketState === WalkthroughMarketState.solvable;
 
   const onSolveMarketClick = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,9 +27,7 @@ const SideBar = () => {
           className="gap-y-6 flex flex-col items-center"
         >
           {/* Top */}
-          {scenario.options.showDetailsWidget && (
-            <Details />
-          )}
+          {scenario.options.showDetailsWidget && <Details />}
 
           {/* Solve Market Button */}
           {showSolveMarketBtn && (

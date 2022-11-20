@@ -1,8 +1,6 @@
 export const sidebarContent3 = (
   <>
-    <p>
-      You decide to buy the credits you need in the credit market.
-    </p>
+    <p>You decide to buy the credits you need in the credit market.</p>
     <p>
       In this walkthrough there happen to be 3 credit sellers and 2 other buyers
       in that market.

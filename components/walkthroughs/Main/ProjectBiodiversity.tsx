@@ -1,4 +1,4 @@
-import AdjustedProductCount from "./AdjustedProductCount";
+import AdjustedProductCount from './AdjustedProductCount';
 
 type Props = {
   count?: number;
@@ -38,17 +38,14 @@ const ProjectBiodiversity = ({
           {count}
         </div>
       </div>
-    )
+    );
   }
 
   return (
     <div
       className={`h-[66px] w-[66px] rounded-lg flex items-center justify-center relative ${shadowColor}`}
     >
-      <AdjustedProductCount
-        count={count}
-        accepted={accepted}
-      />
+      <AdjustedProductCount count={count} accepted={accepted} />
       <svg
         width="32"
         height="32"
@@ -63,7 +60,7 @@ const ProjectBiodiversity = ({
         />
       </svg>
     </div>
-  )
-}
+  );
+};
 
 export default ProjectBiodiversity;

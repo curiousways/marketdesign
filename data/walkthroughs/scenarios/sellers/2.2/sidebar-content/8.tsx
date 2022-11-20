@@ -6,18 +6,19 @@ export const sidebarContentStage8 = (
     </p>
 
     <p>
-      More concerning is that your share of that surplus is only £10,000 such that
-      you are paid only £150,000 for your project.
+      More concerning is that your share of that surplus is only £10,000 such
+      that you are paid only £150,000 for your project.
     </p>
     <p>
       Your share of the surplus is small because your offer is only marginally
-      better than those of the other sellers. If the buyer were to trade with those
-      other sellers instead the market surplus would not reduce that much.
+      better than those of the other sellers. If the buyer were to trade with
+      those other sellers instead the market surplus would not reduce that much.
     </p>
-    <p>In contrast, the single buyer is
-      critical to trades occurring in the market. As such they make the largest
-      contribution to the generation of market surplus and secure the lion’s share
-      of that surplus as a discount of £130,000.
+    <p>
+      In contrast, the single buyer is critical to trades occurring in the
+      market. As such they make the largest contribution to the generation of
+      market surplus and secure the lion’s share of that surplus as a discount
+      of £130,000.
     </p>
   </>
 );

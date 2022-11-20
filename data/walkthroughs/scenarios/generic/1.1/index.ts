@@ -1,22 +1,26 @@
-import { GetWalkthroughScenario, WalkthroughMarketState, WalkthroughProject } from "@/types/walkthrough";
-import { sidebarContent1 } from "./sidebar-content/1";
-import { sidebarContent10 } from "./sidebar-content/10";
-import { sidebarContent11 } from "./sidebar-content/11";
-import { sidebarContent12 } from "./sidebar-content/12";
-import { sidebarContent13 } from "./sidebar-content/13";
-import { sidebarContent15 } from "./sidebar-content/15";
-import { sidebarContent16 } from "./sidebar-content/16";
-import { sidebarContent17 } from "./sidebar-content/17";
-import { sidebarContent19 } from "./sidebar-content/19";
-import { sidebarContent2 } from "./sidebar-content/2";
-import { sidebarContent21 } from "./sidebar-content/21";
-import { sidebarContent3 } from "./sidebar-content/3";
-import { sidebarContent4 } from "./sidebar-content/4";
-import { sidebarContent5 } from "./sidebar-content/5";
-import { sidebarContent6 } from "./sidebar-content/6";
-import { sidebarContent7 } from "./sidebar-content/7";
-import { sidebarContent8 } from "./sidebar-content/8";
-import { sidebarContent9 } from "./sidebar-content/9";
+import {
+  GetWalkthroughScenario,
+  WalkthroughMarketState,
+  WalkthroughProject,
+} from '@/types/walkthrough';
+import { sidebarContent1 } from './sidebar-content/1';
+import { sidebarContent10 } from './sidebar-content/10';
+import { sidebarContent11 } from './sidebar-content/11';
+import { sidebarContent12 } from './sidebar-content/12';
+import { sidebarContent13 } from './sidebar-content/13';
+import { sidebarContent15 } from './sidebar-content/15';
+import { sidebarContent16 } from './sidebar-content/16';
+import { sidebarContent17 } from './sidebar-content/17';
+import { sidebarContent19 } from './sidebar-content/19';
+import { sidebarContent2 } from './sidebar-content/2';
+import { sidebarContent21 } from './sidebar-content/21';
+import { sidebarContent3 } from './sidebar-content/3';
+import { sidebarContent4 } from './sidebar-content/4';
+import { sidebarContent5 } from './sidebar-content/5';
+import { sidebarContent6 } from './sidebar-content/6';
+import { sidebarContent7 } from './sidebar-content/7';
+import { sidebarContent8 } from './sidebar-content/8';
+import { sidebarContent9 } from './sidebar-content/9';
 
 const getBuyerProjects = (stage: number): WalkthroughProject[] => {
   if ([6, 7].includes(stage)) {
@@ -26,7 +30,7 @@ const getBuyerProjects = (stage: number): WalkthroughProject[] => {
         cost: 200000,
         discountOrBonus: 0,
         accepted: () => false,
-        products: { biodiversity: 1, nutrients: 2 }
+        products: { biodiversity: 1, nutrients: 2 },
       },
     ];
   }
@@ -38,14 +42,14 @@ const getBuyerProjects = (stage: number): WalkthroughProject[] => {
         cost: 200000,
         discountOrBonus: 0,
         accepted: () => false,
-        products: { biodiversity: 1, nutrients: 2 }
+        products: { biodiversity: 1, nutrients: 2 },
       },
       {
         title: 'Buyer 2',
         cost: 150000,
         discountOrBonus: 0,
         accepted: () => true,
-        products: { biodiversity: 3, nutrients: 2 }
+        products: { biodiversity: 3, nutrients: 2 },
       },
     ];
   }
@@ -57,14 +61,14 @@ const getBuyerProjects = (stage: number): WalkthroughProject[] => {
         cost: 210000,
         discountOrBonus: 0,
         accepted: () => true,
-        products: { biodiversity: 1, nutrients: 2 }
+        products: { biodiversity: 1, nutrients: 2 },
       },
       {
         title: 'Buyer 2',
         cost: 150000,
         discountOrBonus: 0,
         accepted: () => true,
-        products: { biodiversity: 3, nutrients: 2 }
+        products: { biodiversity: 3, nutrients: 2 },
       },
     ];
   }
@@ -99,7 +103,7 @@ const getSellerProjects = (stage: number): WalkthroughProject[] => {
         cost: 60000,
         discountOrBonus: 0,
         accepted: () => false,
-        products: { biodiversity: 3, nutrients: 2 }
+        products: { biodiversity: 3, nutrients: 2 },
       },
     ];
   }
@@ -118,7 +122,7 @@ const getSellerProjects = (stage: number): WalkthroughProject[] => {
         cost: 100000,
         discountOrBonus: 0,
         accepted: () => false,
-        products: { biodiversity: 3, nutrients: 2 }
+        products: { biodiversity: 3, nutrients: 2 },
       },
     ];
   }
@@ -215,7 +219,9 @@ const getHighlightedMapRegions = (stage: number) => {
   }
 };
 
-export const getGenericScenario0_0: GetWalkthroughScenario = (stage: number) => ({
+export const getGenericScenario0_0: GetWalkthroughScenario = (
+  stage: number,
+) => ({
   myProjects: [],
   buyerProjects: getBuyerProjects(stage),
   sellerProjects: getSellerProjects(stage),

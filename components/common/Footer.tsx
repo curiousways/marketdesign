@@ -1,7 +1,7 @@
-import Link from "next/link";
+import Link from 'next/link';
 
-import Logo from "./LogoWhite";
-import NavLink from "./NavLink";
+import Logo from './LogoWhite';
+import NavLink from './NavLink';
 
 const Footer = () => {
   return (

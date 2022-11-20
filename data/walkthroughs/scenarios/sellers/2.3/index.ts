@@ -1,17 +1,19 @@
-import { GetWalkthroughScenario } from "@/types/walkthrough";
-import { sidebarContentStage1 } from "./sidebar-content/1";
-import { sidebarContentStage8 } from "./sidebar-content/8";
-import { sidebarContentStage9 } from "./sidebar-content/9";
+import { GetWalkthroughScenario } from '@/types/walkthrough';
+import { sidebarContentStage1 } from './sidebar-content/1';
+import { sidebarContentStage8 } from './sidebar-content/8';
+import { sidebarContentStage9 } from './sidebar-content/9';
 
-export const getSellerScenario2_3: GetWalkthroughScenario = (stage: number) => ({
+export const getSellerScenario2_3: GetWalkthroughScenario = (
+  stage: number,
+) => ({
   myProjects: [
     {
       title: 'My Project',
       cost: 140000,
       accepted: () => true,
       discountOrBonus: 130000,
-      products: { biodiversity: 4, nutrients: 3 }
-    }
+      products: { biodiversity: 4, nutrients: 3 },
+    },
   ],
   buyerProjects: [
     {
@@ -19,22 +21,22 @@ export const getSellerScenario2_3: GetWalkthroughScenario = (stage: number) => (
       cost: 240000,
       accepted: () => false,
       discountOrBonus: 0,
-      products: { biodiversity: 3, nutrients: 1 }
+      products: { biodiversity: 3, nutrients: 1 },
     },
     {
       title: 'Buyer 2',
       cost: 260000,
       accepted: () => false,
       discountOrBonus: 0,
-      products: { biodiversity: 4, nutrients: 2 }
+      products: { biodiversity: 4, nutrients: 2 },
     },
     {
       title: 'Buyer 3',
       cost: 280000,
       accepted: () => true,
       discountOrBonus: 10000,
-      products: { biodiversity: 3, nutrients: 3 }
-    }
+      products: { biodiversity: 3, nutrients: 3 },
+    },
   ],
   sellerProjects: [],
   sidebarContent: {
@@ -50,5 +52,5 @@ export const getSellerScenario2_3: GetWalkthroughScenario = (stage: number) => (
     showCosts: stage >= 1,
     showMaps: false,
     showParticipants: stage >= 1,
-  }
+  },
 });

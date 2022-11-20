@@ -1,21 +1,14 @@
-import type {
-  GetStaticPaths,
-  GetStaticProps,
-  NextPage,
-} from "next";
+import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 
-import SideBar from "@/components/walkthroughs/sidebar/SideBar";
-import MainContent from "@/components/walkthroughs/Main/MainContent";
-import { ParsedUrlQuery } from "querystring";
-import {
-  getAllScenarioIds,
-  isValidScenarioId,
-} from "@/utils/walkthroughs";
-import { WalkthroughProvider } from "@/context/WalkthroughContext";
+import { ParsedUrlQuery } from 'querystring';
+import SideBar from '@/components/walkthroughs/sidebar/SideBar';
+import MainContent from '@/components/walkthroughs/Main/MainContent';
+import { getAllScenarioIds, isValidScenarioId } from '@/utils/walkthroughs';
+import { WalkthroughProvider } from '@/context/WalkthroughContext';
 
 interface HowItWorksScenarioParams extends ParsedUrlQuery {
   scenarioId: string;
-};
+}
 
 interface HowItWorksScenarioProps {
   scenarioId: string;
@@ -24,13 +17,9 @@ interface HowItWorksScenarioProps {
 const HowItWorksScenario: NextPage<HowItWorksScenarioProps> = ({
   scenarioId,
 }) => (
-  <WalkthroughProvider
-    scenarioId={scenarioId}
-  >
+  <WalkthroughProvider scenarioId={scenarioId}>
     <main>
-      <div
-        className="flex items-stretch font-poppins relative border-t border-green-dark min-h-screen"
-      >
+      <div className="flex items-stretch font-poppins relative border-t border-green-dark min-h-screen">
         <SideBar />
         <MainContent />
       </div>
@@ -38,7 +27,9 @@ const HowItWorksScenario: NextPage<HowItWorksScenarioProps> = ({
   </WalkthroughProvider>
 );
 
-export const getStaticPaths: GetStaticPaths<HowItWorksScenarioParams> = async () => ({
+export const getStaticPaths: GetStaticPaths<
+  HowItWorksScenarioParams
+> = async () => ({
   fallback: false,
   paths: getAllScenarioIds().map((scenarioId) => ({
     params: {

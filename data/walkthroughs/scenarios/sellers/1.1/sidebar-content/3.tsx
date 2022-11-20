@@ -8,9 +8,9 @@ export const sidebarContentStage3 = (
     </p>
 
     <p>
-      While you wouldn’t know this information in a real market, here we have shown
-      you full details of the bids (buyers) and offers (sellers) made by those other
-      market participants.
+      While you wouldn’t know this information in a real market, here we have
+      shown you full details of the bids (buyers) and offers (sellers) made by
+      those other market participants.
     </p>
   </>
 );
