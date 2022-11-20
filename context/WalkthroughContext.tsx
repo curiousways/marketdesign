@@ -5,10 +5,8 @@ import {
   WalkthroughProject,
   WalkthroughScenario,
 } from "@/types/walkthrough";
-import { getNextScenarioId, parseScenarioId } from "@/utils/walkthroughs";
+import { getNextScenarioId, isProjectEqual, parseScenarioId } from "@/utils/walkthroughs";
 import { useRouter } from "next/router";
-import isEqual from 'lodash.isequal';
-import omit from 'lodash.omit';
 import {
   createContext,
   useState,
@@ -128,10 +126,8 @@ export const WalkthroughProvider: FunctionComponent<WalkthroughProviderProps> = 
 
   const getProjectCost = useCallback((project: WalkthroughProject): number => {
     const { cost: dynamicProjectCost } = dynamicProjectCosts.find((item) => (
-      isEqual(
-        omit(item.project, ['accepted']),
-        omit(project, ['accepted']),
-      ))) ?? {};
+      isProjectEqual(item.project, project)
+    )) ?? {};
 
     if (dynamicProjectCost) {
       return dynamicProjectCost;

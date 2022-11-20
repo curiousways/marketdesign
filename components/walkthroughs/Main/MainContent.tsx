@@ -1,11 +1,9 @@
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 
 import LoadingOverlay from "./LoadingOverlay";
 import { useWalkthroughContext } from "@/context/WalkthroughContext";
 import { WalkthroughMarketState } from "@/types/walkthrough";
 import MainContentBody from "./MainContentBody";
-import { WalkthroughBackgroundRight } from "../icons/WalkthroughBackground";
-import { WalkthroughBackgroundLeft } from "../icons/WalkthroughBackgroundLeft";
 import Background from "./Background";
 
 const MARKET_SOLVING_TIMEOUT = 4000;
@@ -82,7 +80,7 @@ const MainContent = () => {
   ]);
 
   return (
-    <div className="border-l border-green-dark pt-4 w-full relative flex justify-center">
+    <div className="border-l border-green-dark pt-8 w-full relative flex justify-center">
       <div className="z-20">
         <LoadingOverlay />
       </div>

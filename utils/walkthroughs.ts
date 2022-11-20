@@ -1,6 +1,8 @@
 import { RoleId } from "@/types/roles";
 import { roles } from "data/roles";
 import { walkthroughsByRole } from "data/walkthroughs";
+import isEqual from "lodash.isequal";
+import omit from "lodash.omit";
 import { GetWalkthroughScenario, Walkthrough, WalkthroughProject, WalkthroughScenario } from "../types/walkthrough";
 
 const SCENARIO_ID_DELIMITER = '-';
@@ -124,3 +126,27 @@ export const isMyProject = (
   scenario: WalkthroughScenario,
   project: WalkthroughProject,
 ) => scenario.myProjects.includes(project);
+
+export const isProjectEqual = (
+  projectA: WalkthroughProject,
+  projectB: WalkthroughProject,
+) => {
+  const ignoredProperties = ['accepted'];
+
+  return isEqual(
+    omit(projectA, ignoredProperties),
+    omit(projectB, ignoredProperties)
+  );
+};
+
+export const includesProject = (
+  project: WalkthroughProject,
+  projectsToCheck: WalkthroughProject[],
+):boolean => !!projectsToCheck.find((checkedProject) => (
+  isProjectEqual(checkedProject, project)
+));
+
+export const findProjectIndex = (
+  project: WalkthroughProject,
+  projects: WalkthroughProject[],
+) => projects.findIndex((p) => isProjectEqual(p, project));

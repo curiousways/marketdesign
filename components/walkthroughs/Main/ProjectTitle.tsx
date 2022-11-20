@@ -6,37 +6,59 @@ import { FunctionComponent } from 'react';
 
 type Props = {
   project: WalkthroughProject;
+  projectCost: number,
   acceptedCost: number | boolean;
   hideMainTitle: boolean;
-  showCosts?: boolean;
+  showLoserStyles: boolean;
+  showAcceptedCosts?: boolean;
 }
 
 export const ProjectTitle: FunctionComponent<Props> = ({
   project,
+  projectCost,
   acceptedCost,
   hideMainTitle,
-  showCosts,
+  showAcceptedCosts,
+  showLoserStyles,
 }: Props) => {
   const { scenario } = useWalkthroughContext();
-  const { title, subtitle, accepted } = project;
-  const acceptedPercentage = showCosts && Number.isFinite(acceptedCost)
+  const { title, subtitle } = project;
+  const acceptedPercentage = showAcceptedCosts && Number.isFinite(acceptedCost)
     ? acceptedCost
     : null;
 
+  const commonTextClassNames = 'overflow-hidden text-left text-ellipsis';
+
   return (
-    <div className="flex flex-col text-black text-center flex-[30%] min-w-[125px]">
+    <div className={classNames(
+      'flex flex-col text-black text-center whitespace-nowrap',
+      showLoserStyles ? 'w-[100px]' : 'flex-[30%] min-w-[125px]',
+    )}>
       {!hideMainTitle && (
-        <p
-          className={classNames(isMyProject(scenario, project) ? 'font-bold' : '')}
-        >
-          {title}
-        </p>
+        <div className="flex flex-col">
+          <p
+            className={classNames(
+              commonTextClassNames,
+              isMyProject(scenario, project) ? 'font-bold' : '',
+              commonTextClassNames,
+            )}
+          >
+            {title}
+          </p>
+          {showLoserStyles && (
+            <p className={commonTextClassNames}>
+              £{projectCost.toLocaleString()}
+            </p>
+          )}
+        </div>
       )}
-      {acceptedPercentage ? (
-        <span className="bg-white rounded-full px-3 py-1 mt-1">
-          Accepted: {acceptedPercentage}%
-        </span>
-      ): subtitle && <p>{subtitle}</p>}
+      {!showLoserStyles && (
+        acceptedPercentage ? (
+          <span className="bg-white rounded-full px-3 py-1 mt-1">
+            Accepted: {acceptedPercentage}%
+          </span>
+        ): subtitle && <p className={commonTextClassNames}>{subtitle}</p>
+      )}
     </div>
   );
 };
