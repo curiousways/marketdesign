@@ -2,6 +2,7 @@ import AdjustedProductCount from './AdjustedProductCount';
 
 type Props = {
   count?: number;
+  adjustCount: boolean;
   accepted: number | boolean;
   shadowColor: string;
   showLoserStyles: boolean;
@@ -10,6 +11,7 @@ type Props = {
 const ProjectBiodiversity = ({
   count,
   accepted,
+  adjustCount,
   shadowColor,
   showLoserStyles,
 }: Props) => {
@@ -45,7 +47,10 @@ const ProjectBiodiversity = ({
     <div
       className={`h-[66px] w-[66px] rounded-lg flex items-center justify-center relative ${shadowColor}`}
     >
-      <AdjustedProductCount count={count} accepted={accepted} />
+      <AdjustedProductCount
+        count={count}
+        accepted={adjustCount ? accepted : true}
+      />
       <svg
         width="32"
         height="32"

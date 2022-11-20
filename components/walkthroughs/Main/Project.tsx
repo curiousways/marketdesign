@@ -358,6 +358,7 @@ const Project = ({
               {/* Biodiversity */}
               <ProjectBiodiversity
                 count={products.biodiversity}
+                adjustCount={showingWinners}
                 accepted={acceptedCost}
                 shadowColor={shadowColor}
                 showLoserStyles={showLoserStyles}
@@ -366,6 +367,7 @@ const Project = ({
               {/* Nutrients */}
               <ProjectNutrients
                 count={products.nutrients}
+                adjustCount={showingWinners}
                 accepted={acceptedCost}
                 shadowColor={shadowColor}
                 showLoserStyles={showLoserStyles}
