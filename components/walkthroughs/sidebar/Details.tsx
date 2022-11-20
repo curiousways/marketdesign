@@ -182,7 +182,7 @@ const Details = () => {
             <button
               ref={submitButtonRef}
               type="submit"
-              disabled={!isFormEnabled && !isMarketSolvable}
+              disabled={!isFormEnabled}
               className={classNames(
                 'w-full rounded-lg bg-[#848484] text-white text-xs py-2',
                 isFormEnabled
