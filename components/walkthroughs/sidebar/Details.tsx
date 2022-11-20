@@ -161,10 +161,10 @@ const Details = () => {
         </ul>
         <div className="flex items-center">
           {scenario.options.showDivisibleInput && (
+            // eslint-disable-next-line jsx-a11y/label-has-associated-control
             <label
-              htmlFor="is-divisible"
               className={classNames(
-                'flex',
+                'flex select-none',
                 isDivisibleInputEnabled ? 'cursor-pointer' : '',
               )}
             >
