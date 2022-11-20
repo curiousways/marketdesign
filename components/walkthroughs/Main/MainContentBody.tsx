@@ -8,6 +8,7 @@ import { WalkthroughMarketState, WalkthroughProject } from "@/types/walkthrough"
 import { RoleId } from "@/types/roles";
 import { getNextScenarioId } from "@/utils/walkthroughs";
 import Link from "next/link";
+import { Map } from "@/components/map/Map";
 
 const MainContentBody = () => {
   const {
@@ -125,7 +126,11 @@ const MainContentBody = () => {
 
   if (scenario.options.showMaps) {
     return (
-      <p className="text-4xl">MAP</p>
+      <div className="m-5">
+        <Map
+          highlightedMapRegions={scenario.options.highlightedMapRegions}
+        />
+      </div>
     );
   }
 
