@@ -32,7 +32,6 @@ const SideBar = () => {
           {/* Solve Market Button */}
           {showSolveMarketBtn && (
             <motion.button
-              autoFocus
               variants={fadeIn}
               initial="hidden"
               animate="visible"
