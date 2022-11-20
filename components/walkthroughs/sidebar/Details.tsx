@@ -145,18 +145,14 @@ const Details = () => {
             </label>
           )}
           <div className="relative w-[100px] ml-auto">
-            {isFormEnabled && (
-              <span className="flex h-3 w-3 absolute -right-1 -top-1">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-              </span>
-            )}
             <button
               type="submit"
               disabled={!isFormEnabled && !isMarketSolvable}
               className={classNames(
                 'w-full rounded-lg bg-[#848484] text-white text-xs py-2',
-                isFormEnabled ? 'hover:bg-black cursor-pointer' : '',
+                isFormEnabled
+                  ? 'hover:bg-black cursor-pointer animate-scale'
+                  : '',
               )}
             >
               Submit
