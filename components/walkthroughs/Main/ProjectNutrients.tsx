@@ -21,7 +21,7 @@ const ProjectNutrients = ({
 
   if (showLoserStyles) {
     return (
-      <div className="flex gap-x-1">
+      <div className="flex gap-x-1 relative">
         <svg
           width="22"
           height="32"
@@ -36,7 +36,7 @@ const ProjectNutrients = ({
             stroke="white"
           />
         </svg>
-        <div className="border border-black rounded-full bg-white w-[29px] h-[29px] flex justify-center items-center">
+        <div className="border border-black rounded-full bg-white w-[20px] h-[20px] flex justify-center items-center absolute -right-[8px] -top-[8px]">
           {count}
         </div>
       </div>

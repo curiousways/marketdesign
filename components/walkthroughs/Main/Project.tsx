@@ -26,7 +26,7 @@ const PROJECT_HEIGHT = 120;
 const PROJECT_WIDTH = 800;
 const PROJECT_BOTTOM_MARGIN = 15;
 const COLLAPSED_PROJECT_HEIGHT = 60;
-const COLLAPSED_PROJECT_WIDTH = 220;
+const COLLAPSED_PROJECT_WIDTH = 210;
 const SHOW_LOSERS_MAX_SCREEN_WIDTH = 1700;
 
 type Props = {
@@ -335,8 +335,8 @@ const Project = ({
           {/* Content */}
           <div
             className={classNames(
-              'z-10 items-center flex justify-between w-full',
-              showLoserStyles ? 'gap-x-2' : 'gap-x-10',
+              'z-10 items-center flex w-full',
+              showLoserStyles ? 'gap-x-2' : 'gap-x-10 justify-between',
             )}
           >
             <ProjectTitle
@@ -352,7 +352,7 @@ const Project = ({
             <div
               className={classNames(
                 'flex',
-                showLoserStyles ? 'gap-x-2' : 'gap-x-10 flex-[20%]',
+                showLoserStyles ? 'gap-x-4' : 'gap-x-10 flex-[20%]',
               )}
             >
               {/* Biodiversity */}
