@@ -126,6 +126,9 @@ module.exports = {
         '@typescript-eslint/unified-signatures': 'error',
         '@typescript-eslint/naming-convention': 'off',
         '@typescript-eslint/no-unsafe-argument': 'off',
+        '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/no-unsafe-call': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off',
         '@typescript-eslint/no-misused-promises': [
           'error',
           { checksVoidReturn: false },
