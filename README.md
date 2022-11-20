@@ -76,22 +76,28 @@ one or more stages. Each scenario is also associated with a role
 (seller, buyer or generic), which dictates how the current user's projects are
 displayed.
 
-As the user clicks through the stages a function is called that returns the data
-for that stage. The function for each scenario can be found at:
+Stages are iterated through by the user clicking the "next stage" button, the
+form "Submit" button, or the "Solve market" button. For the first two the stage
+number will be incremented by one with each click. When the "Solve market" button
+is clicked we increment through six stages automatically, where each stage is
+used to represent an aspect of the market outcome being calculated.
+
+Whenever a stage is incremented a scenario function is called that returns the
+data for that stage. The function for each scenario can be found at:
 
 ```text
-data/walkthroughs/<scenario-number>/<role>/index.ts
+data/walkthroughs/<role>/<scenario-number>/index.ts
 ```
 
 for example:
 
 ```text
-data/walkthroughs/1.1/buyer/index.ts
+data/walkthroughs/buyer/1.1/index.ts
 ```
 
-These functions return an object with the following properties:
+These functions each return an object with the following properties:
 
-- `myProjects`: The current user's projects. These will be displayed in the
+- `myProjects`: The current user's projects, which will be displayed in the
 details box at the top left of the walkthrough.
 - `buyerProjects`: The projects being bidded for by developers.
 - `sellerProjects`: The projects being offered by landholders.
@@ -99,3 +105,10 @@ details box at the top left of the walkthrough.
 displayed in the sidebar.
 - `options`: An object used to conditionally enable features, generally based on
 the stage number (e.g. enable the form at stage 3).
+
+To create a new scenario for an existing walkthrough create a scenario function
+using the existing functions as an example and add that function to the index
+file for the relevant role (e.g. `data/walkthroughs/buyer/index.ts`). The
+scenario can be associated with an existing walkthrough, or an entirely new one.
+If using a new walkthrough this will show up automatically on the "How it works"
+index page.
