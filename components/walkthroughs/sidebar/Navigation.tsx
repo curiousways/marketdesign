@@ -9,7 +9,6 @@ const Navigation = () => {
   const {
     walkthrough,
     scenarioId,
-    stage,
     hasPreviousStage,
     hasNextStage,
     goToPreviousStage,
@@ -25,7 +24,6 @@ const Navigation = () => {
         {/* Previous button */}
         <PrevButton
           onClick={goToPreviousStage}
-          stage={stage}
           hideButton={!hasPreviousStage}
         />
 
@@ -34,11 +32,7 @@ const Navigation = () => {
         </div>
 
         {/* Next button */}
-        <NextButton
-          onClick={goToNextStage}
-          stage={stage}
-          hideButton={!hasNextStage}
-        />
+        <NextButton onClick={goToNextStage} hideButton={!hasNextStage} />
       </div>
     </motion.div>
   );

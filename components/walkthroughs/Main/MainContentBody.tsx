@@ -114,7 +114,6 @@ const MainContentBody = () => {
               'buyer',
             )}
             data={scenario}
-            roleId={roleId}
           />
         </motion.div>
 

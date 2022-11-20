@@ -3,7 +3,6 @@ import {
   WalkthroughProject,
   WalkthroughScenario,
 } from '@/types/walkthrough';
-import { RoleId } from '@/types/roles';
 import { useWalkthroughContext } from '@/context/WalkthroughContext';
 import {
   findProjectIndex,
@@ -18,7 +17,6 @@ type Props = {
   losingBuyerProjects: WalkthroughProject[];
   losingSellerProjects: WalkthroughProject[];
   data: WalkthroughScenario;
-  roleId: RoleId;
 };
 
 /**
@@ -75,7 +73,6 @@ const ParticipantsList = ({
   losingBuyerProjects,
   losingSellerProjects,
   data,
-  roleId,
 }: Props) => {
   const { scenario, marketState } = useWalkthroughContext();
   const showingWinners = marketState >= WalkthroughMarketState.showing_winners;
@@ -110,7 +107,6 @@ const ParticipantsList = ({
               }
               project={project}
               options={data.options}
-              roleId={roleId}
               isLoser={includesProject(project, allLosingProjects)}
               loserIndex={findProjectIndex(project, allLosingProjects)}
               isMyFirstProject={isMyFirstProject}
