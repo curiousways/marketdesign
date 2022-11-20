@@ -29,7 +29,10 @@ const Input: FunctionComponent<Props> = ({
     useWalkthroughContext();
   const selectRef = useRef<HTMLSelectElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const value = getProjectCost(project);
+  const value = project.costPerCredit
+    ? project.costPerCredit
+    : getProjectCost(project);
+
   const inputClassNames = classNames(
     'w-full text-sm inline-block rounded-lg py-2 px-3 bg-extra-light-grey',
     animate ? 'animate-scale-small' : '',
