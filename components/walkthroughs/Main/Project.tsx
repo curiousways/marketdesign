@@ -207,6 +207,7 @@ const useProjectAnimation = (
 
     if (!showLoserStyles) {
       setAnimation({
+        padding: '1.25rem',
         height: PROJECT_HEIGHT,
         width: PROJECT_WIDTH,
         transform: defaultTransform,
@@ -217,6 +218,7 @@ const useProjectAnimation = (
     }
 
     const styles = {
+      padding: '.25rem',
       height: [
         PROJECT_HEIGHT,
         PROJECT_HEIGHT,
@@ -323,7 +325,7 @@ const Project = ({
           animate={projectAnimation}
           style={getMyProjectStyles(project, scenario)}
           className={classNames(
-            "absolute p-5 flex overflow-hidden left-0 top-0",
+            "absolute flex overflow-hidden left-0 top-0",
             className,
           )}
         >
@@ -345,7 +347,7 @@ const Project = ({
           {/* Content */}
           <div className={classNames(
             "z-10 items-center flex justify-between w-full",
-            showLoserStyles ? 'gap-x-4' : 'gap-x-10',
+            showLoserStyles ? 'gap-x-2' : 'gap-x-10',
           )}>
             <ProjectTitle
               acceptedCost={acceptedCost}
