@@ -12,13 +12,13 @@
   </a>
 </p>
 
-This project is bootstrapped using [Next.js](https://nextjs.org/docs), [Typescript](https://www.typescriptlang.org/) and [TailwindCSS](https://tailwindcss.com/) (optional).
+This project is bootstrapped using [Next.js](https://nextjs.org/docs), [Typescript](https://www.typescriptlang.org/) and [TailwindCSS](https://tailwindcss.com/).
 
-To get started, clone this repo using `git clone https://github.com/Curious-Ways/flox.git`. Next run `npm i` or `npm install` to install all required dependencies (you need Node JS installed on your machine to run `npm` commands. [See here](https://nodejs.org/en/download/) to download and install Node JS on your machine).
+To get started, clone this repo using `git clone https://github.com/Curious-Ways/marketdesign.git`. Next run `npm i` or `npm install` to install all required dependencies (you need Node JS installed on your machine to run `npm` commands. [See here](https://nodejs.org/en/download/) to download and install Node JS on your machine).
 
 After the installation is complete:
 
-Run `npm run dev` to start the development server on http://localhost:3000
+Run `npm run dev` to start the development server on <http://localhost:3000>
 
 ### What's Included
 
@@ -29,10 +29,11 @@ Run `npm run dev` to start the development server on http://localhost:3000
 - Sitemap
 - Prettier
 - env variables
+- Configuring walkthroughs
 
 #### Project folder structure
 
-- **_Pages directory_**: Since Next.js's router is file-system based, The folder _Pages_ is a Next-specific directory to place routes or pages. For each route, you will have a separate file, which is named as the route. For example the file _about.tsx_ in the pages directory will create the following route: https://domain.com/about. [See docs](https://nextjs.org/docs/routing/introduction) for more details.
+- **_Pages directory_**: Since Next.js's router is file-system based, The folder _Pages_ is a Next-specific directory to place routes or pages. For each route, you will have a separate file, which is named as the route. For example the file _about.tsx_ in the pages directory will create the following route: <https://domain.com/about>. [See docs](https://nextjs.org/docs/routing/introduction) for more details.
 
 - **_Public directory_**: Next.js uses this directory to statically serve files like the robots.txt or the favicon.ico. For more information on how to include these files here: [official docs](https://nextjs.org/docs/basic-features/static-file-serving).
 
@@ -64,3 +65,50 @@ It'll do things like adding a semicolon to the end of every statement, or make s
 Create a `.env.local` file in your root folder and add your sensitive environmental variables to this file. For less sensitive environmental variables (like site URL and title), add them under the `next.config.js` file.
 
 NB: Prefixing a env variable with `NEXT_PUBLIC_` exposes it to the browser. See [Next.js documentation](https://nextjs.org/docs/basic-features/environment-variables#exposing-environment-variables-to-the-browser).
+
+#### Configuring walkthroughs
+
+The walkthroughs can be configured via the configuration files stored in the
+`data/walkthroughs` directory.
+
+Each walkthrough comprises one or more scenarios, where each scenario comprises
+one or more stages. Each scenario is also associated with a role
+(seller, buyer or generic), which dictates how the current user's projects are
+displayed.
+
+Stages are iterated through by the user clicking the "next stage" button, the
+form "Submit" button, or the "Solve market" button. For the first two the stage
+number will be incremented by one with each click. When the "Solve market" button
+is clicked we increment through six stages automatically, where each stage is
+used to represent an aspect of the market outcome being calculated.
+
+Whenever a stage is incremented a scenario function is called that returns the
+data for that stage. The function for each scenario can be found at:
+
+```text
+data/walkthroughs/<role>/<scenario-number>/index.ts
+```
+
+for example:
+
+```text
+data/walkthroughs/buyer/1.1/index.ts
+```
+
+These functions each return an object with the following properties:
+
+- `myProjects`: The current user's projects, which will be displayed in the
+details box at the top left of the walkthrough.
+- `buyerProjects`: The projects being bidded for by developers.
+- `sellerProjects`: The projects being offered by landholders.
+- `sidebarContent`: An object that maps stage numbers to the content to be
+displayed in the sidebar.
+- `options`: An object used to conditionally enable features, generally based on
+the stage number (e.g. enable the form at stage 3).
+
+To create a new scenario for an existing walkthrough create a scenario function
+using the existing functions as an example and add that function to the index
+file for the relevant role (e.g. `data/walkthroughs/buyer/index.ts`). The
+scenario can be associated with an existing walkthrough, or an entirely new one.
+If using a new walkthrough this will show up automatically on the "How it works"
+index page.

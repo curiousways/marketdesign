@@ -85,6 +85,10 @@ const ParticipantsList = ({
     showingWinners,
   );
 
+  const sortedLosingProjects = sortedProjects.filter((project) =>
+    includesProject(project, allLosingProjects),
+  );
+
   return (
     <ul>
       {sortedProjects.map((project) => {
@@ -93,6 +97,7 @@ const ParticipantsList = ({
           project,
           scenario,
         );
+
         const isMyLastProject = getIsMyLastProject(
           sortedProjects,
           project,
@@ -108,7 +113,7 @@ const ParticipantsList = ({
               project={project}
               options={data.options}
               isLoser={includesProject(project, allLosingProjects)}
-              loserIndex={findProjectIndex(project, allLosingProjects)}
+              loserIndex={findProjectIndex(project, sortedLosingProjects)}
               isMyFirstProject={isMyFirstProject}
               isMyLastProject={isMyLastProject}
               isMySubsequentProject={

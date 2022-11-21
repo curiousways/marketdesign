@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 
 import { WalkthroughMarketState } from '@/types/walkthrough';
-import { fadeInDown } from '@/utils/animations';
+import { fadeIn } from '@/utils/animations';
 import { useWalkthroughContext } from '@/context/WalkthroughContext';
 
 const getOverlayText = (marketState: WalkthroughMarketState) => {
@@ -28,7 +28,7 @@ const LoadingOverlay = () => {
 
   return (
     <motion.div
-      variants={fadeInDown}
+      variants={fadeIn}
       initial="hidden"
       whileInView="visible"
       className="absolute top-0 left-0 w-full h-full bg-black/70 flex justify-center items-center"

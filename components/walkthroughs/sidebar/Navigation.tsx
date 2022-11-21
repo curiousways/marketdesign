@@ -18,8 +18,8 @@ const Navigation = () => {
   const { walkthroughIndex } = parseScenarioId(scenarioId);
 
   return (
-    <motion.div layout className="text-center text-xl w-full">
-      <p className="text-green-dark">WALKTHROUGH {walkthroughIndex + 1}</p>
+    <motion.div layout className="text-center text-l w-full mt-2">
+      <p className="text-green-dark mb-1">WALKTHROUGH {walkthroughIndex + 1}</p>
       <div className="flex gap-x-4 items-center justify-between">
         {/* Previous button */}
         <PrevButton

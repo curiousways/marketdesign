@@ -26,8 +26,8 @@ const PROJECT_HEIGHT = 120;
 const PROJECT_WIDTH = 800;
 const PROJECT_BOTTOM_MARGIN = 15;
 const COLLAPSED_PROJECT_HEIGHT = 60;
-const COLLAPSED_PROJECT_WIDTH = 250;
-const SHOW_LOSERS_MAX_SCREEN_WIDTH = 1800;
+const COLLAPSED_PROJECT_WIDTH = 210;
+const SHOW_LOSERS_MAX_SCREEN_WIDTH = 1700;
 
 type Props = {
   project: WalkthroughProject;
@@ -115,13 +115,12 @@ const getMyProjectStyles = (
 const useRowAnimation = (
   showLoserStyles: boolean,
   isMySubsequentProject: boolean,
-  fade: boolean,
 ) => {
   const [animation, setAnimation] = useState<AnimationProps['animate']>();
 
   useEffect(() => {
     const commonStyles: AnimationProps['animate'] = {
-      opacity: fade ? 0.5 : 1,
+      opacity: 1,
       width: PROJECT_WIDTH,
     };
 
@@ -145,12 +144,10 @@ const useRowAnimation = (
         PROJECT_HEIGHT,
         PROJECT_HEIGHT,
         PROJECT_HEIGHT,
-        PROJECT_HEIGHT,
         0,
         0,
       ],
       marginBottom: [
-        PROJECT_BOTTOM_MARGIN,
         PROJECT_BOTTOM_MARGIN,
         PROJECT_BOTTOM_MARGIN,
         PROJECT_BOTTOM_MARGIN,
@@ -161,17 +158,21 @@ const useRowAnimation = (
       ],
       ...commonStyles,
     });
-  }, [showLoserStyles, isMySubsequentProject, fade]);
+  }, [showLoserStyles, isMySubsequentProject]);
 
   return animation;
 };
 
-const useProjectAnimation = (showLoserStyles: boolean, loserIndex = 0) => {
+const useProjectAnimation = (
+  showLoserStyles: boolean,
+  fade: boolean,
+  loserIndex = 0,
+) => {
   const [animation, setAnimation] = useState<AnimationProps['animate']>();
 
   useEffect(() => {
     const commonStyles: AnimationProps['animate'] = {
-      opacity: 1,
+      opacity: fade ? 0.5 : 1,
     };
 
     const spacing = 10;
@@ -182,7 +183,7 @@ const useProjectAnimation = (showLoserStyles: boolean, loserIndex = 0) => {
       (loserIndex ? loserIndex * spacing : 0)
     }px`;
 
-    const collapsedTransform1 = `translate3d(0px, ${collapsedTransformY}, 0px)`;
+    const collapsedTransform1 = `translate3d(${collapsedTransformX}, 0px, 0px)`;
     const collapsedTransform2 = `translate3d(${[
       collapsedTransformX,
       collapsedTransformY,
@@ -237,7 +238,7 @@ const useProjectAnimation = (showLoserStyles: boolean, loserIndex = 0) => {
     }
 
     setAnimation(styles);
-  }, [showLoserStyles, loserIndex]);
+  }, [showLoserStyles, loserIndex, fade]);
 
   return animation;
 };
@@ -265,13 +266,13 @@ const Project = ({
   const showLoserStyles = isLoser && showingWinners;
   const isNotAccepted = showingWinners && !acceptedCost;
 
-  const rowAnimation = useRowAnimation(
-    showLoserStyles,
-    isMySubsequentProject,
-    isNotAccepted,
-  );
+  const rowAnimation = useRowAnimation(showLoserStyles, isMySubsequentProject);
 
-  const projectAnimation = useProjectAnimation(showLoserStyles, loserIndex);
+  const projectAnimation = useProjectAnimation(
+    showLoserStyles,
+    isNotAccepted,
+    loserIndex,
+  );
 
   // Define some colour classes.
   const shadowColor = isBuyer ? 'neo-shadow-brown' : 'neo-shadow-green';
@@ -288,7 +289,7 @@ const Project = ({
       initial="hidden"
       animate={rowAnimation}
       style={{ overflow: 'visible' }}
-      className="overflow-hidden"
+      className="overflow-hidden bg-white select-none"
     >
       {/* Add a divider between multiple user projects. */}
       {isMySubsequentProject && (
@@ -332,8 +333,8 @@ const Project = ({
           {/* Content */}
           <div
             className={classNames(
-              'z-10 items-center flex justify-between w-full',
-              showLoserStyles ? 'gap-x-2' : 'gap-x-10',
+              'z-10 items-center flex w-full',
+              showLoserStyles ? 'gap-x-2' : 'gap-x-10 justify-between',
             )}
           >
             <ProjectTitle
@@ -349,12 +350,13 @@ const Project = ({
             <div
               className={classNames(
                 'flex',
-                showLoserStyles ? 'gap-x-2' : 'gap-x-10 flex-[20%]',
+                showLoserStyles ? 'gap-x-4' : 'gap-x-10 flex-[20%]',
               )}
             >
               {/* Biodiversity */}
               <ProjectBiodiversity
                 count={products.biodiversity}
+                adjustCount={showingWinners}
                 accepted={acceptedCost}
                 shadowColor={shadowColor}
                 showLoserStyles={showLoserStyles}
@@ -363,6 +365,7 @@ const Project = ({
               {/* Nutrients */}
               <ProjectNutrients
                 count={products.nutrients}
+                adjustCount={showingWinners}
                 accepted={acceptedCost}
                 shadowColor={shadowColor}
                 showLoserStyles={showLoserStyles}

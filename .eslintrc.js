@@ -39,11 +39,6 @@ const commmonRules = {
       next: ['*'],
     },
     { blankLine: 'any', prev: ['default'], next: ['case'] },
-    {
-      blankLine: 'any',
-      prev: ['const', 'let', 'var'],
-      next: ['const', 'let', 'var'],
-    },
   ],
   'no-void': ['error', { allowAsStatement: true }], // This allows us to write `void myAsyncFunction()`
   'no-console': 'error',
@@ -71,7 +66,6 @@ const commmonRules = {
   'eslint-comments/no-unused-enable': 'off',
   'no-param-reassign': 'off',
   'jsx-a11y/anchor-is-valid': 'off', // does not play well with Next Link
-  'jsx-a11y/no-autofocus': 'off',
   'consistent-return': 'off', // clashes with TS
 };
 
@@ -82,6 +76,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:jsx-a11y/recommended',
     'plugin:prettier/recommended',
+    'plugin:@next/next/recommended',
     'next/core-web-vitals',
   ],
   plugins: ['jsx-a11y', 'import'],

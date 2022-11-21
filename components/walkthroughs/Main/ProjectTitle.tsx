@@ -32,7 +32,7 @@ export const ProjectTitle: FunctionComponent<Props> = ({
     <div
       className={classNames(
         'flex flex-col text-black text-center whitespace-nowrap',
-        showLoserStyles ? 'w-[100px]' : 'flex-[30%] min-w-[125px]',
+        showLoserStyles ? 'w-[100px]' : 'flex-[30%] min-w-[75px]',
       )}
     >
       {!hideMainTitle && (

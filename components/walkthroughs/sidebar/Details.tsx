@@ -47,7 +47,7 @@ const Details = () => {
 
   const formRef = useRef<HTMLFormElement>(null);
   const submitButtonRef = useRef<HTMLButtonElement>(null);
-  const [animatedPriceInputName, setAnimatedPriceInputName] = useState<
+  const [animatedInputName, setAnimatedInputName] = useState<
     string | undefined
   >(priceInputNames[0]);
 
@@ -66,7 +66,7 @@ const Details = () => {
     const inputs = [...formRef.current.querySelectorAll('input')];
     const firstInvalidInput = inputs.find((input) => !input.checkValidity());
 
-    setAnimatedPriceInputName(firstInvalidInput?.name);
+    setAnimatedInputName(firstInvalidInput?.name);
   };
 
   useEffect(() => {
@@ -77,16 +77,6 @@ const Details = () => {
     }
   }, [isFormEnabled, setMarketState]);
 
-  useEffect(() => {
-    if (animatedPriceInputName) {
-      return;
-    }
-
-    if (submitButtonRef.current) {
-      submitButtonRef.current.focus();
-    }
-  }, [animatedPriceInputName]);
-
   return (
     <motion.div
       variants={fadeIn}
@@ -96,7 +86,7 @@ const Details = () => {
       layout
       className="border-2 border-black px-5 py-4 rounded-lg w-full"
     >
-      <div className="text-black text-xl">
+      <div className="text-black text-l">
         <p className="font-bold">
           My Project{scenario.myProjects.length ? 's' : ''}
         </p>
@@ -112,7 +102,7 @@ const Details = () => {
               <li
                 key={project.title + project.subtitle}
                 className={classNames(
-                  'mt-3',
+                  'mb-3',
                   isMarketSolvable && project.isInactive ? 'opacity-30' : '',
                 )}
               >
@@ -149,7 +139,7 @@ const Details = () => {
                       name={priceInputNames[projectIndex]}
                       animate={
                         isFormEnabled &&
-                        animatedPriceInputName === priceInputNames[projectIndex]
+                        animatedInputName === priceInputNames[projectIndex]
                       }
                       onChange={onInputChange}
                     />
@@ -159,21 +149,29 @@ const Details = () => {
             );
           })}
         </ul>
-        <div className="flex items-center mt-3">
+        <div className="flex items-center">
           {scenario.options.showDivisibleInput && (
+            // eslint-disable-next-line jsx-a11y/label-has-associated-control
             <label
-              htmlFor="is-divisible"
               className={classNames(
-                'flex',
+                'flex select-none',
                 isDivisibleInputEnabled ? 'cursor-pointer' : '',
+                isFormEnabled &&
+                  animatedInputName === 'is-divisible' &&
+                  isDivisibleInputEnabled
+                  ? 'animate-scale-large'
+                  : '',
               )}
             >
-              <input
-                required
-                type="checkbox"
-                name="is-divisible"
-                disabled={!isDivisibleInputEnabled}
-              />
+              <span>
+                <input
+                  required={isDivisibleInputEnabled}
+                  type="checkbox"
+                  name="is-divisible"
+                  disabled={!isDivisibleInputEnabled}
+                  onChange={onInputChange}
+                />
+              </span>
               <span className="ml-2">Divisible</span>
             </label>
           )}
@@ -185,7 +183,7 @@ const Details = () => {
               className={classNames(
                 'w-full rounded-lg bg-[#848484] text-white text-xs py-2',
                 isFormEnabled ? 'hover:bg-black cursor-pointer' : '',
-                isFormEnabled && !animatedPriceInputName
+                isFormEnabled && !animatedInputName
                   ? 'animate-scale-large'
                   : '',
               )}

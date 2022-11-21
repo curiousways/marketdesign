@@ -2,6 +2,7 @@ import AdjustedProductCount from './AdjustedProductCount';
 
 type Props = {
   count?: number;
+  adjustCount: boolean;
   accepted: number | boolean;
   shadowColor: string;
   showLoserStyles: boolean;
@@ -10,6 +11,7 @@ type Props = {
 const ProjectBiodiversity = ({
   count,
   accepted,
+  adjustCount,
   shadowColor,
   showLoserStyles,
 }: Props) => {
@@ -19,7 +21,7 @@ const ProjectBiodiversity = ({
 
   if (showLoserStyles) {
     return (
-      <div className="flex gap-x-1">
+      <div className="flex gap-x-1 relative">
         <svg
           width="32"
           height="32"
@@ -34,7 +36,7 @@ const ProjectBiodiversity = ({
             stroke="white"
           />
         </svg>
-        <div className="border border-black rounded-full bg-white w-[29px] h-[29px] flex justify-center items-center">
+        <div className="border border-black rounded-full bg-white w-[20px] h-[20px] flex justify-center items-center absolute -right-[8px] -top-[8px]">
           {count}
         </div>
       </div>
@@ -45,7 +47,10 @@ const ProjectBiodiversity = ({
     <div
       className={`h-[66px] w-[66px] rounded-lg flex items-center justify-center relative ${shadowColor}`}
     >
-      <AdjustedProductCount count={count} accepted={accepted} />
+      <AdjustedProductCount
+        count={count}
+        accepted={adjustCount ? accepted : true}
+      />
       <svg
         width="32"
         height="32"
