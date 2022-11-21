@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
 import { fadeIn } from '@/utils/animations';
@@ -17,8 +17,6 @@ import { RoleId } from '@/types/roles';
 import Input from './Input';
 import ProductCount from './ProductCount';
 
-const INPUT_NAME = 'project-cost';
-
 const getProjectValue = (project: WalkthroughProject, roleId: RoleId) => {
   if (project.costPerCredit) {
     return project.costPerCredit;
@@ -36,12 +34,22 @@ const getProjectValue = (project: WalkthroughProject, roleId: RoleId) => {
 };
 
 const Details = () => {
-  const { scenario, roleId, goToNextStage, setMarketState } =
+  const { marketState, scenario, roleId, goToNextStage, setMarketState } =
     useWalkthroughContext();
 
   const { isFormEnabled } = scenario.options;
   const isDivisibleInputEnabled =
     isFormEnabled && !!scenario.options.allowDivision;
+  const isMarketSolvable = marketState >= WalkthroughMarketState.solvable;
+  const priceInputNames = scenario.myProjects.map(
+    (_, index) => `project-${index}-price`,
+  );
+
+  const formRef = useRef<HTMLFormElement>(null);
+  const submitButtonRef = useRef<HTMLButtonElement>(null);
+  const [animatedPriceInputName, setAnimatedPriceInputName] = useState<
+    string | undefined
+  >(priceInputNames[0]);
 
   // Proceed to next market state when submit button is clicked.
   const onSubmit = (e: React.FormEvent) => {
@@ -50,6 +58,35 @@ const Details = () => {
     setMarketState(WalkthroughMarketState.solvable);
   };
 
+  const onInputChange = () => {
+    if (!formRef.current) {
+      return;
+    }
+
+    const inputs = [...formRef.current.querySelectorAll('input')];
+    const firstInvalidInput = inputs.find((input) => !input.checkValidity());
+
+    setAnimatedPriceInputName(firstInvalidInput?.name);
+  };
+
+  useEffect(() => {
+    // For the case where the user submits the form and puts the market into a
+    // solveable state, then clicks the back button.
+    if (isFormEnabled) {
+      setMarketState(WalkthroughMarketState.pending);
+    }
+  }, [isFormEnabled, setMarketState]);
+
+  useEffect(() => {
+    if (animatedPriceInputName) {
+      return;
+    }
+
+    if (submitButtonRef.current) {
+      submitButtonRef.current.focus();
+    }
+  }, [animatedPriceInputName]);
+
   return (
     <motion.div
       variants={fadeIn}
@@ -57,7 +94,6 @@ const Details = () => {
       animate="visible"
       exit="hidden"
       layout
-      // onAnimationComplete={() => !isPresent && safeToRemove()}
       className="border-2 border-black px-5 py-4 rounded-lg w-full"
     >
       <div className="text-black text-xl">
@@ -67,9 +103,9 @@ const Details = () => {
         <p>{roles[roleId].label}</p>
       </div>
 
-      <form onSubmit={onSubmit} className="flex flex-col">
+      <form ref={formRef} onSubmit={onSubmit} className="flex flex-col">
         <ul>
-          {scenario.myProjects.map((project) => {
+          {scenario.myProjects.map((project, projectIndex) => {
             const projectValue = getProjectValue(project, roleId);
 
             return (
@@ -77,9 +113,7 @@ const Details = () => {
                 key={project.title + project.subtitle}
                 className={classNames(
                   'mt-3',
-                  scenario.options.setMyPrice && project.isInactive
-                    ? 'opacity-30'
-                    : '',
+                  isMarketSolvable && project.isInactive ? 'opacity-30' : '',
                 )}
               >
                 {!!scenario.myProjects.length && !!project.subtitle && (
@@ -112,10 +146,12 @@ const Details = () => {
                   <div className="flex-1 max-w-[50%]">
                     <Input
                       project={project}
-                      populate={
-                        scenario.options.setMyPrice && !project.isInactive
+                      name={priceInputNames[projectIndex]}
+                      animate={
+                        isFormEnabled &&
+                        animatedPriceInputName === priceInputNames[projectIndex]
                       }
-                      name={INPUT_NAME}
+                      onChange={onInputChange}
                     />
                   </div>
                 </div>
@@ -142,18 +178,16 @@ const Details = () => {
             </label>
           )}
           <div className="relative w-[100px] ml-auto">
-            {isFormEnabled && (
-              <span className="flex h-3 w-3 absolute -right-1 -top-1">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500" />
-              </span>
-            )}
             <button
+              ref={submitButtonRef}
               type="submit"
               disabled={!isFormEnabled}
               className={classNames(
                 'w-full rounded-lg bg-[#848484] text-white text-xs py-2',
                 isFormEnabled ? 'hover:bg-black cursor-pointer' : '',
+                isFormEnabled && !animatedPriceInputName
+                  ? 'animate-scale-large'
+                  : '',
               )}
             >
               Submit

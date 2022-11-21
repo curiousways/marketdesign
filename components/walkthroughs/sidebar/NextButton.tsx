@@ -10,7 +10,7 @@ const Next = ({ onClick, hideButton }: Props) => {
     <button
       type="button"
       className={classNames(
-        'w-10 h-10 bg-green-dark rounded-full flex justify-center items-center',
+        'w-10 h-10 bg-green-dark rounded-full flex justify-center items-center animate-scale-large',
         hideButton ? 'invisible' : '',
       )}
       onClick={onClick}

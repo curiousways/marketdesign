@@ -64,7 +64,6 @@ export const getBuyerScenario4_1: GetWalkthroughScenario = (stage: number) => ({
   },
   options: {
     stages: 10,
-    setMyPrice: stage >= 3,
     isFormEnabled: stage === 3,
     allowDivision: true,
     showDetailsWidget: stage >= 2,
