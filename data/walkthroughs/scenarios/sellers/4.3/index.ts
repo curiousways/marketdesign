@@ -1,9 +1,11 @@
-import { sidebarContentStage1 } from "./sidebar-content/1";
-import { GetWalkthroughScenario } from "@/types/walkthrough";
-import { sidebarContentStage8 } from "./sidebar-content/8";
-import { sidebarContentStage9 } from "./sidebar-content/9";
+import { GetWalkthroughScenario } from '@/types/walkthrough';
+import { sidebarContentStage1 } from './sidebar-content/1';
+import { sidebarContentStage8 } from './sidebar-content/8';
+import { sidebarContentStage9 } from './sidebar-content/9';
 
-export const getSellerScenario4_3: GetWalkthroughScenario = (stage: number) => ({
+export const getSellerScenario4_3: GetWalkthroughScenario = (
+  stage: number,
+) => ({
   myProjects: [
     {
       title: 'My Project',
@@ -28,22 +30,22 @@ export const getSellerScenario4_3: GetWalkthroughScenario = (stage: number) => (
       cost: 220000,
       accepted: () => true,
       discountOrBonus: 50000,
-      products: { biodiversity: 1, nutrients: 4 }
+      products: { biodiversity: 1, nutrients: 4 },
     },
     {
       title: 'Buyer 2',
       cost: 120000,
       accepted: () => false,
       discountOrBonus: 0,
-      products: { biodiversity: 3, nutrients: 0 }
+      products: { biodiversity: 3, nutrients: 0 },
     },
     {
       title: 'Buyer 3',
       cost: 100000,
       accepted: () => true,
       discountOrBonus: 40000,
-      products: { biodiversity: 1, nutrients: 1 }
-    }
+      products: { biodiversity: 1, nutrients: 1 },
+    },
   ],
   sellerProjects: [
     {
@@ -51,7 +53,7 @@ export const getSellerScenario4_3: GetWalkthroughScenario = (stage: number) => (
       cost: 90000,
       accepted: () => false,
       discountOrBonus: 0,
-      products: { biodiversity: 1, nutrients: 3 }
+      products: { biodiversity: 1, nutrients: 3 },
     },
   ],
   sidebarContent: {
@@ -61,11 +63,10 @@ export const getSellerScenario4_3: GetWalkthroughScenario = (stage: number) => (
   },
   options: {
     stages: 9,
-    setMyPrice: stage >= 1,
     isFormEnabled: stage === 1,
     showDetailsWidget: stage >= 1,
     showCosts: stage >= 1,
     showMaps: false,
     showParticipants: stage >= 1,
-  }
+  },
 });

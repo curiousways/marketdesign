@@ -14,8 +14,6 @@ export const sidebarContent1 = (
       We’ve given you a choice between a bid at value at £120,000, or a bid
       below value of £100,000 or £80,000.
     </p>
-    <p>
-      Once you’ve made your decision submit your bid and solve the market.
-    </p>
+    <p>Once you’ve made your decision submit your bid and solve the market.</p>
   </>
 );

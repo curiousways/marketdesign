@@ -1,8 +1,6 @@
 export const sidebarContent3 = (
   <>
-    <p>
-      The market consists of 3 sellers and 2 other buyers.
-    </p>
+    <p>The market consists of 3 sellers and 2 other buyers.</p>
     <p>
       Compared to the other buyers your demand looks reasonably uncompetitive.
       You are only willing to pay up to £20,000 for each credit in your bundle

@@ -1,8 +1,8 @@
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 
-import { WalkthroughMarketState } from "@/types/walkthrough";
-import { fadeInDown } from "@/utils/animations";
-import { useWalkthroughContext } from "@/context/WalkthroughContext";
+import { WalkthroughMarketState } from '@/types/walkthrough';
+import { fadeInDown } from '@/utils/animations';
+import { useWalkthroughContext } from '@/context/WalkthroughContext';
 
 const getOverlayText = (marketState: WalkthroughMarketState) => {
   if (marketState === WalkthroughMarketState.calculating_winners) {
@@ -16,7 +16,7 @@ const getOverlayText = (marketState: WalkthroughMarketState) => {
   if (marketState === WalkthroughMarketState.calculating_final_payments) {
     return 'Calculating Final Payments';
   }
-}
+};
 
 const LoadingOverlay = () => {
   const { marketState } = useWalkthroughContext();
@@ -39,10 +39,10 @@ const LoadingOverlay = () => {
         </p>
 
         <div className="lds-ellipsis inline-block relative w-[80px] h-[80px]">
-          <div className="bg-green-light absolute top-[33px] left-[8px] w-[15px] h-[15px] rounded-full"></div>
-          <div className="bg-blue-light absolute top-[33px] left-[8px] w-[15px] h-[15px] rounded-full"></div>
-          <div className="bg-dark-grey absolute top-[33px] left-[32px] w-[15px] h-[15px] rounded-full"></div>
-          <div className="bg-dark-grey absolute top-[33px] left-[56px] w-[15px] h-[15px] rounded-full"></div>
+          <div className="bg-green-light absolute top-[33px] left-[8px] w-[15px] h-[15px] rounded-full" />
+          <div className="bg-blue-light absolute top-[33px] left-[8px] w-[15px] h-[15px] rounded-full" />
+          <div className="bg-dark-grey absolute top-[33px] left-[32px] w-[15px] h-[15px] rounded-full" />
+          <div className="bg-dark-grey absolute top-[33px] left-[56px] w-[15px] h-[15px] rounded-full" />
         </div>
       </div>
     </motion.div>

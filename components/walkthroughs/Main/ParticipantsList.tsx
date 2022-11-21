@@ -1,8 +1,15 @@
-import { WalkthroughScenario, WalkthroughProject, WalkthroughMarketState} from "@/types/walkthrough";
-import { RoleId } from "@/types/roles";
-import Project from "./Project";
-import { useWalkthroughContext } from "@/context/WalkthroughContext";
-import { findProjectIndex, includesProject, isMyProject } from "@/utils/walkthroughs";
+import {
+  WalkthroughMarketState,
+  WalkthroughProject,
+  WalkthroughScenario,
+} from '@/types/walkthrough';
+import { useWalkthroughContext } from '@/context/WalkthroughContext';
+import {
+  findProjectIndex,
+  includesProject,
+  isMyProject,
+} from '@/utils/walkthroughs';
+import Project from './Project';
 
 type Props = {
   buyerProjects: WalkthroughProject[];
@@ -10,7 +17,6 @@ type Props = {
   losingBuyerProjects: WalkthroughProject[];
   losingSellerProjects: WalkthroughProject[];
   data: WalkthroughScenario;
-  roleId: RoleId;
 };
 
 /**
@@ -22,20 +28,18 @@ const sortMyProjects = (
   sellerProjects: WalkthroughProject[],
   losingProjects: WalkthroughProject[],
   showingWinners: boolean,
-) => [...sellerProjects, ...buyerProjects].sort((a, b) => {
-  const isLoserA = showingWinners && includesProject(a, losingProjects);
-  const isLoserB = showingWinners && includesProject(b, losingProjects);
-  const isMyProjectA = isMyProject(scenario, a);
-  const isMyProjectB = isMyProject(scenario, b);
+) =>
+  [...sellerProjects, ...buyerProjects].sort((a, b) => {
+    const isLoserA = showingWinners && includesProject(a, losingProjects);
+    const isLoserB = showingWinners && includesProject(b, losingProjects);
+    const isMyProjectA = isMyProject(scenario, a);
+    const isMyProjectB = isMyProject(scenario, b);
 
-  return (
-    Number(isLoserB ?? 0)
-    - Number(isLoserA ?? 0)
-  ) || (
-    Number(isMyProjectB ?? 0)
-    - Number(isMyProjectA ?? 0)
-  );
-});
+    return (
+      Number(isLoserB ?? 0) - Number(isLoserA ?? 0) ||
+      Number(isMyProjectB ?? 0) - Number(isMyProjectA ?? 0)
+    );
+  });
 
 const getMyActiveProjects = (
   projects: WalkthroughProject[],
@@ -69,7 +73,6 @@ const ParticipantsList = ({
   losingBuyerProjects,
   losingSellerProjects,
   data,
-  roleId,
 }: Props) => {
   const { scenario, marketState } = useWalkthroughContext();
   const showingWinners = marketState >= WalkthroughMarketState.showing_winners;
@@ -85,24 +88,34 @@ const ParticipantsList = ({
   return (
     <ul>
       {sortedProjects.map((project) => {
-        const isMyFirstProject = getIsMyFirstProject(sortedProjects, project, scenario);
-        const isMyLastProject = getIsMyLastProject(sortedProjects, project, scenario);
+        const isMyFirstProject = getIsMyFirstProject(
+          sortedProjects,
+          project,
+          scenario,
+        );
+        const isMyLastProject = getIsMyLastProject(
+          sortedProjects,
+          project,
+          scenario,
+        );
 
         return (
           <li key={project.title + project.subtitle}>
             <Project
-              projectRoleId={includesProject(project, buyerProjects) ? 'buyer' : 'seller'}
+              projectRoleId={
+                includesProject(project, buyerProjects) ? 'buyer' : 'seller'
+              }
               project={project}
               options={data.options}
-              roleId={roleId}
               isLoser={includesProject(project, allLosingProjects)}
               loserIndex={findProjectIndex(project, allLosingProjects)}
               isMyFirstProject={isMyFirstProject}
               isMyLastProject={isMyLastProject}
-              isMySubsequentProject={(
-                getMyActiveProjects(sortedProjects, scenario).includes(project) &&
-                !isMyFirstProject
-              )}
+              isMySubsequentProject={
+                getMyActiveProjects(sortedProjects, scenario).includes(
+                  project,
+                ) && !isMyFirstProject
+              }
             />
           </li>
         );

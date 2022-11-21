@@ -1,9 +1,9 @@
-import { sidebarContentStage1 } from "./sidebar-content/1";
-import { sidebarContentStage2 } from "./sidebar-content/2";
-import { sidebarContentStage3 } from "./sidebar-content/3";
-import { GetWalkthroughScenario } from "@/types/walkthrough";
-import { sidebarContentStage11 } from "./sidebar-content/11";
-import { sidebarContentStage10 } from "./sidebar-content/10";
+import { GetWalkthroughScenario } from '@/types/walkthrough';
+import { sidebarContentStage1 } from './sidebar-content/1';
+import { sidebarContentStage2 } from './sidebar-content/2';
+import { sidebarContentStage3 } from './sidebar-content/3';
+import { sidebarContentStage11 } from './sidebar-content/11';
+import { sidebarContentStage10 } from './sidebar-content/10';
 
 export const getBuyerScenario5_2: GetWalkthroughScenario = (stage: number) => ({
   myProjects: [
@@ -67,7 +67,6 @@ export const getBuyerScenario5_2: GetWalkthroughScenario = (stage: number) => ({
   },
   options: {
     stages: 11,
-    setMyPrice: stage >= 3,
     isFormEnabled: stage === 3,
     showDetailsWidget: stage >= 2,
     showCosts: stage >= 3,

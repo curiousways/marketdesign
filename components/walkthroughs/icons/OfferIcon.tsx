@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const OfferIcon = () => (
   <svg
@@ -9,11 +9,7 @@ const OfferIcon = () => (
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
   >
-    <rect
-      width="20"
-      height="20"
-      fill="url(#offer-icon)"
-    />
+    <rect width="20" height="20" fill="url(#offer-icon)" />
     <defs>
       <pattern
         id="offer-icon"
@@ -21,10 +17,7 @@ const OfferIcon = () => (
         width="1"
         height="1"
       >
-        <use
-          xlinkHref="#image0_1364_88600"
-          transform="scale(0.015625)"
-        />
+        <use xlinkHref="#image0_1364_88600" transform="scale(0.015625)" />
       </pattern>
       <image
         id="image0_1364_88600"

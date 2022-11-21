@@ -1,8 +1,6 @@
 export const sidebarContent10 = (
   <>
-    <p>
-      You were successful in buying the credits you needed!
-    </p>
+    <p>You were successful in buying the credits you needed!</p>
     <p>
       Indeed, all market participants are able to complete the deals they wanted
       in this market. With lots of trades possible, the market generates a large

@@ -1,23 +1,16 @@
-import { RoleId } from "@/types/roles";
-import { roles } from "data/roles";
-import { walkthroughsByRole } from "data/walkthroughs";
-import isEqual from "lodash.isequal";
-import omit from "lodash.omit";
-import { GetWalkthroughScenario, Walkthrough, WalkthroughProject, WalkthroughScenario } from "../types/walkthrough";
+import isEqual from 'lodash.isequal';
+import omit from 'lodash.omit';
+import { RoleId } from '@/types/roles';
+import { roles } from 'data/roles';
+import { walkthroughsByRole } from 'data/walkthroughs';
+import {
+  GetWalkthroughScenario,
+  Walkthrough,
+  WalkthroughProject,
+  WalkthroughScenario,
+} from '../types/walkthrough';
 
 const SCENARIO_ID_DELIMITER = '-';
-
-export const isValidScenarioId = (
-  maybeScenarioId?: string,
-): maybeScenarioId is string => (
-  !!maybeScenarioId && getAllScenarioIds().includes(maybeScenarioId)
-);
-
-export const isValidRoleId = (
-  maybeRoleId?: string,
-): maybeRoleId is RoleId => (
-  Object.keys(roles).includes(maybeRoleId as RoleId)
-);
 
 /**
  * Create an ID to identify and subsequently locate the scenario.
@@ -31,29 +24,56 @@ export const isValidRoleId = (
  * @example buyer-1-1
  * @example seller-2-1
  */
- export const createScenarioId = (
+export const createScenarioId = (
   roleId: RoleId,
   walkthroughIndex: number,
-  scenarioIndex: number = 0,
-) => [roleId, walkthroughIndex + 1, scenarioIndex + 1].join(SCENARIO_ID_DELIMITER);
+  scenarioIndex = 0,
+) =>
+  [roleId, walkthroughIndex + 1, scenarioIndex + 1].join(SCENARIO_ID_DELIMITER);
+
+export const getAllScenarioIds = (): string[] => {
+  const scenarioIds: string[] = [];
+
+  walkthroughsByRole.forEach(({ roleId, walkthroughs }) => {
+    walkthroughs.forEach((walkthrough, walkthroughIndex) => {
+      walkthrough.scenarios.forEach((_, scenarioIndex) => {
+        scenarioIds.push(
+          createScenarioId(roleId, walkthroughIndex, scenarioIndex),
+        );
+      });
+    });
+  });
+
+  return scenarioIds;
+};
+
+export const isValidScenarioId = (
+  maybeScenarioId?: string,
+): maybeScenarioId is string =>
+  !!maybeScenarioId && getAllScenarioIds().includes(maybeScenarioId);
+
+export const isValidRoleId = (maybeRoleId?: string): maybeRoleId is RoleId =>
+  Object.keys(roles).includes(maybeRoleId as RoleId);
 
 /**
  * Parse a scenario ID to extract all the data about the scenario.
  */
-export const parseScenarioId = (scenarioId: string): {
+export const parseScenarioId = (
+  scenarioId: string,
+): {
   walkthrough: Walkthrough;
   getScenario: GetWalkthroughScenario;
   roleId: RoleId;
   walkthroughIndex: number;
   scenarioIndex: number;
 } => {
-  const [
-    roleId,
-    walkthroughPart,
-    scenarioPart,
-  ] = scenarioId.split(SCENARIO_ID_DELIMITER);
+  const [roleId, walkthroughPart, scenarioPart] = scenarioId.split(
+    SCENARIO_ID_DELIMITER,
+  );
 
-  const invalidScenarioIdErr = new Error(`Not a valid scenario ID: ${scenarioId}`);
+  const invalidScenarioIdErr = new Error(
+    `Not a valid scenario ID: ${scenarioId}`,
+  );
   const walkthroughNum = Number(walkthroughPart);
   const scenarioNum = Number(scenarioPart);
 
@@ -65,7 +85,8 @@ export const parseScenarioId = (scenarioId: string): {
     throw invalidScenarioIdErr;
   }
 
-  const { walkthroughs } = walkthroughsByRole.find((item) => item.roleId === roleId) ?? {};
+  const { walkthroughs } =
+    walkthroughsByRole.find((item) => item.roleId === roleId) ?? {};
   const walkthroughIndex = walkthroughNum - 1;
   const scenarioIndex = scenarioNum - 1;
   const walkthrough = walkthroughs?.[walkthroughIndex];
@@ -84,33 +105,9 @@ export const parseScenarioId = (scenarioId: string): {
   };
 };
 
-export const getAllScenarioIds = (): string[] => {
-  const scenarioIds: string[] = [];
-
-  walkthroughsByRole.forEach(({ roleId, walkthroughs }) => {
-    walkthroughs.forEach((walkthrough, walkthroughIndex) => {
-      walkthrough.scenarios.forEach((_, scenarioIndex) => {
-        scenarioIds.push(createScenarioId(
-          roleId,
-          walkthroughIndex,
-          scenarioIndex,
-        ));
-      });
-    });
-  });
-
-  return scenarioIds;
-};
-
-export const getNextScenarioId = (
-  scenarioId: string,
-): string | undefined => {
-  const {
-    walkthrough,
-    walkthroughIndex,
-    scenarioIndex,
-    roleId,
-  } = parseScenarioId(scenarioId);
+export const getNextScenarioId = (scenarioId: string): string | undefined => {
+  const { walkthrough, walkthroughIndex, scenarioIndex, roleId } =
+    parseScenarioId(scenarioId);
 
   const nextScenarioIndex = scenarioIndex + 1;
   const nextScenario = walkthrough.scenarios[nextScenarioIndex];
@@ -135,16 +132,17 @@ export const isProjectEqual = (
 
   return isEqual(
     omit(projectA, ignoredProperties),
-    omit(projectB, ignoredProperties)
+    omit(projectB, ignoredProperties),
   );
 };
 
 export const includesProject = (
   project: WalkthroughProject,
   projectsToCheck: WalkthroughProject[],
-):boolean => !!projectsToCheck.find((checkedProject) => (
-  isProjectEqual(checkedProject, project)
-));
+): boolean =>
+  !!projectsToCheck.find((checkedProject) =>
+    isProjectEqual(checkedProject, project),
+  );
 
 export const findProjectIndex = (
   project: WalkthroughProject,

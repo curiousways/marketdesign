@@ -3,7 +3,7 @@ export const container = {
   visible: {
     opacity: 1,
     transition: {
-      when: "beforeChildren",
+      when: 'beforeChildren',
       staggerChildren: 0.25,
     },
   },

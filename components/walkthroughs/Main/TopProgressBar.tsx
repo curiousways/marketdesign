@@ -1,19 +1,15 @@
-import { useEffect, useState } from "react";
-import { useWalkthroughContext } from "@/context/WalkthroughContext";
-import { WalkthroughMarketState } from "@/types/walkthrough";
-import LoadingBar from "react-top-loading-bar";
+import { useEffect, useState } from 'react';
+import LoadingBar from 'react-top-loading-bar';
+import { useWalkthroughContext } from '@/context/WalkthroughContext';
+import { WalkthroughMarketState } from '@/types/walkthrough';
 
 const MARKET_SOLVING_TIMEOUT = 4000;
 const MARKET_SOLVING_STAGES = 5;
 
 export const TopProgressBar = () => {
-  const {
-    scenario,
-    isMarketSolving,
-    marketState,
-  } = useWalkthroughContext();
+  const { scenario, isMarketSolving, marketState } = useWalkthroughContext();
 
-  const [progress, setProgress] = useState<number>(0)
+  const [progress, setProgress] = useState<number>(0);
 
   useEffect(() => {
     if (typeof scenario.fixedMarketState !== 'undefined') {
@@ -29,13 +25,7 @@ export const TopProgressBar = () => {
     if (marketState === WalkthroughMarketState.solved) {
       setProgress(100);
     }
-  }, [
-    scenario.fixedMarketState,
-    isMarketSolving,
-    marketState,
-  ]);
-
-  console.log(marketState, progress);
+  }, [scenario.fixedMarketState, isMarketSolving, marketState]);
 
   return (
     <LoadingBar
@@ -46,5 +36,5 @@ export const TopProgressBar = () => {
       waitingTime={MARKET_SOLVING_TIMEOUT}
       shadow={false}
     />
-  )
+  );
 };

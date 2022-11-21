@@ -7,16 +7,14 @@ export const sidebarContent9 = (
     </p>
     <ul>
       <li>
-        The number of credits of each type supplied by winning sellers is at least
-        as large as the number demanded by winning buyers.
+        The number of credits of each type supplied by winning sellers is at
+        least as large as the number demanded by winning buyers.
       </li>
       <li>
         The total money bid by winning buyers is as least as much as the total
         money asked for by winning sellers.
       </li>
     </ul>
-    <p>
-      Click next to view a feasible market solution.
-    </p>
+    <p>Click next to view a feasible market solution.</p>
   </>
 );
