@@ -1,4 +1,9 @@
-import { RoleId } from "./roles";
+import { Role, RoleId } from "./roles";
+
+export interface WalkthroughHighlightedMapRegions {
+  buyer?: number;
+  seller?: number;
+};
 
 export interface WalkthroughOptions {
   stages: number;
@@ -9,6 +14,7 @@ export interface WalkthroughOptions {
   showDivisibleInput?: boolean;
   showCosts: boolean;
   showMaps: boolean;
+  highlightedMapRegions?: WalkthroughHighlightedMapRegions;
   showParticipants: boolean;
 };
 
