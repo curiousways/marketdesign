@@ -27,28 +27,38 @@ export const ProjectTitle: FunctionComponent<Props> = ({
     ? acceptedCost
     : null;
 
+  const commonTextClassNames = 'overflow-hidden text-left text-ellipsis';
+
   return (
     <div className={classNames(
       'flex flex-col text-black text-center whitespace-nowrap',
-      showLoserStyles ? '' : 'flex-[30%] min-w-[125px]',
+      showLoserStyles ? 'w-[100px]' : 'flex-[30%] min-w-[125px]',
     )}>
       {!hideMainTitle && (
         <div className="flex flex-col">
           <p
-            className={classNames(isMyProject(scenario, project) ? 'font-bold' : '')}
+            className={classNames(
+              commonTextClassNames,
+              isMyProject(scenario, project) ? 'font-bold' : '',
+              commonTextClassNames,
+            )}
           >
             {title}
           </p>
           {showLoserStyles && (
-            <p>£{projectCost.toLocaleString()}</p>
+            <p className={commonTextClassNames}>
+              £{projectCost.toLocaleString()}
+            </p>
           )}
         </div>
       )}
-      {acceptedPercentage ? (
-        <span className="bg-white rounded-full px-3 py-1 mt-1">
-          Accepted: {acceptedPercentage}%
-        </span>
-      ): subtitle && <p>{subtitle}</p>}
+      {!showLoserStyles && (
+        acceptedPercentage ? (
+          <span className="bg-white rounded-full px-3 py-1 mt-1">
+            Accepted: {acceptedPercentage}%
+          </span>
+        ): subtitle && <p className={commonTextClassNames}>{subtitle}</p>
+      )}
     </div>
   );
 };

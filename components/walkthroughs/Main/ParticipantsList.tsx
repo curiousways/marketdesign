@@ -37,6 +37,32 @@ const sortMyProjects = (
   );
 });
 
+const getMyActiveProjects = (
+  projects: WalkthroughProject[],
+  scenario: WalkthroughScenario,
+) => scenario.myProjects.filter((project) => projects.includes(project));
+
+const getIsMyFirstProject = (
+  projects: WalkthroughProject[],
+  project: WalkthroughProject,
+  scenario: WalkthroughScenario,
+) => {
+  const projectIndex = getMyActiveProjects(projects, scenario).indexOf(project);
+
+  return projectIndex === 0;
+};
+
+const getIsMyLastProject = (
+  projects: WalkthroughProject[],
+  project: WalkthroughProject,
+  scenario: WalkthroughScenario,
+) => {
+  const activeProjects = getMyActiveProjects(projects, scenario);
+  const projectIndex = getMyActiveProjects(projects, scenario).indexOf(project);
+
+  return projectIndex + 1 === activeProjects.length;
+};
+
 const ParticipantsList = ({
   buyerProjects,
   sellerProjects,
@@ -58,18 +84,29 @@ const ParticipantsList = ({
 
   return (
     <ul>
-      {sortedProjects.map((project) => (
-        <li key={project.title + project.subtitle}>
-          <Project
-            projectRoleId={includesProject(project, buyerProjects) ? 'buyer' : 'seller'}
-            project={project}
-            options={data.options}
-            roleId={roleId}
-            isLoser={includesProject(project, allLosingProjects)}
-            loserIndex={findProjectIndex(project, allLosingProjects)}
-          />
-        </li>
-      ))}
+      {sortedProjects.map((project) => {
+        const isMyFirstProject = getIsMyFirstProject(sortedProjects, project, scenario);
+        const isMyLastProject = getIsMyLastProject(sortedProjects, project, scenario);
+
+        return (
+          <li key={project.title + project.subtitle}>
+            <Project
+              projectRoleId={includesProject(project, buyerProjects) ? 'buyer' : 'seller'}
+              project={project}
+              options={data.options}
+              roleId={roleId}
+              isLoser={includesProject(project, allLosingProjects)}
+              loserIndex={findProjectIndex(project, allLosingProjects)}
+              isMyFirstProject={isMyFirstProject}
+              isMyLastProject={isMyLastProject}
+              isMySubsequentProject={(
+                getMyActiveProjects(sortedProjects, scenario).includes(project) &&
+                !isMyFirstProject
+              )}
+            />
+          </li>
+        );
+      })}
     </ul>
   );
 };
