@@ -1,0 +1,158 @@
+import { motion } from "framer-motion";
+
+import { classNames } from "@/utils/index";
+import { Bid } from "@/types/demo";
+import { fadeInDown } from "@/utils/animations";
+
+import HammerIcon from "@/components/walkthroughs/icons/HammerIcon";
+import CartPlus from "@/components/walkthroughs/icons/CartPlus";
+
+type Props = {
+  title: string;
+  projectRoleId: "buyer" | "seller";
+  bids: Bid[];
+  className?: string;
+};
+
+const Project = ({ title, projectRoleId, bids, className = "" }: Props) => {
+  const highlightMe = true;
+
+  const isBuyer = projectRoleId === "buyer";
+  const shadowColor = isBuyer ? "neo-shadow-brown" : "neo-shadow-green";
+  const backgroundColor = isBuyer ? "bg-brown" : "bg-green-light";
+
+  return (
+    <>
+      {bids.map((bid, i) => (
+        <motion.div
+          key={`${title} - ${isBuyer ? "bid" : "offer"}${i + 1}`}
+          variants={fadeInDown}
+          initial="hidden"
+          animate="visible"
+          className={classNames(
+            "px-10 py-5 rounded-lg flex gap-x-10 min-w-[736px]",
+            backgroundColor,
+            highlightMe ? "border-2 border-black" : "",
+            className
+          )}
+        >
+          <div>
+            <p className="text-black">{title}</p>
+          </div>
+
+          {/* Products */}
+          <div className="flex gap-x-10">
+            {/* Biodiversity */}
+            <div
+              className={classNames(
+                "h-[66px] w-[66px] rounded-lg flex items-center justify-center relative",
+                shadowColor
+              )}
+            >
+              <div className="absolute -right-3 -top-2 border border-black rounded-full bg-white w-[29px] h-[29px] flex justify-center items-center">
+                {Math.abs(bid.q.biodiversity)}
+              </div>
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 32 32"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  opacity="0.7"
+                  d="M8.81169 7.68831C8.81169 3.71831 12.03 0.5 16 0.5C19.97 0.5 23.1884 3.71832 23.1884 7.68831C23.1884 8.30864 23.6912 8.81169 24.3116 8.81169C28.2817 8.81169 31.5 12.03 31.5 16C31.5 19.97 28.2817 23.1884 24.3116 23.1884C23.6913 23.1884 23.1884 23.6913 23.1884 24.3116C23.1884 28.2817 19.97 31.5 16 31.5C12.03 31.5 8.81169 28.2817 8.81169 24.3116C8.81169 23.6912 8.30864 23.1884 7.68831 23.1884C3.71832 23.1884 0.5 19.97 0.5 16C0.5 12.03 3.71831 8.81169 7.68831 8.81169C8.30873 8.81169 8.81169 8.30873 8.81169 7.68831Z"
+                  fill="#6FCF97"
+                  stroke="white"
+                />
+              </svg>
+            </div>
+
+            {/* Nutrients */}
+            <div
+              className={classNames(
+                "h-[66px] w-[66px] rounded-lg flex items-center justify-center relative",
+                shadowColor
+              )}
+            >
+              <div className="absolute -right-3 -top-2 border border-black rounded-full bg-white w-[29px] h-[29px] flex justify-center items-center">
+                {Math.abs(bid.q.nutrients)}
+              </div>
+              <svg
+                width="22"
+                height="32"
+                viewBox="0 0 22 32"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  opacity="0.7"
+                  d="M3.55382 28.7654L3.5538 28.7654C1.58991 27.0217 0.5 24.6703 0.5 22.2332C0.5 18.4038 2.4831 15.5249 5.04685 11.8362L5.05338 11.8268C6.98602 9.04625 9.20932 5.84757 10.9755 1.52781L10.9998 1.60143L11.0243 1.52726C12.7905 5.8473 15.0139 9.04614 16.9466 11.8268L16.9531 11.8361C19.5168 15.5249 21.5 18.4038 21.5 22.2332C21.5 24.6703 20.4101 27.0217 18.4462 28.7654C16.4949 30.498 13.7822 31.5 11 31.5C8.19741 31.5 5.51957 30.511 3.55382 28.7654Z"
+                  fill="#56CCF2"
+                  stroke="white"
+                />
+              </svg>
+            </div>
+          </div>
+
+          {/* Prices */}
+          <div className="flex gap-x-10">
+            {/* offer or bid */}
+            <motion.div
+              variants={fadeInDown}
+              initial="hidden"
+              animate="visible"
+              className="bg-white rounded-lg border border-black px-1 w-[95px]"
+            >
+              <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
+                <HammerIcon />
+              </div>
+              <div className="text-center text-sm relative -mt-2">
+                <p className="text-light-grey">{isBuyer ? "Bid" : "Offer"}</p>
+                <p>£{Math.abs(bid.v)}</p>
+              </div>
+            </motion.div>
+
+            {/* bonus or discount */}
+            <motion.div
+              variants={fadeInDown}
+              initial="hidden"
+              animate="visible"
+              className="bg-white rounded-lg border border-black px-1 w-[95px]"
+            >
+              <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
+                <p className="text-black">+</p>
+              </div>
+              <div className="text-center text-sm relative -mt-2">
+                <p className="text-light-grey">
+                  {isBuyer ? "Discount" : "Bonus"}
+                </p>
+                <p>£2,000</p>
+              </div>
+            </motion.div>
+
+            {/* received or pays */}
+            <motion.div
+              variants={fadeInDown}
+              initial="hidden"
+              animate="visible"
+              className="bg-white rounded-lg border border-black px-1 w-[95px]"
+            >
+              <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
+                <CartPlus />
+              </div>
+              <div className="text-center text-sm relative -mt-2">
+                <p className="text-light-grey">
+                  {isBuyer ? "Pays" : "Received"}
+                </p>
+                <p>£12,000</p>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+      ))}
+    </>
+  );
+};
+
+export default Project;
