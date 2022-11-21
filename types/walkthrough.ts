@@ -7,7 +7,6 @@ export interface WalkthroughHighlightedMapRegions {
 
 export interface WalkthroughOptions {
   stages: number;
-  setMyPrice: boolean;
   isFormEnabled: boolean;
   allowDivision?: boolean;
   showDetailsWidget: boolean;
