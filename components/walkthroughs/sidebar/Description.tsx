@@ -1,40 +1,26 @@
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 
-import { fadeIn } from "@/utils/animations";
-import { ReactNode } from "react";
+import { fadeIn } from '@/utils/animations';
+import { useWalkthroughContext } from '@/context/WalkthroughContext';
 
-type Props = {
-  // walkthrough: number;
-  stage: number;
-  // nextWalkthrough: () => void;
-  children: ReactNode;
-};
-
-const Navigation = ({
-  // walkthrough,
-  stage,
-  // nextWalkthrough,
-  children,
-}: Props) => {
-  const hide = !children;
+const Description = () => {
+  const { scenario, stage } = useWalkthroughContext();
+  const sidebarContent = scenario.sidebarContent?.[stage];
+  const hide = !sidebarContent;
 
   return (
     <motion.div
       variants={fadeIn}
       initial="hidden"
-      animate={hide ? "hidden" : "visible"}
+      animate={hide ? 'hidden' : 'visible'}
       layout
-      className="space-y-4 text-xl"
+      className="text-l"
     >
-      <div className="bg-green-dark py-7 px-3 rounded-lg text-white">
-        <div
-          className="space-y-5 text-white"
-        >
-          {children}
-        </div>
+      <div className="bg-green-dark py-5 px-3 rounded-lg text-white">
+        <div className="space-y-5 text-white">{sidebarContent}</div>
       </div>
     </motion.div>
   );
 };
 
-export default Navigation;
+export default Description;

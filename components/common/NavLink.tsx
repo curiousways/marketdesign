@@ -1,13 +1,13 @@
-import { ReactChildren, ReactChild, MouseEvent } from "react";
+import { MouseEvent, ReactChild, ReactChildren } from 'react';
 
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router';
 
 type NavLinkProps = { href: string; children: ReactChild | ReactChildren };
 
-function NavLink({ children, href }: NavLinkProps) {
+const NavLink = ({ children, href }: NavLinkProps) => {
   const router = useRouter();
 
-  const sharedStyles = `underline-offset-8 text-lg`;
+  const sharedStyles = 'underline-offset-8 text-lg';
 
   const styles =
     router.asPath === href
@@ -16,7 +16,7 @@ function NavLink({ children, href }: NavLinkProps) {
 
   const handleClick = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    router.push(href);
+    void router.push(href);
   };
 
   return (
@@ -24,6 +24,6 @@ function NavLink({ children, href }: NavLinkProps) {
       {children}
     </a>
   );
-}
+};
 
 export default NavLink;

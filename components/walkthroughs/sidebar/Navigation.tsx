@@ -1,40 +1,38 @@
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 
-import { WalkthroughData } from "@/types/walkthrough";
+import { parseScenarioId } from '@/utils/walkthroughs';
+import { useWalkthroughContext } from '@/context/WalkthroughContext';
+import NextButton from './NextButton';
+import PrevButton from './PrevButton';
 
-import NextButton from "./NextButton";
-import PrevButton from "./PrevButton";
+const Navigation = () => {
+  const {
+    walkthrough,
+    scenarioId,
+    hasPreviousStage,
+    hasNextStage,
+    goToPreviousStage,
+    goToNextStage,
+  } = useWalkthroughContext();
 
-type Props = {
-  scenarioId: string;
-  stage: number;
-  next: () => void;
-  previous: () => void;
-  data: WalkthroughData;
-};
+  const { walkthroughIndex } = parseScenarioId(scenarioId);
 
-const Navigation = ({ scenarioId, stage, next, previous, data }: Props) => {
   return (
-    <motion.div layout className="text-center text-xl w-full">
-      <p className="text-green-dark">WALKTHROUGH {scenarioId}</p>
-      <div className="flex gap-x-4 items-center">
+    <motion.div layout className="text-center text-l w-full mt-2">
+      <p className="text-green-dark mb-1">WALKTHROUGH {walkthroughIndex + 1}</p>
+      <div className="flex gap-x-4 items-center justify-between">
         {/* Previous button */}
         <PrevButton
-          onClick={previous}
-          stage={stage}
-          hideButton={data.options.hide_prev_button}
+          onClick={goToPreviousStage}
+          hideButton={!hasPreviousStage}
         />
 
-        <div className="bg-green-dark text-white rounded-lg px-3 py-1 max-w-[285px]">
-          <p>Bidding Strategies for a Package Buyer</p>
+        <div className="bg-green-dark text-white rounded-lg px-3 py-1 flex-1">
+          <p>{walkthrough.title}</p>
         </div>
 
         {/* Next button */}
-        <NextButton
-          onClick={next}
-          stage={stage}
-          hideButton={data.options.hide_next_button}
-        />
+        <NextButton onClick={goToNextStage} hideButton={!hasNextStage} />
       </div>
     </motion.div>
   );

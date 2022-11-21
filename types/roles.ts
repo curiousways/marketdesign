@@ -1,4 +1,4 @@
-export type RoleId = 'buyer' | 'seller';
+export type RoleId = 'buyer' | 'seller' | 'generic';
 
 export type Role = {
   label: string;

@@ -1,95 +1,66 @@
-import { WalkthroughData } from "@/types/walkthrough";
-import { sidebarContent1 } from "./sidebar-content/1";
-import { sidebarContent8 } from "./sidebar-content/8";
+import { GetWalkthroughScenario } from '@/types/walkthrough';
+import { sidebarContent1 } from './sidebar-content/1';
+import { sidebarContent8 } from './sidebar-content/8';
 
-export const buyerScenario1_3: WalkthroughData = {
-  "title": "Offer above cost and lose",
-  "project_cost": "120,000",
-  "buyers": [
+export const getBuyerScenario1_3: GetWalkthroughScenario = (stage: number) => ({
+  myProjects: [
     {
-      "id": 1,
-      "title": "My Project",
-      "bid": "80,000",
-      "pays": "0",
-      "discount": "0",
-      "products": { "biodiversity": 1, "nutrients": 3 }
+      title: 'My Project',
+      cost: 80000,
+      discountOrBonus: 0,
+      accepted: () => false,
+      products: { biodiversity: 1, nutrients: 3 },
     },
-    {
-      "id": 2,
-      "title": "Buyer 1",
-      "bid": "100,000",
-      "pays": "97,500",
-      "discount": "2,500",
-      "products": { "biodiversity": 2, "nutrients": 2 }
-    },
-    {
-      "id": 3,
-      "title": "Buyer 2",
-      "bid": "110,000",
-      "pays": "107,500",
-      "discount": "2,500",
-      "products": { "biodiversity": 3, "nutrients": 0 }
-    }
   ],
-  "sellers": [
+  buyerProjects: [
     {
-      "id": 1,
-      "title": "Seller 1",
-      "offer": "120,000",
-      "received": "122,500",
-      "bonus": "2,500",
-      "products": { "biodiversity": 3, "nutrients": 1 }
+      title: 'Buyer 1',
+      cost: 100000,
+      accepted: () => true,
+      discountOrBonus: 2500,
+      products: { biodiversity: 2, nutrients: 2 },
     },
     {
-      "id": 2,
-      "title": "Seller 2",
-      "offer": "80,000",
-      "received": "82,500",
-      "bonus": "2,500",
-      "products": { "biodiversity": 2, "nutrients": 1 }
+      title: 'Buyer 2',
+      cost: 110000,
+      accepted: () => true,
+      discountOrBonus: 2500,
+      products: { biodiversity: 3, nutrients: 0 },
+    },
+  ],
+  sellerProjects: [
+    {
+      title: 'Seller 1',
+      cost: 120000,
+      accepted: () => true,
+      discountOrBonus: 2500,
+      products: { biodiversity: 3, nutrients: 1 },
     },
     {
-      "id": 3,
-      "title": "Seller 3",
-      "offer": "100,000",
-      "received": "0",
-      "bonus": "0",
-      "products": { "biodiversity": 1, "nutrients": 4 }
-    }
+      title: 'Seller 2',
+      cost: 80000,
+      accepted: () => true,
+      discountOrBonus: 2500,
+      products: { biodiversity: 2, nutrients: 1 },
+    },
+    {
+      title: 'Seller 3',
+      cost: 100000,
+      accepted: () => false,
+      discountOrBonus: 0,
+      products: { biodiversity: 1, nutrients: 4 },
+    },
   ],
   sidebarContent: {
     1: sidebarContent1,
     8: sidebarContent8,
   },
-  "options": {
-    "total_bids": "210,000",
-    "total_offers": "200,000",
-    "surplus": "10,000",
-    "next_walkthrough": "2.1",
-    "next_walkthrough_title": "Balanced Supply & Demand",
-    "stages": 8,
-    "role": "buyer",
-    "set_my_price": 1,
-    "allow_button_click": 1,
-    "show_calculating_overlay": [3, 5, 7],
-    "show_details_widget": 1,
-    "show_solve_market": 2,
-    "show_market_outcome": 4,
-    "show_calculating_winners": 3,
-    "show_distributing_surplus": 5,
-    "show_calculating_final": 7,
-    "show_surpluses": 6,
-    "show_final_payments": 8,
-    "show_balanced_market": 8,
-    "show_bids": 1,
-    "show_offers": 1,
-    "show_maps": false,
-    "show_full_map": 1,
-    "show_highlighted_map": 2,
-    "show_participants": 1,
-    "hide_next_button": [1, 2, 3, 4, 5, 6, 7, 8],
-    "hide_prev_button": [1],
-    "show_losers": 4,
-    "highlight_me": 2
-  }
-}
+  options: {
+    stages: 8,
+    isFormEnabled: stage === 1,
+    showDetailsWidget: stage >= 1,
+    showCosts: stage >= 1,
+    showMaps: false,
+    showParticipants: stage >= 1,
+  },
+});

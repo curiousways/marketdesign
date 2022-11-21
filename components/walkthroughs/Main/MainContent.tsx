@@ -1,167 +1,88 @@
-import { Dispatch, SetStateAction, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useEffect } from 'react';
 
-import { container, fadeInDown } from "@/utils/animations";
+import { useWalkthroughContext } from '@/context/WalkthroughContext';
+import { WalkthroughMarketState } from '@/types/walkthrough';
+import LoadingOverlay from './LoadingOverlay';
+import MainContentBody from './MainContentBody';
+import Background from './Background';
+import { TopProgressBar } from './TopProgressBar';
 
-import { Buyer, WalkthroughData, Seller } from "@/types/walkthrough";
+const MARKET_SOLVING_TIMEOUT = 4000;
 
-import MarketOutcome from "./MarketOutcome";
-import LoadingOverlay from "./LoadingOverlay";
-import ParticipantsList from "./ParticipantsList";
+const MainContent = () => {
+  const {
+    scenario,
+    isMarketSolving,
+    marketState,
+    setMarketState,
+    goToNextMarketState,
+    goToNextStage,
+  } = useWalkthroughContext();
 
-type Props = {
-  stage: number;
-  setStage: Dispatch<SetStateAction<number>>;
-  data: WalkthroughData;
-};
-
-const filterUser = <
-  T extends (Seller | Buyer
-)[]>(arr: T) => arr.filter((item) => item.id !== 1)
-
-const MainContent = ({ stage, setStage, data }: Props) => {
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
+    const { fixedMarketState } = scenario;
 
-    if (
-      stage === data.options.show_losers ||
-      stage === data.options.show_surpluses
-    ) {
-      timer = setTimeout(() => setStage((prev) => prev + 1), 8000);
+    // Exit if the scenario is controlling the market state.
+    if (typeof fixedMarketState !== 'undefined') {
+      return;
     }
 
-    if (data.options.show_calculating_overlay.includes(stage)) {
-      timer = setTimeout(() => setStage((prev) => prev + 1), 4000);
+    if (
+      marketState === WalkthroughMarketState.showing_winners ||
+      marketState === WalkthroughMarketState.showing_surpluses
+    ) {
+      timer = setTimeout(goToNextMarketState, MARKET_SOLVING_TIMEOUT);
+
+      return;
+    }
+
+    if (isMarketSolving) {
+      timer = setTimeout(goToNextMarketState, MARKET_SOLVING_TIMEOUT);
     }
 
     return () => {
       clearTimeout(timer);
     };
-  }, [stage, data.options]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scenario.fixedMarketState, isMarketSolving, marketState]);
 
-  // Last stage of each walkthrough
-  const maxStage = data.options.stages;
+  // This is here for the intro walkthrough, which needs to manually step
+  // through the market states.
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+    const { fixedMarketState } = scenario;
 
-  // User role either buyer or seller
-  const role = data.options.role;
+    if (typeof fixedMarketState !== 'undefined') {
+      setMarketState(fixedMarketState);
 
-  // Lists excluding user
-  const sellersExcludingUser = data.sellers.filter((seller) => seller.id !== 1);
-  const buyersExcludingUser = data.buyers.filter((buyer) => buyer.id !== 1);
+      if (
+        fixedMarketState === WalkthroughMarketState.calculating_winners ||
+        fixedMarketState === WalkthroughMarketState.distributing_surpluss ||
+        fixedMarketState === WalkthroughMarketState.calculating_final_payments
+      ) {
+        timer = setTimeout(goToNextStage, MARKET_SOLVING_TIMEOUT);
+      }
 
-  // extract winners and losers for both buyers and sellers
-  const sellersLost = data.sellers.filter((seller) => seller.received === "0");
-  const buyersLost = data.buyers.filter((buyer) => buyer.pays === "0");
-  const sellersWon = data.sellers.filter((seller) => seller.received !== "0");
-  const buyersWon = data.buyers.filter((buyer) => buyer.pays !== "0");
+      return;
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scenario.fixedMarketState, isMarketSolving]);
 
   return (
-    <div className="border-l border-green-dark pt-4 pb-24 w-full relative flex justify-center">
-      {/* Loading Screen */}
-      {data.options.show_calculating_overlay.includes(stage) && (
-        <LoadingOverlay stage={stage} data={data} />
-      )}
-
-      {stage >= data.options.show_participants && (
-        <>
-          {/* Losers list */}
-          {stage >= data.options.show_losers && (
-            <motion.div
-              variants={fadeInDown}
-              initial="hidden"
-              animate="visible"
-            >
-              <ParticipantsList
-                sellers={sellersLost}
-                buyers={buyersLost}
-                type="losers"
-                stage={stage}
-                data={data}
-              />
-            </motion.div>
-          )}
-
-          <div className="space-y-5">
-            {/* Partial List excluding user */}
-            {stage < data.options.highlight_me && (
-              <motion.div
-                variants={container}
-                initial="hidden"
-                animate="visible"
-                className="space-y-5"
-              >
-                {role === "seller" && (
-                  <ParticipantsList
-                    sellers={sellersExcludingUser}
-                    buyers={data.buyers}
-                    stage={stage}
-                    data={data}
-                  />
-                )}
-
-                {role === "buyer" && (
-                  <ParticipantsList
-                    sellers={data.sellers}
-                    buyers={buyersExcludingUser}
-                    stage={stage}
-                    data={data}
-                  />
-                )}
-              </motion.div>
-            )}
-
-            {/* Full List including user */}
-            {stage < data.options.show_losers &&
-              stage >= data.options.highlight_me && (
-                <motion.div
-                  variants={fadeInDown}
-                  initial="hidden"
-                  animate="visible"
-                  className="space-y-5"
-                >
-                  <ParticipantsList
-                    sellers={data.sellers}
-                    buyers={data.buyers}
-                    stage={stage}
-                    data={data}
-                  />
-                </motion.div>
-              )}
-
-            {/* Winners */}
-            {stage >= data.options.show_losers && (
-              <motion.div
-                variants={fadeInDown}
-                initial="hidden"
-                animate="visible"
-                className="space-y-5"
-              >
-                <ParticipantsList
-                  sellers={sellersWon}
-                  buyers={buyersWon}
-                  stage={stage}
-                  data={data}
-                />
-              </motion.div>
-            )}
-
-            {/* Market Outcome */}
-            {stage >= data.options.show_market_outcome && (
-              <motion.div
-                variants={fadeInDown}
-                initial="hidden"
-                animate="visible"
-              >
-                <MarketOutcome stage={stage} options={data.options} />
-              </motion.div>
-            )}
-          </div>
-        </>
-      )}
-
-      {data.options.show_maps && stage < data.options.show_participants && (
-        <p className="text-4xl">MAP</p>
-      )}
+    <div className="border-l border-green-dark pt-8 w-full relative flex justify-center">
+      <div className="z-20">
+        <TopProgressBar />
+        <LoadingOverlay />
+      </div>
+      <div className="z-10">
+        <MainContentBody />
+      </div>
+      <Background />
     </div>
   );
 };

@@ -10,8 +10,6 @@ export const sidebarContent1 = (
       required credit bundle is for 2 biodiversity credits and 1 water quality
       credit, again with a value to you of £60,000.
     </p>
-    <p>
-      Again, submit a bid at value for £60,000 and then solve the market.
-    </p>
+    <p>Again, submit a bid at value for £60,000 and then solve the market.</p>
   </>
 );

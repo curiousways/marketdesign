@@ -1,7 +1,7 @@
-import Link from "next/link";
+import Link from 'next/link';
 
-import NavLink from "./NavLink";
-import Logo from "./Logo";
+import NavLink from './NavLink';
+import Logo from './Logo';
 
 const Nav = () => {
   return (

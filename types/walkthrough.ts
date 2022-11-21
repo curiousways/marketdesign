@@ -1,81 +1,68 @@
-import { RoleId } from "./roles";
+import { RoleId } from './roles';
 
-export interface WalkthroughOptions {
-  total_bids: string;
-  total_offers: string;
-  surplus: string;
-  next_walkthrough: string;
-  next_walkthrough_title: string;
-  stages: number;
-  role: RoleId;
-  set_my_price: number;
-  allow_button_click: number;
-  show_products_quantity?: number;
-  show_calculating_overlay: number[];
-  show_details_widget: number;
-  show_solve_market: number;
-  show_market_outcome: number;
-  show_calculating_winners: number;
-  show_distributing_surplus: number;
-  show_calculating_final: number;
-  show_surpluses: number;
-  show_final_payments: number;
-  show_balanced_market: number;
-  show_bids: number;
-  show_offers: number;
-  show_maps: boolean;
-  show_full_map: number;
-  show_highlighted_map: number;
-  show_participants: number;
-  hide_next_button: number[];
-  hide_prev_button: number[];
-  show_losers: number;
-  highlight_me: number;
-};
-
-export interface WalkthroughData {
-  title: string;
-  project_cost: string;
-  buyers: Buyer[];
-  sellers: Seller[];
-  sidebarContent?: {
-    [key: number]: JSX.Element;
-  },
-  options: WalkthroughOptions;
+export interface WalkthroughHighlightedMapRegions {
+  buyer?: number;
+  seller?: number;
 }
 
-export interface Buyer {
-  id: number;
-  title: string;
-  bid: string;
-  pays: string;
-  discount: string;
-  products: Products;
+export interface WalkthroughOptions {
+  stages: number;
+  isFormEnabled: boolean;
+  allowDivision?: boolean;
+  showDetailsWidget: boolean;
+  showDivisibleInput?: boolean;
+  showCosts: boolean;
+  showMaps: boolean;
+  highlightedMapRegions?: WalkthroughHighlightedMapRegions;
+  showParticipants: boolean;
 }
 
 export interface Products {
-  biodiversity: number;
-  nutrients: number;
+  biodiversity?: number;
+  nutrients?: number;
 }
 
-export interface Seller {
-  id: number;
+export interface WalkthroughProject {
   title: string;
-  offer: string;
-  received: string;
-  bonus: string;
+  subtitle?: string;
+  cost: number | number[];
+  accepted: (value: number) => boolean | number;
+  isInactive?: boolean;
+  discountOrBonus: number;
   products: Products;
+  costPerCredit?: number;
 }
 
-export interface Scenario {
-  id: string,
-  title: string,
-  buyer: WalkthroughData,
-  seller: WalkthroughData,
+export interface WalkthroughScenario {
+  myProjects: WalkthroughProject[];
+  buyerProjects: WalkthroughProject[];
+  sellerProjects: WalkthroughProject[];
+  sidebarContent?: {
+    [key: number]: JSX.Element;
+  };
+  options: WalkthroughOptions;
+  fixedMarketState?: WalkthroughMarketState;
 }
+
+export type GetWalkthroughScenario = (stage: number) => WalkthroughScenario;
 
 export interface Walkthrough {
-  id: number;
   title: string;
-  scenarios: Scenario[];
+  scenarios: GetWalkthroughScenario[];
+}
+
+export type WalkthroughsByRole = {
+  roleId: RoleId;
+  walkthroughs: Walkthrough[];
+}[];
+
+export enum WalkthroughMarketState {
+  'pending',
+  'solvable',
+  'calculating_winners',
+  'showing_winners',
+  'distributing_surpluss',
+  'showing_surpluses',
+  'calculating_final_payments',
+  'solved',
 }

@@ -1,63 +1,57 @@
-import { WalkthroughData } from "@/types/walkthrough";
-import { sidebarContent1 } from "./sidebar-content/1";
-import { sidebarContent10 } from "./sidebar-content/10";
-import { sidebarContent2 } from "./sidebar-content/2";
-import { sidebarContent3 } from "./sidebar-content/3";
+import { GetWalkthroughScenario } from '@/types/walkthrough';
+import { sidebarContent1 } from './sidebar-content/1';
+import { sidebarContent10 } from './sidebar-content/10';
+import { sidebarContent2 } from './sidebar-content/2';
+import { sidebarContent3 } from './sidebar-content/3';
 
-export const buyerScenario3_1: WalkthroughData = {
-  "title": "Poor fit bid",
-  "project_cost": "60,000",
-  "buyers": [
+export const getBuyerScenario3_1: GetWalkthroughScenario = (stage: number) => ({
+  myProjects: [
     {
-      "id": 1,
-      "title": "My Project",
-      "bid": "60,000",
-      "pays": "0",
-      "discount": "0",
-      "products": { "biodiversity": 1, "nutrients": 2 }
+      title: 'My Project',
+      cost: 60000,
+      accepted: () => false,
+      discountOrBonus: 0,
+      products: { biodiversity: 1, nutrients: 2 },
     },
-    {
-      "id": 2,
-      "title": "Buyer 1",
-      "bid": "200,000",
-      "pays": "0",
-      "discount": "0",
-      "products": { "biodiversity": 5, "nutrients": 2 }
-    },
-    {
-      "id": 3,
-      "title": "Buyer 2",
-      "bid": "300,000",
-      "pays": "250,000",
-      "discount": "50,000",
-      "products": { "biodiversity": 4, "nutrients": 7 }
-    }
   ],
-  "sellers": [
+  buyerProjects: [
     {
-      "id": 1,
-      "title": "Seller 1",
-      "offer": "100,000",
-      "received": "0",
-      "bonus": "0",
-      "products": { "biodiversity": 1, "nutrients": 2 }
+      title: 'Buyer 1',
+      cost: 200000,
+      accepted: () => false,
+      discountOrBonus: 0,
+      products: { biodiversity: 5, nutrients: 2 },
     },
     {
-      "id": 2,
-      "title": "Seller 2",
-      "offer": "150,000",
-      "received": "250,000",
-      "bonus": "100,000",
-      "products": { "biodiversity": 6, "nutrients": 7 }
+      title: 'Buyer 2',
+      cost: 300000,
+      accepted: () => true,
+      discountOrBonus: 50000,
+      products: { biodiversity: 4, nutrients: 7 },
+    },
+  ],
+  sellerProjects: [
+    {
+      title: 'Seller 1',
+      cost: 100000,
+      accepted: () => false,
+      discountOrBonus: 0,
+      products: { biodiversity: 1, nutrients: 2 },
     },
     {
-      "id": 3,
-      "title": "Seller 3",
-      "offer": "210,000",
-      "received": "0",
-      "bonus": "0",
-      "products": { "biodiversity": 4, "nutrients": 4 }
-    }
+      title: 'Seller 2',
+      cost: 150000,
+      accepted: () => true,
+      discountOrBonus: 100000,
+      products: { biodiversity: 6, nutrients: 7 },
+    },
+    {
+      title: 'Seller 3',
+      cost: 210000,
+      accepted: () => false,
+      discountOrBonus: 0,
+      products: { biodiversity: 4, nutrients: 4 },
+    },
   ],
   sidebarContent: {
     1: sidebarContent1,
@@ -65,35 +59,15 @@ export const buyerScenario3_1: WalkthroughData = {
     3: sidebarContent3,
     10: sidebarContent10,
   },
-  "options": {
-    "total_bids": "300,000",
-    "total_offers": "150,000",
-    "surplus": "150,000",
-    "next_walkthrough": "3.2",
-    "next_walkthrough_title": "Poor fit bid",
-    "stages": 10,
-    "role": "buyer",
-    "set_my_price": 3,
-    "allow_button_click": 3,
-    "show_calculating_overlay": [5, 7, 9],
-    "show_details_widget": 2,
-    "show_solve_market": 4,
-    "show_market_outcome": 6,
-    "show_calculating_winners": 5,
-    "show_distributing_surplus": 7,
-    "show_calculating_final": 9,
-    "show_surpluses": 8,
-    "show_final_payments": 10,
-    "show_balanced_market": 10,
-    "show_bids": 3,
-    "show_offers": 3,
-    "show_maps": true,
-    "show_full_map": 1,
-    "show_highlighted_map": 2,
-    "show_participants": 3,
-    "hide_next_button": [3, 4, 5, 6, 7, 8, 9, 10],
-    "hide_prev_button": [1],
-    "show_losers": 6,
-    "highlight_me": 4
-  }
-}
+  options: {
+    stages: 10,
+    isFormEnabled: stage === 3,
+    showDetailsWidget: stage >= 2,
+    showCosts: stage >= 3,
+    showMaps: true,
+    highlightedMapRegions: {
+      buyer: stage >= 2 ? 21 : -1,
+    },
+    showParticipants: stage >= 3,
+  },
+});
