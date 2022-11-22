@@ -1,4 +1,4 @@
-import { Bidder } from '@/types/demo';
+import { Bidder, Payments } from '@/types/demo';
 
 import Project from './Project';
 import ProjectLost from './ProjectLost';
@@ -6,9 +6,11 @@ import ProjectLost from './ProjectLost';
 type Props = {
   participants: Bidder[] | undefined;
   type?: 'winners' | 'losers';
+  payments: Payments | undefined;
+  surplusShares: Payments | undefined;
 };
 
-const ParticipantsList = ({ participants, type = 'winners' }: Props) => {
+const ParticipantsList = ({ participants, type = 'winners', payments, surplusShares }: Props) => {
   return (
     <>
       {type === 'winners' && (
@@ -22,6 +24,8 @@ const ParticipantsList = ({ participants, type = 'winners' }: Props) => {
                   Number(participant.bids[0]?.v) < 0 ? 'seller' : 'buyer'
                 }
                 bids={participant.bids}
+                payments={payments}
+                surplusShares={surplusShares}
                 key={participant.name}
               />
             ))}

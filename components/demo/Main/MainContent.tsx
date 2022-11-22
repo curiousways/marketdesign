@@ -21,6 +21,29 @@ const MainContent = ({ bidders, result, loading }: Props) => {
 
   const marketSurplus = result?.surplus;
   const payments = result?.payments;
+  const surplusShares = result?.surplus_shares;
+
+  const totalBids = () => {
+    let totalBids = 0;
+
+    buyers.forEach((buyer) => {
+      buyer.bids.forEach((bid) => (totalBids = totalBids + Math.abs(bid.v)));
+    });
+
+    return totalBids;
+  }
+
+  const totalOffers = () => {
+    let totalOffers = 0;
+
+    sellers.forEach((seller) => {
+      seller.bids.forEach(
+          (bid) => (totalOffers = totalOffers + Math.abs(bid.v)),
+        );
+    });
+
+    return totalOffers;
+  };
 
   const checkForWinningBids = (bidder: Bidder) => {
     const winningBids: Bid[] = [];
@@ -67,10 +90,16 @@ const MainContent = ({ bidders, result, loading }: Props) => {
     <div className="border-l border-green-dark pt-4 pb-24 w-full relative flex justify-center">
       {/* Loading Screen */}
       {loading && <LoadingOverlay />}
+
       {/* Losers */}
       {payments && (
         <motion.div variants={fadeInDown} initial="hidden" animate="visible">
-          <ParticipantsList participants={losers} type="losers" />
+          <ParticipantsList
+            payments={payments}
+            participants={losers}
+            surplusShares={surplusShares}
+            type="losers"
+          />
         </motion.div>
       )}
 
@@ -79,15 +108,19 @@ const MainContent = ({ bidders, result, loading }: Props) => {
         <motion.div variants={fadeInDown} initial="hidden" animate="visible">
           <ParticipantsList
             participants={!payments ? [...sellers, ...buyers] : winners}
+            payments={payments}
+            surplusShares={surplusShares}
           />
         </motion.div>
 
         {/* Market Outcome */}
-        <MarketOutcome
-          marketSurplus={marketSurplus}
-          totalBids={100000}
-          totalOffers={200000}
-        />
+        {payments && (
+          <MarketOutcome
+            marketSurplus={marketSurplus}
+            totalBids={totalBids()}
+            totalOffers={totalOffers()}
+          />
+        )}
       </div>
 
       {false && <p className="text-4xl">MAP</p>}

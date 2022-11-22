@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 
 import { classNames } from '@/utils/index';
-import { Bid } from '@/types/demo';
+import { Bid, Payments } from '@/types/demo';
 import { fadeInDown } from '@/utils/animations';
 
 import HammerIcon from '@/components/walkthroughs/icons/HammerIcon';
@@ -12,11 +12,12 @@ type Props = {
   projectRoleId: 'buyer' | 'seller';
   bids: Bid[];
   className?: string;
+  payments: Payments | undefined;
+  surplusShares: Payments | undefined;
 };
 
-const Project = ({ title, projectRoleId, bids, className = '' }: Props) => {
+const Project = ({ title, projectRoleId, bids, payments, surplusShares, className = '' }: Props) => {
   const highlightMe = true;
-
   const isBuyer = projectRoleId === 'buyer';
   const shadowColor = isBuyer ? 'neo-shadow-brown' : 'neo-shadow-green';
   const backgroundColor = isBuyer ? 'bg-brown' : 'bg-green-light';
@@ -114,40 +115,46 @@ const Project = ({ title, projectRoleId, bids, className = '' }: Props) => {
             </motion.div>
 
             {/* bonus or discount */}
-            <motion.div
-              variants={fadeInDown}
-              initial="hidden"
-              animate="visible"
-              className="bg-white rounded-lg border border-black px-1 w-[95px]"
-            >
-              <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
-                <p className="text-black">+</p>
-              </div>
-              <div className="text-center text-sm relative -mt-2">
-                <p className="text-light-grey">
-                  {isBuyer ? 'Discount' : 'Bonus'}
-                </p>
-                <p>£2,000</p>
-              </div>
-            </motion.div>
+            {surplusShares && (
+              <motion.div
+                variants={fadeInDown}
+                initial="hidden"
+                animate="visible"
+                className="bg-white rounded-lg border border-black px-1 w-[95px]"
+              >
+                <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
+                  <p className="text-black">
+                    {isBuyer ? '-' : '+'}
+                  </p>
+                </div>
+                <div className="text-center text-sm relative -mt-2">
+                  <p className="text-light-grey">
+                    {isBuyer ? 'Discount' : 'Bonus'}
+                  </p>
+                  <p>£{surplusShares && Math.round(surplusShares[title])}</p>
+                </div>
+              </motion.div>
+            )}
 
             {/* received or pays */}
-            <motion.div
-              variants={fadeInDown}
-              initial="hidden"
-              animate="visible"
-              className="bg-white rounded-lg border border-black px-1 w-[95px]"
-            >
-              <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
-                <CartPlus />
-              </div>
-              <div className="text-center text-sm relative -mt-2">
-                <p className="text-light-grey">
-                  {isBuyer ? 'Pays' : 'Received'}
-                </p>
-                <p>£12,000</p>
-              </div>
-            </motion.div>
+            {payments && (
+              <motion.div
+                variants={fadeInDown}
+                initial="hidden"
+                animate="visible"
+                className="bg-white rounded-lg border border-black px-1 w-[95px]"
+              >
+                <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
+                  <CartPlus />
+                </div>
+                <div className="text-center text-sm relative -mt-2">
+                  <p className="text-light-grey">
+                    {isBuyer ? 'Pays' : 'Received'}
+                  </p>
+                  <p>£{payments && Math.abs(Math.round(payments[title]))}</p>
+                </div>
+              </motion.div>
+            )}
           </div>
         </motion.div>
       ))}

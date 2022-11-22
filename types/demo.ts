@@ -7,9 +7,7 @@ export interface Data {
 }
 
 export interface Payments {
-  seller1: number;
-  buyer1: number;
-  buyer2: number;
+  [key: string]: number;
 }
 
 export interface Problem {

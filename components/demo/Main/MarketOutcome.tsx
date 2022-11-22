@@ -1,4 +1,8 @@
+import { motion } from 'framer-motion';
+
 import { classNames } from '@/utils/index';
+
+import { fadeInDown } from '@/utils/animations';
 
 import HammerIcon from '@/components/walkthroughs/icons/HammerIcon';
 import BalanceIcon from '@/components/walkthroughs/icons/BalanceIcon';
@@ -19,7 +23,10 @@ const MarketOutcome = ({
   className = '',
 }: Props) => {
   return (
-    <div
+    <motion.div
+      variants={fadeInDown}
+      initial="hidden"
+      animate="visible"
       className={classNames(
         'bg-blue-light px-10 py-5 rounded-lg flex items-center gap-x-12 min-w-[736px]',
         className,
@@ -162,7 +169,7 @@ const MarketOutcome = ({
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
