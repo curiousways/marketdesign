@@ -1,10 +1,8 @@
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 
-import { fadeInDown } from "@/utils/animations";
+import { fadeInDown } from '@/utils/animations';
 
-type Props = {};
-
-const LoadingOverlay = ({}: Props) => {
+const LoadingOverlay = () => {
   return (
     <motion.div
       variants={fadeInDown}
@@ -18,10 +16,10 @@ const LoadingOverlay = ({}: Props) => {
         </p>
 
         <div className="lds-ellipsis inline-block relative w-[80px] h-[80px]">
-          <div className="bg-green-light absolute top-[33px] left-[8px] w-[15px] h-[15px] rounded-full"></div>
-          <div className="bg-blue-light absolute top-[33px] left-[8px] w-[15px] h-[15px] rounded-full"></div>
-          <div className="bg-dark-grey absolute top-[33px] left-[32px] w-[15px] h-[15px] rounded-full"></div>
-          <div className="bg-dark-grey absolute top-[33px] left-[56px] w-[15px] h-[15px] rounded-full"></div>
+          <div className="bg-green-light absolute top-[33px] left-[8px] w-[15px] h-[15px] rounded-full" />
+          <div className="bg-blue-light absolute top-[33px] left-[8px] w-[15px] h-[15px] rounded-full" />
+          <div className="bg-dark-grey absolute top-[33px] left-[32px] w-[15px] h-[15px] rounded-full" />
+          <div className="bg-dark-grey absolute top-[33px] left-[56px] w-[15px] h-[15px] rounded-full" />
         </div>
       </div>
     </motion.div>

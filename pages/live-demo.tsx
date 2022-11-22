@@ -1,22 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState } from 'react';
 
-import type { NextPage } from "next";
+import type { NextPage } from 'next';
 
-import axios from "axios";
-import useSWR from "swr";
+import axios from 'axios';
+import useSWR from 'swr';
 
-import { bids } from "data/bids/bids";
-import { Data, Bidder } from "@/types/demo";
+import { bids } from 'data/bids/bids';
+import { Bidder, Data } from '@/types/demo';
 
-import SideBar from "@/components/demo/sidebar/SideBar";
-import MainContent from "@/components/demo/Main/MainContent";
+import SideBar from '@/components/demo/sidebar/SideBar';
+import MainContent from '@/components/demo/Main/MainContent';
 
 // API call function using axios
 // freeDisposal: boolean,
 const fetcher = (url: string, bidders: Bidder[]) =>
-  axios.post(url, { free_disposal: true, bidders: bidders }).then((res) => {
-    console.log(res.data);
-    return res.data;
+  axios.post(url, { free_disposal: true, bidders }).then((res) => {
+    return res.data as Data;
   });
 
 const Demo: NextPage = () => {
@@ -31,9 +30,11 @@ const Demo: NextPage = () => {
   };
 
   // API call using SWR
-  const url = `https://marketdesign.herokuapp.com/solve/lindsay2018`;
-  const { data, error } = useSWR([shouldFetch ? url : null, bidders], fetcher, {
-    onSuccess: function (data, ...rest) {
+  const url = 'https://marketdesign.herokuapp.com/solve/lindsay2018';
+
+  // eslint-disable-next-line no-empty-pattern
+  const {} = useSWR([shouldFetch ? url : null, bidders], fetcher, {
+    onSuccess(data) {
       setShouldFetch(false);
       setResult(data);
       // Replace bidders array with the one from the result

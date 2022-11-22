@@ -1,6 +1,6 @@
 export const bids = [
   {
-    name: "seller 1",
+    name: 'seller 1',
     bids: [
       {
         v: -13000,
@@ -13,7 +13,7 @@ export const bids = [
     ],
   },
   {
-    name: "seller 2",
+    name: 'seller 2',
     bids: [
       {
         v: -10000,
@@ -26,7 +26,7 @@ export const bids = [
     ],
   },
   {
-    name: "buyer 1",
+    name: 'buyer 1',
     bids: [
       {
         v: 21000,
@@ -39,7 +39,7 @@ export const bids = [
     ],
   },
   {
-    name: "buyer 2",
+    name: 'buyer 2',
     bids: [
       {
         v: 15000,

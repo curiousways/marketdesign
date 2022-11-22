@@ -1,8 +1,7 @@
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 
-
-import NextButton from "./NextButton";
-import PrevButton from "./PrevButton";
+import NextButton from './NextButton';
+import PrevButton from './PrevButton';
 
 type Props = {
   next: () => void;

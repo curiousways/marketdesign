@@ -1,39 +1,39 @@
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 
-import { classNames } from "@/utils/index";
-import { Bid } from "@/types/demo";
-import { fadeInDown } from "@/utils/animations";
+import { classNames } from '@/utils/index';
+import { Bid } from '@/types/demo';
+import { fadeInDown } from '@/utils/animations';
 
-import HammerIcon from "@/components/walkthroughs/icons/HammerIcon";
-import CartPlus from "@/components/walkthroughs/icons/CartPlus";
+import HammerIcon from '@/components/walkthroughs/icons/HammerIcon';
+import CartPlus from '@/components/walkthroughs/icons/CartPlus';
 
 type Props = {
   title: string;
-  projectRoleId: "buyer" | "seller";
+  projectRoleId: 'buyer' | 'seller';
   bids: Bid[];
   className?: string;
 };
 
-const Project = ({ title, projectRoleId, bids, className = "" }: Props) => {
+const Project = ({ title, projectRoleId, bids, className = '' }: Props) => {
   const highlightMe = true;
 
-  const isBuyer = projectRoleId === "buyer";
-  const shadowColor = isBuyer ? "neo-shadow-brown" : "neo-shadow-green";
-  const backgroundColor = isBuyer ? "bg-brown" : "bg-green-light";
+  const isBuyer = projectRoleId === 'buyer';
+  const shadowColor = isBuyer ? 'neo-shadow-brown' : 'neo-shadow-green';
+  const backgroundColor = isBuyer ? 'bg-brown' : 'bg-green-light';
 
   return (
     <>
       {bids.map((bid, i) => (
         <motion.div
-          key={`${title} - ${isBuyer ? "bid" : "offer"}${i + 1}`}
+          key={`${title} - ${isBuyer ? 'bid' : 'offer'}${i + 1}`}
           variants={fadeInDown}
           initial="hidden"
           animate="visible"
           className={classNames(
-            "px-10 py-5 rounded-lg flex gap-x-10 min-w-[736px]",
+            'px-10 py-5 rounded-lg flex gap-x-10 min-w-[736px]',
             backgroundColor,
-            highlightMe ? "border-2 border-black" : "",
-            className
+            highlightMe ? 'border-2 border-black' : '',
+            className,
           )}
         >
           <div>
@@ -45,8 +45,8 @@ const Project = ({ title, projectRoleId, bids, className = "" }: Props) => {
             {/* Biodiversity */}
             <div
               className={classNames(
-                "h-[66px] w-[66px] rounded-lg flex items-center justify-center relative",
-                shadowColor
+                'h-[66px] w-[66px] rounded-lg flex items-center justify-center relative',
+                shadowColor,
               )}
             >
               <div className="absolute -right-3 -top-2 border border-black rounded-full bg-white w-[29px] h-[29px] flex justify-center items-center">
@@ -71,8 +71,8 @@ const Project = ({ title, projectRoleId, bids, className = "" }: Props) => {
             {/* Nutrients */}
             <div
               className={classNames(
-                "h-[66px] w-[66px] rounded-lg flex items-center justify-center relative",
-                shadowColor
+                'h-[66px] w-[66px] rounded-lg flex items-center justify-center relative',
+                shadowColor,
               )}
             >
               <div className="absolute -right-3 -top-2 border border-black rounded-full bg-white w-[29px] h-[29px] flex justify-center items-center">
@@ -108,7 +108,7 @@ const Project = ({ title, projectRoleId, bids, className = "" }: Props) => {
                 <HammerIcon />
               </div>
               <div className="text-center text-sm relative -mt-2">
-                <p className="text-light-grey">{isBuyer ? "Bid" : "Offer"}</p>
+                <p className="text-light-grey">{isBuyer ? 'Bid' : 'Offer'}</p>
                 <p>£{Math.abs(bid.v)}</p>
               </div>
             </motion.div>
@@ -125,7 +125,7 @@ const Project = ({ title, projectRoleId, bids, className = "" }: Props) => {
               </div>
               <div className="text-center text-sm relative -mt-2">
                 <p className="text-light-grey">
-                  {isBuyer ? "Discount" : "Bonus"}
+                  {isBuyer ? 'Discount' : 'Bonus'}
                 </p>
                 <p>£2,000</p>
               </div>
@@ -143,7 +143,7 @@ const Project = ({ title, projectRoleId, bids, className = "" }: Props) => {
               </div>
               <div className="text-center text-sm relative -mt-2">
                 <p className="text-light-grey">
-                  {isBuyer ? "Pays" : "Received"}
+                  {isBuyer ? 'Pays' : 'Received'}
                 </p>
                 <p>£12,000</p>
               </div>

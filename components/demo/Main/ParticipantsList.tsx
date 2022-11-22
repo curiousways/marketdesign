@@ -1,17 +1,17 @@
-import { Bidder, Bid } from "@/types/demo";
+import { Bidder } from '@/types/demo';
 
-import Project from "./Project";
-import ProjectLost from "./ProjectLost";
+import Project from './Project';
+import ProjectLost from './ProjectLost';
 
 type Props = {
   participants: Bidder[] | undefined;
-  type?: "winners" | "losers";
+  type?: 'winners' | 'losers';
 };
 
-const ParticipantsList = ({ participants, type = "winners" }: Props) => {
+const ParticipantsList = ({ participants, type = 'winners' }: Props) => {
   return (
     <>
-      {type === "winners" && (
+      {type === 'winners' && (
         <>
           {/* Sellers */}
           <div className="space-y-5">
@@ -19,7 +19,7 @@ const ParticipantsList = ({ participants, type = "winners" }: Props) => {
               <Project
                 title={participant.name}
                 projectRoleId={
-                  Number(participant.bids[0]?.v) < 0 ? "seller" : "buyer"
+                  Number(participant.bids[0]?.v) < 0 ? 'seller' : 'buyer'
                 }
                 bids={participant.bids}
                 key={participant.name}
@@ -29,7 +29,7 @@ const ParticipantsList = ({ participants, type = "winners" }: Props) => {
         </>
       )}
 
-      {type === "losers" && (
+      {type === 'losers' && (
         <div className="space-y-2">
           {/* Sellers */}
           <div className="space-y-2">
@@ -38,7 +38,7 @@ const ParticipantsList = ({ participants, type = "winners" }: Props) => {
                 key={participant.name}
                 title={participant.name}
                 projectRoleId={
-                  Number(participant.bids[0]?.v) < 0 ? "seller" : "buyer"
+                  Number(participant.bids[0]?.v) < 0 ? 'seller' : 'buyer'
                 }
                 bids={participant.bids}
               />

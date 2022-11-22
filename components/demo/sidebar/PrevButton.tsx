@@ -1,4 +1,4 @@
-import { classNames } from "@/utils/index";
+import { classNames } from '@/utils/index';
 
 type Props = {
   onClick: () => void;
@@ -8,10 +8,11 @@ const PrevButton = ({ onClick }: Props) => {
   return (
     <button
       className={classNames(
-        "w-10 h-10 bg-green-dark rounded-full flex justify-center items-center"
+        'w-10 h-10 bg-green-dark rounded-full flex justify-center items-center',
         // hideButton.includes(stage) ? "invisible" : ""
       )}
       onClick={onClick}
+      type="button"
     >
       <svg
         version="1.1"
@@ -26,25 +27,25 @@ const PrevButton = ({ onClick }: Props) => {
       >
         <g>
           <path
-            style={{ fill: "#ffffff" }}
+            style={{ fill: '#ffffff' }}
             d="M185.492,211.636v109.588l209.449-123.747L185.492,73.718v109.611L0,73.718v247.506L185.492,211.636z"
           />
         </g>
-        <g></g>
-        <g></g>
-        <g></g>
-        <g></g>
-        <g></g>
-        <g></g>
-        <g></g>
-        <g></g>
-        <g></g>
-        <g></g>
-        <g></g>
-        <g></g>
-        <g></g>
-        <g></g>
-        <g></g>
+        <g />
+        <g />
+        <g />
+        <g />
+        <g />
+        <g />
+        <g />
+        <g />
+        <g />
+        <g />
+        <g />
+        <g />
+        <g />
+        <g />
+        <g />
       </svg>
     </button>
   );

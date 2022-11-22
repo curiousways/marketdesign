@@ -1,7 +1,7 @@
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 
-import { fadeIn } from "@/utils/animations";
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
+import { fadeIn } from '@/utils/animations';
 
 type Props = {
   children: ReactNode;
@@ -14,7 +14,7 @@ const Navigation = ({ children }: Props) => {
     <motion.div
       variants={fadeIn}
       initial="hidden"
-      animate={hide ? "hidden" : "visible"}
+      animate={hide ? 'hidden' : 'visible'}
       layout
       className="space-y-4 text-xl"
     >

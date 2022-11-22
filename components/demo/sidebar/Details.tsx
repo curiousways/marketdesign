@@ -1,12 +1,12 @@
-import React, { useState, Dispatch, SetStateAction } from "react";
-import { motion, usePresence } from "framer-motion";
+import React, { Dispatch, SetStateAction } from 'react';
+import { motion } from 'framer-motion';
 
-import { fadeIn } from "@/utils/animations";
+import { fadeIn } from '@/utils/animations';
 
-import SellerVector from "@/components/walkthroughs/icons/SellerVector";
-import BuyerVector from "@/components/walkthroughs/icons/BuyerVector";
-import BiodiversityIconGray from "@/components/walkthroughs/icons/BiodiversityIcon";
-import NutrientsIcon from "@/components/walkthroughs/icons/NutrientsIcon";
+import SellerVector from '@/components/walkthroughs/icons/SellerVector';
+import BuyerVector from '@/components/walkthroughs/icons/BuyerVector';
+import BiodiversityIconGray from '@/components/walkthroughs/icons/BiodiversityIcon';
+import NutrientsIcon from '@/components/walkthroughs/icons/NutrientsIcon';
 
 type Props = {
   onSubmit: () => void;
@@ -19,10 +19,10 @@ const Details = ({ price, setPrice, onSubmit }: Props) => {
   const onButtonClick = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit();
-    setPrice("");
+    setPrice('');
   };
 
-  const role = "seller";
+  const role = 'seller';
 
   return (
     <motion.div
@@ -36,12 +36,12 @@ const Details = ({ price, setPrice, onSubmit }: Props) => {
     >
       <div className="text-black text-xl">
         <p className="font-bold">My Project</p>
-        <p>{role === "seller" ? "Landholder" : "Developer"}</p>
+        <p>{role === 'seller' ? 'Landholder' : 'Developer'}</p>
       </div>
 
       <div className="mt-3 flex justify-between">
         {/* Vector */}
-        <>{role === "seller" ? <SellerVector /> : <BuyerVector />}</>
+        {role === 'seller' ? <SellerVector /> : <BuyerVector />}
 
         {/* Credits */}
         <div className="flex gap-x-2 mt-2">
@@ -79,8 +79,8 @@ const Details = ({ price, setPrice, onSubmit }: Props) => {
           <div className="relative w-[71px]">
             {false && (
               <span className="flex h-3 w-3 absolute right-0 -top-1">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500" />
               </span>
             )}
             <button

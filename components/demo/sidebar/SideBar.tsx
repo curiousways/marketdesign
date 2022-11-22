@@ -1,22 +1,23 @@
-import React, { useState, Dispatch, SetStateAction } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { Dispatch, SetStateAction, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
-import { fadeIn } from "@/utils/animations";
+import { fadeIn } from '@/utils/animations';
+import { Bidder } from '@/types/demo';
 
-import Description from "./Description";
-import Details from "./Details";
-import Navigation from "./Navigation";
+import Description from './Description';
+import Details from './Details';
+import Navigation from './Navigation';
 
 type Props = {
   solveMarket: () => void;
-  updateBidders: Dispatch<SetStateAction<any>>;
+  updateBidders: Dispatch<SetStateAction<Bidder[]>>;
 };
 
 const SideBar = ({ solveMarket, updateBidders }: Props) => {
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState('');
   const [showSolveBtn, setShowSolveBtn] = useState(false);
 
-  const onSolveMarketBtnClick = (e: React.FormEvent) => {
+  const onSolveMarketBtnClick = () => {
     solveMarket();
     setTimeout(() => {
       setShowSolveBtn(false);
@@ -25,7 +26,7 @@ const SideBar = ({ solveMarket, updateBidders }: Props) => {
 
   const onSubmit = () => {
     const newBid = {
-      name: "My Project",
+      name: 'My Project',
       bids: [
         {
           v: -Number(price),
@@ -37,7 +38,7 @@ const SideBar = ({ solveMarket, updateBidders }: Props) => {
         },
       ],
     };
-    updateBidders((prev: any) => [newBid, ...prev]);
+    updateBidders((prev) => [newBid, ...prev]);
     setShowSolveBtn(true);
   };
 
@@ -72,11 +73,7 @@ const SideBar = ({ solveMarket, updateBidders }: Props) => {
         )}
 
         {/* Navigation with next and previous buttons */}
-        <Navigation
-          key={3}
-          next={() => console.log("")}
-          previous={() => console.log("")}
-        />
+        <Navigation key={3} next={() => 'next'} previous={() => 'previous'} />
 
         {/* Walkthrough Description text */}
         <Description key={4}>

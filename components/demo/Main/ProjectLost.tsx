@@ -1,26 +1,26 @@
-import { Bid } from "@/types/demo";
+import { Bid } from '@/types/demo';
 
-import { classNames } from "@/utils/index";
+import { classNames } from '@/utils/index';
 
 type Props = {
   title: string;
-  projectRoleId: "buyer" | "seller";
+  projectRoleId: 'buyer' | 'seller';
   bids: Bid[];
 };
 
 const ProjectLost = ({ title, projectRoleId, bids }: Props) => {
-  const isBuyer = projectRoleId === "buyer";
-  const backgroundColor = isBuyer ? "bg-brown" : "bg-green-light";
+  const isBuyer = projectRoleId === 'buyer';
+  const backgroundColor = isBuyer ? 'bg-brown' : 'bg-green-light';
 
   return (
-    <>
-      {bids?.map((bid, i) => (
+    <div>
+      {bids?.map((bid) => (
         <div
           className={classNames(
-            "opacity-80 flex items-center justify-between gap-x-5 max-w-[300px] rounded-lg py-2 px-1",
-            backgroundColor
+            'opacity-80 flex items-center justify-between gap-x-5 max-w-[300px] rounded-lg py-2 px-1',
+            backgroundColor,
           )}
-          key={i}
+          key={bid.v}
         >
           <div>
             <p>{title}</p>
@@ -70,7 +70,7 @@ const ProjectLost = ({ title, projectRoleId, bids }: Props) => {
           </div>
         </div>
       ))}
-    </>
+    </div>
   );
 };
 

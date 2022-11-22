@@ -1,12 +1,12 @@
-import { classNames } from "@/utils/index";
+import { classNames } from '@/utils/index';
 
-import HammerIcon from "@/components/walkthroughs/icons/HammerIcon";
-import BalanceIcon from "@/components/walkthroughs/icons/BalanceIcon";
-import CartPlus from "@/components/walkthroughs/icons/CartPlus";
-import PoundcashTag from "@/components/walkthroughs/icons/PoundcashTag";
+import HammerIcon from '@/components/walkthroughs/icons/HammerIcon';
+import BalanceIcon from '@/components/walkthroughs/icons/BalanceIcon';
+import CartPlus from '@/components/walkthroughs/icons/CartPlus';
+import PoundcashTag from '@/components/walkthroughs/icons/PoundcashTag';
 
 type Props = {
-  marketSurplus: number;
+  marketSurplus: number | undefined;
   totalBids: number;
   totalOffers: number;
   className?: string;
@@ -16,13 +16,13 @@ const MarketOutcome = ({
   marketSurplus,
   totalBids,
   totalOffers,
-  className = "",
+  className = '',
 }: Props) => {
   return (
     <div
       className={classNames(
-        "bg-blue-light px-10 py-5 rounded-lg flex items-center gap-x-12 min-w-[736px]",
-        className
+        'bg-blue-light px-10 py-5 rounded-lg flex items-center gap-x-12 min-w-[736px]',
+        className,
       )}
     >
       <div>
