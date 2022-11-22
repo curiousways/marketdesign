@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 
-import { WalkthroughData } from "@/types/walkthrough";
 
 import NextButton from "./NextButton";
 import PrevButton from "./PrevButton";
