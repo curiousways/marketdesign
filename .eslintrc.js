@@ -105,7 +105,6 @@ module.exports = {
         tsconfigRootDir: __dirname,
         project: './tsconfig.json',
       },
-      plugins: ['jsx-falsy'],
       rules: {
         ...commmonRules,
         'no-shadow': 'off', // Overriden by @typescript-eslint/no-shadow
@@ -129,7 +128,6 @@ module.exports = {
           'error',
           { checksVoidReturn: false },
         ],
-        'jsx-falsy/no-falsy-and': 'error',
         '@typescript-eslint/ban-ts-comment': 'off',
         '@typescript-eslint/no-unnecessary-condition': 'off',
         '@typescript-eslint/indent': 'off',
