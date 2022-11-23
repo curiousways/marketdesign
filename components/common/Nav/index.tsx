@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Link from 'next/link';
 
 import { NavLink } from '../NavLink';
 import Logo from '../Logo';
 
-export const Nav = () => (
+type NavProps = {
+  activeClassName?: string;
+};
+
+export const Nav: FC<NavProps> = ({ activeClassName }: NavProps) => (
   <nav
     className="px-10 pb-8 pt-5 lg:flex justify-between items-end bg-white"
     aria-label="Main Navigation"
@@ -14,16 +18,24 @@ export const Nav = () => (
     </Link>
     <ul className="lg:flex gap-x-10 xl:gap-x-16 text-light-grey">
       <li>
-        <NavLink href="/">Home</NavLink>
+        <NavLink href="/" activeClassName={activeClassName}>
+          Home
+        </NavLink>
       </li>
       <li>
-        <NavLink href="/about-the-model">About the model</NavLink>
+        <NavLink href="/about-the-model" activeClassName={activeClassName}>
+          About the model
+        </NavLink>
       </li>
       <li>
-        <NavLink href="/how-it-works">How it works</NavLink>
+        <NavLink href="/how-it-works" activeClassName={activeClassName}>
+          How it works
+        </NavLink>
       </li>
       <li>
-        <NavLink href="/live-demo">Live demo</NavLink>
+        <NavLink href="/live-demo" activeClassName={activeClassName}>
+          Live demo
+        </NavLink>
       </li>
     </ul>
   </nav>

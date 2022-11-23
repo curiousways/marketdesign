@@ -4,9 +4,17 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { classNames } from '../../../utils';
 
-type NavLinkProps = { href: string; children: ReactNode };
+type NavLinkProps = {
+  href: string;
+  children: ReactNode;
+  activeClassName?: string;
+};
 
-export const NavLink: FC<NavLinkProps> = ({ children, href }: NavLinkProps) => {
+export const NavLink: FC<NavLinkProps> = ({
+  children,
+  href,
+  activeClassName,
+}: NavLinkProps) => {
   const router = useRouter();
   const isCurrent = router.asPath === href;
 
@@ -16,7 +24,7 @@ export const NavLink: FC<NavLinkProps> = ({ children, href }: NavLinkProps) => {
       aria-current={isCurrent ? 'page' : undefined}
       className={classNames(
         'underline-offset-8 text-lg',
-        isCurrent ? 'underline text-green-dark' : 'hover:underline',
+        isCurrent ? activeClassName : 'text-current hover:underline',
       )}
     >
       {children}

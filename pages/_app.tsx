@@ -63,7 +63,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           cardType: 'summary_large_image',
         }}
       />
-      <Nav />
+      <Nav activeClassName="underline text-green-dark" />
       <Component
         {...pageProps}
         // Remount components if the route changes

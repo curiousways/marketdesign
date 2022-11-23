@@ -5,7 +5,7 @@ import { Nav } from './index';
 
 describe('Nav', () => {
   beforeEach(() => {
-    mockRouter.setCurrentUrl('/current-page');
+    mockRouter.setCurrentUrl('/');
   });
 
   it('includes all the expected links', () => {
@@ -27,5 +27,12 @@ describe('Nav', () => {
       'How it works': '/how-it-works',
       'Live demo': '/live-demo',
     });
+  });
+
+  it('sets the active class for the active link', () => {
+    render(<Nav activeClassName="active-class" />);
+
+    expect(screen.getByText('Home')).toHaveClass('active-class');
+    expect(screen.getByText('How it works')).not.toHaveClass('active-class');
   });
 });
