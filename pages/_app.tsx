@@ -6,7 +6,7 @@ import { DefaultSeo } from 'next-seo';
 import * as Fathom from 'fathom-client';
 
 import Footer from '@/components/common/Footer';
-import Nav from '@/components/common/Nav';
+import { Nav } from '@/components/common/Nav';
 
 import '../styles/globals.css'; // Global style sheet for css
 

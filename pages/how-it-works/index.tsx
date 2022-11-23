@@ -37,6 +37,7 @@ const HowItWorks: NextPage = () => (
                 className="items-center w-full md:w-1/2 xl:w-1/3 p-5"
               >
                 <Link
+                  className="max-w-[420px] mx-auto"
                   href={{
                     pathname: '/how-it-works/[scenarioId]',
                     query: {
@@ -44,19 +45,17 @@ const HowItWorks: NextPage = () => (
                     },
                   }}
                 >
-                  <a className="max-w-[420px] mx-auto">
-                    <Splodge
-                      type="heading"
-                      index={walkthroughIndex}
-                      color="green"
-                      height={150}
-                    >
-                      <p className="text-3xl font-bold text-white">
-                        Walkthrough {walkthroughIndex + 1}
-                      </p>
-                      <p className="text-xl text-white">{walkthrough.title}</p>
-                    </Splodge>
-                  </a>
+                  <Splodge
+                    type="heading"
+                    index={walkthroughIndex}
+                    color="green"
+                    height={150}
+                  >
+                    <p className="text-3xl font-bold text-white">
+                      Walkthrough {walkthroughIndex + 1}
+                    </p>
+                    <p className="text-xl text-white">{walkthrough.title}</p>
+                  </Splodge>
                 </Link>
               </li>
             ))}
