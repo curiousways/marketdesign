@@ -9,19 +9,21 @@ type NavProps = {
   className?: string;
   activeClassName?: string;
   inactiveClassName?: string;
+  logoColor?: string;
 };
 
 export const Nav: FC<NavProps> = ({
   className,
   activeClassName,
   inactiveClassName,
+  logoColor,
 }: NavProps) => (
   <nav
     className={classNames('lg:flex justify-between items-end', className)}
     aria-label="Main Navigation"
   >
     <Link href="/" aria-label="Exeter Lindsay">
-      <Logo color="white" />
+      <Logo color={logoColor} />
     </Link>
     <ul className="lg:flex gap-x-10 xl:gap-x-16 text-light-grey">
       <li>

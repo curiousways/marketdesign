@@ -7,6 +7,7 @@ export const Footer: FC = () => (
       className="items-center text-white"
       activeClassName="underline text-white"
       inactiveClassName="text-white"
+      logoColor="white"
     />
     <span>© {new Date().getFullYear()} Exeter Lindsay</span>
   </footer>

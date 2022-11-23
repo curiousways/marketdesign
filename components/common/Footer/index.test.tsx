@@ -23,4 +23,10 @@ describe('Footer', () => {
       'Live demo': '/live-demo',
     });
   });
+
+  it('uses a white logo', () => {
+    render(<Footer />);
+
+    expect(screen.getByTestId('logo')).toHaveStyle({ color: 'white' });
+  });
 });

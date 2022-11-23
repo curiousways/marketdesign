@@ -35,4 +35,10 @@ describe('Nav', () => {
     expect(screen.getByText('Home')).toHaveClass('active-class');
     expect(screen.getByText('How it works')).not.toHaveClass('active-class');
   });
+
+  it('uses a green logo', () => {
+    render(<Nav />);
+
+    expect(screen.getByTestId('logo')).toHaveStyle({ color: '#7DBB67' });
+  });
 });
