@@ -2,38 +2,61 @@ import React, { FC } from 'react';
 import Link from 'next/link';
 
 import { NavLink } from '../NavLink';
-import Logo from '../Logo';
+import { Logo } from '../Logo';
+import { classNames } from '../../../utils';
 
 type NavProps = {
+  className?: string;
   activeClassName?: string;
+  inactiveClassName?: string;
 };
 
-export const Nav: FC<NavProps> = ({ activeClassName }: NavProps) => (
+export const Nav: FC<NavProps> = ({
+  className,
+  activeClassName,
+  inactiveClassName,
+}: NavProps) => (
   <nav
-    className="px-10 pb-8 pt-5 lg:flex justify-between items-end bg-white"
+    className={classNames('lg:flex justify-between items-end', className)}
     aria-label="Main Navigation"
   >
     <Link href="/" aria-label="Exeter Lindsay">
-      <Logo />
+      <Logo color="white" />
     </Link>
     <ul className="lg:flex gap-x-10 xl:gap-x-16 text-light-grey">
       <li>
-        <NavLink href="/" activeClassName={activeClassName}>
+        <NavLink
+          href="/"
+          activeClassName={activeClassName}
+          inactiveClassName={inactiveClassName}
+        >
           Home
         </NavLink>
       </li>
       <li>
-        <NavLink href="/about-the-model" activeClassName={activeClassName}>
+        <NavLink
+          href="/about-the-model"
+          activeClassName={activeClassName}
+          inactiveClassName={inactiveClassName}
+        >
           About the model
         </NavLink>
       </li>
       <li>
-        <NavLink href="/how-it-works" activeClassName={activeClassName}>
+        <NavLink
+          href="/how-it-works"
+          activeClassName={activeClassName}
+          inactiveClassName={inactiveClassName}
+        >
           How it works
         </NavLink>
       </li>
       <li>
-        <NavLink href="/live-demo" activeClassName={activeClassName}>
+        <NavLink
+          href="/live-demo"
+          activeClassName={activeClassName}
+          inactiveClassName={inactiveClassName}
+        >
           Live demo
         </NavLink>
       </li>

@@ -19,7 +19,11 @@ describe('NavLink', () => {
 
   it('marks a link as active', () => {
     render(
-      <NavLink href="/current-page" activeClassName="active-class">
+      <NavLink
+        href="/current-page"
+        activeClassName="active-class"
+        inactiveClassName="inactive-class"
+      >
         Click me
       </NavLink>,
     );
@@ -28,11 +32,16 @@ describe('NavLink', () => {
 
     expect(link).toHaveAttribute('aria-current', 'page');
     expect(link).toHaveClass('active-class');
+    expect(link).not.toHaveClass('inactive-class');
   });
 
-  it('does not mark an inactive link as active', () => {
+  it('marks an inactive link as inactive', () => {
     render(
-      <NavLink href="/some-other-page" activeClassName="active-class">
+      <NavLink
+        href="/some-other-page"
+        activeClassName="active-class"
+        inactiveClassName="inactive-class"
+      >
         Click me
       </NavLink>,
     );
@@ -41,5 +50,6 @@ describe('NavLink', () => {
 
     expect(link.getAttribute('aria-current')).toBeNull();
     expect(link).not.toHaveClass('active-class');
+    expect(link).toHaveClass('inactive-class');
   });
 });
