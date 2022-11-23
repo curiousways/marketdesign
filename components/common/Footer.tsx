@@ -6,7 +6,7 @@ import { NavLink } from './NavLink';
 const Footer = () => {
   return (
     <footer className="p-10 bg-green-dark lg:flex justify-between items-center">
-      <Link href="/" passHref>
+      <Link href="/">
         <Logo />
       </Link>
       <ul className="lg:flex gap-x-10 xl:gap-x-16 text-white">
