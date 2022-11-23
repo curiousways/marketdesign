@@ -10,7 +10,12 @@ type Props = {
   surplusShares: Payments | undefined;
 };
 
-const ParticipantsList = ({ participants, type = 'winners', payments, surplusShares }: Props) => {
+const ParticipantsList = ({
+  participants,
+  type = 'winners',
+  payments,
+  surplusShares,
+}: Props) => {
   return (
     <>
       {type === 'winners' && (

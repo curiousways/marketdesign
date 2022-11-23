@@ -23,23 +23,27 @@ const MainContent = ({ bidders, result, loading }: Props) => {
   const payments = result?.payments;
   const surplusShares = result?.surplus_shares;
 
-  const totalBids = () => {
+  // Calculate total bids for all buyers
+  const getTotalBids = () => {
     let totalBids = 0;
 
     buyers.forEach((buyer) => {
-      buyer.bids.forEach((bid) => (totalBids = totalBids + Math.abs(bid.v)));
+      buyer.bids.forEach((bid) => {
+        totalBids += Math.abs(bid.v);
+      });
     });
 
     return totalBids;
-  }
+  };
 
-  const totalOffers = () => {
+  // Calculate total offers for all sellers
+  const getTotalOffers = () => {
     let totalOffers = 0;
 
     sellers.forEach((seller) => {
-      seller.bids.forEach(
-          (bid) => (totalOffers = totalOffers + Math.abs(bid.v)),
-        );
+      seller.bids.forEach((bid) => {
+        totalOffers += Math.abs(bid.v);
+      });
     });
 
     return totalOffers;
@@ -117,8 +121,8 @@ const MainContent = ({ bidders, result, loading }: Props) => {
         {payments && (
           <MarketOutcome
             marketSurplus={marketSurplus}
-            totalBids={totalBids()}
-            totalOffers={totalOffers()}
+            totalBids={getTotalBids()}
+            totalOffers={getTotalOffers()}
           />
         )}
       </div>

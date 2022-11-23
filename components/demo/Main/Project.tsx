@@ -16,7 +16,14 @@ type Props = {
   surplusShares: Payments | undefined;
 };
 
-const Project = ({ title, projectRoleId, bids, payments, surplusShares, className = '' }: Props) => {
+const Project = ({
+  title,
+  projectRoleId,
+  bids,
+  payments,
+  surplusShares,
+  className = '',
+}: Props) => {
   const highlightMe = true;
   const isBuyer = projectRoleId === 'buyer';
   const shadowColor = isBuyer ? 'neo-shadow-brown' : 'neo-shadow-green';
@@ -123,9 +130,7 @@ const Project = ({ title, projectRoleId, bids, payments, surplusShares, classNam
                 className="bg-white rounded-lg border border-black px-1 w-[95px]"
               >
                 <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
-                  <p className="text-black">
-                    {isBuyer ? '-' : '+'}
-                  </p>
+                  <p className="text-black">{isBuyer ? '-' : '+'}</p>
                 </div>
                 <div className="text-center text-sm relative -mt-2">
                   <p className="text-light-grey">
