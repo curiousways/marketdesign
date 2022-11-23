@@ -2,12 +2,26 @@ import { useEffect } from 'react';
 
 import { useWalkthroughContext } from '@/context/WalkthroughContext';
 import { WalkthroughMarketState } from '@/types/walkthrough';
-import LoadingOverlay from './LoadingOverlay';
+import { LoadingOverlay } from '../../common/LoadingOverlay';
 import MainContentBody from './MainContentBody';
 import Background from './Background';
 import { TopProgressBar } from './TopProgressBar';
 
 const MARKET_SOLVING_TIMEOUT = 4000;
+
+const getOverlayText = (marketState: WalkthroughMarketState) => {
+  if (marketState === WalkthroughMarketState.calculating_winners) {
+    return 'Determining Market Winners';
+  }
+
+  if (marketState === WalkthroughMarketState.distributing_surpluss) {
+    return 'Distributing Market Surplus';
+  }
+
+  if (marketState === WalkthroughMarketState.calculating_final_payments) {
+    return 'Calculating Final Payments';
+  }
+};
 
 const MainContent = () => {
   const {
@@ -77,7 +91,7 @@ const MainContent = () => {
     <div className="border-l border-green-dark pt-8 w-full relative flex justify-center">
       <div className="z-20">
         <TopProgressBar />
-        <LoadingOverlay />
+        <LoadingOverlay text={getOverlayText(marketState)} />
       </div>
       <div className="z-10">
         <MainContentBody />
