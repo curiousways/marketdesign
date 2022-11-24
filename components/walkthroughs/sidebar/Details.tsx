@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
 import { fadeIn } from '@/utils/animations';
@@ -14,8 +14,8 @@ import {
   WalkthroughProject,
 } from '@/types/walkthrough';
 import { RoleId } from '@/types/roles';
-import Input from './Input';
 import { ProductCount } from '../../common/ProductCount';
+import { CostInput } from '../../common/CostInput';
 
 const getProjectValue = (project: WalkthroughProject, roleId: RoleId) => {
   if (project.costPerCredit) {
@@ -34,8 +34,15 @@ const getProjectValue = (project: WalkthroughProject, roleId: RoleId) => {
 };
 
 const Details = () => {
-  const { marketState, scenario, roleId, goToNextStage, setMarketState } =
-    useWalkthroughContext();
+  const {
+    marketState,
+    scenario,
+    roleId,
+    goToNextStage,
+    setMarketState,
+    setProjectCost,
+    getProjectCost
+  } = useWalkthroughContext();
 
   const { isFormEnabled } = scenario.options;
   const isDivisibleInputEnabled =
@@ -97,6 +104,14 @@ const Details = () => {
         <ul>
           {scenario.myProjects.map((project, projectIndex) => {
             const projectValue = getProjectValue(project, roleId);
+            const value = project.costPerCredit
+              ? project.costPerCredit
+              : getProjectCost(project);
+
+            const onSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
+              setProjectCost(project, Number(event.target.value));
+              onInputChange();
+            };
 
             return (
               <li
@@ -134,14 +149,17 @@ const Details = () => {
                   <p className="font-light">£{projectValue.toLocaleString()}</p>
 
                   <div className="flex-1 max-w-[50%]">
-                    <Input
-                      project={project}
+                    <CostInput
+                      validateValue
+                      cost={project.cost}
+                      value={value}
                       name={priceInputNames[projectIndex]}
                       animate={
                         isFormEnabled &&
                         animatedInputName === priceInputNames[projectIndex]
                       }
-                      onChange={onInputChange}
+                      onInputChange={onInputChange}
+                      onSelectChange={onSelectChange}
                     />
                   </div>
                 </div>
