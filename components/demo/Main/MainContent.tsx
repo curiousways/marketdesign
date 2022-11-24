@@ -3,12 +3,12 @@ import { motion } from 'framer-motion';
 import clonedeep from 'lodash.clonedeep';
 
 import { fadeInDown } from '@/utils/animations';
-import { Bid, Bidder, Data, Role, MarketData } from '@/types/demo';
+import { Bid, Bidder, Data, MarketData, Role } from '@/types/demo';
 
+import { Map } from '@/components/map/Map';
 import LoadingOverlay from './LoadingOverlay';
 import ParticipantsList from './ParticipantsList';
 import MarketOutcome from './MarketOutcome';
-import { Map } from "@/components/map/Map"
 
 type Props = {
   bidders: Bidder[];
@@ -30,7 +30,9 @@ const MainContent = ({
   roleId,
   market,
   setRole,
-  setRoleId, updateBidders}: Props) => {
+  setRoleId,
+  updateBidders,
+}: Props) => {
   const [winners, setWinners] = useState<Bidder[] | undefined>([]);
   const [losers, setLosers] = useState<Bidder[] | undefined>([]);
 
@@ -98,13 +100,12 @@ const MainContent = ({
     return bidder;
   };
 
-
   useEffect(() => {
     const filteredBidders = market.states[0].bidders.filter(
       (bidder) => bidder.name !== roleId,
     );
-   updateBidders(filteredBidders);
-  }, [role, roleId])
+    updateBidders(filteredBidders);
+  }, [role, roleId, updateBidders, market.states]);
 
   useEffect(() => {
     const winnersList =
@@ -124,7 +125,7 @@ const MainContent = ({
       {/* Loading Screen */}
       {loading && <LoadingOverlay />}
 
-      {role && (
+      {role !== undefined && (
         <div className="flex justify-center">
           {/* Losers */}
           {payments && (
@@ -172,24 +173,26 @@ const MainContent = ({
       {!role && (
         <div className="cursor-pointer">
           <div className="flex gap-x-3">
-            <p
+            <button
+              type="button"
               className="cursor-pointer text-xl"
-              onClick={() =>{
-                setRole('Seller')
-                setRoleId("seller 1")
+              onClick={() => {
+                setRole('Seller');
+                setRoleId('seller 1');
               }}
             >
               Seller 1
-            </p>
-            <p
+            </button>
+            <button
+              type="button"
               className="cursor-pointer text-xl"
               onClick={() => {
-                setRole('Buyer')
+                setRole('Buyer');
                 setRoleId('buyer 1');
               }}
             >
               Buyer 1
-            </p>
+            </button>
           </div>
           <Map />
         </div>

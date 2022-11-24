@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { Bidder, Role } from '@/types/demo';
 import { fadeIn } from '@/utils/animations';
 
-
 import SellerVector from '@/components/walkthroughs/icons/SellerVector';
 import BuyerVector from '@/components/walkthroughs/icons/BuyerVector';
 import BiodiversityIconGray from '@/components/walkthroughs/icons/BiodiversityIcon';
@@ -15,7 +14,7 @@ type Props = {
   price: string;
   setPrice: Dispatch<SetStateAction<string>>;
   role: Role;
-  player: Bidder | undefined
+  player: Bidder | undefined;
 };
 
 const Details = ({ price, role, player, setPrice, onSubmit }: Props) => {
@@ -50,14 +49,14 @@ const Details = ({ price, role, player, setPrice, onSubmit }: Props) => {
           {/* Biodiversity */}
           <div className="relative">
             <span className="absolute -right-1 top-0 text-[10px] text-black font-bold border border-black rounded-full bg-white w-[14px] h-[14px] flex justify-center items-center">
-              {player && Math.abs(player?.bids[0].q.biodiversity as number)}
+              {player && Math.abs(player?.bids[0].q.biodiversity)}
             </span>
             <BiodiversityIconGray />
           </div>
           {/* Nutrients */}
           <div className="relative">
             <span className="absolute -right-1 top-0 text-[10px] text-black font-bold border border-black rounded-full bg-white w-[14px] h-[14px] flex justify-center items-center">
-              {player && Math.abs(player?.bids[0].q.nutrients as number)}
+              {player && Math.abs(player?.bids[0].q.nutrients)}
             </span>
             <NutrientsIcon />
           </div>
@@ -65,7 +64,7 @@ const Details = ({ price, role, player, setPrice, onSubmit }: Props) => {
 
         {/* Project Cost */}
         <p className="font-light mt-2">
-          £{player && Math.abs(player?.bids[0].v as number)}
+          £{player && Math.abs(player?.bids[0].v)}
         </p>
 
         {/* Form */}

@@ -16,16 +16,21 @@ type Props = {
   roleId: string;
 };
 
-const SideBar = ({ solveMarket, updateBidders, bidders, role, roleId }: Props) => {
+const SideBar = ({
+  solveMarket,
+  updateBidders,
+  bidders,
+  role,
+  roleId,
+}: Props) => {
   const [price, setPrice] = useState('');
   const [showSolveBtn, setShowSolveBtn] = useState(false);
-  const [me, setMe] = useState<Bidder>()
-
+  const [player, setPlayer] = useState<Bidder>();
 
   useEffect(() => {
-    const me = bidders.find(bidder => bidder.name === roleId)
-    setMe(me)
-  }, [role, roleId])
+    const me = bidders.find((bidder) => bidder.name === roleId);
+    setPlayer(me);
+  }, [role, roleId]);
 
   const onSolveMarketBtnClick = () => {
     solveMarket();
@@ -35,14 +40,16 @@ const SideBar = ({ solveMarket, updateBidders, bidders, role, roleId }: Props) =
   };
 
   const onSubmit = () => {
-    const newBid = me as Bidder;
-    if (price !== "") {
-     if (role === "Buyer") {
-      newBid.bids[0].v = Number(price)
-     } else {
-      newBid.bids[0].v = -Number(price);
-     }
+    const newBid = player as Bidder;
+
+    if (price !== '') {
+      if (role === 'Buyer') {
+        newBid.bids[0].v = Number(price);
+      } else {
+        newBid.bids[0].v = -Number(price);
+      }
     }
+
     updateBidders((prev) => [newBid, ...prev]);
     setShowSolveBtn(true);
   };
@@ -51,14 +58,14 @@ const SideBar = ({ solveMarket, updateBidders, bidders, role, roleId }: Props) =
     <div className="max-w-[434px] py-4 px-5 flex flex-col gap-y-8 items-center">
       <AnimatePresence>
         {/* Top */}
-        {role && (
+        {role !== undefined && (
           <Details
             key={1}
             price={price}
             setPrice={setPrice}
             onSubmit={onSubmit}
             role={role}
-            player={me}
+            player={player}
           />
         )}
 

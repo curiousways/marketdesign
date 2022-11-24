@@ -7,24 +7,26 @@ export const getPath = (folder: string) => {
 
 export const getFileContent = (filename: string, folder: string) => {
   const POSTS_PATH = getPath(folder);
+
   return fs.readFileSync(path.join(POSTS_PATH, filename));
 };
 
-export const getAllMarkets = (folder:string) => {
-   var files = fs
-     .readdirSync(folder)
-     .filter((path) => path.includes('.json'))
-     .map((fileName) => {
-       const slug = fileName.replace('.json', ''); // get the slug from the filename
-       return slug;
-     });
+export const getAllMarkets = (folder: string) => {
+  const files = fs
+    .readdirSync(folder)
+    .filter((file) => file.includes('.json'))
+    .map((fileName) => {
+      const slug = fileName.replace('.json', ''); // get the slug from the filename
 
-     return files;
+      return slug;
+    });
+
+  return files;
 };
 
-
 export const getMarket = (filename: string, folder: string) => {
-  let rawdata = getFileContent(`${filename}.json`, folder);
-  let parsedJson = JSON.parse(rawdata.toString());
+  const rawdata = getFileContent(`${filename}.json`, folder);
+  const parsedJson: JSON = JSON.parse(rawdata.toString());
+
   return parsedJson;
 };

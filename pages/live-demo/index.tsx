@@ -22,8 +22,8 @@ const Market: NextPage<{ marketList: string[] }> = ({ marketList }) => {
       <ul className="flex flex-wrap mt-20">
         {marketList.map((market, index) => (
           <li
-          key={market}
-          className="items-center w-full md:w-1/2 xl:w-1/3 p-5"
+            key={market}
+            className="items-center w-full md:w-1/2 xl:w-1/3 p-5"
           >
             <Link href={`live-demo/${market}`}>
               <a className="max-w-[420px] mx-auto">
@@ -44,8 +44,9 @@ const Market: NextPage<{ marketList: string[] }> = ({ marketList }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps = () => {
   const marketList = getAllMarkets('data/demo');
+
   return {
     props: { marketList },
     revalidate: 3600, // revalidate every hour

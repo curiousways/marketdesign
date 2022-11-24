@@ -6,7 +6,7 @@ import axios from 'axios';
 import useSWR from 'swr';
 
 import { getAllMarkets, getMarket } from '@/utils/demo';
-import { MarketData, Bidder, Data, Role } from '@/types/demo';
+import { Bidder, Data, MarketData, Role } from '@/types/demo';
 
 import SideBar from '@/components/demo/sidebar/SideBar';
 import MainContent from '@/components/demo/Main/MainContent';
@@ -21,7 +21,7 @@ const Market: NextPage<{ market: MarketData }> = ({ market }) => {
   const [bidders, setBidders] = useState<Bidder[]>(market.states[0].bidders);
   const [result, setResult] = useState<Data | undefined>();
   const [role, setRole] = useState<Role>();
-  const [roldeId, setRoldeId] = useState("")
+  const [roldeId, setRoldeId] = useState('');
   // Controls result data fetching
   const [shouldFetch, setShouldFetch] = useState(false);
 
@@ -66,25 +66,26 @@ const Market: NextPage<{ market: MarketData }> = ({ market }) => {
       </div>
     </main>
   );
-}
+};
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const content = await getMarket(params?.marketid as string, 'data/demo');
+export const getStaticProps: GetStaticProps = ({ params }) => {
+  const content = getMarket(params?.marketid as string, 'data/demo');
+
   return {
     props: { market: content },
     revalidate: 3600, // revalidate every hour
   };
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = () => {
   const paths = getAllMarkets('data/demo').map((marketid) => ({
     params: { marketid },
   }));
+
   return {
     paths,
     fallback: false,
   };
 };
-
 
 export default Market;
