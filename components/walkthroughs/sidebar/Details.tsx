@@ -15,7 +15,7 @@ import {
 } from '@/types/walkthrough';
 import { RoleId } from '@/types/roles';
 import Input from './Input';
-import ProductCount from './ProductCount';
+import { ProductCount } from '../../common/ProductCount';
 
 const getProjectValue = (project: WalkthroughProject, roleId: RoleId) => {
   if (project.costPerCredit) {
