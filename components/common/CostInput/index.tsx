@@ -4,12 +4,12 @@ import { classNames } from '@/utils/index';
 type CostInputProps = {
   cost: number | number[];
   name: string;
-  animate: boolean;
+  animate?: boolean;
   onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
   onSelectChange: (event: ChangeEvent<HTMLSelectElement>) => void;
   disabled?: boolean;
   value?: number;
-  validateValue?: boolean;
+  validate?: boolean;
 };
 
 export const CostInput: FC<CostInputProps> = ({
@@ -20,7 +20,7 @@ export const CostInput: FC<CostInputProps> = ({
   onSelectChange,
   disabled,
   value,
-  validateValue,
+  validate,
 }: CostInputProps) => {
   const selectRef = useRef<HTMLSelectElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -32,7 +32,7 @@ export const CostInput: FC<CostInputProps> = ({
 
   const validateInput = useCallback(
     (element: HTMLInputElement) => {
-      if (!validateValue) {
+      if (!validate || !value) {
         return;
       }
 
@@ -43,7 +43,7 @@ export const CostInput: FC<CostInputProps> = ({
 
       element.setCustomValidity(msg);
     },
-    [validateValue, value],
+    [validate, value],
   );
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -71,7 +71,7 @@ export const CostInput: FC<CostInputProps> = ({
         <option />
         {cost.map((item) => (
           <option key={item} value={item}>
-            {cost}
+            {item}
           </option>
         ))}
       </select>

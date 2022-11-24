@@ -1,4 +1,10 @@
-import React, { ChangeEvent, FC, FormEventHandler, useRef, useState } from 'react';
+import React, {
+  ChangeEvent,
+  FC,
+  FormEventHandler,
+  useRef,
+  useState,
+} from 'react';
 import { motion } from 'framer-motion';
 
 import { fadeIn } from '@/utils/animations';
@@ -23,7 +29,7 @@ type ProjectDetailsProps = {
   roleId: RoleId;
   getProjectCost: (project: Project) => number;
   setProjectCost: (project: Project, cost: number) => void;
-}
+};
 
 const getProjectValue = (project: Project, roleId: RoleId) => {
   if (project.costPerCredit) {
@@ -52,9 +58,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
   getProjectCost,
   setProjectCost,
 }: ProjectDetailsProps) => {
-  const priceInputNames = projects.map(
-    (_, index) => `project-${index}-price`,
-  );
+  const priceInputNames = projects.map((_, index) => `project-${index}-price`);
 
   const formRef = useRef<HTMLFormElement>(null);
   const submitButtonRef = useRef<HTMLButtonElement>(null);
@@ -83,9 +87,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
       className="border-2 border-black px-5 py-4 rounded-lg w-full"
     >
       <div className="text-black text-l">
-        <p className="font-bold">
-          My Project{projects.length ? 's' : ''}
-        </p>
+        <p className="font-bold">My Project{projects.length ? 's' : ''}</p>
         <p>{roles[roleId].label}</p>
       </div>
 
@@ -139,7 +141,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
 
                   <div className="flex-1 max-w-[50%]">
                     <CostInput
-                      validateValue
+                      validate
                       cost={project.cost}
                       value={value}
                       name={priceInputNames[projectIndex]}

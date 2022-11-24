@@ -1,4 +1,3 @@
-import { Products } from './products';
 import { Project } from './project';
 import { RoleId } from './roles';
 
