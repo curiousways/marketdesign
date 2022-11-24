@@ -1,7 +1,9 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { motion } from 'framer-motion';
 
+import { Bidder, Role } from '@/types/demo';
 import { fadeIn } from '@/utils/animations';
+
 
 import SellerVector from '@/components/walkthroughs/icons/SellerVector';
 import BuyerVector from '@/components/walkthroughs/icons/BuyerVector';
@@ -12,17 +14,17 @@ type Props = {
   onSubmit: () => void;
   price: string;
   setPrice: Dispatch<SetStateAction<string>>;
+  role: Role;
+  player: Bidder | undefined
 };
 
-const Details = ({ price, setPrice, onSubmit }: Props) => {
+const Details = ({ price, role, player, setPrice, onSubmit }: Props) => {
   // Proceed to next stage when submit button is clicked
   const onButtonClick = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit();
     setPrice('');
   };
-
-  const role = 'seller';
 
   return (
     <motion.div
@@ -35,34 +37,36 @@ const Details = ({ price, setPrice, onSubmit }: Props) => {
       className="border-2 border-black px-5 py-4 rounded-lg w-full"
     >
       <div className="text-black text-xl">
-        <p className="font-bold">My Project</p>
-        <p>{role === 'seller' ? 'Landholder' : 'Developer'}</p>
+        <p className="font-bold">{player?.name}</p>
+        <p>{role === 'Seller' ? 'Landholder' : 'Developer'}</p>
       </div>
 
       <div className="mt-3 flex justify-between">
         {/* Vector */}
-        {role === 'seller' ? <SellerVector /> : <BuyerVector />}
+        {role === 'Seller' ? <SellerVector /> : <BuyerVector />}
 
         {/* Credits */}
         <div className="flex gap-x-2 mt-2">
           {/* Biodiversity */}
           <div className="relative">
             <span className="absolute -right-1 top-0 text-[10px] text-black font-bold border border-black rounded-full bg-white w-[14px] h-[14px] flex justify-center items-center">
-              2
+              {player && Math.abs(player?.bids[0].q.biodiversity as number)}
             </span>
             <BiodiversityIconGray />
           </div>
           {/* Nutrients */}
           <div className="relative">
             <span className="absolute -right-1 top-0 text-[10px] text-black font-bold border border-black rounded-full bg-white w-[14px] h-[14px] flex justify-center items-center">
-              2
+              {player && Math.abs(player?.bids[0].q.nutrients as number)}
             </span>
             <NutrientsIcon />
           </div>
         </div>
 
         {/* Project Cost */}
-        <p className="font-light mt-2">£10,000</p>
+        <p className="font-light mt-2">
+          £{player && Math.abs(player?.bids[0].v as number)}
+        </p>
 
         {/* Form */}
         <form

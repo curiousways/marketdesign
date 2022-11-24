@@ -1,21 +1,31 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { fadeIn } from '@/utils/animations';
-import { Bidder } from '@/types/demo';
+import { Bidder, Role } from '@/types/demo';
 
 import Description from './Description';
 import Details from './Details';
 import Navigation from './Navigation';
 
 type Props = {
+  bidders: Bidder[];
   solveMarket: () => void;
   updateBidders: Dispatch<SetStateAction<Bidder[]>>;
+  role: Role;
+  roleId: string;
 };
 
-const SideBar = ({ solveMarket, updateBidders }: Props) => {
+const SideBar = ({ solveMarket, updateBidders, bidders, role, roleId }: Props) => {
   const [price, setPrice] = useState('');
   const [showSolveBtn, setShowSolveBtn] = useState(false);
+  const [me, setMe] = useState<Bidder>()
+
+
+  useEffect(() => {
+    const me = bidders.find(bidder => bidder.name === roleId)
+    setMe(me)
+  }, [role, roleId])
 
   const onSolveMarketBtnClick = () => {
     solveMarket();
@@ -25,19 +35,14 @@ const SideBar = ({ solveMarket, updateBidders }: Props) => {
   };
 
   const onSubmit = () => {
-    const newBid = {
-      name: 'My Project',
-      bids: [
-        {
-          v: -Number(price),
-          q: {
-            biodiversity: 2,
-            nutrients: 2,
-          },
-          divisibility: 0,
-        },
-      ],
-    };
+    const newBid = me as Bidder;
+    if (price !== "") {
+     if (role === "Buyer") {
+      newBid.bids[0].v = Number(price)
+     } else {
+      newBid.bids[0].v = -Number(price);
+     }
+    }
     updateBidders((prev) => [newBid, ...prev]);
     setShowSolveBtn(true);
   };
@@ -46,12 +51,14 @@ const SideBar = ({ solveMarket, updateBidders }: Props) => {
     <div className="max-w-[434px] py-4 px-5 flex flex-col gap-y-8 items-center">
       <AnimatePresence>
         {/* Top */}
-        {true && (
+        {role && (
           <Details
             key={1}
             price={price}
             setPrice={setPrice}
             onSubmit={onSubmit}
+            role={role}
+            player={me}
           />
         )}
 

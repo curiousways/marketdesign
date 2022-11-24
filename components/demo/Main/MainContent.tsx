@@ -1,19 +1,40 @@
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import clonedeep from 'lodash.clonedeep';
 
 import { fadeInDown } from '@/utils/animations';
-import { Bid, Bidder, Data } from '@/types/demo';
+import { Bid, Bidder, Data, Role, MarketData } from '@/types/demo';
 
 import LoadingOverlay from './LoadingOverlay';
 import ParticipantsList from './ParticipantsList';
 import MarketOutcome from './MarketOutcome';
+import { Map } from "@/components/map/Map"
 
-type Props = { bidders: Bidder[]; result: Data | undefined; loading: boolean };
+type Props = {
+  bidders: Bidder[];
+  result: Data | undefined;
+  loading: boolean;
+  role: Role;
+  roleId: string;
+  market: MarketData;
+  setRole: Dispatch<SetStateAction<Role>>;
+  setRoleId: Dispatch<SetStateAction<string>>;
+  updateBidders: Dispatch<SetStateAction<Bidder[]>>;
+};
 
-const MainContent = ({ bidders, result, loading }: Props) => {
+const MainContent = ({
+  bidders,
+  result,
+  loading,
+  role,
+  roleId,
+  market,
+  setRole,
+  setRoleId, updateBidders}: Props) => {
   const [winners, setWinners] = useState<Bidder[] | undefined>([]);
   const [losers, setLosers] = useState<Bidder[] | undefined>([]);
+
+  //  const filteredBidders = bidders.filter((bidder) => bidder.name !== roleId);
 
   // Returns array of sellers and buyers
   const sellers = bidders.filter((bidder) => bidder.bids[0]?.v < 0);
@@ -77,6 +98,14 @@ const MainContent = ({ bidders, result, loading }: Props) => {
     return bidder;
   };
 
+
+  useEffect(() => {
+    const filteredBidders = market.states[0].bidders.filter(
+      (bidder) => bidder.name !== roleId,
+    );
+   updateBidders(filteredBidders);
+  }, [role, roleId])
+
   useEffect(() => {
     const winnersList =
       payments &&
@@ -91,43 +120,80 @@ const MainContent = ({ bidders, result, loading }: Props) => {
   }, [bidders, payments]);
 
   return (
-    <div className="border-l border-green-dark pt-4 pb-24 w-full relative flex justify-center">
+    <div className="border-l border-green-dark pt-4 pb-24 w-full relative">
       {/* Loading Screen */}
       {loading && <LoadingOverlay />}
 
-      {/* Losers */}
-      {payments && (
-        <motion.div variants={fadeInDown} initial="hidden" animate="visible">
-          <ParticipantsList
-            payments={payments}
-            participants={losers}
-            surplusShares={surplusShares}
-            type="losers"
-          />
-        </motion.div>
+      {role && (
+        <div className="flex justify-center">
+          {/* Losers */}
+          {payments && (
+            <motion.div
+              variants={fadeInDown}
+              initial="hidden"
+              animate="visible"
+            >
+              <ParticipantsList
+                payments={payments}
+                participants={losers}
+                surplusShares={surplusShares}
+                type="losers"
+              />
+            </motion.div>
+          )}
+
+          {/* Original list and winners */}
+          <div className="space-y-5">
+            {/* Participants list */}
+            <motion.div
+              variants={fadeInDown}
+              initial="hidden"
+              animate="visible"
+            >
+              <ParticipantsList
+                participants={!payments ? bidders : winners}
+                payments={payments}
+                surplusShares={surplusShares}
+              />
+            </motion.div>
+
+            {/* Market Outcome */}
+            {payments && (
+              <MarketOutcome
+                marketSurplus={marketSurplus}
+                totalBids={getTotalBids()}
+                totalOffers={getTotalOffers()}
+              />
+            )}
+          </div>
+        </div>
       )}
 
-      <div className="space-y-5">
-        {/* Participants list */}
-        <motion.div variants={fadeInDown} initial="hidden" animate="visible">
-          <ParticipantsList
-            participants={!payments ? [...sellers, ...buyers] : winners}
-            payments={payments}
-            surplusShares={surplusShares}
-          />
-        </motion.div>
-
-        {/* Market Outcome */}
-        {payments && (
-          <MarketOutcome
-            marketSurplus={marketSurplus}
-            totalBids={getTotalBids()}
-            totalOffers={getTotalOffers()}
-          />
-        )}
-      </div>
-
-      {false && <p className="text-4xl">MAP</p>}
+      {!role && (
+        <div className="cursor-pointer">
+          <div className="flex gap-x-3">
+            <p
+              className="cursor-pointer text-xl"
+              onClick={() =>{
+                setRole('Seller')
+                setRoleId("seller 1")
+              }}
+            >
+              Seller 1
+            </p>
+            <p
+              className="cursor-pointer text-xl"
+              onClick={() => {
+                setRole('Buyer')
+                setRoleId('buyer 1');
+              }}
+            >
+              Buyer 1
+            </p>
+          </div>
+          <Map />
+        </div>
+      )}
     </div>
   );
 };
