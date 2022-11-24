@@ -2,8 +2,7 @@ import { motion } from 'framer-motion';
 
 import { parseScenarioId } from '@/utils/walkthroughs';
 import { useWalkthroughContext } from '@/context/WalkthroughContext';
-import NextButton from './NextButton';
-import PrevButton from './PrevButton';
+import { ArrowButton } from '../../common/ArrowButton';
 
 const Navigation = () => {
   const {
@@ -22,9 +21,10 @@ const Navigation = () => {
       <p className="text-green-dark mb-1">WALKTHROUGH {walkthroughIndex + 1}</p>
       <div className="flex gap-x-4 items-center justify-between">
         {/* Previous button */}
-        <PrevButton
+        <ArrowButton
+          rotate
           onClick={goToPreviousStage}
-          hideButton={!hasPreviousStage}
+          hide={!hasPreviousStage}
         />
 
         <div className="bg-green-dark text-white rounded-lg px-3 py-1 flex-1">
@@ -32,7 +32,11 @@ const Navigation = () => {
         </div>
 
         {/* Next button */}
-        <NextButton onClick={goToNextStage} hideButton={!hasNextStage} />
+        <ArrowButton
+          className="animate-scale-large"
+          onClick={goToNextStage}
+          hide={!hasNextStage}
+        />
       </div>
     </motion.div>
   );
