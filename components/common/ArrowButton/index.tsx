@@ -6,6 +6,7 @@ type ArrowButtonProps = {
   hide?: boolean;
   className?: string;
   rotate?: boolean;
+  ariaLabel?: string;
 };
 
 export const ArrowButton: FC<ArrowButtonProps> = ({
@@ -13,9 +14,11 @@ export const ArrowButton: FC<ArrowButtonProps> = ({
   hide,
   className,
   rotate,
+  ariaLabel,
 }: ArrowButtonProps) => (
   <button
     type="button"
+    aria-label={ariaLabel}
     className={classNames(
       'w-10 h-10 bg-green-dark rounded-full flex justify-center items-center hover:bg-green-extra-dark cursor-pointer',
       hide ? 'invisible' : '',
