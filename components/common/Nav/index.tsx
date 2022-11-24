@@ -1,29 +1,66 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Link from 'next/link';
 
 import { NavLink } from '../NavLink';
-import Logo from '../Logo';
+import { Logo } from '../Logo';
+import { classNames } from '../../../utils';
 
-export const Nav = () => (
+type NavProps = {
+  className?: string;
+  activeClassName?: string;
+  inactiveClassName?: string;
+  logoColor?: string;
+};
+
+export const Nav: FC<NavProps> = ({
+  className,
+  activeClassName,
+  inactiveClassName,
+  logoColor,
+}: NavProps) => (
   <nav
-    className="px-10 pb-8 pt-5 lg:flex justify-between items-end bg-white"
+    className={classNames('lg:flex justify-between items-end', className)}
     aria-label="Main Navigation"
   >
     <Link href="/" aria-label="Exeter Lindsay">
-      <Logo />
+      <Logo color={logoColor} />
     </Link>
     <ul className="lg:flex gap-x-10 xl:gap-x-16 text-light-grey">
       <li>
-        <NavLink href="/">Home</NavLink>
+        <NavLink
+          href="/"
+          activeClassName={activeClassName}
+          inactiveClassName={inactiveClassName}
+        >
+          Home
+        </NavLink>
       </li>
       <li>
-        <NavLink href="/about-the-model">About the model</NavLink>
+        <NavLink
+          href="/about-the-model"
+          activeClassName={activeClassName}
+          inactiveClassName={inactiveClassName}
+        >
+          About the model
+        </NavLink>
       </li>
       <li>
-        <NavLink href="/how-it-works">How it works</NavLink>
+        <NavLink
+          href="/how-it-works"
+          activeClassName={activeClassName}
+          inactiveClassName={inactiveClassName}
+        >
+          How it works
+        </NavLink>
       </li>
       <li>
-        <NavLink href="/live-demo">Live demo</NavLink>
+        <NavLink
+          href="/live-demo"
+          activeClassName={activeClassName}
+          inactiveClassName={inactiveClassName}
+        >
+          Live demo
+        </NavLink>
       </li>
     </ul>
   </nav>

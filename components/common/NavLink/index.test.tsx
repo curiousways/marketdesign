@@ -17,19 +17,39 @@ describe('NavLink', () => {
     expect(link).toHaveAttribute('href', '/current-page');
   });
 
-  it('marks an active link as aria-current', () => {
-    render(<NavLink href="/current-page">Click me</NavLink>);
+  it('marks a link as active', () => {
+    render(
+      <NavLink
+        href="/current-page"
+        activeClassName="active-class"
+        inactiveClassName="inactive-class"
+      >
+        Click me
+      </NavLink>,
+    );
 
     const link = screen.getByText('Click me');
 
     expect(link).toHaveAttribute('aria-current', 'page');
+    expect(link).toHaveClass('active-class');
+    expect(link).not.toHaveClass('inactive-class');
   });
 
-  it('does not mark an inactive link as aria-current', () => {
-    render(<NavLink href="/some-other-page">Click me</NavLink>);
+  it('marks an inactive link as inactive', () => {
+    render(
+      <NavLink
+        href="/some-other-page"
+        activeClassName="active-class"
+        inactiveClassName="inactive-class"
+      >
+        Click me
+      </NavLink>,
+    );
 
     const link = screen.getByText('Click me');
 
     expect(link.getAttribute('aria-current')).toBeNull();
+    expect(link).not.toHaveClass('active-class');
+    expect(link).toHaveClass('inactive-class');
   });
 });

@@ -1,15 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import mockRouter from 'next-router-mock';
-import { Nav } from './index';
+import { Footer } from './index';
 
-describe('Nav', () => {
-  beforeEach(() => {
-    mockRouter.setCurrentUrl('/');
-  });
-
+describe('Footer', () => {
   it('includes all the expected links', () => {
-    render(<Nav />);
+    render(<Footer />);
 
     const links = screen.getAllByRole('link').reduce(
       (acc, link) => ({
@@ -29,16 +24,9 @@ describe('Nav', () => {
     });
   });
 
-  it('sets the active class for the active link', () => {
-    render(<Nav activeClassName="active-class" />);
+  it('uses a white logo', () => {
+    render(<Footer />);
 
-    expect(screen.getByText('Home')).toHaveClass('active-class');
-    expect(screen.getByText('How it works')).not.toHaveClass('active-class');
-  });
-
-  it('uses a green logo', () => {
-    render(<Nav />);
-
-    expect(screen.getByTestId('logo')).toHaveStyle({ color: '#7DBB67' });
+    expect(screen.getByTestId('logo')).toHaveStyle({ color: 'white' });
   });
 });
