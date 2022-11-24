@@ -1,50 +1,41 @@
-import React, {
-  ChangeEvent,
-  FunctionComponent,
-  useCallback,
-  useEffect,
-  useRef,
-} from 'react';
-import {
-  WalkthroughMarketState,
-  WalkthroughProject,
-} from '@/types/walkthrough';
-import { useWalkthroughContext } from '@/context/WalkthroughContext';
+import React, { ChangeEvent, FC, useCallback, useEffect, useRef } from 'react';
 import { classNames } from '@/utils/index';
 
-type Props = {
-  project: WalkthroughProject;
+type CostInputProps = {
+  cost: number | number[];
   name: string;
   animate: boolean;
-  onChange: (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onSelectChange: (event: ChangeEvent<HTMLSelectElement>) => void;
+  disabled?: boolean;
+  value?: number;
+  validateValue?: boolean;
 };
 
-const Input: FunctionComponent<Props> = ({
-  project,
+export const CostInput: FC<CostInputProps> = ({
+  cost,
   name,
   animate,
-  onChange,
-}: Props) => {
-  const { marketState, setProjectCost, getProjectCost } =
-    useWalkthroughContext();
+  onInputChange,
+  onSelectChange,
+  disabled,
+  value,
+  validateValue,
+}: CostInputProps) => {
   const selectRef = useRef<HTMLSelectElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const value = project.costPerCredit
-    ? project.costPerCredit
-    : getProjectCost(project);
 
   const inputClassNames = classNames(
     'w-full text-sm inline-block rounded-lg py-2 px-3 bg-extra-light-grey',
     animate ? 'animate-scale' : '',
   );
 
-  const onSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setProjectCost(project, Number(event.target.value));
-    onChange(event);
-  };
-
   const validateInput = useCallback(
     (element: HTMLInputElement) => {
+      if (!validateValue) {
+        return;
+      }
+
       const msg =
         Number(element.value) === value
           ? ''
@@ -52,12 +43,12 @@ const Input: FunctionComponent<Props> = ({
 
       element.setCustomValidity(msg);
     },
-    [value],
+    [validateValue, value],
   );
 
-  const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     validateInput(event.target);
-    onChange(event);
+    onInputChange(event);
   };
 
   useEffect(() => {
@@ -66,7 +57,7 @@ const Input: FunctionComponent<Props> = ({
     }
   }, [validateInput]);
 
-  if (Array.isArray(project.cost)) {
+  if (Array.isArray(cost)) {
     return (
       <select
         required
@@ -74,12 +65,12 @@ const Input: FunctionComponent<Props> = ({
         className={inputClassNames}
         name={name}
         onChange={onSelectChange}
-        disabled={marketState >= WalkthroughMarketState.solvable}
+        disabled={disabled}
         value={value}
       >
         <option />
-        {project.cost.map((cost) => (
-          <option key={cost} value={cost}>
+        {cost.map((item) => (
+          <option key={item} value={item}>
             {cost}
           </option>
         ))}
@@ -90,8 +81,8 @@ const Input: FunctionComponent<Props> = ({
   return (
     <input
       ref={inputRef}
-      onChange={onInputChange}
-      disabled={marketState >= WalkthroughMarketState.solvable}
+      onChange={handleInputChange}
+      disabled={disabled}
       type="text"
       placeholder="Enter offer..."
       className={inputClassNames}
@@ -99,5 +90,3 @@ const Input: FunctionComponent<Props> = ({
     />
   );
 };
-
-export default Input;
