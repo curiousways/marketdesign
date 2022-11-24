@@ -83,8 +83,8 @@ const MainContentBody = () => {
   if (stage === scenario.options.stages && !getNextScenarioId(scenarioId)) {
     return (
       <div className="flex items-center h-full">
-        <Link href={`/how-it-works#${roleId}`}>
-          <a className="text-xl font-bold">Return to Walkthrough index</a>
+        <Link href={`/how-it-works#${roleId}`} className="text-xl font-bold">
+          Return to Walkthrough index
         </Link>
       </div>
     );

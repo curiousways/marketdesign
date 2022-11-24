@@ -59,6 +59,10 @@ const commmonRules = {
   'react/jsx-filename-extension': ['error', { extensions: ['.jsx', '.tsx'] }],
   'import/no-default-export': 'off',
   'import/prefer-default-export': 'off',
+  'import/no-extraneous-dependencies': [
+    'error',
+    { devDependencies: ['**/*.test.*', 'jest.*'] },
+  ],
   'react/no-unescaped-entities': 'off',
   // Disabled rules (painful / not relevant)
   'react/require-default-props': 'off', // does not play well with typescript
@@ -105,7 +109,6 @@ module.exports = {
         tsconfigRootDir: __dirname,
         project: './tsconfig.json',
       },
-      plugins: ['jsx-falsy'],
       rules: {
         ...commmonRules,
         'no-shadow': 'off', // Overriden by @typescript-eslint/no-shadow
@@ -129,7 +132,6 @@ module.exports = {
           'error',
           { checksVoidReturn: false },
         ],
-        'jsx-falsy/no-falsy-and': 'error',
         '@typescript-eslint/ban-ts-comment': 'off',
         '@typescript-eslint/no-unnecessary-condition': 'off',
         '@typescript-eslint/indent': 'off',
@@ -151,7 +153,7 @@ module.exports = {
         'plugin:jest/style',
         'plugin:testing-library/react',
       ],
-      plugins: ['jest', 'jest-formatting', 'detox', 'testing-library'],
+      plugins: ['jest', 'jest-formatting', 'testing-library'],
       rules: {
         ...commmonRules,
         'no-console': 'off',

@@ -5,8 +5,8 @@ import { useRouter } from 'next/router';
 import { DefaultSeo } from 'next-seo';
 import * as Fathom from 'fathom-client';
 
-import Footer from '@/components/common/Footer';
-import Nav from '@/components/common/Nav';
+import { Footer } from '@/components/common/Footer';
+import { Nav } from '@/components/common/Nav';
 
 import '../styles/globals.css'; // Global style sheet for css
 
@@ -63,7 +63,10 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           cardType: 'summary_large_image',
         }}
       />
-      <Nav />
+      <Nav
+        className="px-10 pb-8 pt-5"
+        activeClassName="underline text-green-dark"
+      />
       <Component
         {...pageProps}
         // Remount components if the route changes
