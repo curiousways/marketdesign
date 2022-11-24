@@ -11,7 +11,7 @@ describe('Pagination', () => {
   });
 
   it('hides the next and previous buttons by default', () => {
-    render(<Pagination />);
+    render(<Pagination title="My title" />);
 
     const prevButton = screen.getByLabelText('Previous');
     const nextButton = screen.getByLabelText('Next');
@@ -23,7 +23,13 @@ describe('Pagination', () => {
   it('shows the previous button and calls the callback on click', () => {
     const onPreviousClick = jest.fn();
 
-    render(<Pagination hasPreviousPage onPreviousClick={onPreviousClick} />);
+    render(
+      <Pagination
+        title="My title"
+        hasPreviousPage
+        onPreviousClick={onPreviousClick}
+      />,
+    );
 
     const prevButton = screen.getByLabelText('Previous');
 
@@ -36,7 +42,9 @@ describe('Pagination', () => {
   it('shows the next button and calls the callback on click', () => {
     const onNextClick = jest.fn();
 
-    render(<Pagination hasNextPage onNextClick={onNextClick} />);
+    render(
+      <Pagination title="My title" hasNextPage onNextClick={onNextClick} />,
+    );
 
     const prevButton = screen.getByLabelText('Next');
 

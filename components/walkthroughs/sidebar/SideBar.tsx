@@ -4,13 +4,14 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { fadeIn } from '@/utils/animations';
 import { useWalkthroughContext } from '@/context/WalkthroughContext';
 import { WalkthroughMarketState } from '@/types/walkthrough';
-import Description from './Description';
 import Details from './Details';
 import { Pagination } from '../../common/Pagination';
 import { parseScenarioId } from '../../../utils/walkthroughs';
+import { DescriptionBox } from '../../common/DescriptionBox';
 
 const SideBar = () => {
   const {
+    stage,
     scenario,
     scenarioId,
     marketState,
@@ -58,8 +59,8 @@ const SideBar = () => {
 
           {/* Navigation with next and previous buttons */}
           <Pagination
-            title={`WALKTHROUGH ${walkthroughIndex + 1}`}
-            subtitle={walkthrough.title}
+            title={walkthrough.title}
+            subtitle={`WALKTHROUGH ${walkthroughIndex + 1}`}
             hasNextPage={hasNextStage}
             hasPreviousPage={hasPreviousStage}
             onNextClick={goToNextStage}
@@ -67,7 +68,7 @@ const SideBar = () => {
           />
 
           {/* Walkthrough Description text */}
-          <Description />
+          <DescriptionBox>{scenario.sidebarContent?.[stage]}</DescriptionBox>
         </div>
       </AnimatePresence>
     </div>

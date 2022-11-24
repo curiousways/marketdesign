@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowButton } from '../ArrowButton';
 
 type PaginationProps = {
-  title?: string;
+  title: string;
   subtitle?: string;
   hasNextPage?: boolean;
   hasPreviousPage?: boolean;
@@ -22,7 +22,7 @@ export const Pagination: FC<PaginationProps> = ({
   onPreviousClick = noop,
 }: PaginationProps) => (
   <motion.div layout className="text-center text-l w-full mt-2">
-    {!!title && <p className="text-green-dark mb-1">{title}</p>}
+    {!!subtitle && <p className="text-green-dark mb-1">{subtitle}</p>}
     <div className="flex gap-x-4 items-center justify-between">
       {/* Previous button */}
       <ArrowButton
@@ -32,9 +32,9 @@ export const Pagination: FC<PaginationProps> = ({
         ariaLabel="Previous"
       />
 
-      {!!subtitle && (
+      {!!title && (
         <div className="bg-green-dark text-white rounded-lg px-3 py-1 flex-1">
-          <p>{subtitle}</p>
+          <p>{title}</p>
         </div>
       )}
 
