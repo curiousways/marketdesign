@@ -6,13 +6,24 @@ import { useWalkthroughContext } from '@/context/WalkthroughContext';
 import { WalkthroughMarketState } from '@/types/walkthrough';
 import Description from './Description';
 import Details from './Details';
-import Navigation from './Navigation';
+import { Pagination } from '../../common/Pagination';
+import { parseScenarioId } from '../../../utils/walkthroughs';
 
 const SideBar = () => {
-  const { scenario, marketState, goToNextMarketState } =
-    useWalkthroughContext();
+  const {
+    scenario,
+    scenarioId,
+    marketState,
+    goToNextMarketState,
+    walkthrough,
+    hasPreviousStage,
+    hasNextStage,
+    goToPreviousStage,
+    goToNextStage,
+  } = useWalkthroughContext();
 
   const showSolveMarketBtn = marketState === WalkthroughMarketState.solvable;
+  const { walkthroughIndex } = parseScenarioId(scenarioId);
 
   const onSolveMarketClick = (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,7 +57,14 @@ const SideBar = () => {
           )}
 
           {/* Navigation with next and previous buttons */}
-          <Navigation />
+          <Pagination
+            title={`WALKTHROUGH ${walkthroughIndex + 1}`}
+            subtitle={walkthrough.title}
+            hasNextPage={hasNextStage}
+            hasPreviousPage={hasPreviousStage}
+            onNextClick={goToNextStage}
+            onPreviousClick={goToPreviousStage}
+          />
 
           {/* Walkthrough Description text */}
           <Description />
