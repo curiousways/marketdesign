@@ -14,7 +14,6 @@ import { RoleId } from '@/types/roles';
 import {
   Walkthrough,
   WalkthroughMarketState,
-  WalkthroughProject,
   WalkthroughScenario,
 } from '@/types/walkthrough';
 import {
@@ -22,9 +21,10 @@ import {
   isProjectEqual,
   parseScenarioId,
 } from '@/utils/walkthroughs';
+import { Project } from '../types/project';
 
 type DynamicProjectCosts = {
-  project: WalkthroughProject;
+  project: Project;
   cost: number;
 }[];
 
@@ -43,8 +43,8 @@ type WalkthroughContextType = {
   marketState: WalkthroughMarketState;
   goToNextMarketState: () => void;
   setMarketState: Dispatch<SetStateAction<WalkthroughMarketState>>;
-  getProjectCost: (project: WalkthroughProject) => number;
-  setProjectCost: (project: WalkthroughProject, cost: number) => void;
+  getProjectCost: (project: Project) => number;
+  setProjectCost: (project: Project, cost: number) => void;
 };
 
 const WalkthroughContext = createContext<WalkthroughContextType | null>(null);
@@ -117,14 +117,14 @@ export const WalkthroughProvider: FunctionComponent<
   }, []);
 
   const setProjectCost = useCallback(
-    (project: WalkthroughProject, cost: number) => {
+    (project: Project, cost: number) => {
       setDynamicProjectCosts([{ project, cost }, ...dynamicProjectCosts]);
     },
     [dynamicProjectCosts],
   );
 
   const getProjectCost = useCallback(
-    (project: WalkthroughProject): number => {
+    (project: Project): number => {
       const { cost: dynamicProjectCost } =
         dynamicProjectCosts.find((item) =>
           isProjectEqual(item.project, project),
