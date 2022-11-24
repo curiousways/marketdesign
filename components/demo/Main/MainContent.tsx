@@ -5,9 +5,9 @@ import clonedeep from 'lodash.clonedeep';
 import { fadeInDown } from '@/utils/animations';
 import { Bid, Bidder, Data } from '@/types/demo';
 
-import LoadingOverlay from './LoadingOverlay';
 import ParticipantsList from './ParticipantsList';
 import MarketOutcome from './MarketOutcome';
+import { LoadingOverlay } from '../../common/LoadingOverlay';
 
 type Props = { bidders: Bidder[]; result: Data | undefined; loading: boolean };
 
@@ -93,7 +93,7 @@ const MainContent = ({ bidders, result, loading }: Props) => {
   return (
     <div className="border-l border-green-dark pt-4 pb-24 w-full relative flex justify-center">
       {/* Loading Screen */}
-      {loading && <LoadingOverlay />}
+      {loading && <LoadingOverlay text="Determining Market Winners" />}
 
       {/* Losers */}
       {payments && (
