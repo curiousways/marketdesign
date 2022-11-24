@@ -1,95 +1,95 @@
 {
-    "categories": [
-        "Multiple bids"
-    ],
-    "title": "Market-WlkThruS5.1",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc dapibus tempor massa, vel sagittis eros lobortis eu. Suspendisse condimentum enim id justo consectetur vestibulum. Maecenas eu lacus accumsan, tincidunt nulla vitae, dapibus sem. Cras in tincidunt nunc, in viverra eros. Donec ullamcorper magna turpis, in feugiat dolor eleifend in. Duis pulvinar sem quis urna fermentum tincidunt. Quisque facilisis faucibus nibh, vitae semper purus volutpat ac. ",
-    "playable_traders": [
+  "categories": [
+    "Multiple bids"
+  ],
+  "title": "Market-WlkThruS5.1",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc dapibus tempor massa, vel sagittis eros lobortis eu. Suspendisse condimentum enim id justo consectetur vestibulum. Maecenas eu lacus accumsan, tincidunt nulla vitae, dapibus sem. Cras in tincidunt nunc, in viverra eros. Donec ullamcorper magna turpis, in feugiat dolor eleifend in. Duis pulvinar sem quis urna fermentum tincidunt. Quisque facilisis faucibus nibh, vitae semper purus volutpat ac. ",
+  "playable_traders": [
+    {
+      "name": "seller 1",
+      "role": "seller",
+      "locations": [
+        "s1",
+        "s2"
+      ],
+      "enable_divisibility_element": false
+    },
+    {
+      "name": "buyer 1",
+      "role": "buyer",
+      "locations": [
+        "b1"
+      ],
+      "enable_divisibility_element": false
+    }
+  ],
+  "states": [
+    {
+      "free_disposal": true,
+      "bidders": [
         {
-            "name": "seller 1",
-            "role": "seller",
-            "locations": [
-                "s1",
-                "s2"
-            ],
-            "enable_divisibility_element": false
+          "name": "seller 1",
+          "bids": [
+            {
+              "v": -14000,
+              "q": {
+                "biodiversity": 4,
+                "nutrients": 1
+              },
+              "label": "field 1#s1",
+              "divisibility": 0
+            },
+            {
+              "v": -7000,
+              "q": {
+                "biodiversity": 1,
+                "nutrients": 2
+              },
+              "label": "field 2#s2",
+              "divisibility": 0
+            }
+          ]
         },
         {
-            "name": "buyer 1",
-            "role": "buyer",
-            "locations": [
-                "b1"
-            ],
-            "enable_divisibility_element": false
-        }
-    ],
-    "states": [
+          "name": "seller 2",
+          "bids": [
+            {
+              "v": -9000,
+              "q": {
+                "biodiversity": 1,
+                "nutrients": 2
+              },
+              "divisibility": 0
+            }
+          ]
+        },
         {
-            "free_disposal": true,
-            "bidders": [
-                {
-                    "name": "seller 1",
-                    "bids": [
-                        {
-                            "v": -14000,
-                            "q": {
-                                "biodiversity": 4,
-                                "nutrients": 1
-                            },
-                            "label": "field 1#s1",
-                            "divisibility": 0
-                        },
-                        {
-                            "v": -7000,
-                            "q": {
-                                "biodiversity": 1,
-                                "nutrients": 2
-                            },
-                            "label": "field 2#s2",
-                            "divisibility": 0
-                        }
-                    ]
-                },
-                {
-                    "name": "seller 2",
-                    "bids": [
-                        {
-                            "v": -9000,
-                            "q": {
-                                "biodiversity": 1,
-                                "nutrients": 2
-                            },
-                            "divisibility": 0
-                        }
-                    ]
-                },
-                {
-                    "name": "buyer 1",
-                    "bids": [
-                        {
-                            "v": 27000,
-                            "q": {
-                                "biodiversity": -2,
-                                "nutrients": -4
-                            },
-                            "divisibility": 0
-                        }
-                    ]
-                },
-                {
-                    "name": "buyer 2",
-                    "bids": [
-                        {
-                            "v": 12000,
-                            "q": {
-                                "biodiversity": -3,
-                                "nutrients": 0
-                            },
-                            "divisibility": 0
-                        }
-                    ]
-                }
-            ]
+          "name": "buyer 1",
+          "bids": [
+            {
+              "v": 27000,
+              "q": {
+                "biodiversity": -2,
+                "nutrients": -4
+              },
+              "divisibility": 0
+            }
+          ]
+        },
+        {
+          "name": "buyer 2",
+          "bids": [
+            {
+              "v": 12000,
+              "q": {
+                "biodiversity": -3,
+                "nutrients": 0
+              },
+              "divisibility": 0
+            }
+          ]
         }
-    ]
+      ]
+    }
+  ]
 }
