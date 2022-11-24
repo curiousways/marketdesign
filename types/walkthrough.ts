@@ -1,3 +1,5 @@
+import { Products } from './products';
+import { Project } from './project';
 import { RoleId } from './roles';
 
 export interface WalkthroughHighlightedMapRegions {
@@ -17,21 +19,10 @@ export interface WalkthroughOptions {
   showParticipants: boolean;
 }
 
-export interface Products {
-  biodiversity?: number;
-  nutrients?: number;
-}
-
-export interface WalkthroughProject {
-  title: string;
-  subtitle?: string;
-  cost: number | number[];
+export type WalkthroughProject = Project & {
   accepted: (value: number) => boolean | number;
-  isInactive?: boolean;
   discountOrBonus: number;
-  products: Products;
-  costPerCredit?: number;
-}
+};
 
 export interface WalkthroughScenario {
   myProjects: WalkthroughProject[];
