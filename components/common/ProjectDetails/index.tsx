@@ -141,7 +141,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
 
                   <div className="flex-1 max-w-[50%]">
                     <CostInput
-                      validateValue
+                      validate
                       cost={project.cost}
                       value={value}
                       name={priceInputNames[projectIndex]}
