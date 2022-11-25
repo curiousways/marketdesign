@@ -64,7 +64,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         }}
       />
       <Nav
-        className="px-10 pb-8 pt-5"
+        className="px-10 lg:pb-8 pt-5"
         activeClassName="underline text-green-dark"
       />
       <Component
