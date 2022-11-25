@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
 import 'intersection-observer';
-import React from 'react';
+import * as React from 'react';
 
 global.React = React;
