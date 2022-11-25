@@ -8,7 +8,8 @@ export const getSellerScenario1_2: GetWalkthroughScenario = (
   myProjects: [
     {
       title: 'My Project',
-      cost: 80000,
+      cost: 60000,
+      bid: 80000,
       accepted: () => true,
       discountOrBonus: 17000,
       products: { biodiversity: 2, nutrients: 3 },
@@ -19,14 +20,14 @@ export const getSellerScenario1_2: GetWalkthroughScenario = (
       title: 'Buyer 1',
       cost: 200000,
       accepted: () => true,
-      discountOrBonus: 67000,
+      discountOrBonus: 58000,
       products: { biodiversity: 1, nutrients: 4 },
     },
     {
       title: 'Buyer 2',
       cost: 100000,
       accepted: () => true,
-      discountOrBonus: 68000,
+      discountOrBonus: 63000,
       products: { biodiversity: 0, nutrients: 2 },
     },
     {
@@ -49,7 +50,7 @@ export const getSellerScenario1_2: GetWalkthroughScenario = (
       title: 'Seller 2',
       cost: 50000,
       accepted: () => true,
-      discountOrBonus: 30000,
+      discountOrBonus: 32000,
       products: { biodiversity: 0, nutrients: 3 },
     },
   ],
