@@ -10,5 +10,10 @@ export const sidebarContent2 = (
       consisting of 3 biodiversity credits and 3 water quality credits. The
       value of securing that bundle to you is £280,000.
     </p>
+    <p>
+      Our first market setting is one in which the market is relatively balanced
+      containing 3 sellers and 2 other buyers. With you, that makes 3 buyers in
+      total.
+    </p>
   </>
 );
