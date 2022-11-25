@@ -7,7 +7,6 @@ import {
   GetWalkthroughScenario,
   Walkthrough,
   WalkthroughProject,
-  WalkthroughScenario,
   WalkthroughUserProject,
 } from '../types/walkthrough';
 import { Project } from '../types/project';
