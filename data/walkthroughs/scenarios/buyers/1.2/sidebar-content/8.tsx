@@ -7,7 +7,7 @@ export const sidebarContent8 = (
     </p>
     <p>
       As a consequence, the share of the market surplus you receive as a
-      discount is also smaller; falling from £10,250 to £2500.
+      discount is also smaller; falling from £10,250 to £2,500.
     </p>
     <p>
       All the same, bidding lower worked to your overall advantage. Even with
