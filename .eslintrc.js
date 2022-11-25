@@ -81,6 +81,7 @@ module.exports = {
     'plugin:jsx-a11y/recommended',
     'plugin:prettier/recommended',
     'plugin:@next/next/recommended',
+    'plugin:react/jsx-runtime',
     'next/core-web-vitals',
   ],
   plugins: ['jsx-a11y', 'import'],
