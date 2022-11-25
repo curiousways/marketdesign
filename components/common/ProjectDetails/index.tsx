@@ -60,6 +60,18 @@ const getProjectBid = (project: Project): number | undefined => {
   return Array.isArray(project.cost) ? undefined : project.cost;
 };
 
+const getCostInputPlaceholder = (roleId: RoleId) => {
+  if (roleId === 'buyer') {
+    return 'Enter bid...';
+  }
+
+  if (roleId === 'seller') {
+    return 'Enter offer...';
+  }
+
+  return;
+};
+
 export const ProjectDetails: FC<ProjectDetailsProps> = ({
   projects,
   isFormEnabled,
@@ -167,6 +179,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                       }
                       onInputChange={onCostInputChange}
                       onSelectChange={onCostInputChange}
+                      placeholder={getCostInputPlaceholder(roleId)}
                     />
                   </div>
                 </div>

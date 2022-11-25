@@ -69,4 +69,35 @@ describe('ProjectDetails', () => {
 
     expect(textInput).not.toBeDisabled();
   });
+
+  it.each`
+    roleId       | placeholder
+    ${'buyer'}   | ${'Enter bid...'}
+    ${'seller'}  | ${'Enter offer...'}
+    ${'generic'} | ${''}
+  `(
+    'sets the expected placeholder text for a $roleId',
+    ({ roleId, placeholder }) => {
+      render(
+        <ProjectDetails
+          isFormEnabled
+          projects={[
+            {
+              title: 'My Project',
+              cost: 42000,
+              products: { biodiversity: 1, nutrients: 2 },
+            },
+          ]}
+          onFormSubmit={jest.fn()}
+          roleId={roleId}
+          getProjectCost={jest.fn()}
+          setProjectCost={jest.fn()}
+        />,
+      );
+
+      const textInput = screen.getByRole('textbox');
+
+      expect(textInput).toHaveProperty('placeholder', placeholder);
+    },
+  );
 });
