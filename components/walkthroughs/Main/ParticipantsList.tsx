@@ -32,8 +32,8 @@ const sortMyProjects = (
   [...sellerProjects, ...buyerProjects].sort((a, b) => {
     const isLoserA = showingWinners && includesProject(a, losingProjects);
     const isLoserB = showingWinners && includesProject(b, losingProjects);
-    const isMyProjectA = isMyProject(scenario, a);
-    const isMyProjectB = isMyProject(scenario, b);
+    const isMyProjectA = isMyProject(scenario.myProjects, a);
+    const isMyProjectB = isMyProject(scenario.myProjects, b);
 
     return (
       Number(isLoserB ?? 0) - Number(isLoserA ?? 0) ||

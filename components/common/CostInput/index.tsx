@@ -3,24 +3,24 @@ import { classNames } from '@/utils/index';
 
 type CostInputProps = {
   cost: number | number[];
+  bid?: number;
   name: string;
   animate?: boolean;
   onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
   onSelectChange: (event: ChangeEvent<HTMLSelectElement>) => void;
   disabled?: boolean;
   value?: number;
-  validate?: boolean;
 };
 
 export const CostInput: FC<CostInputProps> = ({
   cost,
+  bid,
   name,
   animate,
   onInputChange,
   onSelectChange,
   disabled,
   value,
-  validate,
 }: CostInputProps) => {
   const selectRef = useRef<HTMLSelectElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -32,18 +32,18 @@ export const CostInput: FC<CostInputProps> = ({
 
   const validateInput = useCallback(
     (element: HTMLInputElement) => {
-      if (!validate || !value) {
+      if (!bid) {
         return;
       }
 
       const msg =
-        Number(element.value) === value
+        Number(element.value) === bid
           ? ''
-          : `Please enter a value of ${value} to proceed`;
+          : `Please enter a value of ${bid} to proceed`;
 
       element.setCustomValidity(msg);
     },
-    [validate, value],
+    [bid],
   );
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
