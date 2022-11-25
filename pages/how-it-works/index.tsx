@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import Link from 'next/link';
-import Image from 'next/legacy/image';
+import Image from 'next/image';
 import Header from '@/components/common/Header';
 import { Splodge } from '@/components/common/Splodge';
 import { createScenarioId } from '@/utils/walkthroughs';
@@ -63,7 +63,14 @@ const HowItWorks: NextPage = () => (
         </section>
       ))}
       <div className="absolute bottom-0 right-0 -z-10 flex">
-        <Image src={FieldsImg} alt="" />
+        <Image
+          src={FieldsImg}
+          alt=""
+          style={{
+            maxWidth: '100%',
+            height: 'auto',
+          }}
+        />
       </div>
     </div>
   </>

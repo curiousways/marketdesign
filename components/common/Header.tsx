@@ -1,4 +1,4 @@
-import Image, { ImageProps } from 'next/legacy/image';
+import Image, { ImageProps } from 'next/image';
 import { FunctionComponent } from 'react';
 import HeaderOverlayImage from '../../public/assets/images/header-overlay.png';
 
@@ -19,15 +19,18 @@ const Header: FunctionComponent<HeaderProps> = ({
     <header>
       <div className="relative">
         <div className="absolute z-20 w-full h-full">
-          <Image src={HeaderOverlayImage} layout="fill" alt="" sizes="100vw" />
+          <Image src={HeaderOverlayImage} alt="" fill sizes="100vw" />
         </div>
         <div>
           <Image
             priority
             src={mainImageSrc}
             alt=""
-            layout="responsive"
             sizes="100vw"
+            style={{
+              width: '100%',
+              height: 'auto',
+            }}
           />
         </div>
         <div className="absolute hidden xl:block w-[500px] -bottom-10 3xl:bottom-4 right-20 z-30">
@@ -36,6 +39,10 @@ const Header: FunctionComponent<HeaderProps> = ({
             src={secondaryImageSrc}
             alt=""
             sizes="(min-width: 500px) 500px, 100vw"
+            style={{
+              maxWidth: '100%',
+              height: 'auto',
+            }}
           />
         </div>
         <div className="absolute top-0 left-0 w-full h-full flex items-center pl-10 lg:pl-20 2xl:pl-40 z-30">

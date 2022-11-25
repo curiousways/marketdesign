@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 
-import Image from 'next/legacy/image';
+import Image from 'next/image';
 
 import Button from '@/components/common/Button';
 import Header from '@/components/common/Header';
@@ -56,7 +56,14 @@ const Home: NextPage = () => {
         {/* Understanding the model  */}
         <section className="lg:flex lg:gap-x-10 xl:gap-x-20 xl:space-y-16 mt-20">
           <div className="max-w-[833px] relative z-10">
-            <Image src={UnderstandingTheModel} alt="" />
+            <Image
+              src={UnderstandingTheModel}
+              alt=""
+              style={{
+                maxWidth: '100%',
+                height: 'auto',
+              }}
+            />
           </div>
           <div className="max-w-[461px]">
             <h2 className="heading-2 max-w-[343px]">Understanding the model</h2>
@@ -126,7 +133,14 @@ const Home: NextPage = () => {
             </div>
 
             <div className="absolute -top-36 right-0">
-              <Image src={Frame} alt="" />
+              <Image
+                src={Frame}
+                alt=""
+                style={{
+                  maxWidth: '100%',
+                  height: 'auto',
+                }}
+              />
             </div>
           </div>
         </section>
@@ -134,7 +148,14 @@ const Home: NextPage = () => {
         {/* Give it a try  */}
         <section className="pr-20 2xl:pr-40 flex gap-x-4">
           <div>
-            <Image src={Frame2} alt="" />
+            <Image
+              src={Frame2}
+              alt=""
+              style={{
+                maxWidth: '100%',
+                height: 'auto',
+              }}
+            />
           </div>
           <div>
             <div className="max-w-[430px] space-y-10 relative -mt-10 mb-28">
