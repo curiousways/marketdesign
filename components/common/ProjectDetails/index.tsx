@@ -12,9 +12,9 @@ import SellerVector from '@/components/walkthroughs/icons/SellerVector';
 import BuyerVector from '@/components/walkthroughs/icons/BuyerVector';
 import BiodiversityIconGray from '@/components/walkthroughs/icons/BiodiversityIcon';
 import NutrientsIcon from '@/components/walkthroughs/icons/NutrientsIcon';
-import { roles } from 'data/roles';
 import { classNames } from '@/utils/index';
 import { RoleId } from '@/types/roles';
+import { roles } from '../../../data/roles';
 import { ProductCount } from '../ProductCount';
 import { CostInput } from '../CostInput';
 import { Project } from '../../../types/project';
@@ -143,6 +143,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                     <CostInput
                       validate
                       cost={project.cost}
+                      disabled={!isFormEnabled}
                       value={value}
                       name={priceInputNames[projectIndex]}
                       animate={
