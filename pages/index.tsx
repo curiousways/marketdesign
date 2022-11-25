@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 
 import Button from '@/components/common/Button';
 import Header from '@/components/common/Header';

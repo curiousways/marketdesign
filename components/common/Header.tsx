@@ -1,4 +1,4 @@
-import Image, { ImageProps } from 'next/image';
+import Image, { ImageProps } from 'next/legacy/image';
 import { FunctionComponent } from 'react';
 import HeaderOverlayImage from '../../public/assets/images/header-overlay.png';
 
