@@ -250,7 +250,6 @@ export const getGenericScenario0_0: GetWalkthroughScenario = (
     stages: 22,
     isFormEnabled: false,
     showDetailsWidget: false,
-    showCosts: true,
     showMaps: true,
     highlightedMapRegions: getHighlightedMapRegions(stage),
     showParticipants: stage === 4 || (stage > 5 && stage < 12) || stage >= 13,

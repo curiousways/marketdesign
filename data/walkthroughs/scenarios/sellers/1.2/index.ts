@@ -61,7 +61,6 @@ export const getSellerScenario1_2: GetWalkthroughScenario = (
     stages: 8,
     isFormEnabled: stage === 1,
     showDetailsWidget: stage >= 1,
-    showCosts: stage >= 1,
     showMaps: false,
     showParticipants: stage >= 1,
   },

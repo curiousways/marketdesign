@@ -16,7 +16,6 @@ type Props = {
   sellerProjects: WalkthroughProject[];
   losingBuyerProjects: WalkthroughProject[];
   losingSellerProjects: WalkthroughProject[];
-  data: WalkthroughScenario;
 };
 
 /**
@@ -72,7 +71,6 @@ const ParticipantsList = ({
   sellerProjects,
   losingBuyerProjects,
   losingSellerProjects,
-  data,
 }: Props) => {
   const { scenario, marketState } = useWalkthroughContext();
   const showingWinners = marketState >= WalkthroughMarketState.showing_winners;
@@ -111,7 +109,6 @@ const ParticipantsList = ({
                 includesProject(project, buyerProjects) ? 'buyer' : 'seller'
               }
               project={project}
-              options={data.options}
               isLoser={includesProject(project, allLosingProjects)}
               loserIndex={findProjectIndex(project, sortedLosingProjects)}
               isMyFirstProject={isMyFirstProject}
