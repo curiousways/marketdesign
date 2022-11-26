@@ -1,4 +1,4 @@
-import { FC, MouseEvent, MouseEventHandler, useEffect } from 'react';
+import { FC, MouseEvent, MouseEventHandler, useEffect, useState } from 'react';
 import { sentenceCase } from 'change-case';
 import { useWalkthroughContext } from '../../../context/WalkthroughContext';
 import { WalkthroughMarketState } from '../../../types/walkthrough';
@@ -11,6 +11,7 @@ import { RoleId } from '../../../types/roles';
 import { Market } from '../Market';
 
 const MARKET_SOLVING_TIMEOUT = 4000;
+const MARKET_SOLVING_STAGES = 5;
 
 const getWalkthroughTitle = (roleId: RoleId, walkthroughIndex: number) => {
   if (roleId === 'generic') {
@@ -35,6 +36,7 @@ const getOverlayText = (marketState: WalkthroughMarketState) => {
 };
 
 export const Walkthrough: FC = () => {
+  const [loadingBarProgress, setLoadingBarProgress] = useState<number>(0);
   const {
     scenarioId,
     walkthrough,
@@ -129,6 +131,22 @@ export const Walkthrough: FC = () => {
     setMarketState(WalkthroughMarketState.solvable);
   };
 
+  useEffect(() => {
+    if (typeof scenario.fixedMarketState !== 'undefined') {
+      return;
+    }
+
+    if (isMarketSolving) {
+      setLoadingBarProgress((100 / MARKET_SOLVING_STAGES) * (marketState - 1));
+
+      return;
+    }
+
+    if (marketState === WalkthroughMarketState.solved) {
+      setLoadingBarProgress(100);
+    }
+  }, [scenario.fixedMarketState, isMarketSolving, marketState]);
+
   return (
     <main>
       <div className="flex items-stretch font-poppins relative border-t border-green-dark min-h-screen">
@@ -175,6 +193,11 @@ export const Walkthrough: FC = () => {
           showMap={scenario.options.showMaps}
           highlightedMapRegions={scenario.options.highlightedMapRegions}
           loadingOverlayText={getOverlayText(marketState)}
+          loadingBar={{
+            progress: loadingBarProgress,
+            loaderSpeed: MARKET_SOLVING_TIMEOUT + 1000,
+            waitingTime: MARKET_SOLVING_TIMEOUT,
+          }}
         />
       </div>
     </main>

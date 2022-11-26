@@ -26,6 +26,11 @@ type MarketProps = {
     text: string;
   };
   loadingOverlayText?: string;
+  loadingBar?: {
+    progress: number;
+    loaderSpeed?: number;
+    waitingTime?: number;
+  };
 };
 
 export const Market: FC<MarketProps> = ({
@@ -43,10 +48,11 @@ export const Market: FC<MarketProps> = ({
   showMap,
   highlightedMapRegions,
   loadingOverlayText,
+  loadingBar,
 }: MarketProps) => (
   <div className="border-l border-green-dark pt-8 w-full relative flex justify-center">
     <div className="z-20">
-      <TopProgressBar />
+      {loadingBar && <TopProgressBar {...loadingBar} />}
       <LoadingOverlay text={loadingOverlayText} />
     </div>
     <div className="z-10">
