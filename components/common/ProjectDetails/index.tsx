@@ -1,11 +1,4 @@
-import React, {
-  ChangeEvent,
-  FC,
-  FormEvent,
-  FormEventHandler,
-  useRef,
-  useState,
-} from 'react';
+import React, { ChangeEvent, FC, FormEvent, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
 import { fadeIn } from '@/utils/animations';
