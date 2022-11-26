@@ -26,8 +26,6 @@ type SidebarProps = {
   onFormSubmit: () => void;
   roleId: RoleId;
   projects: Project[];
-  getProjectCost: (project: Project) => number;
-  setProjectCost: (project: Project, cost: number) => void;
 };
 
 export const SideBar: FC<SidebarProps> = ({
@@ -48,8 +46,6 @@ export const SideBar: FC<SidebarProps> = ({
   onFormSubmit,
   roleId,
   projects,
-  getProjectCost,
-  setProjectCost,
 }: SidebarProps) => (
   <div className="w-1/3 max-w-[434px] py-4 px-5">
     <AnimatePresence>
@@ -66,8 +62,6 @@ export const SideBar: FC<SidebarProps> = ({
             onFormSubmit={onFormSubmit}
             roleId={roleId}
             projects={projects}
-            getProjectCost={getProjectCost}
-            setProjectCost={setProjectCost}
           />
         )}
 

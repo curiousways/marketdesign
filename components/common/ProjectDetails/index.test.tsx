@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ProjectDetails } from './index';
 import { Project } from '../../../types/project';
+import { ProjectsContext } from '../../../context/ProjectsContext';
 
 const createProject = (overrides?: Partial<Project>) => ({
   title: 'My Project',
@@ -12,6 +13,18 @@ const createProject = (overrides?: Partial<Project>) => ({
   ...overrides,
 });
 
+type WrapperProps = { children: ReactNode };
+
+const setProjectCost = jest.fn();
+
+const wrapper = ({ children }: WrapperProps) => (
+  <ProjectsContext.Provider
+    value={{ setProjectCost, getProjectCost: jest.fn() }}
+  >
+    {children}
+  </ProjectsContext.Provider>
+);
+
 describe('ProjectDetails', () => {
   it('disables the cost input when the form is not enabled', async () => {
     render(
@@ -19,9 +32,8 @@ describe('ProjectDetails', () => {
         projects={[createProject()]}
         onFormSubmit={jest.fn()}
         roleId="buyer"
-        getProjectCost={jest.fn()}
-        setProjectCost={jest.fn()}
       />,
+      { wrapper },
     );
 
     const textInput = screen.getByRole('textbox');
@@ -35,9 +47,8 @@ describe('ProjectDetails', () => {
         projects={[createProject({ cost: [42000, 43000] })]}
         onFormSubmit={jest.fn()}
         roleId="buyer"
-        getProjectCost={jest.fn()}
-        setProjectCost={jest.fn()}
       />,
+      { wrapper },
     );
 
     const selectInput = screen.getByRole('combobox');
@@ -46,7 +57,6 @@ describe('ProjectDetails', () => {
   });
 
   it('enables the cost input when the form is enabled and calls the callback on change', async () => {
-    const setProjectCost = jest.fn();
     const project = createProject();
 
     render(
@@ -55,9 +65,8 @@ describe('ProjectDetails', () => {
         projects={[createProject()]}
         onFormSubmit={jest.fn()}
         roleId="buyer"
-        getProjectCost={jest.fn()}
-        setProjectCost={setProjectCost}
       />,
+      { wrapper },
     );
 
     const textInput = screen.getByRole('textbox');
@@ -71,7 +80,6 @@ describe('ProjectDetails', () => {
   });
 
   it('enables a cost select input when the form is enabled and calls the callback on change', async () => {
-    const setProjectCost = jest.fn();
     const project = createProject({ cost: [42000, 43000] });
 
     render(
@@ -80,9 +88,8 @@ describe('ProjectDetails', () => {
         projects={[project]}
         onFormSubmit={jest.fn()}
         roleId="buyer"
-        getProjectCost={jest.fn()}
-        setProjectCost={setProjectCost}
       />,
+      { wrapper },
     );
 
     const selectInput = screen.getByRole('combobox');
@@ -109,9 +116,8 @@ describe('ProjectDetails', () => {
           projects={[createProject()]}
           onFormSubmit={jest.fn()}
           roleId={roleId}
-          getProjectCost={jest.fn()}
-          setProjectCost={jest.fn()}
         />,
+        { wrapper },
       );
 
       const textInput = screen.getByRole('textbox');
@@ -130,9 +136,8 @@ describe('ProjectDetails', () => {
         ]}
         onFormSubmit={jest.fn()}
         roleId="buyer"
-        getProjectCost={jest.fn()}
-        setProjectCost={jest.fn()}
       />,
+      { wrapper },
     );
 
     const listItems = screen.getAllByRole('listitem');
@@ -152,9 +157,8 @@ describe('ProjectDetails', () => {
         projects={[createProject()]}
         onFormSubmit={jest.fn()}
         roleId="buyer"
-        getProjectCost={jest.fn()}
-        setProjectCost={jest.fn()}
       />,
+      { wrapper },
     );
 
     const listItem = screen.getByRole('listitem');
@@ -169,9 +173,8 @@ describe('ProjectDetails', () => {
         projects={[createProject({ isInactive: true })]}
         onFormSubmit={jest.fn()}
         roleId="buyer"
-        getProjectCost={jest.fn()}
-        setProjectCost={jest.fn()}
       />,
+      { wrapper },
     );
 
     const listItem = screen.getByRole('listitem');
@@ -187,9 +190,8 @@ describe('ProjectDetails', () => {
         projects={[createProject()]}
         onFormSubmit={onFormSubmit}
         roleId="buyer"
-        getProjectCost={jest.fn()}
-        setProjectCost={jest.fn()}
       />,
+      { wrapper },
     );
 
     fireEvent.click(screen.getByText('Submit'));
@@ -197,7 +199,7 @@ describe('ProjectDetails', () => {
     expect(onFormSubmit).not.toHaveBeenCalled();
   });
 
-  it('submits the form if enabled', () => {
+  it.only('submits the form if enabled', () => {
     const onFormSubmit = jest.fn();
 
     render(
@@ -206,9 +208,8 @@ describe('ProjectDetails', () => {
         projects={[createProject()]}
         onFormSubmit={onFormSubmit}
         roleId="buyer"
-        getProjectCost={jest.fn()}
-        setProjectCost={jest.fn()}
       />,
+      { wrapper },
     );
 
     fireEvent.click(screen.getByText('Submit'));

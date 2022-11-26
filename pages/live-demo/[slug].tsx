@@ -4,6 +4,7 @@ import { ParsedUrlQuery } from 'querystring';
 import { DemoData } from '../../types/demo';
 import { getDemoFiles } from '../../utils/demo';
 import { SideBar } from '../../components/common/Sidebar';
+import { ProjectsProvider } from '../../context/ProjectsContext';
 
 interface LiveDemoScenarioParams extends ParsedUrlQuery {
   slug: string;
@@ -14,22 +15,22 @@ interface LiveDemoScenarioProps {
 }
 
 const LiveDemoScenario: NextPage<LiveDemoScenarioProps> = ({ data }) => (
-  <main>
-    <div className="flex items-stretch font-poppins relative border-t border-green-dark min-h-screen">
-      <SideBar
-        showDetailsWidget
-        title={data.title}
-        sidebarContent={data.description}
-        // TODO: Fill in these properties!
-        projects={[]}
-        onSolveMarketClick={() => {}}
-        getProjectCost={() => 1}
-        setProjectCost={() => {}}
-        onFormSubmit={() => {}}
-        roleId="buyer"
-      />
-    </div>
-  </main>
+  <ProjectsProvider>
+    <main>
+      <div className="flex items-stretch font-poppins relative border-t border-green-dark min-h-screen">
+        <SideBar
+          showDetailsWidget
+          title={data.title}
+          sidebarContent={data.description}
+          // TODO: Fill in these properties!
+          projects={[]}
+          onSolveMarketClick={() => {}}
+          onFormSubmit={() => {}}
+          roleId="buyer"
+        />
+      </div>
+    </main>
+  </ProjectsProvider>
 );
 
 export const getStaticPaths: GetStaticPaths<

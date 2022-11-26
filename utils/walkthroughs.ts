@@ -115,9 +115,6 @@ export const getNextScenarioId = (scenarioId: string): string | undefined => {
   return createScenarioId(roleId, walkthroughIndex, nextScenarioIndex);
 };
 
-export const isMyProject = (projects: Project[], project: Project) =>
-  projects.includes(project);
-
 export const isProjectEqual = (projectA: Project, projectB: Project) => {
   const ignoredProperties = ['accepted'];
 

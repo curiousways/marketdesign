@@ -16,17 +16,7 @@ import {
   WalkthroughMarketState,
   WalkthroughScenario,
 } from '@/types/walkthrough';
-import {
-  getNextScenarioId,
-  isProjectEqual,
-  parseScenarioId,
-} from '@/utils/walkthroughs';
-import { Project } from '../types/project';
-
-type DynamicProjectCosts = {
-  project: Project;
-  cost: number;
-}[];
+import { getNextScenarioId, parseScenarioId } from '@/utils/walkthroughs';
 
 type WalkthroughContextType = {
   scenarioId: string;
@@ -43,8 +33,6 @@ type WalkthroughContextType = {
   marketState: WalkthroughMarketState;
   goToNextMarketState: () => void;
   setMarketState: Dispatch<SetStateAction<WalkthroughMarketState>>;
-  getProjectCost: (project: Project) => number;
-  setProjectCost: (project: Project, cost: number) => void;
 };
 
 const WalkthroughContext = createContext<WalkthroughContextType | null>(null);
@@ -59,8 +47,6 @@ export const WalkthroughProvider: FunctionComponent<
 > = ({ scenarioId, children }) => {
   const { roleId, getScenario, walkthrough } = parseScenarioId(scenarioId);
   const [stage, setStage] = useState(1);
-  const [dynamicProjectCosts, setDynamicProjectCosts] =
-    useState<DynamicProjectCosts>([]);
 
   const scenario = getScenario(stage);
   const router = useRouter();
@@ -116,33 +102,6 @@ export const WalkthroughProvider: FunctionComponent<
     setMarketState((prev) => prev + 1);
   }, []);
 
-  const setProjectCost = useCallback(
-    (project: Project, cost: number) => {
-      setDynamicProjectCosts([{ project, cost }, ...dynamicProjectCosts]);
-    },
-    [dynamicProjectCosts],
-  );
-
-  const getProjectCost = useCallback(
-    (project: Project): number => {
-      const { cost: dynamicProjectCost } =
-        dynamicProjectCosts.find((item) =>
-          isProjectEqual(item.project, project),
-        ) ?? {};
-
-      if (dynamicProjectCost) {
-        return dynamicProjectCost;
-      }
-
-      if (Array.isArray(project.cost)) {
-        return 0;
-      }
-
-      return project.cost;
-    },
-    [dynamicProjectCosts],
-  );
-
   const value = useMemo(
     (): WalkthroughContextType => ({
       scenarioId,
@@ -159,8 +118,6 @@ export const WalkthroughProvider: FunctionComponent<
       isMarketSolving,
       marketState,
       goToNextMarketState,
-      getProjectCost,
-      setProjectCost,
     }),
     [
       scenarioId,
@@ -175,8 +132,6 @@ export const WalkthroughProvider: FunctionComponent<
       isMarketSolving,
       marketState,
       goToNextMarketState,
-      getProjectCost,
-      setProjectCost,
     ],
   );
 

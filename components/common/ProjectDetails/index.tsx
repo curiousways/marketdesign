@@ -12,6 +12,7 @@ import { roles } from '../../../data/roles';
 import { ProductCount } from '../ProductCount';
 import { CostInput } from '../CostInput';
 import { Project } from '../../../types/project';
+import { useProjectsContext } from '../../../context/ProjectsContext';
 
 type ProjectDetailsProps = {
   projects: Project[];
@@ -21,8 +22,6 @@ type ProjectDetailsProps = {
   isMarketSolvable?: boolean;
   onFormSubmit: () => void;
   roleId: RoleId;
-  getProjectCost: (project: Project) => number;
-  setProjectCost: (project: Project, cost: number) => void;
 };
 
 const getProjectValue = (project: Project, roleId: RoleId) => {
@@ -69,9 +68,8 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
   isMarketSolvable,
   onFormSubmit,
   roleId,
-  getProjectCost,
-  setProjectCost,
 }: ProjectDetailsProps) => {
+  const { getProjectCost, setProjectCost } = useProjectsContext();
   const priceInputNames = projects.map((_, index) => `project-${index}-price`);
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -92,6 +90,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
   };
 
   const onSubmit = (event: FormEvent) => {
+    console.log('fire');
     event.preventDefault();
     onFormSubmit();
   };

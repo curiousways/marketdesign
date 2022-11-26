@@ -10,9 +10,11 @@ import { Map } from '@/components/map/Map';
 import { MarketParticipantList } from '../../common/MarketParticipantList';
 import { MarketOutcome } from '../../common/MarketOutcome';
 import { Project } from '../../../types/project';
+import { useProjectsContext } from '../../../context/ProjectsContext';
 
 const MainContentBody = () => {
-  const { stage, scenario, scenarioId, roleId, marketState, getProjectCost } =
+  const { getProjectCost } = useProjectsContext();
+  const { stage, scenario, scenarioId, roleId, marketState } =
     useWalkthroughContext();
 
   const activeUserProjects = scenario.myProjects.filter(
@@ -89,6 +91,7 @@ const MainContentBody = () => {
           animate="visible"
         >
           <MarketParticipantList
+            myProjects={scenario.myProjects}
             sellerProjects={getActiveProjects(
               scenario.sellerProjects,
               'seller',
@@ -103,6 +106,11 @@ const MainContentBody = () => {
               'buyer',
             )}
             isMarketSolvable={marketState > WalkthroughMarketState.solvable}
+            showWinners={marketState >= WalkthroughMarketState.showing_winners}
+            showSurpluses={
+              marketState >= WalkthroughMarketState.showing_surpluses
+            }
+            isMarketSolved={marketState === WalkthroughMarketState.solved}
           />
         </motion.div>
 
@@ -115,7 +123,6 @@ const MainContentBody = () => {
           >
             <MarketOutcome
               isMarketSolved={marketState === WalkthroughMarketState.solved}
-              getProjectCost={getProjectCost}
               sellerProjects={getWinningProjects(
                 scenario.sellerProjects,
                 'seller',

@@ -19,8 +19,6 @@ export const Walkthrough: FC = () => {
     goToPreviousStage,
     marketState,
     goToNextMarketState,
-    getProjectCost,
-    setProjectCost,
   } = useWalkthroughContext();
 
   const onSolveMarketClick: MouseEventHandler = (
@@ -68,8 +66,6 @@ export const Walkthrough: FC = () => {
           onFormSubmit={onFormSubmit}
           roleId={roleId}
           projects={scenario.myProjects}
-          getProjectCost={getProjectCost}
-          setProjectCost={setProjectCost}
         />
         <MainContent />
       </div>

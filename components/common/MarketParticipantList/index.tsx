@@ -1,22 +1,18 @@
 import { FC } from 'react';
-import {
-  WalkthroughMarketState,
-  WalkthroughScenario,
-} from '@/types/walkthrough';
-import { useWalkthroughContext } from '@/context/WalkthroughContext';
-import {
-  findProjectIndex,
-  includesProject,
-  isMyProject,
-} from '@/utils/walkthroughs';
+import { findProjectIndex, includesProject } from '@/utils/walkthroughs';
 import { MarketParticipant } from '../MarketParticipant';
 import { Project } from '../../../types/project';
+import { useProjectsContext } from '../../../context/ProjectsContext';
 
 type MarketParticipantListProps = {
+  myProjects: Project[];
   buyerProjects: Project[];
   sellerProjects: Project[];
   losingBuyerProjects: Project[];
   losingSellerProjects: Project[];
+  showWinners: boolean;
+  showSurpluses: boolean;
+  isMarketSolved: boolean;
   isMarketSolvable: boolean;
 };
 
@@ -24,7 +20,7 @@ type MarketParticipantListProps = {
  * Sort to bring "my projects" to the top of the list.
  */
 const sortMyProjects = (
-  scenario: WalkthroughScenario,
+  myProjects: Project[],
   buyerProjects: Project[],
   sellerProjects: Project[],
   losingProjects: Project[],
@@ -33,8 +29,8 @@ const sortMyProjects = (
   [...sellerProjects, ...buyerProjects].sort((a, b) => {
     const isLoserA = showingWinners && includesProject(a, losingProjects);
     const isLoserB = showingWinners && includesProject(b, losingProjects);
-    const isMyProjectA = isMyProject(scenario.myProjects, a);
-    const isMyProjectB = isMyProject(scenario.myProjects, b);
+    const isMyProjectA = myProjects.includes(a);
+    const isMyProjectB = myProjects.includes(b);
 
     return (
       Number(isLoserB ?? 0) - Number(isLoserA ?? 0) ||
@@ -42,17 +38,17 @@ const sortMyProjects = (
     );
   });
 
-const getMyActiveProjects = (
-  projects: Project[],
-  scenario: WalkthroughScenario,
-) => scenario.myProjects.filter((project) => projects.includes(project));
+const getMyActiveProjects = (projects: Project[], myProjects: Project[]) =>
+  myProjects.filter((project) => projects.includes(project));
 
 const getIsMyFirstProject = (
   projects: Project[],
   project: Project,
-  scenario: WalkthroughScenario,
+  myProjects: Project[],
 ) => {
-  const projectIndex = getMyActiveProjects(projects, scenario).indexOf(project);
+  const projectIndex = getMyActiveProjects(projects, myProjects).indexOf(
+    project,
+  );
 
   return projectIndex === 0;
 };
@@ -60,30 +56,35 @@ const getIsMyFirstProject = (
 const getIsMyLastProject = (
   projects: Project[],
   project: Project,
-  scenario: WalkthroughScenario,
+  myProjects: Project[],
 ) => {
-  const activeProjects = getMyActiveProjects(projects, scenario);
-  const projectIndex = getMyActiveProjects(projects, scenario).indexOf(project);
+  const activeProjects = getMyActiveProjects(projects, myProjects);
+  const projectIndex = getMyActiveProjects(projects, myProjects).indexOf(
+    project,
+  );
 
   return projectIndex + 1 === activeProjects.length;
 };
 
 export const MarketParticipantList: FC<MarketParticipantListProps> = ({
+  myProjects,
   buyerProjects,
   sellerProjects,
   losingBuyerProjects,
   losingSellerProjects,
+  showWinners,
+  showSurpluses,
+  isMarketSolved,
   isMarketSolvable,
 }: MarketParticipantListProps) => {
-  const { scenario, marketState, getProjectCost } = useWalkthroughContext();
-  const showingWinners = marketState >= WalkthroughMarketState.showing_winners;
+  const { getProjectCost } = useProjectsContext();
   const allLosingProjects = [...losingSellerProjects, ...losingBuyerProjects];
   const sortedProjects = sortMyProjects(
-    scenario,
+    myProjects,
     buyerProjects,
     sellerProjects,
     allLosingProjects,
-    showingWinners,
+    showWinners,
   );
 
   const sortedLosingProjects = sortedProjects.filter((project) =>
@@ -96,13 +97,13 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
         const isMyFirstProject = getIsMyFirstProject(
           sortedProjects,
           project,
-          scenario,
+          myProjects,
         );
 
         const isMyLastProject = getIsMyLastProject(
           sortedProjects,
           project,
-          scenario,
+          myProjects,
         );
 
         const projectCost = getProjectCost(project);
@@ -117,11 +118,11 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
               subtitle={project.subtitle}
               isLoser={includesProject(project, allLosingProjects)}
               loserIndex={findProjectIndex(project, sortedLosingProjects)}
-              isMyProject={isMyProject(scenario.myProjects, project)}
+              isMyProject={myProjects.includes(project)}
               isMyFirstProject={isMyFirstProject}
               isMyLastProject={isMyLastProject}
               isMySubsequentProject={
-                getMyActiveProjects(sortedProjects, scenario).includes(
+                getMyActiveProjects(sortedProjects, myProjects).includes(
                   project,
                 ) && !isMyFirstProject
               }
@@ -129,16 +130,10 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
               discountOrBonus={project.discountOrBonus}
               products={project.products}
               accepted={project.accepted(projectCost)}
-              showCosts={
-                isMyProject(scenario.myProjects, project) || isMarketSolvable
-              }
-              showWinners={
-                marketState >= WalkthroughMarketState.showing_winners
-              }
-              showSurpluses={
-                marketState >= WalkthroughMarketState.showing_surpluses
-              }
-              isMarketSolved={marketState === WalkthroughMarketState.solved}
+              showCosts={myProjects.includes(project) || isMarketSolvable}
+              showWinners={showWinners}
+              showSurpluses={showSurpluses}
+              isMarketSolved={isMarketSolved}
             />
           </li>
         );

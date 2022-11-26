@@ -1,14 +1,27 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { render, screen } from '@testing-library/react';
 import { MarketOutcome } from './index';
+import { ProjectsContext } from '../../../context/ProjectsContext';
+
+type WrapperProps = { children: ReactNode };
+
+const wrapper = ({ children }: WrapperProps) => (
+  <ProjectsContext.Provider
+    value={{
+      setProjectCost: jest.fn(),
+      getProjectCost: jest.fn(({ cost }) =>
+        Array.isArray(cost) ? cost[0] : cost,
+      ),
+    }}
+  >
+    {children}
+  </ProjectsContext.Provider>
+);
 
 describe('MarketOutcome', () => {
   it('renders the total bids, offers and surplus', () => {
-    const getProjectCost = jest.fn(({ cost }) => cost);
-
     render(
       <MarketOutcome
-        getProjectCost={getProjectCost}
         buyerProjects={[
           {
             title: 'Buyer 1',
@@ -42,6 +55,7 @@ describe('MarketOutcome', () => {
           },
         ]}
       />,
+      { wrapper },
     );
 
     expect(screen.getByTestId('total-bids')).toHaveTextContent('£28,000');
@@ -50,25 +64,17 @@ describe('MarketOutcome', () => {
   });
 
   it('does not render the balance if the market is not solved', () => {
-    render(
-      <MarketOutcome
-        getProjectCost={jest.fn()}
-        buyerProjects={[]}
-        sellerProjects={[]}
-      />,
-    );
+    render(<MarketOutcome buyerProjects={[]} sellerProjects={[]} />, {
+      wrapper,
+    });
 
     expect(screen.queryByTestId('balance')).not.toBeInTheDocument();
   });
 
   it('renders the balance if the market is solved', () => {
     render(
-      <MarketOutcome
-        isMarketSolved
-        getProjectCost={jest.fn()}
-        buyerProjects={[]}
-        sellerProjects={[]}
-      />,
+      <MarketOutcome isMarketSolved buyerProjects={[]} sellerProjects={[]} />,
+      { wrapper },
     );
 
     expect(screen.getByTestId('balance')).toBeInTheDocument();

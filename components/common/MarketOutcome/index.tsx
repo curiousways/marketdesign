@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { classNames } from '@/utils/index';
 import HammerIcon from '../../walkthroughs/icons/HammerIcon';
 import BalanceIcon from '../../walkthroughs/icons/BalanceIcon';
@@ -6,12 +7,12 @@ import PoundcashTag from '../../walkthroughs/icons/PoundcashTag';
 import OfferIcon from '../../walkthroughs/icons/OfferIcon';
 import PoundIcon from '../../walkthroughs/icons/PoundIcon';
 import { Project } from '../../../types/project';
+import { useProjectsContext } from '../../../context/ProjectsContext';
 
-type Props = {
+type MarketOutcomeProps = {
   className?: string;
   buyerProjects: Project[];
   sellerProjects: Project[];
-  getProjectCost: (project: Project) => number;
   isMarketSolved?: boolean;
 };
 
@@ -20,13 +21,13 @@ const sumProjectCosts = (
   projects: Project[],
 ) => projects.reduce((acc, project) => acc + getProjectCost(project), 0);
 
-export const MarketOutcome = ({
+export const MarketOutcome: FC<MarketOutcomeProps> = ({
   className = '',
   buyerProjects,
   sellerProjects,
-  getProjectCost,
   isMarketSolved,
-}: Props) => {
+}: MarketOutcomeProps) => {
+  const { getProjectCost } = useProjectsContext();
   const totalBids = sumProjectCosts(getProjectCost, buyerProjects);
   const totalOffers = sumProjectCosts(getProjectCost, sellerProjects);
 
