@@ -4,8 +4,9 @@ import { useWalkthroughContext } from '@/context/WalkthroughContext';
 import { WalkthroughMarketState } from '@/types/walkthrough';
 import { LoadingOverlay } from '../../common/LoadingOverlay';
 import MainContentBody from './MainContentBody';
-import Background from './Background';
 import { TopProgressBar } from './TopProgressBar';
+import { WalkthroughBackgroundLeft } from '../icons/WalkthroughBackgroundLeft';
+import { WalkthroughBackgroundRight } from '../icons/WalkthroughBackground';
 
 const MARKET_SOLVING_TIMEOUT = 4000;
 
@@ -96,7 +97,16 @@ const MainContent = () => {
       <div className="z-10">
         <MainContentBody />
       </div>
-      <Background />
+
+      {/* Background */}
+      <div className="absolute right-0 left-0 bottom-0">
+        <div className="absolute left-0 bottom-0">
+          <WalkthroughBackgroundLeft />
+        </div>
+        <div className="absolute right-0 bottom-0">
+          <WalkthroughBackgroundRight />
+        </div>
+      </div>
     </div>
   );
 };
