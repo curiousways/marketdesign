@@ -1,6 +1,7 @@
 import React, {
   ChangeEvent,
   FC,
+  FormEvent,
   FormEventHandler,
   useRef,
   useState,
@@ -26,7 +27,7 @@ type ProjectDetailsProps = {
   isDivisibleInputEnabled?: boolean;
   showDivisibleInput?: boolean;
   isMarketSolvable?: boolean;
-  onFormSubmit: FormEventHandler;
+  onFormSubmit: () => void;
   roleId: RoleId;
   getProjectCost: (project: Project) => number;
   setProjectCost: (project: Project, cost: number) => void;
@@ -102,6 +103,11 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
     setAnimatedInputName(firstInvalidInput?.name);
   };
 
+  const onSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    onFormSubmit();
+  };
+
   return (
     <motion.div
       variants={fadeIn}
@@ -116,7 +122,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
         <p>{roles[roleId].label}</p>
       </div>
 
-      <form ref={formRef} onSubmit={onFormSubmit} className="flex flex-col">
+      <form ref={formRef} onSubmit={onSubmit} className="flex flex-col">
         <ul>
           {projects.map((project, projectIndex) => {
             const projectValue = getProjectValue(project, roleId);

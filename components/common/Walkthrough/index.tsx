@@ -1,6 +1,5 @@
 import React, {
   FC,
-  FormEvent,
   FormEventHandler,
   MouseEvent,
   MouseEventHandler,
@@ -48,9 +47,8 @@ export const Walkthrough: FC = () => {
     }
   }, [isFormEnabled, setMarketState]);
 
-  // Proceed to next market state when submit button is clicked.
-  const onFormSubmit: FormEventHandler = (event: FormEvent) => {
-    event.preventDefault();
+  const onFormSubmit: FormEventHandler = () => {
+    // Proceed to next stage and market state when submit button is clicked.
     goToNextStage();
     setMarketState(WalkthroughMarketState.solvable);
   };

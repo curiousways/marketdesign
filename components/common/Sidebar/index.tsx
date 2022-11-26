@@ -28,7 +28,7 @@ type SidebarProps = {
   isDivisibleInputEnabled?: boolean;
   showDivisibleInput?: boolean;
   isMarketSolvable?: boolean;
-  onFormSubmit: FormEventHandler;
+  onFormSubmit: () => void;
   roleId: RoleId;
   projects: Project[];
   getProjectCost: (project: Project) => number;
