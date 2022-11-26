@@ -12,14 +12,14 @@ type MarketProps = {
   myProjects: Project[];
   buyerProjects: Project[];
   sellerProjects: Project[];
-  roleId: RoleId;
+  roleId?: RoleId;
   showAllProjects?: boolean;
   showCosts: boolean;
   showWinners: boolean;
   showSurpluses: boolean;
   isMarketSolved: boolean;
   showParticipants: boolean;
-  showMap: boolean;
+  showMap?: boolean;
   highlightedMapRegions?: HighlightedMapRegions;
   link?: {
     href: string;

@@ -1,7 +1,5 @@
-import {
-  GetWalkthroughScenario,
-  WalkthroughMarketState,
-} from '@/types/walkthrough';
+import { GetWalkthroughScenario } from '@/types/walkthrough';
+import { MarketState } from '../../../../../types/market';
 import { Project } from '../../../../../types/project';
 import { sidebarContent1 } from './sidebar-content/1';
 import { sidebarContent10 } from './sidebar-content/10';
@@ -168,40 +166,40 @@ const getSellerProjects = (stage: number): Project[] => {
   return [];
 };
 
-const getMarketState = (stage: number): WalkthroughMarketState => {
+const getMarketState = (stage: number): MarketState => {
   if (stage === 21) {
-    return WalkthroughMarketState.solved;
+    return MarketState.solved;
   }
 
   if (stage === 20) {
-    return WalkthroughMarketState.calculating_final_payments;
+    return MarketState.calculating_final_payments;
   }
 
   if (stage > 18) {
-    return WalkthroughMarketState.showing_surpluses;
+    return MarketState.showing_surpluses;
   }
 
   if (stage === 18) {
-    return WalkthroughMarketState.distributing_surpluss;
+    return MarketState.distributing_surpluss;
   }
 
   if (stage >= 15) {
-    return WalkthroughMarketState.showing_winners;
+    return MarketState.showing_winners;
   }
 
   if (stage === 14) {
-    return WalkthroughMarketState.calculating_winners;
+    return MarketState.calculating_winners;
   }
 
   if (stage === 13) {
-    return WalkthroughMarketState.solvable;
+    return MarketState.solvable;
   }
 
   if (stage >= 10) {
-    return WalkthroughMarketState.showing_winners;
+    return MarketState.showing_winners;
   }
 
-  return WalkthroughMarketState.pending;
+  return MarketState.pending;
 };
 
 const getHighlightedMapRegions = (stage: number) => {

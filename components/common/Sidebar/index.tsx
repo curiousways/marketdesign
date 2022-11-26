@@ -24,7 +24,7 @@ type SidebarProps = {
   showDivisibleInput?: boolean;
   isMarketSolvable?: boolean;
   onFormSubmit: () => void;
-  roleId: RoleId;
+  roleId?: RoleId;
   projects: Project[];
 };
 
@@ -53,7 +53,7 @@ export const SideBar: FC<SidebarProps> = ({
         key="sidebar-animation"
         className="gap-y-4 flex flex-col items-center"
       >
-        {showDetailsWidget && (
+        {showDetailsWidget && roleId && (
           <ProjectDetails
             isFormEnabled={isFormEnabled}
             isDivisibleInputEnabled={isDivisibleInputEnabled}
