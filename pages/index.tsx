@@ -2,7 +2,6 @@ import type { NextPage } from 'next';
 
 import Image from 'next/image';
 
-import Button from '@/components/common/Button';
 import Header from '@/components/common/Header';
 import Faqs from '@/components/home/Faqs';
 
@@ -11,6 +10,7 @@ import Frame from '../public/assets/images/home/frame.png';
 import Frame2 from '../public/assets/images/home/frame-2.png';
 import HeaderImg from '../public/assets/images/home/header.png';
 import HeaderThumb from '../public/assets/images/home/header-thumb.png';
+import { NavButton } from '../components/common/NavButton';
 
 const Home: NextPage = () => {
   return (
@@ -111,7 +111,7 @@ const Home: NextPage = () => {
                   <li>Determining Payments: Division using the Shapley</li>
                 </ul>
 
-                <Button text="Find out more" link="/" />
+                <NavButton text="Find out more" link="/" />
               </div>
 
               <div className="max-w-[616px] mt-20 space-y-10">
@@ -121,7 +121,7 @@ const Home: NextPage = () => {
                   understanding of how it works, how to participate and how to
                   maximise your opportunity as a buyer or seller.
                 </p>
-                <Button text="Take the tour" link="/how-it-works" />
+                <NavButton text="Take the tour" link="/how-it-works" />
               </div>
             </div>
 
@@ -145,7 +145,7 @@ const Home: NextPage = () => {
                 experience of the model and demonstrate how your choices can
                 affect outcomes in different circumstances.
               </p>
-              <Button text="Start trading" link="/" />
+              <NavButton text="Start trading" link="/" />
             </div>
 
             <div className="relative">
