@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useRef, useState } from 'react';
+import { ChangeEvent, FC, FormEvent, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
 import { fadeIn } from '@/utils/animations';
@@ -90,7 +90,6 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
   };
 
   const onSubmit = (event: FormEvent) => {
-    console.log('fire');
     event.preventDefault();
     onFormSubmit();
   };
