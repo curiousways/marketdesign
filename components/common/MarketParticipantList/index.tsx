@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import {
   WalkthroughMarketState,
-  WalkthroughProject,
   WalkthroughScenario,
 } from '@/types/walkthrough';
 import { useWalkthroughContext } from '@/context/WalkthroughContext';
@@ -11,12 +10,13 @@ import {
   isMyProject,
 } from '@/utils/walkthroughs';
 import { MarketParticipant } from '../MarketParticipant';
+import { Project } from '../../../types/project';
 
 type MarketParticipantListProps = {
-  buyerProjects: WalkthroughProject[];
-  sellerProjects: WalkthroughProject[];
-  losingBuyerProjects: WalkthroughProject[];
-  losingSellerProjects: WalkthroughProject[];
+  buyerProjects: Project[];
+  sellerProjects: Project[];
+  losingBuyerProjects: Project[];
+  losingSellerProjects: Project[];
   isMarketSolvable: boolean;
 };
 
@@ -25,9 +25,9 @@ type MarketParticipantListProps = {
  */
 const sortMyProjects = (
   scenario: WalkthroughScenario,
-  buyerProjects: WalkthroughProject[],
-  sellerProjects: WalkthroughProject[],
-  losingProjects: WalkthroughProject[],
+  buyerProjects: Project[],
+  sellerProjects: Project[],
+  losingProjects: Project[],
   showingWinners: boolean,
 ) =>
   [...sellerProjects, ...buyerProjects].sort((a, b) => {
@@ -43,13 +43,13 @@ const sortMyProjects = (
   });
 
 const getMyActiveProjects = (
-  projects: WalkthroughProject[],
+  projects: Project[],
   scenario: WalkthroughScenario,
 ) => scenario.myProjects.filter((project) => projects.includes(project));
 
 const getIsMyFirstProject = (
-  projects: WalkthroughProject[],
-  project: WalkthroughProject,
+  projects: Project[],
+  project: Project,
   scenario: WalkthroughScenario,
 ) => {
   const projectIndex = getMyActiveProjects(projects, scenario).indexOf(project);
@@ -58,8 +58,8 @@ const getIsMyFirstProject = (
 };
 
 const getIsMyLastProject = (
-  projects: WalkthroughProject[],
-  project: WalkthroughProject,
+  projects: Project[],
+  project: Project,
   scenario: WalkthroughScenario,
 ) => {
   const activeProjects = getMyActiveProjects(projects, scenario);

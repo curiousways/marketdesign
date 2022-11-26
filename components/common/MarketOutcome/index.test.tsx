@@ -14,11 +14,15 @@ describe('MarketOutcome', () => {
             title: 'Buyer 1',
             cost: 10000,
             products: { biodiversity: 1, nutrients: 2 },
+            accepted: () => true,
+            discountOrBonus: 0,
           },
           {
             title: 'Buyer 2',
             cost: 18000,
             products: { biodiversity: 2, nutrients: 2 },
+            accepted: () => true,
+            discountOrBonus: 0,
           },
         ]}
         sellerProjects={[
@@ -26,11 +30,15 @@ describe('MarketOutcome', () => {
             title: 'Seller 1',
             cost: 5000,
             products: { biodiversity: 1, nutrients: 2 },
+            accepted: () => true,
+            discountOrBonus: 0,
           },
           {
             title: 'Seller 2',
             cost: 10000,
             products: { biodiversity: 2, nutrients: 2 },
+            accepted: () => true,
+            discountOrBonus: 0,
           },
         ]}
       />,

@@ -3,15 +3,13 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { fadeInDown } from '@/utils/animations';
 import { useWalkthroughContext } from '@/context/WalkthroughContext';
-import {
-  WalkthroughMarketState,
-  WalkthroughProject,
-} from '@/types/walkthrough';
+import { WalkthroughMarketState } from '@/types/walkthrough';
 import { RoleId } from '@/types/roles';
 import { getNextScenarioId } from '@/utils/walkthroughs';
 import { Map } from '@/components/map/Map';
 import { MarketParticipantList } from '../../common/MarketParticipantList';
 import { MarketOutcome } from '../../common/MarketOutcome';
+import { Project } from '../../../types/project';
 
 const MainContentBody = () => {
   const { stage, scenario, scenarioId, roleId, marketState, getProjectCost } =
@@ -21,10 +19,7 @@ const MainContentBody = () => {
     (project) => !project.isInactive,
   );
 
-  const getAllProjects = (
-    projects: WalkthroughProject[],
-    projectRoleId: RoleId,
-  ) => {
+  const getAllProjects = (projects: Project[], projectRoleId: RoleId) => {
     if (projectRoleId === roleId) {
       return [...projects, ...activeUserProjects];
     }
@@ -33,7 +28,7 @@ const MainContentBody = () => {
   };
 
   const hasAcceptedUserProjects = (
-    projects: WalkthroughProject[],
+    projects: Project[],
     projectRoleId: RoleId,
   ) =>
     getAllProjects(projects, projectRoleId).some(
@@ -42,10 +37,7 @@ const MainContentBody = () => {
         activeUserProjects.includes(project),
     );
 
-  const getWinningProjects = (
-    projects: WalkthroughProject[],
-    projectRoleId: RoleId,
-  ) => {
+  const getWinningProjects = (projects: Project[], projectRoleId: RoleId) => {
     const hasUserProjects = hasAcceptedUserProjects(projects, projectRoleId);
 
     return getAllProjects(projects, projectRoleId).filter(
@@ -55,10 +47,7 @@ const MainContentBody = () => {
     );
   };
 
-  const getLosingProjects = (
-    projects: WalkthroughProject[],
-    projectRoleId: RoleId,
-  ) => {
+  const getLosingProjects = (projects: Project[], projectRoleId: RoleId) => {
     const hasUserProjects = hasAcceptedUserProjects(projects, projectRoleId);
 
     return getAllProjects(projects, projectRoleId).filter(
@@ -69,9 +58,9 @@ const MainContentBody = () => {
   };
 
   const getActiveProjects = (
-    projects: WalkthroughProject[],
+    projects: Project[],
     projectRoleId: RoleId,
-  ): WalkthroughProject[] => {
+  ): Project[] => {
     if (marketState < WalkthroughMarketState.solvable) {
       return projects;
     }

@@ -17,19 +17,10 @@ export interface WalkthroughOptions {
   showParticipants: boolean;
 }
 
-export type WalkthroughProject = Project & {
-  accepted: (value: number) => boolean | number;
-  discountOrBonus: number;
-};
-
-export type WalkthroughUserProject = WalkthroughProject & {
-  bid?: number;
-};
-
 export interface WalkthroughScenario {
-  myProjects: WalkthroughUserProject[];
-  buyerProjects: WalkthroughProject[];
-  sellerProjects: WalkthroughProject[];
+  myProjects: Project[];
+  buyerProjects: Project[];
+  sellerProjects: Project[];
   sidebarContent?: {
     [key: number]: JSX.Element;
   };

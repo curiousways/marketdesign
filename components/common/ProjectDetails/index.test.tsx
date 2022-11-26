@@ -7,6 +7,8 @@ const createProject = (overrides?: Partial<Project>) => ({
   title: 'My Project',
   cost: 42000,
   products: { biodiversity: 1, nutrients: 2 },
+  accepted: () => true,
+  discountOrBonus: 0,
   ...overrides,
 });
 

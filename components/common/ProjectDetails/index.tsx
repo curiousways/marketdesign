@@ -12,7 +12,6 @@ import { roles } from '../../../data/roles';
 import { ProductCount } from '../ProductCount';
 import { CostInput } from '../CostInput';
 import { Project } from '../../../types/project';
-import { isMyWalkthroughProject } from '../../../utils/walkthroughs';
 
 type ProjectDetailsProps = {
   projects: Project[];
@@ -43,12 +42,8 @@ const getProjectValue = (project: Project, roleId: RoleId) => {
 };
 
 const getProjectBid = (project: Project): number | undefined => {
-  if (!isMyWalkthroughProject(project)) {
-    return;
-  }
-
-  if (project.bid) {
-    return project.bid;
+  if (project.fixedBid) {
+    return project.fixedBid;
   }
 
   return Array.isArray(project.cost) ? undefined : project.cost;

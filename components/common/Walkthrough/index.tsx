@@ -1,10 +1,4 @@
-import React, {
-  FC,
-  FormEventHandler,
-  MouseEvent,
-  MouseEventHandler,
-  useEffect,
-} from 'react';
+import React, { FC, MouseEvent, MouseEventHandler, useEffect } from 'react';
 import MainContent from '@/components/walkthroughs/Main/MainContent';
 import { useWalkthroughContext } from '../../../context/WalkthroughContext';
 import { WalkthroughMarketState } from '../../../types/walkthrough';
@@ -47,7 +41,7 @@ export const Walkthrough: FC = () => {
     }
   }, [isFormEnabled, setMarketState]);
 
-  const onFormSubmit: FormEventHandler = () => {
+  const onFormSubmit = () => {
     // Proceed to next stage and market state when submit button is clicked.
     goToNextStage();
     setMarketState(WalkthroughMarketState.solvable);
