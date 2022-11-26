@@ -254,7 +254,7 @@ const Project = ({
   const { marketState, scenario, getProjectCost } = useWalkthroughContext();
   const { discountOrBonus, products, accepted } = project;
   const showCosts =
-    isMyProject(scenario, project) ||
+    isMyProject(scenario.myProjects, project) ||
     marketState > WalkthroughMarketState.solvable;
 
   const projectCost = getProjectCost(project);
