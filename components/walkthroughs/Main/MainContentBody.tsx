@@ -11,7 +11,7 @@ import { RoleId } from '@/types/roles';
 import { getNextScenarioId } from '@/utils/walkthroughs';
 import { Map } from '@/components/map/Map';
 import ParticipantsList from './ParticipantsList';
-import MarketOutcome from './MarketOutcome';
+import { MarketOutcome } from '../../common/MarketOutcome';
 
 const MainContentBody = () => {
   const { stage, scenario, scenarioId, roleId, marketState, getProjectCost } =
@@ -125,6 +125,8 @@ const MainContentBody = () => {
             animate="visible"
           >
             <MarketOutcome
+              isMarketSolved={marketState === WalkthroughMarketState.solved}
+              getProjectCost={getProjectCost}
               sellerProjects={getWinningProjects(
                 scenario.sellerProjects,
                 'seller',
