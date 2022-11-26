@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import LoadingBar from 'react-top-loading-bar';
 import { useWalkthroughContext } from '@/context/WalkthroughContext';
 import { WalkthroughMarketState } from '@/types/walkthrough';
@@ -6,7 +6,7 @@ import { WalkthroughMarketState } from '@/types/walkthrough';
 const MARKET_SOLVING_TIMEOUT = 4000;
 const MARKET_SOLVING_STAGES = 5;
 
-export const TopProgressBar = () => {
+export const TopProgressBar: FC = () => {
   const { scenario, isMarketSolving, marketState } = useWalkthroughContext();
 
   const [progress, setProgress] = useState<number>(0);

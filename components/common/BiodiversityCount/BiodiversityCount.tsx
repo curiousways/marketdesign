@@ -1,6 +1,7 @@
-import { AdjustedProductCount } from '../../common/AdjustedProductCount';
+import { FC } from 'react';
+import { AdjustedProductCount } from '../AdjustedProductCount';
 
-type Props = {
+type BiodiversityCountProps = {
   count?: number;
   adjustCount: boolean;
   accepted: number | boolean;
@@ -8,13 +9,13 @@ type Props = {
   showLoserStyles: boolean;
 };
 
-const ProjectBiodiversity = ({
+export const BiodiversityCount: FC<BiodiversityCountProps> = ({
   count,
   accepted,
   adjustCount,
   shadowColor,
   showLoserStyles,
-}: Props) => {
+}: BiodiversityCountProps) => {
   if (typeof count !== 'number') {
     return null;
   }
@@ -67,5 +68,3 @@ const ProjectBiodiversity = ({
     </div>
   );
 };
-
-export default ProjectBiodiversity;

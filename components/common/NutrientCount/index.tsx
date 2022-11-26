@@ -1,6 +1,7 @@
-import { AdjustedProductCount } from '../../common/AdjustedProductCount';
+import { FC } from 'react';
+import { AdjustedProductCount } from '../AdjustedProductCount';
 
-type Props = {
+type NutrientCountProps = {
   count?: number;
   adjustCount: boolean;
   accepted: number | boolean;
@@ -8,13 +9,13 @@ type Props = {
   showLoserStyles: boolean;
 };
 
-const ProjectNutrients = ({
+export const NutrientCount: FC<NutrientCountProps> = ({
   count,
   accepted,
   adjustCount,
   shadowColor,
   showLoserStyles,
-}: Props) => {
+}: NutrientCountProps) => {
   if (typeof count !== 'number') {
     return null;
   }
@@ -67,5 +68,3 @@ const ProjectNutrients = ({
     </div>
   );
 };
-
-export default ProjectNutrients;

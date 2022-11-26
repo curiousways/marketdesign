@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { LoadingOverlay } from '../LoadingOverlay';
-import { TopProgressBar } from '../../walkthroughs/Main/TopProgressBar';
+import { TopProgressBar } from '../TopProgressBar';
 import { MarketBackgroundLeft } from '../../walkthroughs/icons/MarketBackgroundLeft';
 import { MarketBackgroundRight } from '../../walkthroughs/icons/MarketBackground';
 import { MarketScenario } from '../MarketScenario';

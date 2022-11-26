@@ -7,10 +7,10 @@ import HammerIcon from '../../walkthroughs/icons/HammerIcon';
 import PoundcashTag from '../../walkthroughs/icons/PoundcashTag';
 import CartPlus from '../../walkthroughs/icons/CartPlus';
 import OfferIcon from '../../walkthroughs/icons/OfferIcon';
-import ProjectBiodiversity from '../../walkthroughs/Main/ProjectBiodiversity';
-import ProjectNutrients from '../../walkthroughs/Main/ProjectNutrients';
 import { MarketParticipantTitle } from '../MarketParticipantTitle';
 import { Products } from '../../../types/products';
+import { BiodiversityCount } from '../BiodiversityCount/BiodiversityCount';
+import { NutrientCount } from '../NutrientCount';
 
 const PROJECT_HEIGHT = 120;
 const PROJECT_WIDTH = 800;
@@ -354,17 +354,14 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
                 showLoserStyles ? 'gap-x-4' : 'gap-x-10 flex-[20%]',
               )}
             >
-              {/* Biodiversity */}
-              <ProjectBiodiversity
+              <BiodiversityCount
                 count={products.biodiversity}
                 adjustCount={showWinners}
                 accepted={accepted}
                 shadowColor={shadowColor}
                 showLoserStyles={showLoserStyles}
               />
-
-              {/* Nutrients */}
-              <ProjectNutrients
+              <NutrientCount
                 count={products.nutrients}
                 adjustCount={showWinners}
                 accepted={accepted}
