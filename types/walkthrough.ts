@@ -11,6 +11,7 @@ export interface WalkthroughOptions {
   showMaps: boolean;
   highlightedMapRegions?: HighlightedMapRegions;
   showParticipants: boolean;
+  limitMarketInfo?: boolean;
 }
 
 export interface WalkthroughScenario {

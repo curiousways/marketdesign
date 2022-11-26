@@ -65,5 +65,6 @@ export const getSellerScenario1_4: GetWalkthroughScenario = (
     showDetailsWidget: stage >= 1,
     showMaps: false,
     showParticipants: stage >= 1,
+    limitMarketInfo: true,
   },
 });
