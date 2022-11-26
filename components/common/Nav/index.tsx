@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import Link from 'next/link';
 
 import { NavLink } from '../NavLink';
@@ -19,13 +19,16 @@ export const Nav: FC<NavProps> = ({
   logoColor,
 }: NavProps) => (
   <nav
-    className={classNames('lg:flex justify-between items-end', className)}
+    className={classNames(
+      'lg:flex justify-between items-end flex-1',
+      className,
+    )}
     aria-label="Main Navigation"
   >
     <Link href="/" aria-label="Exeter Lindsay">
       <Logo color={logoColor} />
     </Link>
-    <ul className="lg:flex gap-x-10 xl:gap-x-16 text-light-grey">
+    <ul className="lg:flex gap-x-10 xl:gap-x-16 text-light-grey my-2 lg:my-0 space-y-2 lg:space-y-0">
       <li>
         <NavLink
           href="/"

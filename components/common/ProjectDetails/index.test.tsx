@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ProjectDetails } from './index';
 import { Project } from '../../../types/project';
@@ -199,7 +199,7 @@ describe('ProjectDetails', () => {
     expect(onFormSubmit).not.toHaveBeenCalled();
   });
 
-  it.only('submits the form if enabled', () => {
+  it('submits the form if enabled', () => {
     const onFormSubmit = jest.fn();
 
     render(

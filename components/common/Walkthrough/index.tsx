@@ -1,4 +1,4 @@
-import React, { FC, MouseEvent, MouseEventHandler, useEffect } from 'react';
+import { FC, MouseEvent, MouseEventHandler, useEffect } from 'react';
 import MainContent from '@/components/walkthroughs/Main/MainContent';
 import { useWalkthroughContext } from '../../../context/WalkthroughContext';
 import { WalkthroughMarketState } from '../../../types/walkthrough';

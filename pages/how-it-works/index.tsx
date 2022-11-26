@@ -71,7 +71,14 @@ const HowItWorks: NextPage = () => (
         );
       })}
       <div className="absolute bottom-0 right-0 -z-10 flex">
-        <Image src={FieldsImg} alt="" />
+        <Image
+          src={FieldsImg}
+          alt=""
+          style={{
+            maxWidth: '100%',
+            height: 'auto',
+          }}
+        />
       </div>
     </div>
   </>
