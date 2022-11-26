@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { render, screen } from '@testing-library/react';
 import { MarketOutcome } from './index';
 import { ProjectsContext } from '../../../context/ProjectsContext';
