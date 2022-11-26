@@ -1,30 +1,29 @@
-import { FunctionComponent } from 'react';
-import { useWalkthroughContext } from '@/context/WalkthroughContext';
-import type { WalkthroughProject } from '@/types/walkthrough';
+import { FC } from 'react';
 import { classNames } from '@/utils/index';
-import { isMyProject } from '@/utils/walkthroughs';
 
-type Props = {
-  project: WalkthroughProject;
+export type MarketParticipantTitleProps = {
+  title: string;
+  subtitle?: string;
+  isMyProject: boolean;
   projectCost: number;
-  acceptedCost: number | boolean;
+  accepted: number | boolean;
   hideMainTitle: boolean;
   showLoserStyles: boolean;
   showAcceptedCosts?: boolean;
 };
 
-export const ProjectTitle: FunctionComponent<Props> = ({
-  project,
+export const MarketParticipantTitle: FC<MarketParticipantTitleProps> = ({
+  title,
+  subtitle,
+  isMyProject,
   projectCost,
-  acceptedCost,
+  accepted,
   hideMainTitle,
   showAcceptedCosts,
   showLoserStyles,
-}: Props) => {
-  const { scenario } = useWalkthroughContext();
-  const { title, subtitle } = project;
+}: MarketParticipantTitleProps) => {
   const acceptedPercentage =
-    showAcceptedCosts && Number.isFinite(acceptedCost) ? acceptedCost : null;
+    showAcceptedCosts && Number.isFinite(accepted) ? accepted : null;
 
   const commonTextClassNames = 'overflow-hidden text-left text-ellipsis';
 
@@ -39,8 +38,7 @@ export const ProjectTitle: FunctionComponent<Props> = ({
         <div className="flex flex-col">
           <p
             className={classNames(
-              commonTextClassNames,
-              isMyProject(scenario.myProjects, project) ? 'font-bold' : '',
+              isMyProject ? 'font-bold' : '',
               commonTextClassNames,
             )}
           >

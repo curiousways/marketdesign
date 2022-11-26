@@ -113,6 +113,7 @@ const MainContentBody = () => {
               scenario.buyerProjects,
               'buyer',
             )}
+            isMarketSolvable={marketState > WalkthroughMarketState.solvable}
           />
         </motion.div>
 

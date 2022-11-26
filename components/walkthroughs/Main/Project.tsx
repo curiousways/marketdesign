@@ -1,25 +1,16 @@
 import { AnimationProps, motion } from 'framer-motion';
-
-import { CSSProperties, useEffect, useState } from 'react';
+import { CSSProperties, FC, useEffect, useState } from 'react';
 import { classNames } from '@/utils/index';
-
-import {
-  WalkthroughMarketState,
-  WalkthroughProject,
-  WalkthroughScenario,
-} from '@/types/walkthrough';
 import { fadeInDown } from '@/utils/animations';
-
 import { RoleId } from '@/types/roles';
-import { useWalkthroughContext } from '@/context/WalkthroughContext';
-import { isMyProject } from '@/utils/walkthroughs';
 import HammerIcon from '../icons/HammerIcon';
 import PoundcashTag from '../icons/PoundcashTag';
-import { ProjectTitle } from './ProjectTitle';
 import CartPlus from '../icons/CartPlus';
 import OfferIcon from '../icons/OfferIcon';
 import ProjectBiodiversity from './ProjectBiodiversity';
 import ProjectNutrients from './ProjectNutrients';
+import { MarketParticipantTitle } from '../../common/MarketParticipantTitle';
+import { Products } from '../../../types/products';
 
 const PROJECT_HEIGHT = 120;
 const PROJECT_WIDTH = 800;
@@ -28,15 +19,25 @@ const COLLAPSED_PROJECT_HEIGHT = 60;
 const COLLAPSED_PROJECT_WIDTH = 210;
 const SHOW_LOSERS_MAX_SCREEN_WIDTH = 1700;
 
-type Props = {
-  project: WalkthroughProject;
+type MarketParticipantProps = {
+  title: string;
+  subtitle?: string;
   projectRoleId: 'buyer' | 'seller';
+  projectCost: number;
+  accepted: boolean | number;
+  discountOrBonus: number;
+  products: Products;
   isLoser: boolean;
   loserIndex?: number;
   className?: string;
+  isMyProject: boolean;
   isMyFirstProject: boolean;
   isMyLastProject: boolean;
   isMySubsequentProject: boolean;
+  showCosts: boolean;
+  showWinners: boolean;
+  showSurpluses: boolean;
+  isMarketSolved: boolean;
 };
 
 const getAdjustedCost = (cost: number, accepted: boolean | number) =>
@@ -58,8 +59,7 @@ const calculatePayment = (
 };
 
 const getMyProjectStyles = (
-  project: WalkthroughProject,
-  scenario: WalkthroughScenario,
+  isMyProject: boolean,
   isMyFirstProject: boolean,
   isMyLastProject: boolean,
 ): CSSProperties => {
@@ -68,7 +68,7 @@ const getMyProjectStyles = (
   const borderColor = 'black';
   const borderStyle = 'solid';
 
-  if (!isMyProject(scenario.myProjects, project)) {
+  if (!isMyProject) {
     return { borderRadius };
   }
 
@@ -241,29 +241,30 @@ const useProjectAnimation = (
   return animation;
 };
 
-const Project = ({
-  project,
+export const MarketParticipant: FC<MarketParticipantProps> = ({
+  title,
+  subtitle,
   projectRoleId,
+  projectCost,
+  accepted,
+  discountOrBonus,
+  products,
   isLoser,
   loserIndex,
   className = '',
+  isMyProject,
   isMyFirstProject,
   isMyLastProject,
   isMySubsequentProject,
-}: Props) => {
-  const { marketState, scenario, getProjectCost } = useWalkthroughContext();
-  const { discountOrBonus, products, accepted } = project;
-  const showCosts =
-    isMyProject(scenario.myProjects, project) ||
-    marketState > WalkthroughMarketState.solvable;
-
-  const projectCost = getProjectCost(project);
-  const acceptedCost = accepted(projectCost);
+  showCosts,
+  showWinners,
+  showSurpluses,
+  isMarketSolved,
+}: MarketParticipantProps) => {
   const isBuyer = projectRoleId === 'buyer';
 
-  const showingWinners = marketState >= WalkthroughMarketState.showing_winners;
-  const showLoserStyles = isLoser && showingWinners;
-  const isNotAccepted = showingWinners && !acceptedCost;
+  const showLoserStyles = isLoser && showWinners;
+  const isNotAccepted = showWinners && !accepted;
 
   const rowAnimation = useRowAnimation(showLoserStyles, isMySubsequentProject);
 
@@ -280,7 +281,7 @@ const Project = ({
   const dividerColor = isBuyer ? 'border-brown' : 'border-green-light';
 
   // Adjust metrics for projects that were only partially accepted.
-  const adjustedCost = getAdjustedCost(projectCost, acceptedCost);
+  const adjustedCost = getAdjustedCost(projectCost, accepted);
 
   return (
     <motion.div
@@ -303,8 +304,7 @@ const Project = ({
         <motion.div
           animate={projectAnimation}
           style={getMyProjectStyles(
-            project,
-            scenario,
+            isMyProject,
             isMyFirstProject,
             isMyLastProject,
           )}
@@ -318,8 +318,8 @@ const Project = ({
             className={`absolute h-full ${backgroundColor} top-0 left-0`}
             style={{
               width:
-                typeof acceptedCost === 'number' && showingWinners
-                  ? `${acceptedCost}%`
+                typeof accepted === 'number' && showWinners
+                  ? `${accepted}%`
                   : '100%',
             }}
           />
@@ -336,10 +336,12 @@ const Project = ({
               showLoserStyles ? 'gap-x-2' : 'gap-x-10 justify-between',
             )}
           >
-            <ProjectTitle
-              acceptedCost={acceptedCost}
-              showAcceptedCosts={showCosts && showingWinners}
-              project={project}
+            <MarketParticipantTitle
+              title={title}
+              subtitle={subtitle}
+              isMyProject={isMyProject}
+              accepted={accepted}
+              showAcceptedCosts={showCosts && showWinners}
               projectCost={projectCost}
               hideMainTitle={isMySubsequentProject}
               showLoserStyles={showLoserStyles}
@@ -355,8 +357,8 @@ const Project = ({
               {/* Biodiversity */}
               <ProjectBiodiversity
                 count={products.biodiversity}
-                adjustCount={showingWinners}
-                accepted={acceptedCost}
+                adjustCount={showWinners}
+                accepted={accepted}
                 shadowColor={shadowColor}
                 showLoserStyles={showLoserStyles}
               />
@@ -364,8 +366,8 @@ const Project = ({
               {/* Nutrients */}
               <ProjectNutrients
                 count={products.nutrients}
-                adjustCount={showingWinners}
-                accepted={acceptedCost}
+                adjustCount={showWinners}
+                accepted={accepted}
                 shadowColor={shadowColor}
                 showLoserStyles={showLoserStyles}
               />
@@ -400,12 +402,7 @@ const Project = ({
                 <motion.div
                   variants={fadeInDown}
                   initial="hidden"
-                  animate={
-                    marketState >= WalkthroughMarketState.showing_surpluses &&
-                    !isNotAccepted
-                      ? 'visible'
-                      : ''
-                  }
+                  animate={showSurpluses && !isNotAccepted ? 'visible' : ''}
                   className="bg-white rounded-lg border border-black px-1 w-[95px]"
                 >
                   <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
@@ -423,12 +420,7 @@ const Project = ({
                 <motion.div
                   variants={fadeInDown}
                   initial="hidden"
-                  animate={
-                    marketState === WalkthroughMarketState.solved &&
-                    !isNotAccepted
-                      ? 'visible'
-                      : ''
-                  }
+                  animate={isMarketSolved && !isNotAccepted ? 'visible' : ''}
                   className="bg-white rounded-lg border border-black px-1 w-[95px]"
                 >
                   <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
@@ -443,7 +435,7 @@ const Project = ({
                       {calculatePayment(
                         projectCost,
                         discountOrBonus,
-                        accepted(projectCost),
+                        accepted,
                         projectRoleId,
                       ).toLocaleString()}
                     </p>
@@ -457,5 +449,3 @@ const Project = ({
     </motion.div>
   );
 };
-
-export default Project;

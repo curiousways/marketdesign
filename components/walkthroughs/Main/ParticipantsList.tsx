@@ -9,13 +9,14 @@ import {
   includesProject,
   isMyProject,
 } from '@/utils/walkthroughs';
-import Project from './Project';
+import { MarketParticipant } from './Project';
 
 type Props = {
   buyerProjects: WalkthroughProject[];
   sellerProjects: WalkthroughProject[];
   losingBuyerProjects: WalkthroughProject[];
   losingSellerProjects: WalkthroughProject[];
+  isMarketSolvable: boolean;
 };
 
 /**
@@ -71,8 +72,9 @@ const ParticipantsList = ({
   sellerProjects,
   losingBuyerProjects,
   losingSellerProjects,
+  isMarketSolvable,
 }: Props) => {
-  const { scenario, marketState } = useWalkthroughContext();
+  const { scenario, marketState, getProjectCost } = useWalkthroughContext();
   const showingWinners = marketState >= WalkthroughMarketState.showing_winners;
   const allLosingProjects = [...losingSellerProjects, ...losingBuyerProjects];
   const sortedProjects = sortMyProjects(
@@ -102,15 +104,19 @@ const ParticipantsList = ({
           scenario,
         );
 
+        const projectCost = getProjectCost(project);
+
         return (
           <li key={project.title + project.subtitle}>
-            <Project
+            <MarketParticipant
               projectRoleId={
                 includesProject(project, buyerProjects) ? 'buyer' : 'seller'
               }
-              project={project}
+              title={project.title}
+              subtitle={project.subtitle}
               isLoser={includesProject(project, allLosingProjects)}
               loserIndex={findProjectIndex(project, sortedLosingProjects)}
+              isMyProject={isMyProject(scenario.myProjects, project)}
               isMyFirstProject={isMyFirstProject}
               isMyLastProject={isMyLastProject}
               isMySubsequentProject={
@@ -118,6 +124,20 @@ const ParticipantsList = ({
                   project,
                 ) && !isMyFirstProject
               }
+              projectCost={getProjectCost(project)}
+              discountOrBonus={project.discountOrBonus}
+              products={project.products}
+              accepted={project.accepted(projectCost)}
+              showCosts={
+                isMyProject(scenario.myProjects, project) || isMarketSolvable
+              }
+              showWinners={
+                marketState >= WalkthroughMarketState.showing_winners
+              }
+              showSurpluses={
+                marketState >= WalkthroughMarketState.showing_surpluses
+              }
+              isMarketSolved={marketState === WalkthroughMarketState.solved}
             />
           </li>
         );
