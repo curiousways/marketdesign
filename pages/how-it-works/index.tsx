@@ -30,7 +30,7 @@ const getWalkthroughTitle = (roleId: RoleId, walkthroughIndex: number) => {
   return `Walkthrough ${walkthroughIndex + 1}`;
 };
 
-const HowItWorks: NextPage = () => (
+const HowItWorksIndex: NextPage = () => (
   <>
     <Header
       title="How it works"
@@ -92,4 +92,4 @@ const HowItWorks: NextPage = () => (
   </>
 );
 
-export default HowItWorks;
+export default HowItWorksIndex;
