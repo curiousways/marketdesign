@@ -11,6 +11,7 @@ import { Result } from '../../types/result';
 import { MarketState } from '../../types/market';
 import { Project } from '../../types/project';
 import { isProjectEqual } from '../../utils/walkthroughs';
+import { MainContainer } from '../../components/common/MainContainer';
 
 const API_URL = 'https://marketdesign.herokuapp.com/solve/lindsay2018';
 
@@ -143,44 +144,38 @@ const LiveDemoScenario: NextPage<LiveDemoScenarioProps> = ({ data }) => {
 
   return (
     <ProjectsProvider>
-      <main>
-        <div className="flex items-stretch font-poppins relative border-t border-green-dark min-h-screen">
-          <SideBar
-            isFormEnabled={!!myProject && marketState === MarketState.pending}
-            showDetailsWidget={!!myProject}
-            title={data.title}
-            sidebarContent={data.description}
-            // TODO: Fill in these properties!
-            projects={myProjects}
-            onSolveMarketClick={onSolveMarketClick}
-            onFormSubmit={onFormSubmit}
-            roleId={roleId}
-            showSolveMarketBtn={isMarketSolvable}
-          />
-          <Market
-            showMap
-            myProjects={myProjects}
-            buyerProjects={getBuyerProjects(
-              demoState.bidders,
-              myProject,
-              result,
-            )}
-            sellerProjects={getSellerProjects(
-              demoState.bidders,
-              myProject,
-              result,
-            )}
-            showCosts={marketState > MarketState.solvable}
-            showAllProjects={marketState < MarketState.solvable}
-            showWinners={marketState >= MarketState.showing_winners}
-            showSurpluses={marketState >= MarketState.showing_surpluses}
-            isMarketSolved={marketState === MarketState.solved}
-            roleId={roleId}
-            showParticipants={!!myProject}
-            // highlightedMapRegions={scenario.options.highlightedMapRegions}
-          />
-        </div>
-      </main>
+      <MainContainer>
+        <SideBar
+          isFormEnabled={!!myProject && marketState === MarketState.pending}
+          showDetailsWidget={!!myProject}
+          title={data.title}
+          sidebarContent={data.description}
+          // TODO: Fill in these properties!
+          projects={myProjects}
+          onSolveMarketClick={onSolveMarketClick}
+          onFormSubmit={onFormSubmit}
+          roleId={roleId}
+          showSolveMarketBtn={isMarketSolvable}
+        />
+        <Market
+          showMap
+          myProjects={myProjects}
+          buyerProjects={getBuyerProjects(demoState.bidders, myProject, result)}
+          sellerProjects={getSellerProjects(
+            demoState.bidders,
+            myProject,
+            result,
+          )}
+          showCosts={marketState > MarketState.solvable}
+          showAllProjects={marketState < MarketState.solvable}
+          showWinners={marketState >= MarketState.showing_winners}
+          showSurpluses={marketState >= MarketState.showing_surpluses}
+          isMarketSolved={marketState === MarketState.solved}
+          roleId={roleId}
+          showParticipants={!!myProject}
+          // highlightedMapRegions={scenario.options.highlightedMapRegions}
+        />
+      </MainContainer>
     </ProjectsProvider>
   );
 };

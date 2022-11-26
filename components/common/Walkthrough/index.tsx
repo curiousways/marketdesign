@@ -9,6 +9,7 @@ import { SideBar } from '../Sidebar';
 import { RoleId } from '../../../types/roles';
 import { Market } from '../Market';
 import { MarketState } from '../../../types/market';
+import { MainContainer } from '../MainContainer';
 
 const MARKET_SOLVING_TIMEOUT = 4000;
 const MARKET_SOLVING_STAGES = 5;
@@ -148,56 +149,54 @@ export const Walkthrough: FC = () => {
   }, [scenario.fixedMarketState, isMarketSolving, marketState]);
 
   return (
-    <main>
-      <div className="flex items-stretch font-poppins relative border-t border-green-dark min-h-screen">
-        <SideBar
-          title={walkthrough.title}
-          subtitle={getWalkthroughTitle(roleId, walkthroughIndex)}
-          hasNextPage={hasNextStage}
-          hasPreviousPage={hasPreviousStage}
-          onNextClick={goToNextStage}
-          onPreviousClick={goToPreviousStage}
-          showSolveMarketBtn={marketState === MarketState.solvable}
-          showDetailsWidget={scenario.options.showDetailsWidget}
-          onSolveMarketClick={onSolveMarketClick}
-          sidebarContent={scenario.sidebarContent?.[stage]}
-          isFormEnabled={isFormEnabled}
-          isDivisibleInputEnabled={isFormEnabled && allowDivision}
-          showDivisibleInput={showDivisibleInput}
-          isMarketSolvable={marketState >= MarketState.solvable}
-          onFormSubmit={onFormSubmit}
-          roleId={roleId}
-          projects={scenario.myProjects}
-        />
-        <Market
-          myProjects={scenario.myProjects}
-          buyerProjects={scenario.buyerProjects}
-          sellerProjects={scenario.sellerProjects}
-          showCosts={marketState > MarketState.solvable}
-          showAllProjects={marketState < MarketState.solvable}
-          showWinners={marketState >= MarketState.showing_winners}
-          showSurpluses={marketState >= MarketState.showing_surpluses}
-          isMarketSolved={marketState === MarketState.solved}
-          roleId={roleId}
-          link={
-            stage === scenario.options.stages && !getNextScenarioId(scenarioId)
-              ? {
-                  text: 'Return to Walkthrough index',
-                  href: `/how-it-works#${roleId}`,
-                }
-              : undefined
-          }
-          showParticipants={scenario.options.showParticipants}
-          showMap={scenario.options.showMaps}
-          highlightedMapRegions={scenario.options.highlightedMapRegions}
-          loadingOverlayText={getOverlayText(marketState)}
-          loadingBar={{
-            progress: loadingBarProgress,
-            loaderSpeed: MARKET_SOLVING_TIMEOUT + 1000,
-            waitingTime: MARKET_SOLVING_TIMEOUT,
-          }}
-        />
-      </div>
-    </main>
+    <MainContainer>
+      <SideBar
+        title={walkthrough.title}
+        subtitle={getWalkthroughTitle(roleId, walkthroughIndex)}
+        hasNextPage={hasNextStage}
+        hasPreviousPage={hasPreviousStage}
+        onNextClick={goToNextStage}
+        onPreviousClick={goToPreviousStage}
+        showSolveMarketBtn={marketState === MarketState.solvable}
+        showDetailsWidget={scenario.options.showDetailsWidget}
+        onSolveMarketClick={onSolveMarketClick}
+        sidebarContent={scenario.sidebarContent?.[stage]}
+        isFormEnabled={isFormEnabled}
+        isDivisibleInputEnabled={isFormEnabled && allowDivision}
+        showDivisibleInput={showDivisibleInput}
+        isMarketSolvable={marketState >= MarketState.solvable}
+        onFormSubmit={onFormSubmit}
+        roleId={roleId}
+        projects={scenario.myProjects}
+      />
+      <Market
+        myProjects={scenario.myProjects}
+        buyerProjects={scenario.buyerProjects}
+        sellerProjects={scenario.sellerProjects}
+        showCosts={marketState > MarketState.solvable}
+        showAllProjects={marketState < MarketState.solvable}
+        showWinners={marketState >= MarketState.showing_winners}
+        showSurpluses={marketState >= MarketState.showing_surpluses}
+        isMarketSolved={marketState === MarketState.solved}
+        roleId={roleId}
+        link={
+          stage === scenario.options.stages && !getNextScenarioId(scenarioId)
+            ? {
+                text: 'Return to Walkthrough index',
+                href: `/how-it-works#${roleId}`,
+              }
+            : undefined
+        }
+        showParticipants={scenario.options.showParticipants}
+        showMap={scenario.options.showMaps}
+        highlightedMapRegions={scenario.options.highlightedMapRegions}
+        loadingOverlayText={getOverlayText(marketState)}
+        loadingBar={{
+          progress: loadingBarProgress,
+          loaderSpeed: MARKET_SOLVING_TIMEOUT + 1000,
+          waitingTime: MARKET_SOLVING_TIMEOUT,
+        }}
+      />
+    </MainContainer>
   );
 };
