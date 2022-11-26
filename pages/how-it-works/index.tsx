@@ -22,6 +22,14 @@ const getSectionTitle = (roleId: RoleId) => {
   return null;
 };
 
+const getWalkthroughTitle = (roleId: RoleId, walkthroughIndex: number) => {
+  if (roleId === 'generic') {
+    return `Walkthrough ${walkthroughIndex}`;
+  }
+
+  return `Walkthrough ${walkthroughIndex + 1}`;
+};
+
 const HowItWorks: NextPage = () => (
   <>
     <Header
@@ -59,7 +67,7 @@ const HowItWorks: NextPage = () => (
                       height={150}
                     >
                       <p className="text-3xl font-bold text-white">
-                        Walkthrough {walkthroughIndex + 1}
+                        {getWalkthroughTitle(roleId, walkthroughIndex)}
                       </p>
                       <p className="text-xl text-white">{walkthrough.title}</p>
                     </Splodge>

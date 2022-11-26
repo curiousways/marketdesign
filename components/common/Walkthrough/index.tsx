@@ -1,9 +1,19 @@
 import { FC, MouseEvent, MouseEventHandler, useEffect } from 'react';
+import { sentenceCase } from 'change-case';
 import MainContent from '@/components/walkthroughs/Main/MainContent';
 import { useWalkthroughContext } from '../../../context/WalkthroughContext';
 import { WalkthroughMarketState } from '../../../types/walkthrough';
 import { parseScenarioId } from '../../../utils/walkthroughs';
 import { SideBar } from '../Sidebar';
+import { RoleId } from '../../../types/roles';
+
+const getWalkthroughTitle = (roleId: RoleId, walkthroughIndex: number) => {
+  if (roleId === 'generic') {
+    return `WALKTHROUGH ${walkthroughIndex}`;
+  }
+
+  return `WALKTHROUGH - ${sentenceCase(roleId)} ${walkthroughIndex + 1}`;
+};
 
 export const Walkthrough: FC = () => {
   const {
@@ -50,7 +60,7 @@ export const Walkthrough: FC = () => {
       <div className="flex items-stretch font-poppins relative border-t border-green-dark min-h-screen">
         <SideBar
           title={walkthrough.title}
-          subtitle={`WALKTHROUGH ${walkthroughIndex + 1}`}
+          subtitle={getWalkthroughTitle(roleId, walkthroughIndex)}
           hasNextPage={hasNextStage}
           hasPreviousPage={hasPreviousStage}
           onNextClick={goToNextStage}
