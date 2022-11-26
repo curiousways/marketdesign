@@ -10,7 +10,7 @@ import {
 import { RoleId } from '@/types/roles';
 import { getNextScenarioId } from '@/utils/walkthroughs';
 import { Map } from '@/components/map/Map';
-import ParticipantsList from './ParticipantsList';
+import { MarketParticipantList } from '../../common/MarketParticipantList';
 import { MarketOutcome } from '../../common/MarketOutcome';
 
 const MainContentBody = () => {
@@ -99,7 +99,7 @@ const MainContentBody = () => {
           initial="hidden"
           animate="visible"
         >
-          <ParticipantsList
+          <MarketParticipantList
             sellerProjects={getActiveProjects(
               scenario.sellerProjects,
               'seller',

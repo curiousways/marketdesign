@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import {
   WalkthroughMarketState,
   WalkthroughProject,
@@ -9,9 +10,9 @@ import {
   includesProject,
   isMyProject,
 } from '@/utils/walkthroughs';
-import { MarketParticipant } from './Project';
+import { MarketParticipant } from '../MarketParticipant';
 
-type Props = {
+type MarketParticipantListProps = {
   buyerProjects: WalkthroughProject[];
   sellerProjects: WalkthroughProject[];
   losingBuyerProjects: WalkthroughProject[];
@@ -67,13 +68,13 @@ const getIsMyLastProject = (
   return projectIndex + 1 === activeProjects.length;
 };
 
-const ParticipantsList = ({
+export const MarketParticipantList: FC<MarketParticipantListProps> = ({
   buyerProjects,
   sellerProjects,
   losingBuyerProjects,
   losingSellerProjects,
   isMarketSolvable,
-}: Props) => {
+}: MarketParticipantListProps) => {
   const { scenario, marketState, getProjectCost } = useWalkthroughContext();
   const showingWinners = marketState >= WalkthroughMarketState.showing_winners;
   const allLosingProjects = [...losingSellerProjects, ...losingBuyerProjects];
@@ -145,5 +146,3 @@ const ParticipantsList = ({
     </ul>
   );
 };
-
-export default ParticipantsList;
