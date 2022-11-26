@@ -62,7 +62,7 @@ describe('ProjectDetails', () => {
     render(
       <ProjectDetails
         isFormEnabled
-        projects={[createProject()]}
+        projects={[project]}
         onFormSubmit={jest.fn()}
         roleId="buyer"
       />,
@@ -212,7 +212,7 @@ describe('ProjectDetails', () => {
       { wrapper },
     );
 
-    fireEvent.click(screen.getByText('Submit'));
+    fireEvent.submit(screen.getByText('Submit'));
 
     expect(onFormSubmit).toHaveBeenCalledTimes(1);
   });
