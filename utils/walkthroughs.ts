@@ -1,8 +1,8 @@
 import isEqual from 'lodash.isequal';
 import omit from 'lodash.omit';
 import { RoleId } from '@/types/roles';
-import { roles } from 'data/roles';
-import { walkthroughsByRole } from 'data/walkthroughs';
+import { roles } from '../data/roles';
+import { walkthroughsByRole } from '../data/walkthroughs';
 import {
   GetWalkthroughScenario,
   Walkthrough,

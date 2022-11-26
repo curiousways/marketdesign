@@ -12,9 +12,9 @@ import SellerVector from '@/components/walkthroughs/icons/SellerVector';
 import BuyerVector from '@/components/walkthroughs/icons/BuyerVector';
 import BiodiversityIconGray from '@/components/walkthroughs/icons/BiodiversityIcon';
 import NutrientsIcon from '@/components/walkthroughs/icons/NutrientsIcon';
-import { roles } from 'data/roles';
 import { classNames } from '@/utils/index';
 import { RoleId } from '@/types/roles';
+import { roles } from '../../../data/roles';
 import { ProductCount } from '../ProductCount';
 import { CostInput } from '../CostInput';
 import { Project } from '../../../types/project';
@@ -58,6 +58,18 @@ const getProjectBid = (project: Project): number | undefined => {
   }
 
   return Array.isArray(project.cost) ? undefined : project.cost;
+};
+
+const getCostInputPlaceholder = (roleId: RoleId) => {
+  if (roleId === 'buyer') {
+    return 'Enter bid...';
+  }
+
+  if (roleId === 'seller') {
+    return 'Enter offer...';
+  }
+
+  return;
 };
 
 export const ProjectDetails: FC<ProjectDetailsProps> = ({
@@ -157,6 +169,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                   <div className="flex-1 max-w-[50%]">
                     <CostInput
                       cost={project.cost}
+                      disabled={!isFormEnabled}
                       bid={getProjectBid(project)}
                       value={value}
                       name={priceInputNames[projectIndex]}
@@ -166,6 +179,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                       }
                       onInputChange={onCostInputChange}
                       onSelectChange={onCostInputChange}
+                      placeholder={getCostInputPlaceholder(roleId)}
                     />
                   </div>
                 </div>

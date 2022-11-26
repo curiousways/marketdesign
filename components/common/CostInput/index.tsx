@@ -10,6 +10,7 @@ type CostInputProps = {
   onSelectChange: (event: ChangeEvent<HTMLSelectElement>) => void;
   disabled?: boolean;
   value?: number;
+  placeholder?: string;
 };
 
 export const CostInput: FC<CostInputProps> = ({
@@ -21,6 +22,7 @@ export const CostInput: FC<CostInputProps> = ({
   onSelectChange,
   disabled,
   value,
+  placeholder,
 }: CostInputProps) => {
   const selectRef = useRef<HTMLSelectElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -84,7 +86,7 @@ export const CostInput: FC<CostInputProps> = ({
       onChange={handleInputChange}
       disabled={disabled}
       type="text"
-      placeholder="Enter offer..."
+      placeholder={placeholder}
       className={inputClassNames}
       name={name}
     />
