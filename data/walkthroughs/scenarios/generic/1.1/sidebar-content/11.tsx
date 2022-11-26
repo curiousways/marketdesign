@@ -5,7 +5,7 @@ export const sidebarContent11 = (
       participants are winners.
     </p>
     <p>
-      Again the sellers’ project provide enough credits to cover the demands of
+      Again the sellers’ project provides enough credits to cover the demands of
       the two winning buyers, but notice that in this case the Market Surplus is
       £130,000.
     </p>

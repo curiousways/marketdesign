@@ -10,8 +10,6 @@ export const sidebarContent1 = (
       So, let's see what happens if, instead of bidding at value, you instead
       enter a below value bid of £100,000.
     </p>
-    <p className="font-bold">
-      Enter that bid now, submit it and then solve the market.
-    </p>
+    <p>Enter that bid now, submit it and then solve the market.</p>
   </>
 );
