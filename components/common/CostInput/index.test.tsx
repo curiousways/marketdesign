@@ -36,13 +36,12 @@ describe('CostInput', () => {
     expect(onInputChange).toHaveBeenCalledTimes(1);
   });
 
-  it('validates the input', async () => {
+  it('validates the input if a fixed bid is given', async () => {
     render(
       <CostInput
-        validate
         name="my-input"
         cost={42}
-        value={42}
+        bid={42}
         onInputChange={jest.fn()}
         onSelectChange={jest.fn()}
       />,

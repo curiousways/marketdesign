@@ -70,7 +70,7 @@ const getMyProjectStyles = (
   const borderColor = 'black';
   const borderStyle = 'solid';
 
-  if (!isMyProject(scenario, project)) {
+  if (!isMyProject(scenario.myProjects, project)) {
     return { borderRadius };
   }
 

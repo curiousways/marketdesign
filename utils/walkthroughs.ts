@@ -7,7 +7,7 @@ import {
   GetWalkthroughScenario,
   Walkthrough,
   WalkthroughProject,
-  WalkthroughScenario,
+  WalkthroughUserProject,
 } from '../types/walkthrough';
 import { Project } from '../types/project';
 
@@ -121,9 +121,13 @@ export const getNextScenarioId = (scenarioId: string): string | undefined => {
 };
 
 export const isMyProject = (
-  scenario: WalkthroughScenario,
+  projects: WalkthroughProject[],
   project: WalkthroughProject,
-) => scenario.myProjects.includes(project);
+) => projects.includes(project);
+
+export const isMyWalkthroughProject = (
+  project: Project | WalkthroughProject,
+): project is WalkthroughUserProject => 'bid' in project;
 
 export const isProjectEqual = (
   projectA: Project | WalkthroughProject,

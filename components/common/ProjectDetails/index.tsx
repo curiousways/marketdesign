@@ -18,6 +18,7 @@ import { RoleId } from '@/types/roles';
 import { ProductCount } from '../ProductCount';
 import { CostInput } from '../CostInput';
 import { Project } from '../../../types/project';
+import { isMyWalkthroughProject } from '../../../utils/walkthroughs';
 
 type ProjectDetailsProps = {
   projects: Project[];
@@ -45,6 +46,18 @@ const getProjectValue = (project: Project, roleId: RoleId) => {
   }
 
   return Math.min(...project.cost);
+};
+
+const getProjectBid = (project: Project): number | undefined => {
+  if (!isMyWalkthroughProject(project)) {
+    return;
+  }
+
+  if (project.bid) {
+    return project.bid;
+  }
+
+  return Array.isArray(project.cost) ? undefined : project.cost;
 };
 
 export const ProjectDetails: FC<ProjectDetailsProps> = ({
@@ -99,7 +112,9 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
               ? project.costPerCredit
               : getProjectCost(project);
 
-            const onSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
+            const onCostInputChange = (
+              event: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+            ) => {
               setProjectCost(project, Number(event.target.value));
               onInputChange();
             };
@@ -141,16 +156,16 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
 
                   <div className="flex-1 max-w-[50%]">
                     <CostInput
-                      validate
                       cost={project.cost}
+                      bid={getProjectBid(project)}
                       value={value}
                       name={priceInputNames[projectIndex]}
                       animate={
                         !!isFormEnabled &&
                         animatedInputName === priceInputNames[projectIndex]
                       }
-                      onInputChange={onInputChange}
-                      onSelectChange={onSelectChange}
+                      onInputChange={onCostInputChange}
+                      onSelectChange={onCostInputChange}
                     />
                   </div>
                 </div>
