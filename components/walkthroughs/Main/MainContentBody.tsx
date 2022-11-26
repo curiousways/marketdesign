@@ -113,7 +113,6 @@ const MainContentBody = () => {
               scenario.buyerProjects,
               'buyer',
             )}
-            data={scenario}
           />
         </motion.div>
 

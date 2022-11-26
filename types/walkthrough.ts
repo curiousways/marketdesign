@@ -12,7 +12,6 @@ export interface WalkthroughOptions {
   allowDivision?: boolean;
   showDetailsWidget: boolean;
   showDivisibleInput?: boolean;
-  showCosts: boolean;
   showMaps: boolean;
   highlightedMapRegions?: WalkthroughHighlightedMapRegions;
   showParticipants: boolean;
@@ -23,8 +22,12 @@ export type WalkthroughProject = Project & {
   discountOrBonus: number;
 };
 
+export type WalkthroughUserProject = WalkthroughProject & {
+  bid?: number;
+};
+
 export interface WalkthroughScenario {
-  myProjects: WalkthroughProject[];
+  myProjects: WalkthroughUserProject[];
   buyerProjects: WalkthroughProject[];
   sellerProjects: WalkthroughProject[];
   sidebarContent?: {

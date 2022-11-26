@@ -1,10 +1,4 @@
-import React, {
-  ChangeEvent,
-  FC,
-  FormEventHandler,
-  useRef,
-  useState,
-} from 'react';
+import { ChangeEvent, FC, FormEventHandler, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
 import { fadeIn } from '@/utils/animations';
@@ -12,12 +6,13 @@ import SellerVector from '@/components/walkthroughs/icons/SellerVector';
 import BuyerVector from '@/components/walkthroughs/icons/BuyerVector';
 import BiodiversityIconGray from '@/components/walkthroughs/icons/BiodiversityIcon';
 import NutrientsIcon from '@/components/walkthroughs/icons/NutrientsIcon';
-import { roles } from 'data/roles';
 import { classNames } from '@/utils/index';
 import { RoleId } from '@/types/roles';
+import { roles } from '../../../data/roles';
 import { ProductCount } from '../ProductCount';
 import { CostInput } from '../CostInput';
 import { Project } from '../../../types/project';
+import { isMyWalkthroughProject } from '../../../utils/walkthroughs';
 
 type ProjectDetailsProps = {
   projects: Project[];
@@ -45,6 +40,30 @@ const getProjectValue = (project: Project, roleId: RoleId) => {
   }
 
   return Math.min(...project.cost);
+};
+
+const getProjectBid = (project: Project): number | undefined => {
+  if (!isMyWalkthroughProject(project)) {
+    return;
+  }
+
+  if (project.bid) {
+    return project.bid;
+  }
+
+  return Array.isArray(project.cost) ? undefined : project.cost;
+};
+
+const getCostInputPlaceholder = (roleId: RoleId) => {
+  if (roleId === 'buyer') {
+    return 'Enter bid...';
+  }
+
+  if (roleId === 'seller') {
+    return 'Enter offer...';
+  }
+
+  return;
 };
 
 export const ProjectDetails: FC<ProjectDetailsProps> = ({
@@ -99,7 +118,9 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
               ? project.costPerCredit
               : getProjectCost(project);
 
-            const onSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
+            const onCostInputChange = (
+              event: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+            ) => {
               setProjectCost(project, Number(event.target.value));
               onInputChange();
             };
@@ -141,16 +162,18 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
 
                   <div className="flex-1 max-w-[50%]">
                     <CostInput
-                      validate
                       cost={project.cost}
+                      disabled={!isFormEnabled}
+                      bid={getProjectBid(project)}
                       value={value}
                       name={priceInputNames[projectIndex]}
                       animate={
                         !!isFormEnabled &&
                         animatedInputName === priceInputNames[projectIndex]
                       }
-                      onInputChange={onInputChange}
-                      onSelectChange={onSelectChange}
+                      onInputChange={onCostInputChange}
+                      onSelectChange={onCostInputChange}
+                      placeholder={getCostInputPlaceholder(roleId)}
                     />
                   </div>
                 </div>

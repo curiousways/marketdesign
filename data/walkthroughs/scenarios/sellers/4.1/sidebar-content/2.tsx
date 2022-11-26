@@ -7,7 +7,7 @@ export const sidebarContentStage2 = (
     <p>One option is to establish a woodland in your field.</p>
     <p>
       That project has been assessed and will deliver 4 biodiversity credits and
-      1 water quality credits. To cover your costs the minimum you would need to
+      1 water quality credit. To cover your costs the minimum you would need to
       pursue that project would be £140,000.
     </p>
   </>

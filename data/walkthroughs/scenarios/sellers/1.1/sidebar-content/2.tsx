@@ -3,7 +3,7 @@ export const sidebarContentStage2 = (
     <p>
       Let’s imagine that you are such a landholder and the planned location of
       your project is on the parcel of land shown on the map. That project has
-      been assessed and once established will deliver 2 biodiversity credit and
+      been assessed and once established will deliver 2 biodiversity credits and
       3 water quality credits.
     </p>
 
@@ -15,6 +15,11 @@ export const sidebarContentStage2 = (
     <p>
       You estimate that the minimum you need to be paid now to compensate for
       those costs is £60,000.
+    </p>
+
+    <p>
+      These private details of your project are shown in the ‘My Projects’ box
+      at the top of this panel”
     </p>
   </>
 );

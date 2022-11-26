@@ -6,9 +6,8 @@ export const sidebarContentStage2 = (
       own OR both the Field 1 and Field 2 projects together.
     </p>
     <p>
-      Enter offers at cost for each of these options and signal that you want
-      these to be an Either/Or offer set.
+      Enter offers at cost for each of these options. Then submit your offer and
+      solve the market.
     </p>
-    <p>Submit your offer and then solve the market.</p>
   </>
 );

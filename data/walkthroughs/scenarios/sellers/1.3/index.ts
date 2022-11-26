@@ -8,7 +8,8 @@ export const getSellerScenario1_3: GetWalkthroughScenario = (
   myProjects: [
     {
       title: 'My Project',
-      cost: 100000,
+      cost: 60000,
+      bid: 100000,
       accepted: () => false,
       discountOrBonus: 0,
       products: { biodiversity: 2, nutrients: 3 },
@@ -61,7 +62,6 @@ export const getSellerScenario1_3: GetWalkthroughScenario = (
     stages: 8,
     isFormEnabled: stage === 1,
     showDetailsWidget: stage >= 1,
-    showCosts: stage >= 1,
     showMaps: false,
     showParticipants: stage >= 1,
   },

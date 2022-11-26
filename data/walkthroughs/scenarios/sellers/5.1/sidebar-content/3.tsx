@@ -10,7 +10,7 @@ export const sidebarContentStage3 = (
     </p>
     <p>
       Enter an offer at cost of £140,000 for the project in Field 1 and an offer
-      at cost of £70,000 for the project in field 2. Then submit these offers
+      at cost of £70,000 for the project in Field 2. Then submit these offers
       and solve the market.
     </p>
   </>

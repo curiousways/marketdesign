@@ -72,7 +72,6 @@ export const getSellerScenario4_1: GetWalkthroughScenario = (
     stages: 12,
     isFormEnabled: stage === 5,
     showDetailsWidget: stage >= 2,
-    showCosts: stage >= 3,
     showMaps: true,
     highlightedMapRegions: {
       seller: stage >= 2 ? 3 : -1,
