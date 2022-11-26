@@ -11,7 +11,7 @@ export const getBuyerScenario3_1: GetWalkthroughScenario = (stage: number) => ({
       cost: 60000,
       accepted: () => false,
       discountOrBonus: 0,
-      products: { biodiversity: 1, nutrients: 2 },
+      products: { biodiversity: 2, nutrients: 1 },
     },
   ],
   buyerProjects: [
@@ -63,7 +63,6 @@ export const getBuyerScenario3_1: GetWalkthroughScenario = (stage: number) => ({
     stages: 10,
     isFormEnabled: stage === 3,
     showDetailsWidget: stage >= 2,
-    showCosts: stage >= 3,
     showMaps: true,
     highlightedMapRegions: {
       buyer: stage >= 2 ? 21 : -1,

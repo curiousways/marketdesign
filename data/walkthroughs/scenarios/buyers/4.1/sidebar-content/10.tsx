@@ -14,7 +14,7 @@ export const sidebarContent10 = (
     </p>
     <p>
       As usual you receive your fair share of the bonus, in this case £19,000
-      and, as a result, secure your credits for a payment of £101,600.
+      and, as a result, secure your credits for a payment of £101,000.
     </p>
   </>
 );

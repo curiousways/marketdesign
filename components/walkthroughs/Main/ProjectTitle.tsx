@@ -40,7 +40,7 @@ export const ProjectTitle: FunctionComponent<Props> = ({
           <p
             className={classNames(
               commonTextClassNames,
-              isMyProject(scenario, project) ? 'font-bold' : '',
+              isMyProject(scenario.myProjects, project) ? 'font-bold' : '',
               commonTextClassNames,
             )}
           >

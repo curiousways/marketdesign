@@ -62,7 +62,6 @@ export const getBuyerScenario4_2: GetWalkthroughScenario = (stage: number) => ({
     isFormEnabled: stage === 1,
     showDetailsWidget: stage >= 1,
     showDivisibleInput: true,
-    showCosts: stage >= 1,
     showMaps: false,
     showParticipants: stage >= 1,
   },

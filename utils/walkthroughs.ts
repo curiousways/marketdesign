@@ -1,13 +1,13 @@
 import isEqual from 'lodash.isequal';
 import omit from 'lodash.omit';
 import { RoleId } from '@/types/roles';
-import { roles } from 'data/roles';
-import { walkthroughsByRole } from 'data/walkthroughs';
+import { roles } from '../data/roles';
+import { walkthroughsByRole } from '../data/walkthroughs';
 import {
   GetWalkthroughScenario,
   Walkthrough,
   WalkthroughProject,
-  WalkthroughScenario,
+  WalkthroughUserProject,
 } from '../types/walkthrough';
 import { Project } from '../types/project';
 
@@ -121,9 +121,13 @@ export const getNextScenarioId = (scenarioId: string): string | undefined => {
 };
 
 export const isMyProject = (
-  scenario: WalkthroughScenario,
+  projects: WalkthroughProject[],
   project: WalkthroughProject,
-) => scenario.myProjects.includes(project);
+) => projects.includes(project);
+
+export const isMyWalkthroughProject = (
+  project: Project | WalkthroughProject,
+): project is WalkthroughUserProject => 'bid' in project;
 
 export const isProjectEqual = (
   projectA: Project | WalkthroughProject,

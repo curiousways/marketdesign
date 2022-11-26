@@ -10,8 +10,6 @@ export const sidebarContent5 = (
       receive a share of the market surplus as a discount. So, if even if you
       bid at your maximum value, you will almost certainly end up paying less.
     </p>
-    <p className="font-bold">
-      Following that logic, enter a bid at £120,000 and press submit.
-    </p>
+    <p>Following that logic, enter a bid at £120,000 and press submit.</p>
   </>
 );

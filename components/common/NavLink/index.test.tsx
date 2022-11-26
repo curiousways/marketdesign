@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import mockRouter from 'next-router-mock';
 import { NavLink } from './index';

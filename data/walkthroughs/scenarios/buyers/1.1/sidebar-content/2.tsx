@@ -12,5 +12,9 @@ export const sidebarContent2 = (
       project and calculate that you can pay up to £120,000 to acquire this
       credit bundle.
     </p>
+    <p>
+      These private details of your building project are shown in the ‘My
+      Projects’ box at the top of this panel.
+    </p>
   </>
 );
