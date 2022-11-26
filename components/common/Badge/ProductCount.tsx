@@ -6,7 +6,7 @@ type Props = {
   className?: string;
 };
 
-const ProductCount = ({ children, className }: Props) => (
+export const ProductCount = ({ children, className }: Props) => (
   <div
     className={classNames(
       'absolute right-0 border-black rounded-full bg-white w-[29px] h-[29px] flex justify-center items-center',
@@ -16,5 +16,3 @@ const ProductCount = ({ children, className }: Props) => (
     {children}
   </div>
 );
-
-export default ProductCount;

@@ -1,23 +1,53 @@
 import { motion } from 'framer-motion';
 
 import Link from 'next/link';
+import { FC } from 'react';
 import { fadeInDown } from '@/utils/animations';
-import { useWalkthroughContext } from '@/context/WalkthroughContext';
-import { WalkthroughMarketState } from '@/types/walkthrough';
 import { RoleId } from '@/types/roles';
-import { getNextScenarioId } from '@/utils/walkthroughs';
-import { Map } from '@/components/map/Map';
-import { MarketParticipantList } from '../../common/MarketParticipantList';
-import { MarketOutcome } from '../../common/MarketOutcome';
+import { MarketParticipantList } from '../MarketParticipantList';
+import { MarketOutcome } from '../MarketOutcome';
 import { Project } from '../../../types/project';
 import { useProjectsContext } from '../../../context/ProjectsContext';
+import { HighlightedMapRegions } from '../../../types/map';
+import { Map } from '../Map';
 
-const MainContentBody = () => {
+type MarketScenarioProps = {
+  myProjects: Project[];
+  buyerProjects: Project[];
+  sellerProjects: Project[];
+  roleId: RoleId;
+  showAllProjects?: boolean;
+  showWinners: boolean;
+  showSurpluses: boolean;
+  isMarketSolved: boolean;
+  isMarketSolvable: boolean;
+  showParticipants: boolean;
+  showMap: boolean;
+  highlightedMapRegions?: HighlightedMapRegions;
+  link?: {
+    href: string;
+    text: string;
+  };
+};
+
+export const MarketScenario: FC<MarketScenarioProps> = ({
+  myProjects,
+  buyerProjects,
+  sellerProjects,
+  link,
+  roleId,
+  showAllProjects,
+  showWinners,
+  showSurpluses,
+  isMarketSolved,
+  isMarketSolvable,
+  showParticipants,
+  showMap,
+  highlightedMapRegions,
+}: MarketScenarioProps) => {
   const { getProjectCost } = useProjectsContext();
-  const { stage, scenario, scenarioId, roleId, marketState } =
-    useWalkthroughContext();
 
-  const activeUserProjects = scenario.myProjects.filter(
+  const activeUserProjects = myProjects.filter(
     (project) => !project.isInactive,
   );
 
@@ -63,25 +93,25 @@ const MainContentBody = () => {
     projects: Project[],
     projectRoleId: RoleId,
   ): Project[] => {
-    if (marketState < WalkthroughMarketState.solvable) {
+    if (!showAllProjects) {
       return projects;
     }
 
     return getAllProjects(projects, projectRoleId);
   };
 
-  // Show the "return to index" link for the last stage of the last scenario.
-  if (stage === scenario.options.stages && !getNextScenarioId(scenarioId)) {
+  // Show the "return to index" link if given.
+  if (link) {
     return (
       <div className="flex items-center h-full">
-        <Link href={`/how-it-works#${roleId}`} className="text-xl font-bold">
-          Return to Walkthrough index
+        <Link href={link.href} className="text-xl font-bold">
+          {link.text}
         </Link>
       </div>
     );
   }
 
-  if (scenario.options.showParticipants) {
+  if (showParticipants) {
     return (
       <>
         <motion.div
@@ -91,30 +121,19 @@ const MainContentBody = () => {
           animate="visible"
         >
           <MarketParticipantList
-            myProjects={scenario.myProjects}
-            sellerProjects={getActiveProjects(
-              scenario.sellerProjects,
-              'seller',
-            )}
-            buyerProjects={getActiveProjects(scenario.buyerProjects, 'buyer')}
-            losingSellerProjects={getLosingProjects(
-              scenario.sellerProjects,
-              'seller',
-            )}
-            losingBuyerProjects={getLosingProjects(
-              scenario.buyerProjects,
-              'buyer',
-            )}
-            isMarketSolvable={marketState > WalkthroughMarketState.solvable}
-            showWinners={marketState >= WalkthroughMarketState.showing_winners}
-            showSurpluses={
-              marketState >= WalkthroughMarketState.showing_surpluses
-            }
-            isMarketSolved={marketState === WalkthroughMarketState.solved}
+            myProjects={myProjects}
+            sellerProjects={getActiveProjects(sellerProjects, 'seller')}
+            buyerProjects={getActiveProjects(buyerProjects, 'buyer')}
+            losingSellerProjects={getLosingProjects(sellerProjects, 'seller')}
+            losingBuyerProjects={getLosingProjects(buyerProjects, 'buyer')}
+            isMarketSolvable={isMarketSolvable}
+            showWinners={showWinners}
+            showSurpluses={showSurpluses}
+            isMarketSolved={isMarketSolved}
           />
         </motion.div>
 
-        {marketState >= WalkthroughMarketState.showing_winners && (
+        {showWinners && (
           <motion.div
             key="market-outcome"
             variants={fadeInDown}
@@ -122,15 +141,9 @@ const MainContentBody = () => {
             animate="visible"
           >
             <MarketOutcome
-              isMarketSolved={marketState === WalkthroughMarketState.solved}
-              sellerProjects={getWinningProjects(
-                scenario.sellerProjects,
-                'seller',
-              )}
-              buyerProjects={getWinningProjects(
-                scenario.buyerProjects,
-                'buyer',
-              )}
+              isMarketSolved={isMarketSolved}
+              sellerProjects={getWinningProjects(sellerProjects, 'seller')}
+              buyerProjects={getWinningProjects(buyerProjects, 'buyer')}
             />
           </motion.div>
         )}
@@ -138,15 +151,13 @@ const MainContentBody = () => {
     );
   }
 
-  if (scenario.options.showMaps) {
+  if (showMap) {
     return (
       <div className="m-5">
-        <Map highlightedMapRegions={scenario.options.highlightedMapRegions} />
+        <Map highlightedMapRegions={highlightedMapRegions} />
       </div>
     );
   }
 
   return null;
 };
-
-export default MainContentBody;

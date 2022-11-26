@@ -9,7 +9,7 @@ import NutrientsIcon from '@/components/walkthroughs/icons/NutrientsIcon';
 import { classNames } from '@/utils/index';
 import { RoleId } from '@/types/roles';
 import { roles } from '../../../data/roles';
-import { ProductCount } from '../ProductCount';
+import { Credit } from '../Credit';
 import { CostInput } from '../CostInput';
 import { Project } from '../../../types/project';
 import { useProjectsContext } from '../../../context/ProjectsContext';
@@ -143,13 +143,13 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
 
                   {/* Credits */}
                   <div className="flex gap-x-2">
-                    <ProductCount
-                      productCount={project.products.biodiversity}
+                    <Credit
+                      count={project.products.biodiversity}
                       costPerCredit={project.costPerCredit}
                       Icon={<BiodiversityIconGray />}
                     />
-                    <ProductCount
-                      productCount={project.products.nutrients}
+                    <Credit
+                      count={project.products.nutrients}
                       costPerCredit={project.costPerCredit}
                       Icon={<NutrientsIcon />}
                     />

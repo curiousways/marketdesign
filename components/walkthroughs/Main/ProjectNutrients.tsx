@@ -1,4 +1,4 @@
-import AdjustedProductCount from './AdjustedProductCount';
+import { AdjustedProductCount } from '../../common/AdjustedProductCount';
 
 type Props = {
   count?: number;

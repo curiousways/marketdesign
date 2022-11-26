@@ -1,11 +1,16 @@
 import { FC, MouseEvent, MouseEventHandler, useEffect } from 'react';
 import { sentenceCase } from 'change-case';
-import MainContent from '@/components/walkthroughs/Main/MainContent';
 import { useWalkthroughContext } from '../../../context/WalkthroughContext';
 import { WalkthroughMarketState } from '../../../types/walkthrough';
-import { parseScenarioId } from '../../../utils/walkthroughs';
+import {
+  getNextScenarioId,
+  parseScenarioId,
+} from '../../../utils/walkthroughs';
 import { SideBar } from '../Sidebar';
 import { RoleId } from '../../../types/roles';
+import { Market } from '../Market';
+
+const MARKET_SOLVING_TIMEOUT = 4000;
 
 const getWalkthroughTitle = (roleId: RoleId, walkthroughIndex: number) => {
   if (roleId === 'generic') {
@@ -13,6 +18,20 @@ const getWalkthroughTitle = (roleId: RoleId, walkthroughIndex: number) => {
   }
 
   return `WALKTHROUGH - ${sentenceCase(roleId)} ${walkthroughIndex + 1}`;
+};
+
+const getOverlayText = (marketState: WalkthroughMarketState) => {
+  if (marketState === WalkthroughMarketState.calculating_winners) {
+    return 'Determining Market Winners';
+  }
+
+  if (marketState === WalkthroughMarketState.distributing_surpluss) {
+    return 'Distributing Market Surplus';
+  }
+
+  if (marketState === WalkthroughMarketState.calculating_final_payments) {
+    return 'Calculating Final Payments';
+  }
 };
 
 export const Walkthrough: FC = () => {
@@ -29,6 +48,7 @@ export const Walkthrough: FC = () => {
     goToPreviousStage,
     marketState,
     goToNextMarketState,
+    isMarketSolving,
   } = useWalkthroughContext();
 
   const onSolveMarketClick: MouseEventHandler = (
@@ -40,6 +60,60 @@ export const Walkthrough: FC = () => {
 
   const { walkthroughIndex } = parseScenarioId(scenarioId);
   const { isFormEnabled, allowDivision, showDivisibleInput } = scenario.options;
+
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+    const { fixedMarketState } = scenario;
+
+    // Exit if the scenario is controlling the market state.
+    if (typeof fixedMarketState !== 'undefined') {
+      return;
+    }
+
+    if (
+      marketState === WalkthroughMarketState.showing_winners ||
+      marketState === WalkthroughMarketState.showing_surpluses
+    ) {
+      timer = setTimeout(goToNextMarketState, MARKET_SOLVING_TIMEOUT);
+
+      return;
+    }
+
+    if (isMarketSolving) {
+      timer = setTimeout(goToNextMarketState, MARKET_SOLVING_TIMEOUT);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scenario.fixedMarketState, isMarketSolving, marketState]);
+
+  // This is here for the intro walkthrough, which needs to manually step
+  // through the market states.
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+    const { fixedMarketState } = scenario;
+
+    if (typeof fixedMarketState !== 'undefined') {
+      setMarketState(fixedMarketState);
+
+      if (
+        fixedMarketState === WalkthroughMarketState.calculating_winners ||
+        fixedMarketState === WalkthroughMarketState.distributing_surpluss ||
+        fixedMarketState === WalkthroughMarketState.calculating_final_payments
+      ) {
+        timer = setTimeout(goToNextStage, MARKET_SOLVING_TIMEOUT);
+      }
+
+      return;
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scenario.fixedMarketState, isMarketSolving]);
 
   useEffect(() => {
     // For the case where the user submits the form and puts the market into a
@@ -77,7 +151,31 @@ export const Walkthrough: FC = () => {
           roleId={roleId}
           projects={scenario.myProjects}
         />
-        <MainContent />
+        <Market
+          myProjects={scenario.myProjects}
+          buyerProjects={scenario.buyerProjects}
+          sellerProjects={scenario.sellerProjects}
+          isMarketSolvable={marketState > WalkthroughMarketState.solvable}
+          showAllProjects={marketState < WalkthroughMarketState.solvable}
+          showWinners={marketState >= WalkthroughMarketState.showing_winners}
+          showSurpluses={
+            marketState >= WalkthroughMarketState.showing_surpluses
+          }
+          isMarketSolved={marketState === WalkthroughMarketState.solved}
+          roleId={roleId}
+          link={
+            stage === scenario.options.stages && !getNextScenarioId(scenarioId)
+              ? {
+                  text: 'Return to Walkthrough index',
+                  href: `/how-it-works#${roleId}`,
+                }
+              : undefined
+          }
+          showParticipants={scenario.options.showParticipants}
+          showMap={scenario.options.showMaps}
+          highlightedMapRegions={scenario.options.highlightedMapRegions}
+          loadingOverlayText={getOverlayText(marketState)}
+        />
       </div>
     </main>
   );

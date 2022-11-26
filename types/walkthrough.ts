@@ -1,10 +1,6 @@
+import { HighlightedMapRegions } from './map';
 import { Project } from './project';
 import { RoleId } from './roles';
-
-export interface WalkthroughHighlightedMapRegions {
-  buyer?: number;
-  seller?: number;
-}
 
 export interface WalkthroughOptions {
   stages: number;
@@ -13,7 +9,7 @@ export interface WalkthroughOptions {
   showDetailsWidget: boolean;
   showDivisibleInput?: boolean;
   showMaps: boolean;
-  highlightedMapRegions?: WalkthroughHighlightedMapRegions;
+  highlightedMapRegions?: HighlightedMapRegions;
   showParticipants: boolean;
 }
 
