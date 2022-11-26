@@ -25,7 +25,10 @@ export interface WalkthroughScenario {
   fixedMarketState?: WalkthroughMarketState;
 }
 
-export type GetWalkthroughScenario = (stage: number) => WalkthroughScenario;
+export type GetWalkthroughScenario = (
+  stage: number,
+  options?: { getProjectCost?: (project: Project) => number },
+) => WalkthroughScenario;
 
 export interface Walkthrough {
   title: string;
