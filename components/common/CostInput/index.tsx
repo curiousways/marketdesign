@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useCallback, useEffect, useRef } from 'react';
+import { ChangeEvent, FC, useCallback, useEffect, useRef } from 'react';
 import { classNames } from '@/utils/index';
 
 type CostInputProps = {
