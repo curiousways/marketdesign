@@ -16,13 +16,11 @@ export const sidebarContentStage4 = (
       best chance of having your project funded.
     </p>
     <p>
-      2 - Get paid more than your cost: In the Lindsay Mechanism successful
+      2 - Get paid more than your cost: In the Lindsay Mechanism, successful
       sellers receive a share of the market surplus as a bonus. So, if even if
       you offer at cost, you will almost certainly end up getting paid more.
     </p>
 
-    <p className="font-bold">
-      Following that logic, enter an offer of £60,000 and press submit.
-    </p>
+    <p>Following that logic, enter an offer of £60,000 and press submit.</p>
   </>
 );

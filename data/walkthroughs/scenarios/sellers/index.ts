@@ -16,7 +16,7 @@ import { getSellerScenario5_2 } from './5.2';
 
 export const sellerWalkthroughs: Walkthrough[] = [
   {
-    title: 'Bidding High & Low',
+    title: 'Offering High & Low',
     scenarios: [
       getSellerScenario1_1,
       getSellerScenario1_2,

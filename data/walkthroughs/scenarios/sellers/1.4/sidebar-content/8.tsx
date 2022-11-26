@@ -9,7 +9,7 @@ export const sidebarContent8 = (
       £12,000 And been paid £72,000 for your project.
     </p>
     <p>
-      If you tried either of the above cost offers you will have failed to get
+      If you tried either of the above-cost offers you will have failed to get
       funding.
     </p>
   </>
