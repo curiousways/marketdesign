@@ -3,10 +3,10 @@ import { AdjustedProductCount } from '../AdjustedProductCount';
 
 type NutrientCountProps = {
   count?: number;
-  adjustCount: boolean;
+  adjustCount?: boolean;
   accepted: number | boolean;
   shadowColor: string;
-  showLoserStyles: boolean;
+  showLoserStyles?: boolean;
 };
 
 export const NutrientCount: FC<NutrientCountProps> = ({
@@ -37,7 +37,10 @@ export const NutrientCount: FC<NutrientCountProps> = ({
             stroke="white"
           />
         </svg>
-        <div className="border border-black rounded-full bg-white w-[20px] h-[20px] flex justify-center items-center absolute -right-[8px] -top-[8px]">
+        <div
+          data-testid="losing-product-count"
+          className="border border-black rounded-full bg-white w-[20px] h-[20px] flex justify-center items-center absolute -right-[8px] -top-[8px]"
+        >
           {count}
         </div>
       </div>

@@ -9,7 +9,7 @@ import CartPlus from '../../walkthroughs/icons/CartPlus';
 import OfferIcon from '../../walkthroughs/icons/OfferIcon';
 import { MarketParticipantTitle } from '../MarketParticipantTitle';
 import { Products } from '../../../types/products';
-import { BiodiversityCount } from '../BiodiversityCount/BiodiversityCount';
+import { BiodiversityCount } from '../BiodiversityCount';
 import { NutrientCount } from '../NutrientCount';
 
 const PROJECT_HEIGHT = 120;
