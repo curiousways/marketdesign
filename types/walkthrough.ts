@@ -12,7 +12,6 @@ export interface WalkthroughOptions {
   allowDivision?: boolean;
   showDetailsWidget: boolean;
   showDivisibleInput?: boolean;
-  showCosts: boolean;
   showMaps: boolean;
   highlightedMapRegions?: WalkthroughHighlightedMapRegions;
   showParticipants: boolean;

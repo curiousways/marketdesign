@@ -5,7 +5,6 @@ import { classNames } from '@/utils/index';
 
 import {
   WalkthroughMarketState,
-  WalkthroughOptions,
   WalkthroughProject,
   WalkthroughScenario,
 } from '@/types/walkthrough';
@@ -32,7 +31,6 @@ const SHOW_LOSERS_MAX_SCREEN_WIDTH = 1700;
 type Props = {
   project: WalkthroughProject;
   projectRoleId: 'buyer' | 'seller';
-  options: WalkthroughOptions;
   isLoser: boolean;
   loserIndex?: number;
   className?: string;
@@ -246,7 +244,6 @@ const useProjectAnimation = (
 const Project = ({
   project,
   projectRoleId,
-  options,
   isLoser,
   loserIndex,
   className = '',
@@ -256,7 +253,9 @@ const Project = ({
 }: Props) => {
   const { marketState, scenario, getProjectCost } = useWalkthroughContext();
   const { discountOrBonus, products, accepted } = project;
-  const { showCosts } = options;
+  const showCosts =
+    isMyProject(scenario, project) ||
+    marketState > WalkthroughMarketState.solvable;
 
   const projectCost = getProjectCost(project);
   const acceptedCost = accepted(projectCost);
