@@ -7,7 +7,9 @@ type LiveDemoProps = {
   demoFiles: DemoFile[];
 };
 
-const HowItWorks: NextPage<LiveDemoProps> = ({ demoFiles }: LiveDemoProps) => (
+const LiveDemoIndex: NextPage<LiveDemoProps> = ({
+  demoFiles,
+}: LiveDemoProps) => (
   <div className="relative">
     <section className="mt-16" id="scenarios">
       <h2 className="heading-2 mx-6'">Scenarios</h2>
@@ -47,4 +49,4 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-export default HowItWorks;
+export default LiveDemoIndex;
