@@ -85,7 +85,7 @@ const MainContentBody = () => {
     return (
       <>
         <motion.div
-          key="losing-participants"
+          key="participants"
           variants={fadeInDown}
           initial="hidden"
           animate="visible"
