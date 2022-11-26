@@ -14,10 +14,10 @@ type MarketProps = {
   sellerProjects: Project[];
   roleId: RoleId;
   showAllProjects?: boolean;
+  showCosts: boolean;
   showWinners: boolean;
   showSurpluses: boolean;
   isMarketSolved: boolean;
-  isMarketSolvable: boolean;
   showParticipants: boolean;
   showMap: boolean;
   highlightedMapRegions?: HighlightedMapRegions;
@@ -40,10 +40,10 @@ export const Market: FC<MarketProps> = ({
   link,
   roleId,
   showAllProjects,
+  showCosts,
   showWinners,
   showSurpluses,
   isMarketSolved,
-  isMarketSolvable,
   showParticipants,
   showMap,
   highlightedMapRegions,
@@ -60,7 +60,7 @@ export const Market: FC<MarketProps> = ({
         myProjects={myProjects}
         buyerProjects={buyerProjects}
         sellerProjects={sellerProjects}
-        isMarketSolvable={isMarketSolvable}
+        showCosts={showCosts}
         showAllProjects={showAllProjects}
         showWinners={showWinners}
         showSurpluses={showSurpluses}

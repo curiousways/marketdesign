@@ -20,7 +20,7 @@ type MarketScenarioProps = {
   showWinners: boolean;
   showSurpluses: boolean;
   isMarketSolved: boolean;
-  isMarketSolvable: boolean;
+  showCosts: boolean;
   showParticipants: boolean;
   showMap: boolean;
   highlightedMapRegions?: HighlightedMapRegions;
@@ -40,7 +40,7 @@ export const MarketScenario: FC<MarketScenarioProps> = ({
   showWinners,
   showSurpluses,
   isMarketSolved,
-  isMarketSolvable,
+  showCosts,
   showParticipants,
   showMap,
   highlightedMapRegions,
@@ -93,7 +93,7 @@ export const MarketScenario: FC<MarketScenarioProps> = ({
     projects: Project[],
     projectRoleId: RoleId,
   ): Project[] => {
-    if (!showAllProjects) {
+    if (showAllProjects) {
       return projects;
     }
 
@@ -124,9 +124,11 @@ export const MarketScenario: FC<MarketScenarioProps> = ({
             myProjects={myProjects}
             sellerProjects={getActiveProjects(sellerProjects, 'seller')}
             buyerProjects={getActiveProjects(buyerProjects, 'buyer')}
-            losingSellerProjects={getLosingProjects(sellerProjects, 'seller')}
-            losingBuyerProjects={getLosingProjects(buyerProjects, 'buyer')}
-            isMarketSolvable={isMarketSolvable}
+            losingProjects={[
+              ...getLosingProjects(buyerProjects, 'buyer'),
+              ...getLosingProjects(sellerProjects, 'seller'),
+            ]}
+            showCosts={showCosts}
             showWinners={showWinners}
             showSurpluses={showSurpluses}
             isMarketSolved={isMarketSolved}

@@ -4,11 +4,11 @@ import { classNames } from '@/utils/index';
 export type MarketParticipantTitleProps = {
   title: string;
   subtitle?: string;
-  isMyProject: boolean;
+  isMyProject?: boolean;
   projectCost: number;
   accepted: number | boolean;
-  hideMainTitle: boolean;
-  showLoserStyles: boolean;
+  hideMainTitle?: boolean;
+  showLoserStyles?: boolean;
   showAcceptedCosts?: boolean;
 };
 
@@ -29,6 +29,7 @@ export const MarketParticipantTitle: FC<MarketParticipantTitleProps> = ({
 
   return (
     <div
+      data-testid="market-participant-title"
       className={classNames(
         'flex flex-col text-black text-center whitespace-nowrap',
         showLoserStyles ? 'w-[100px]' : 'flex-[30%] min-w-[75px]',

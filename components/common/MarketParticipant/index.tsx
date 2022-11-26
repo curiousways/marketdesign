@@ -27,17 +27,17 @@ type MarketParticipantProps = {
   accepted: boolean | number;
   discountOrBonus: number;
   products: Products;
-  isLoser: boolean;
+  isLoser?: boolean;
   loserIndex?: number;
   className?: string;
-  isMyProject: boolean;
-  isMyFirstProject: boolean;
-  isMyLastProject: boolean;
-  isMySubsequentProject: boolean;
-  showCosts: boolean;
-  showWinners: boolean;
-  showSurpluses: boolean;
-  isMarketSolved: boolean;
+  isMyProject?: boolean;
+  isMyFirstProject?: boolean;
+  isMyLastProject?: boolean;
+  isMySubsequentProject?: boolean;
+  showCosts?: boolean;
+  showWinners?: boolean;
+  showSurpluses?: boolean;
+  isMarketSolved?: boolean;
 };
 
 const getAdjustedCost = (cost: number, accepted: boolean | number) =>
@@ -59,9 +59,9 @@ const calculatePayment = (
 };
 
 const getMyProjectStyles = (
-  isMyProject: boolean,
-  isMyFirstProject: boolean,
-  isMyLastProject: boolean,
+  isMyProject?: boolean,
+  isMyFirstProject?: boolean,
+  isMyLastProject?: boolean,
 ): CSSProperties => {
   const borderRadius = '0.5rem';
   const borderWidth = '2px';
@@ -111,8 +111,8 @@ const getMyProjectStyles = (
 };
 
 const useRowAnimation = (
-  showLoserStyles: boolean,
-  isMySubsequentProject: boolean,
+  showLoserStyles?: boolean,
+  isMySubsequentProject?: boolean,
 ) => {
   const [animation, setAnimation] = useState<AnimationProps['animate']>();
 
@@ -162,8 +162,8 @@ const useRowAnimation = (
 };
 
 const useProjectAnimation = (
-  showLoserStyles: boolean,
-  fade: boolean,
+  showLoserStyles?: boolean,
+  fade?: boolean,
   loserIndex = 0,
 ) => {
   const [animation, setAnimation] = useState<AnimationProps['animate']>();
@@ -285,6 +285,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
 
   return (
     <motion.div
+      data-testid={`${isLoser ? 'losing-' : ''}${projectRoleId}-participant`}
       variants={fadeInDown}
       initial="hidden"
       animate={rowAnimation}
@@ -372,12 +373,13 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
 
             {!showLoserStyles && (
               <div className="flex gap-x-10 flex-[50%]">
-                {/* Bid */}
+                {/* Bid/Offer */}
                 <motion.div
                   variants={fadeInDown}
                   initial="hidden"
                   animate={showCosts ? 'visible' : ''}
                   className="bg-white rounded-lg border border-black px-1 w-[95px]"
+                  data-testid="bid-or-offer"
                 >
                   <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
                     {isBuyer ? <HammerIcon /> : <OfferIcon />}
@@ -395,12 +397,13 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
                   </div>
                 </motion.div>
 
-                {/* Discount */}
+                {/* Discount/Bonus */}
                 <motion.div
                   variants={fadeInDown}
                   initial="hidden"
-                  animate={showSurpluses && !isNotAccepted ? 'visible' : ''}
+                  animate={showSurpluses ? 'visible' : ''}
                   className="bg-white rounded-lg border border-black px-1 w-[95px]"
+                  data-testid="discount-or-bonus"
                 >
                   <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
                     <p className="text-black">{isBuyer ? '-' : '+'}</p>
@@ -413,12 +416,13 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
                   </div>
                 </motion.div>
 
-                {/* Pays */}
+                {/* Pays/Received */}
                 <motion.div
                   variants={fadeInDown}
                   initial="hidden"
                   animate={isMarketSolved && !isNotAccepted ? 'visible' : ''}
                   className="bg-white rounded-lg border border-black px-1 w-[95px]"
+                  data-testid="pays-or-received"
                 >
                   <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
                     {isBuyer ? <PoundcashTag /> : <CartPlus />}

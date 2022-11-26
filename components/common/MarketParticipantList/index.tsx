@@ -8,12 +8,11 @@ type MarketParticipantListProps = {
   myProjects: Project[];
   buyerProjects: Project[];
   sellerProjects: Project[];
-  losingBuyerProjects: Project[];
-  losingSellerProjects: Project[];
-  showWinners: boolean;
-  showSurpluses: boolean;
-  isMarketSolved: boolean;
-  isMarketSolvable: boolean;
+  losingProjects: Project[];
+  showCosts?: boolean;
+  showWinners?: boolean;
+  showSurpluses?: boolean;
+  isMarketSolved?: boolean;
 };
 
 /**
@@ -24,7 +23,7 @@ const sortMyProjects = (
   buyerProjects: Project[],
   sellerProjects: Project[],
   losingProjects: Project[],
-  showingWinners: boolean,
+  showingWinners?: boolean,
 ) =>
   [...sellerProjects, ...buyerProjects].sort((a, b) => {
     const isLoserA = showingWinners && includesProject(a, losingProjects);
@@ -70,25 +69,23 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
   myProjects,
   buyerProjects,
   sellerProjects,
-  losingBuyerProjects,
-  losingSellerProjects,
+  losingProjects,
+  showCosts,
   showWinners,
   showSurpluses,
   isMarketSolved,
-  isMarketSolvable,
 }: MarketParticipantListProps) => {
   const { getProjectCost } = useProjectsContext();
-  const allLosingProjects = [...losingSellerProjects, ...losingBuyerProjects];
   const sortedProjects = sortMyProjects(
     myProjects,
     buyerProjects,
     sellerProjects,
-    allLosingProjects,
+    losingProjects,
     showWinners,
   );
 
   const sortedLosingProjects = sortedProjects.filter((project) =>
-    includesProject(project, allLosingProjects),
+    includesProject(project, losingProjects),
   );
 
   return (
@@ -116,7 +113,7 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
               }
               title={project.title}
               subtitle={project.subtitle}
-              isLoser={includesProject(project, allLosingProjects)}
+              isLoser={includesProject(project, losingProjects)}
               loserIndex={findProjectIndex(project, sortedLosingProjects)}
               isMyProject={myProjects.includes(project)}
               isMyFirstProject={isMyFirstProject}
@@ -130,7 +127,7 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
               discountOrBonus={project.discountOrBonus}
               products={project.products}
               accepted={project.accepted(projectCost)}
-              showCosts={myProjects.includes(project) || isMarketSolvable}
+              showCosts={myProjects.includes(project) || showCosts}
               showWinners={showWinners}
               showSurpluses={showSurpluses}
               isMarketSolved={isMarketSolved}
