@@ -1,0 +1,110 @@
+{
+  "categories": [
+    "Single bids only"
+  ],
+  "title": "Market-WlkThruB3",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc dapibus tempor massa, vel sagittis eros lobortis eu. Suspendisse condimentum enim id justo consectetur vestibulum. Maecenas eu lacus accumsan, tincidunt nulla vitae, dapibus sem. Cras in tincidunt nunc, in viverra eros. Donec ullamcorper magna turpis, in feugiat dolor eleifend in. Duis pulvinar sem quis urna fermentum tincidunt. Quisque facilisis faucibus nibh, vitae semper purus volutpat ac. ",
+  "playable_traders": [
+    {
+      "name": "seller 1",
+      "role": "seller",
+      "locations": [
+        "s1"
+      ],
+      "enable_divisibility_element": false
+    },
+    {
+      "name": "buyer 1",
+      "role": "buyer",
+      "locations": [
+        "b1"
+      ],
+      "enable_divisibility_element": false
+    }
+  ],
+  "states": [
+    {
+      "free_disposal": true,
+      "bidders": [
+        {
+          "name": "seller 1",
+          "bids": [
+            {
+              "v": -10000,
+              "q": {
+                "biodiversity": 1,
+                "nutrients": 2
+              },
+              "divisibility": 0
+            }
+          ]
+        },
+        {
+          "name": "seller 2",
+          "bids": [
+            {
+              "v": -15000,
+              "q": {
+                "biodiversity": 6,
+                "nutrients": 7
+              },
+              "divisibility": 0
+            }
+          ]
+        },
+        {
+          "name": "seller 3",
+          "bids": [
+            {
+              "v": -21000,
+              "q": {
+                "biodiversity": 4,
+                "nutrients": 4
+              },
+              "divisibility": 0
+            }
+          ]
+        },
+        {
+          "name": "buyer 1",
+          "bids": [
+            {
+              "v": 6000,
+              "q": {
+                "biodiversity": -2,
+                "nutrients": -1
+              },
+              "divisibility": 0
+            }
+          ]
+        },
+        {
+          "name": "buyer 2",
+          "bids": [
+            {
+              "v": 20000,
+              "q": {
+                "biodiversity": -5,
+                "nutrients": -2
+              },
+              "divisibility": 0
+            }
+          ]
+        },
+        {
+          "name": "buyer 3",
+          "bids": [
+            {
+              "v": 30000,
+              "q": {
+                "biodiversity": -4,
+                "nutrients": -7
+              },
+              "divisibility": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
