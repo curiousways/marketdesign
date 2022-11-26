@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  ChangeEvent,
+  FC,
+  FormEventHandler,
+  useRef,
+  useState,
+} from 'react';
 import { motion } from 'framer-motion';
 
 import { fadeIn } from '@/utils/animations';
@@ -8,16 +14,24 @@ import BiodiversityIconGray from '@/components/walkthroughs/icons/BiodiversityIc
 import NutrientsIcon from '@/components/walkthroughs/icons/NutrientsIcon';
 import { roles } from 'data/roles';
 import { classNames } from '@/utils/index';
-import { useWalkthroughContext } from '@/context/WalkthroughContext';
-import {
-  WalkthroughMarketState,
-  WalkthroughProject,
-} from '@/types/walkthrough';
 import { RoleId } from '@/types/roles';
-import Input from './Input';
-import { ProductCount } from '../../common/ProductCount';
+import { ProductCount } from '../ProductCount';
+import { CostInput } from '../CostInput';
+import { Project } from '../../../types/project';
 
-const getProjectValue = (project: WalkthroughProject, roleId: RoleId) => {
+type ProjectDetailsProps = {
+  projects: Project[];
+  isFormEnabled?: boolean;
+  isDivisibleInputEnabled?: boolean;
+  showDivisibleInput?: boolean;
+  isMarketSolvable?: boolean;
+  onFormSubmit: FormEventHandler;
+  roleId: RoleId;
+  getProjectCost: (project: Project) => number;
+  setProjectCost: (project: Project, cost: number) => void;
+};
+
+const getProjectValue = (project: Project, roleId: RoleId) => {
   if (project.costPerCredit) {
     return project.costPerCredit;
   }
@@ -33,30 +47,24 @@ const getProjectValue = (project: WalkthroughProject, roleId: RoleId) => {
   return Math.min(...project.cost);
 };
 
-const Details = () => {
-  const { marketState, scenario, roleId, goToNextStage, setMarketState } =
-    useWalkthroughContext();
-
-  const { isFormEnabled } = scenario.options;
-  const isDivisibleInputEnabled =
-    isFormEnabled && !!scenario.options.allowDivision;
-  const isMarketSolvable = marketState >= WalkthroughMarketState.solvable;
-  const priceInputNames = scenario.myProjects.map(
-    (_, index) => `project-${index}-price`,
-  );
+export const ProjectDetails: FC<ProjectDetailsProps> = ({
+  projects,
+  isFormEnabled,
+  isDivisibleInputEnabled,
+  showDivisibleInput,
+  isMarketSolvable,
+  onFormSubmit,
+  roleId,
+  getProjectCost,
+  setProjectCost,
+}: ProjectDetailsProps) => {
+  const priceInputNames = projects.map((_, index) => `project-${index}-price`);
 
   const formRef = useRef<HTMLFormElement>(null);
   const submitButtonRef = useRef<HTMLButtonElement>(null);
   const [animatedInputName, setAnimatedInputName] = useState<
     string | undefined
   >(priceInputNames[0]);
-
-  // Proceed to next market state when submit button is clicked.
-  const onSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    goToNextStage();
-    setMarketState(WalkthroughMarketState.solvable);
-  };
 
   const onInputChange = () => {
     if (!formRef.current) {
@@ -69,14 +77,6 @@ const Details = () => {
     setAnimatedInputName(firstInvalidInput?.name);
   };
 
-  useEffect(() => {
-    // For the case where the user submits the form and puts the market into a
-    // solveable state, then clicks the back button.
-    if (isFormEnabled) {
-      setMarketState(WalkthroughMarketState.pending);
-    }
-  }, [isFormEnabled, setMarketState]);
-
   return (
     <motion.div
       variants={fadeIn}
@@ -87,16 +87,22 @@ const Details = () => {
       className="border-2 border-black px-5 py-4 rounded-lg w-full"
     >
       <div className="text-black text-l">
-        <p className="font-bold">
-          My Project{scenario.myProjects.length ? 's' : ''}
-        </p>
+        <p className="font-bold">My Project{projects.length ? 's' : ''}</p>
         <p>{roles[roleId].label}</p>
       </div>
 
-      <form ref={formRef} onSubmit={onSubmit} className="flex flex-col">
+      <form ref={formRef} onSubmit={onFormSubmit} className="flex flex-col">
         <ul>
-          {scenario.myProjects.map((project, projectIndex) => {
+          {projects.map((project, projectIndex) => {
             const projectValue = getProjectValue(project, roleId);
+            const value = project.costPerCredit
+              ? project.costPerCredit
+              : getProjectCost(project);
+
+            const onSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
+              setProjectCost(project, Number(event.target.value));
+              onInputChange();
+            };
 
             return (
               <li
@@ -106,7 +112,7 @@ const Details = () => {
                   isMarketSolvable && project.isInactive ? 'opacity-30' : '',
                 )}
               >
-                {!!scenario.myProjects.length && !!project.subtitle && (
+                {!!project.subtitle && (
                   <span className="flex justify-end text-sm underline">
                     {project.subtitle}
                   </span>
@@ -134,14 +140,17 @@ const Details = () => {
                   <p className="font-light">£{projectValue.toLocaleString()}</p>
 
                   <div className="flex-1 max-w-[50%]">
-                    <Input
-                      project={project}
+                    <CostInput
+                      validate
+                      cost={project.cost}
+                      value={value}
                       name={priceInputNames[projectIndex]}
                       animate={
-                        isFormEnabled &&
+                        !!isFormEnabled &&
                         animatedInputName === priceInputNames[projectIndex]
                       }
-                      onChange={onInputChange}
+                      onInputChange={onInputChange}
+                      onSelectChange={onSelectChange}
                     />
                   </div>
                 </div>
@@ -150,7 +159,7 @@ const Details = () => {
           })}
         </ul>
         <div className="flex items-center">
-          {scenario.options.showDivisibleInput && (
+          {showDivisibleInput && (
             // eslint-disable-next-line jsx-a11y/label-has-associated-control
             <label
               className={classNames(
@@ -196,5 +205,3 @@ const Details = () => {
     </motion.div>
   );
 };
-
-export default Details;

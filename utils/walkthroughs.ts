@@ -9,6 +9,7 @@ import {
   WalkthroughProject,
   WalkthroughScenario,
 } from '../types/walkthrough';
+import { Project } from '../types/project';
 
 const SCENARIO_ID_DELIMITER = '-';
 
@@ -125,8 +126,8 @@ export const isMyProject = (
 ) => scenario.myProjects.includes(project);
 
 export const isProjectEqual = (
-  projectA: WalkthroughProject,
-  projectB: WalkthroughProject,
+  projectA: Project | WalkthroughProject,
+  projectB: Project | WalkthroughProject,
 ) => {
   const ignoredProperties = ['accepted'];
 

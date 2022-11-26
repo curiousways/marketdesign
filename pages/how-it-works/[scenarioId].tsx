@@ -1,10 +1,9 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 
 import { ParsedUrlQuery } from 'querystring';
-import SideBar from '@/components/walkthroughs/sidebar/SideBar';
-import MainContent from '@/components/walkthroughs/Main/MainContent';
 import { getAllScenarioIds, isValidScenarioId } from '@/utils/walkthroughs';
 import { WalkthroughProvider } from '@/context/WalkthroughContext';
+import { Walkthrough } from '../../components/common/Walkthrough';
 
 interface HowItWorksScenarioParams extends ParsedUrlQuery {
   scenarioId: string;
@@ -18,12 +17,7 @@ const HowItWorksScenario: NextPage<HowItWorksScenarioProps> = ({
   scenarioId,
 }) => (
   <WalkthroughProvider scenarioId={scenarioId}>
-    <main>
-      <div className="flex items-stretch font-poppins relative border-t border-green-dark min-h-screen">
-        <SideBar />
-        <MainContent />
-      </div>
-    </main>
+    <Walkthrough />
   </WalkthroughProvider>
 );
 

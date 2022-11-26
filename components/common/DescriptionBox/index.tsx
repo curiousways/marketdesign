@@ -1,15 +1,19 @@
+import React, { FC, ReactNode } from 'react';
 import { motion } from 'framer-motion';
-
 import { fadeIn } from '@/utils/animations';
-import { useWalkthroughContext } from '@/context/WalkthroughContext';
 
-const Description = () => {
-  const { scenario, stage } = useWalkthroughContext();
-  const sidebarContent = scenario.sidebarContent?.[stage];
-  const hide = !sidebarContent;
+type DescriptionBoxProps = {
+  children?: ReactNode;
+};
+
+export const DescriptionBox: FC<DescriptionBoxProps> = ({
+  children,
+}: DescriptionBoxProps) => {
+  const hide = !children;
 
   return (
     <motion.div
+      data-testid="description-box"
       variants={fadeIn}
       initial="hidden"
       animate={hide ? 'hidden' : 'visible'}
@@ -17,10 +21,8 @@ const Description = () => {
       className="text-l"
     >
       <div className="bg-green-dark py-5 px-3 rounded-lg text-white">
-        <div className="space-y-5 text-white">{sidebarContent}</div>
+        <div className="space-y-5 text-white">{children}</div>
       </div>
     </motion.div>
   );
 };
-
-export default Description;
