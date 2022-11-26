@@ -249,7 +249,7 @@ describe('MarketOutcome', () => {
     expect(sellers[0].paysOrReceived).toHaveStyle({ opacity: 1 });
   });
 
-  it('hides the costs for losing projects', async () => {
+  it('separates the losing projects and hides the costs', async () => {
     render(
       <MarketParticipantList
         showCosts
@@ -264,15 +264,21 @@ describe('MarketOutcome', () => {
       { wrapper },
     );
 
-    const { losingBuyers, losingSellers } = getMarketParticipants();
+    const { buyers, losingBuyers, sellers, losingSellers } =
+      getMarketParticipants();
+
+    expect(buyers).toHaveLength(1);
+    expect(sellers).toHaveLength(1);
 
     expect(losingBuyers).toHaveLength(1);
     expect(losingSellers).toHaveLength(1);
 
+    expect(losingBuyers[0].title).toHaveTextContent('Buyer 2');
     expect(losingBuyers[0].bidOrOffer).toBeNull();
     expect(losingBuyers[0].discountOrBonus).toBeNull();
     expect(losingBuyers[0].paysOrReceived).toBeNull();
 
+    expect(losingSellers[0].title).toHaveTextContent('Seller 2');
     expect(losingSellers[0].bidOrOffer).toBeNull();
     expect(losingSellers[0].discountOrBonus).toBeNull();
     expect(losingSellers[0].paysOrReceived).toBeNull();
