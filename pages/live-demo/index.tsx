@@ -7,31 +7,57 @@ type LiveDemoIndexProps = {
   demoFiles: DemoFile[];
 };
 
+const groupByCategories = (demoFiles: DemoFile[]) => {
+  const initialData: { [key in string]: DemoFile[] } = {};
+
+  return demoFiles.reduce((acc, demoFile) => {
+    const categoryDescription = demoFile.data.categories.join(', ');
+
+    return {
+      ...acc,
+      [categoryDescription]: [...(acc[categoryDescription] ?? []), demoFile],
+    };
+  }, initialData);
+};
+
 const LiveDemoIndex: NextPage<LiveDemoIndexProps> = ({
   demoFiles,
 }: LiveDemoIndexProps) => (
   <div className="relative">
-    <section className="mt-16" id="scenarios">
-      <h2 className="heading-2 mx-6'">Scenarios</h2>
-      <ul className="flex flex-wrap">
-        {demoFiles.map((demoFile) => (
-          <li
-            key={demoFile.slug}
-            className="items-center w-full md:w-1/2 xl:w-1/3 p-5"
-          >
-            <Link
-              className="max-w-[420px] mx-auto"
-              href={{
-                pathname: '/live-demo/[slug]',
-                query: {
-                  slug: demoFile.slug,
-                },
-              }}
-            >
-              {demoFile.data.title}
-            </Link>
-          </li>
-        ))}
+    <section className="mt-6 mx-10" id="scenarios">
+      <h2 className="heading-2">List of Markets</h2>
+      <ul>
+        {Object.entries(groupByCategories(demoFiles)).map(
+          ([categoryDescription, groupedDemoFiles]) => (
+            <li key={categoryDescription}>
+              <section className="mt-2 mb-8 ml-1">
+                <h3 className="text-green-dark text-xl font-bold">
+                  {categoryDescription}
+                </h3>
+                <ul className="flex flex-wrap">
+                  {groupedDemoFiles.map((demoFile) => (
+                    <li
+                      key={demoFile.slug}
+                      className="items-center w-full pt-3"
+                    >
+                      <Link
+                        className="underline-offset-8 text-lg hover:underline"
+                        href={{
+                          pathname: '/live-demo/[slug]',
+                          query: {
+                            slug: demoFile.slug,
+                          },
+                        }}
+                      >
+                        {demoFile.data.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            </li>
+          ),
+        )}
       </ul>
     </section>
   </div>

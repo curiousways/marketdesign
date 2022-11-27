@@ -26,7 +26,9 @@ export const NavLink: FC<NavLinkProps> = ({
       aria-current={isCurrent ? 'page' : undefined}
       className={classNames(
         'underline-offset-8 text-lg',
-        isCurrent ? activeClassName : `hover:underline ${inactiveClassName}`,
+        isCurrent
+          ? activeClassName
+          : `hover:underline ${inactiveClassName ?? ''}`,
       )}
     >
       {children}

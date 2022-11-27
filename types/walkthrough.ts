@@ -12,6 +12,7 @@ export interface WalkthroughOptions {
   showMaps: boolean;
   highlightedMapRegions?: HighlightedMapRegions;
   showParticipants: boolean;
+  limitMarketInfo?: boolean;
 }
 
 export interface WalkthroughScenario {
@@ -25,7 +26,10 @@ export interface WalkthroughScenario {
   fixedMarketState?: MarketState;
 }
 
-export type GetWalkthroughScenario = (stage: number) => WalkthroughScenario;
+export type GetWalkthroughScenario = (
+  stage: number,
+  options?: { getProjectCost?: (project: Project) => number },
+) => WalkthroughScenario;
 
 export interface Walkthrough {
   title: string;
