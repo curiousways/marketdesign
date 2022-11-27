@@ -10,7 +10,9 @@ jest.mock(
 Object.defineProperty(global.SVGElement.prototype, 'getBBox', {
   writable: true,
   value: jest.fn().mockReturnValue({
-    x: 0,
-    y: 0,
+    x: 50,
+    y: 60,
+    width: 200,
+    height: 100,
   }),
 });

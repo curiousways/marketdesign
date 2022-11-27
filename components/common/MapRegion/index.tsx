@@ -134,9 +134,7 @@ export const MapRegion: FunctionComponent<MapProps> = ({
       stroke="black"
       className={classNames(onClick ? 'cursor-pointer' : '')}
       onClick={() => {
-        if (MAP_REGION_KEYS[index]) {
-          onClick?.(MAP_REGION_KEYS[index], index);
-        }
+        onClick?.(MAP_REGION_KEYS[index], index);
       }}
     />
   );
