@@ -4,6 +4,8 @@ import { sidebarContentStage2 } from './sidebar-content/2';
 import { sidebarContentStage3 } from './sidebar-content/3';
 import { sidebarContentStage10 } from './sidebar-content/10';
 
+const HIGHLIGHTED_MAP_INDEX = 3;
+
 export const getSellerScenario2_1: GetWalkthroughScenario = (
   stage: number,
 ) => ({
@@ -14,6 +16,7 @@ export const getSellerScenario2_1: GetWalkthroughScenario = (
       accepted: () => true,
       discountOrBonus: 84000,
       products: { biodiversity: 4, nutrients: 3 },
+      mapIndex: HIGHLIGHTED_MAP_INDEX,
     },
   ],
   buyerProjects: [
@@ -67,7 +70,7 @@ export const getSellerScenario2_1: GetWalkthroughScenario = (
     showDetailsWidget: stage >= 2,
     showMaps: true,
     highlightedMapRegions: {
-      seller: stage >= 2 ? 3 : -1,
+      seller: stage >= 2 ? HIGHLIGHTED_MAP_INDEX : -1,
     },
     showParticipants: stage >= 3,
   },

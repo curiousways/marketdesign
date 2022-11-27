@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MapRegion returns the transformed path 1`] = `
+<div>
+  <svg>
+    <svg
+      viewBox="0 0 1016 869"
+    >
+      <g
+        transform="translate(-254, -124.30000000000001) scale(5.08, 5.08)"
+      >
+        <g>
+          <path
+            class=""
+            d="M350 35.5V101L424 224.5L500.5 186.5L459 138L438.5 149L407.5 61L359 29.5L350 35.5Z"
+            data-testid="map-region"
+            fill="white"
+            stroke="black"
+            vector-effect="non-scaling-stroke"
+          />
+        </g>
+      </g>
+    </svg>
+  </svg>
+</div>
+`;

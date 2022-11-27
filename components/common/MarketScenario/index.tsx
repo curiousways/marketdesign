@@ -24,6 +24,7 @@ type MarketScenarioProps = {
   showParticipants: boolean;
   showMap?: boolean;
   highlightedMapRegions?: HighlightedMapRegions;
+  onMapRegionClick?: (region: string, index: number) => void;
   link?: {
     href: string;
     text: string;
@@ -44,6 +45,7 @@ export const MarketScenario: FC<MarketScenarioProps> = ({
   showParticipants,
   showMap,
   highlightedMapRegions,
+  onMapRegionClick,
 }: MarketScenarioProps) => {
   const { getProjectCost } = useProjectsContext();
 
@@ -156,7 +158,10 @@ export const MarketScenario: FC<MarketScenarioProps> = ({
   if (showMap) {
     return (
       <div className="m-5">
-        <Map highlightedMapRegions={highlightedMapRegions} />
+        <Map
+          highlightedMapRegions={highlightedMapRegions}
+          onMapRegionClick={onMapRegionClick}
+        />
       </div>
     );
   }

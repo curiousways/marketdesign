@@ -5,19 +5,73 @@ import {
   useCallback,
   useContext,
   useMemo,
-  useState,
+  useReducer,
 } from 'react';
 import { isProjectEqual } from '@/utils/walkthroughs';
 import { Project } from '../types/project';
 
-type DynamicProjectCosts = {
-  project: Project;
-  cost: number;
-}[];
-
 type ProjectsContextType = {
   getProjectCost: (project: Project) => number;
   setProjectCost: (project: Project, cost: number) => void;
+  getProjectMapIndex: (project: Project) => number | undefined;
+  setProjectMapIndex: (project: Project, mapIndex: number) => void;
+};
+
+type ProjectsState = {
+  project: Project;
+  cost?: number;
+  mapIndex?: number;
+}[];
+
+type ProjectsUpdateCostAction = {
+  type: 'UPDATE_COST';
+  value: { project: Project; cost: number };
+};
+
+type ProjectsUpdateMapIndexAction = {
+  type: 'UPDATE_MAP_INDEX';
+  value: { project: Project; mapIndex: number };
+};
+
+type ProjectsAction = ProjectsUpdateCostAction | ProjectsUpdateMapIndexAction;
+
+const findEntry = (state: ProjectsState, project: Project) =>
+  state.find((item) => isProjectEqual(item.project, project));
+
+const reducer = (
+  state: ProjectsState,
+  action: ProjectsAction,
+): ProjectsState => {
+  switch (action.type) {
+    case 'UPDATE_COST': {
+      const { project, cost } = action.value;
+      const entry = findEntry(state, action.value.project);
+
+      if (entry) {
+        entry.cost = cost;
+
+        return state;
+      }
+
+      return [...state, { project, cost }];
+    }
+
+    case 'UPDATE_MAP_INDEX': {
+      const { project, mapIndex } = action.value;
+      const entry = findEntry(state, action.value.project);
+
+      if (entry) {
+        entry.mapIndex = mapIndex;
+
+        return state;
+      }
+
+      return [...state, { project, mapIndex }];
+    }
+
+    default:
+      throw new Error('Unknown action');
+  }
 };
 
 export const ProjectsContext = createContext<ProjectsContextType | null>(null);
@@ -29,22 +83,15 @@ type ProjectsProviderProps = {
 export const ProjectsProvider: FunctionComponent<ProjectsProviderProps> = ({
   children,
 }) => {
-  const [dynamicProjectCosts, setDynamicProjectCosts] =
-    useState<DynamicProjectCosts>([]);
+  const [state, dispatch] = useReducer(reducer, []);
 
-  const setProjectCost = useCallback(
-    (project: Project, cost: number) => {
-      setDynamicProjectCosts([{ project, cost }, ...dynamicProjectCosts]);
-    },
-    [dynamicProjectCosts],
-  );
+  const setProjectCost = useCallback((project: Project, cost: number) => {
+    dispatch({ type: 'UPDATE_COST', value: { project, cost } });
+  }, []);
 
   const getProjectCost = useCallback(
     (project: Project): number => {
-      const { cost: dynamicProjectCost } =
-        dynamicProjectCosts.find((item) =>
-          isProjectEqual(item.project, project),
-        ) ?? {};
+      const { cost: dynamicProjectCost } = findEntry(state, project) ?? {};
 
       if (dynamicProjectCost) {
         return dynamicProjectCost;
@@ -56,15 +103,33 @@ export const ProjectsProvider: FunctionComponent<ProjectsProviderProps> = ({
 
       return project.cost;
     },
-    [dynamicProjectCosts],
+    [state],
+  );
+
+  const setProjectMapIndex = useCallback(
+    (project: Project, mapIndex: number) => {
+      dispatch({ type: 'UPDATE_MAP_INDEX', value: { project, mapIndex } });
+    },
+    [],
+  );
+
+  const getProjectMapIndex = useCallback(
+    (project: Project): number | undefined => {
+      const { mapIndex: dynamicMapIndex } = findEntry(state, project) ?? {};
+
+      return dynamicMapIndex ?? project.mapIndex;
+    },
+    [state],
   );
 
   const value = useMemo(
     (): ProjectsContextType => ({
       getProjectCost,
       setProjectCost,
+      getProjectMapIndex,
+      setProjectMapIndex,
     }),
-    [getProjectCost, setProjectCost],
+    [getProjectCost, setProjectCost, getProjectMapIndex, setProjectMapIndex],
   );
 
   return (
