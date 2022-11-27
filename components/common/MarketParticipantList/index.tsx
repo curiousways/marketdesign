@@ -106,7 +106,7 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
         const projectCost = getProjectCost(project);
 
         return (
-          <li key={project.title + project.subtitle}>
+          <li key={JSON.stringify(project)}>
             <MarketParticipant
               projectRoleId={
                 includesProject(project, buyerProjects) ? 'buyer' : 'seller'

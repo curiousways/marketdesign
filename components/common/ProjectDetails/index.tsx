@@ -1,6 +1,5 @@
 import { ChangeEvent, FC, FormEvent, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-
 import { fadeIn } from '@/utils/animations';
 import BiodiversityIconGray from '@/components/walkthroughs/icons/BiodiversityIcon';
 import NutrientsIcon from '@/components/walkthroughs/icons/NutrientsIcon';
@@ -128,7 +127,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
 
             return (
               <li
-                key={project.title + project.subtitle}
+                key={JSON.stringify(project)}
                 className={classNames(
                   'mb-3',
                   isMarketSolvable && project.isInactive ? 'opacity-30' : '',
