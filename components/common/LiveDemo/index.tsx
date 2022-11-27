@@ -28,6 +28,7 @@ const convertBidToProject = (
   bidder: DemoBidder,
   bid: DemoBid,
   result?: Result,
+  mapIndex?: number,
 ): Project => {
   const { name: title } = bidder;
   const { q: products, v: cost, label } = bid;
@@ -64,7 +65,7 @@ const convertBidToProject = (
   return {
     title: capitalCase(title),
     subtitle: subtitle ? capitalCase(subtitle) : undefined,
-    mapIndex: mapIndices,
+    mapIndex: mapIndices.length ? mapIndices : mapIndex,
     cost: Math.abs(cost),
     products: {
       biodiversity: Math.abs(biodiversity),
@@ -86,8 +87,9 @@ const convertBidToProject = (
 const convertBidderToProjects = (
   bidder: DemoBidder,
   result?: Result,
+  mapIndex?: number,
 ): Project[] =>
-  bidder.bids.map((bid) => convertBidToProject(bidder, bid, result));
+  bidder.bids.map((bid) => convertBidToProject(bidder, bid, result, mapIndex));
 
 const isSellerBidder = (bidder: DemoBidder) => bidder.bids[0].v < 0;
 
@@ -130,6 +132,7 @@ const getProjectsForTrader = (
   bidders: DemoBidder[],
   trader?: DemoTrader,
   result?: Result,
+  mapIndex?: number,
 ): Project[] => {
   if (!trader) {
     return [];
@@ -138,7 +141,7 @@ const getProjectsForTrader = (
   const projects: Project[] = [];
 
   bidders.forEach((bidder) => {
-    projects.push(...convertBidderToProjects(bidder, result));
+    projects.push(...convertBidderToProjects(bidder, result, mapIndex));
   });
 
   const project = projects.filter(
@@ -180,6 +183,7 @@ export const LiveDemo: NextPage<LiveDemoProps> = ({ data }: LiveDemoProps) => {
   // TODO: Swap states based on shuffle button etc. at the end of a scenario
   // eslint-disable-next-line
   const [demoState, setDemoState] = useState<DemoState>(data.states[0]);
+  const [selectedMapIndex, setSelectedMapIndex] = useState<number>();
   const [playableTrader, setPlayableTrader] = useState<DemoTrader>();
 
   const onSolveMarketClick = useCallback(async () => {
@@ -206,12 +210,13 @@ export const LiveDemo: NextPage<LiveDemoProps> = ({ data }: LiveDemoProps) => {
   }, []);
 
   const onMapRegionClick = useCallback(
-    (region: string) => {
+    (region: string, mapIndex: number) => {
       const selectedTrader = data.playable_traders.find((trader) =>
         trader.locations.includes(region),
       );
 
       setPlayableTrader(selectedTrader);
+      setSelectedMapIndex(mapIndex);
     },
     [data.playable_traders],
   );
@@ -220,6 +225,7 @@ export const LiveDemo: NextPage<LiveDemoProps> = ({ data }: LiveDemoProps) => {
     demoState.bidders,
     playableTrader,
     result,
+    selectedMapIndex,
   );
 
   const hasMyProjects = !!myProjects.length;

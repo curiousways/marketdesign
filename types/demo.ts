@@ -8,6 +8,7 @@ export type DemoBid = {
   };
   divisibility: number;
   label?: string;
+  xor_group?: string;
 };
 
 export type DemoBidder = {

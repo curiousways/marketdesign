@@ -103,6 +103,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
       exit="hidden"
       layout
       className="border-2 border-black px-5 py-4 rounded-lg w-full"
+      data-testid="project-details"
     >
       <div className="text-black text-l">
         <p className="font-bold">My Project{projects.length ? 's' : ''}</p>
