@@ -1,6 +1,6 @@
 import { HighlightedMapRegions } from './map';
 import { MarketState } from './market';
-import { Project } from './project';
+import { MyProject, Project } from './project';
 import { RoleId } from './roles';
 
 export interface WalkthroughOptions {
@@ -16,7 +16,7 @@ export interface WalkthroughOptions {
 }
 
 export interface WalkthroughScenario {
-  myProjects: Project[];
+  myProjects: MyProject[];
   buyerProjects: Project[];
   sellerProjects: Project[];
   sidebarContent?: {

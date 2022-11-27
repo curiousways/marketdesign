@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { ReactNode } from 'react';
-import { MAP_REGION_KEYS } from '../../../constants/map';
+import { MAP_INDICES } from '../../../constants/map';
 import { ProjectsContext } from '../../../context/ProjectsContext';
 import { getMarketParticipants } from '../../../test-utils/market';
 import { DemoData } from '../../../types/demo';
@@ -139,8 +139,7 @@ const getHighlightedMapRegions = () => {
 
 const getHighlightedMapRegionByKey = (key: string) => {
   const highlightedRegions = getHighlightedMapRegions();
-  const [index] =
-    Object.entries(MAP_REGION_KEYS).find(([, region]) => region === key) ?? [];
+  const index = MAP_INDICES[key];
 
   const region = highlightedRegions.find(
     (r) => r.getAttribute('d') === MAP_REGION_PATHS[Number(index)],
@@ -161,9 +160,9 @@ describe('LiveDemo', () => {
 
     expect(highlightedMapPaths).toHaveLength(3);
     expect(highlightedMapPaths.map((el) => el.getAttribute('d'))).toEqual([
-      MAP_REGION_PATHS[3],
-      MAP_REGION_PATHS[4],
-      MAP_REGION_PATHS[21],
+      MAP_REGION_PATHS[MAP_INDICES.s1],
+      MAP_REGION_PATHS[MAP_INDICES.s2],
+      MAP_REGION_PATHS[MAP_INDICES.b1],
     ]);
   });
 
@@ -178,7 +177,7 @@ describe('LiveDemo', () => {
     const mapPaths = getMapPaths(projectDetails);
 
     expect(mapPaths).toHaveLength(1);
-    expect(mapPaths[0]).toEqual(MAP_REGION_PATHS[21]);
+    expect(mapPaths[0]).toEqual(MAP_REGION_PATHS[MAP_INDICES.b1]);
 
     const { allParticipants } = getMarketParticipants();
 
@@ -202,10 +201,10 @@ describe('LiveDemo', () => {
 
     expect(mapPaths).toHaveLength(4);
     expect(mapPaths).toEqual([
-      MAP_REGION_PATHS[3],
-      MAP_REGION_PATHS[4],
-      MAP_REGION_PATHS[3],
-      MAP_REGION_PATHS[4],
+      MAP_REGION_PATHS[MAP_INDICES.s1],
+      MAP_REGION_PATHS[MAP_INDICES.s2],
+      MAP_REGION_PATHS[MAP_INDICES.s1],
+      MAP_REGION_PATHS[MAP_INDICES.s2],
     ]);
 
     const { allParticipants } = getMarketParticipants();

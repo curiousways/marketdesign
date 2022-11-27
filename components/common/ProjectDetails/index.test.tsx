@@ -4,6 +4,7 @@ import { ProjectDetails } from './index';
 import { Project } from '../../../types/project';
 import { ProjectsContext } from '../../../context/ProjectsContext';
 import { MAP_REGION_PATHS } from '../MapRegion';
+import { MAP_INDICES } from '../../../constants/map';
 
 const createProject = (overrides?: Partial<Project>) => ({
   title: 'My Project',
@@ -222,11 +223,11 @@ describe('ProjectDetails', () => {
   });
 
   it('shows the selected map region', async () => {
-    const mapIndex = 10;
+    const region = 's1';
 
     render(
       <ProjectDetails
-        projects={[createProject({ mapIndex })]}
+        projects={[createProject({ mapRegions: [region] })]}
         onFormSubmit={jest.fn()}
         roleId="buyer"
       />,
@@ -236,16 +237,16 @@ describe('ProjectDetails', () => {
     const mapRegion = screen.getByTestId('map-region');
     const path = mapRegion.getAttribute('d');
 
-    expect(path).toBe(MAP_REGION_PATHS[mapIndex]);
+    expect(path).toBe(MAP_REGION_PATHS[MAP_INDICES[region]]);
   });
 
   it('shows multiple selected map regions', async () => {
-    const mapIndexA = 10;
-    const mapIndexB = 11;
+    const regionA = 's1';
+    const regionB = 's2';
 
     render(
       <ProjectDetails
-        projects={[createProject({ mapIndex: [mapIndexA, mapIndexB] })]}
+        projects={[createProject({ mapRegions: [regionA, regionB] })]}
         onFormSubmit={jest.fn()}
         roleId="buyer"
       />,
@@ -255,8 +256,8 @@ describe('ProjectDetails', () => {
     const mapRegions = screen.getAllByTestId('map-region');
 
     expect(mapRegions.map((el) => el.getAttribute('d'))).toEqual([
-      MAP_REGION_PATHS[mapIndexA],
-      MAP_REGION_PATHS[mapIndexB],
+      MAP_REGION_PATHS[MAP_INDICES[regionA]],
+      MAP_REGION_PATHS[MAP_INDICES[regionB]],
     ]);
   });
 });

@@ -3,7 +3,7 @@ import { HighlightedMapRegions } from '@/types/map';
 import { MAP_REGION_PATHS, MapRegion } from '../MapRegion';
 import { RoleId } from '../../../types/roles';
 import {
-  MAP_REGION_KEYS,
+  MAP_INDICES,
   MAP_VIEWBOX,
   MAP_VIEWBOX_HEIGHT,
   MAP_VIEWBOX_WIDTH,
@@ -32,10 +32,8 @@ export const Map: FunctionComponent<Props> = ({
       {MAP_REGION_PATHS.map((path, index) => {
         const highlightedRegion = Object.entries(
           highlightedMapRegions ?? {},
-        ).find(([, region]) =>
-          Array.isArray(region)
-            ? region.includes(MAP_REGION_KEYS[index])
-            : region === index,
+        ).find(([, regions = []]) =>
+          regions.some((region) => MAP_INDICES[region] === index),
         );
 
         return (

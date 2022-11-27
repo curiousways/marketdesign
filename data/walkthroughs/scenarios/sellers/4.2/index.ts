@@ -14,6 +14,7 @@ export const getSellerScenario4_2: GetWalkthroughScenario = (
       accepted: () => false,
       isInactive: true,
       products: { biodiversity: 4, nutrients: 1 },
+      mapRegions: ['s1'],
     },
     {
       title: 'My Project',
@@ -22,6 +23,7 @@ export const getSellerScenario4_2: GetWalkthroughScenario = (
       discountOrBonus: 50000,
       accepted: () => true,
       products: { biodiversity: 2, nutrients: 5 },
+      mapRegions: ['s1'],
     },
   ],
   buyerProjects: [

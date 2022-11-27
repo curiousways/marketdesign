@@ -15,6 +15,7 @@ export const getSellerScenario5_2: GetWalkthroughScenario = (
       discountOrBonus: 0,
       accepted: () => false,
       products: { biodiversity: 4, nutrients: 1 },
+      mapRegions: ['s1'],
     },
     {
       title: 'My Project',
@@ -23,6 +24,7 @@ export const getSellerScenario5_2: GetWalkthroughScenario = (
       discountOrBonus: 0,
       accepted: () => false,
       products: { biodiversity: 1, nutrients: 2 },
+      mapRegions: ['s2'],
     },
     {
       title: 'My Project',
@@ -31,6 +33,7 @@ export const getSellerScenario5_2: GetWalkthroughScenario = (
       discountOrBonus: 42000,
       accepted: () => true,
       products: { biodiversity: 5, nutrients: 3 },
+      mapRegions: ['s1', 's2'],
     },
   ],
   buyerProjects: [

@@ -11,6 +11,7 @@ import { CostInput } from '../CostInput';
 import { Project } from '../../../types/project';
 import { useProjectsContext } from '../../../context/ProjectsContext';
 import { MapRegion } from '../MapRegion';
+import { MAP_INDICES } from '../../../constants/map';
 
 type ProjectDetailsProps = {
   projects: Project[];
@@ -141,26 +142,18 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                 )}
                 <div className="flex gap-x-3 justify-between items-center">
                   {/* Selected map region(s) */}
-                  {!project.costPerCredit &&
-                    project.mapIndex &&
-                    (Array.isArray(project.mapIndex) ? (
-                      <div className="flex">
-                        {project.mapIndex.map((mapIndex, _index, arr) => (
-                          <MapRegion
-                            key={mapIndex}
-                            size={MAP_REGION_ICON_SIZE / arr.length}
-                            index={mapIndex}
-                            roleId={roleId}
-                          />
-                        ))}
-                      </div>
-                    ) : (
-                      <MapRegion
-                        size={MAP_REGION_ICON_SIZE}
-                        index={project.mapIndex}
-                        roleId={roleId}
-                      />
-                    ))}
+                  {!project.costPerCredit && project.mapRegions && (
+                    <div className="flex">
+                      {project.mapRegions.map((mapRegion, _index, arr) => (
+                        <MapRegion
+                          key={mapRegion}
+                          size={MAP_REGION_ICON_SIZE / arr.length}
+                          index={MAP_INDICES[mapRegion]}
+                          roleId={roleId}
+                        />
+                      ))}
+                    </div>
+                  )}
 
                   {/* Credits */}
                   <div className="flex gap-x-2">

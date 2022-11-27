@@ -4,7 +4,8 @@ import { sidebarContentStage2 } from './sidebar-content/2';
 import { sidebarContentStage3 } from './sidebar-content/3';
 import { sidebarContentStage10 } from './sidebar-content/10';
 
-const HIGHLIGHTED_MAP_INDEX = 3;
+const HIGHLIGHTED_MAP_REGION_ONE = 's1';
+const HIGHLIGHTED_MAP_REGION_TWO = 's2';
 
 export const getSellerScenario5_1: GetWalkthroughScenario = (
   stage: number,
@@ -17,7 +18,7 @@ export const getSellerScenario5_1: GetWalkthroughScenario = (
       discountOrBonus: 0,
       accepted: () => false,
       products: { biodiversity: 4, nutrients: 1 },
-      mapIndex: HIGHLIGHTED_MAP_INDEX,
+      mapRegions: [HIGHLIGHTED_MAP_REGION_ONE],
     },
     {
       title: 'My Project',
@@ -26,7 +27,7 @@ export const getSellerScenario5_1: GetWalkthroughScenario = (
       discountOrBonus: 37000,
       accepted: () => true,
       products: { biodiversity: 1, nutrients: 2 },
-      mapIndex: HIGHLIGHTED_MAP_INDEX,
+      mapRegions: [HIGHLIGHTED_MAP_REGION_TWO],
     },
   ],
   buyerProjects: [
@@ -66,7 +67,10 @@ export const getSellerScenario5_1: GetWalkthroughScenario = (
     showDetailsWidget: stage >= 2,
     showMaps: true,
     highlightedMapRegions: {
-      seller: stage >= 2 ? HIGHLIGHTED_MAP_INDEX : -1,
+      seller:
+        stage >= 2
+          ? [HIGHLIGHTED_MAP_REGION_ONE, HIGHLIGHTED_MAP_REGION_TWO]
+          : undefined,
     },
     showParticipants: stage >= 3,
   },

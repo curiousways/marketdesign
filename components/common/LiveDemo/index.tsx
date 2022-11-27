@@ -16,7 +16,6 @@ import { Project } from '../../../types/project';
 import { MarketState } from '../../../types/market';
 import { HighlightedMapRegions } from '../../../types/map';
 import { isProjectEqual } from '../../../utils/walkthroughs';
-import { MAP_REGION_KEYS } from '../../../constants/map';
 
 interface LiveDemoProps {
   data: DemoData;
@@ -28,7 +27,7 @@ const convertBidToProject = (
   bidder: DemoBidder,
   bid: DemoBid,
   result?: Result,
-  mapIndex?: number,
+  mapRegion?: string,
 ): Project => {
   const { name: title } = bidder;
   const { q: products, v: cost, label } = bid;
@@ -46,26 +45,17 @@ const convertBidToProject = (
   // field 1#s1+s2
   // field 1#s1-woodland
   const [subtitle = '', region = ''] = (label ?? '').split('#');
-  const regions = region.split('+').map((item) => item.split('-')[0]);
-  const mapIndices = regions
-    .map((r) => {
-      const [index] =
-        Object.entries(MAP_REGION_KEYS).find(
-          ([, regionKey]) => regionKey === r,
-        ) ?? [];
-
-      if (!index) {
-        return;
-      }
-
-      return Number(index);
-    })
-    .filter((index): index is number => typeof index !== 'undefined');
+  const regions = region
+    .split('+')
+    .map((item) => item.split('-')[0])
+    .filter((x): x is string => !!x);
 
   return {
     title: capitalCase(title),
     subtitle: subtitle ? capitalCase(subtitle) : undefined,
-    mapIndex: mapIndices.length ? mapIndices : mapIndex,
+    mapRegions: regions.length
+      ? regions
+      : [mapRegion].filter((x): x is string => !!x),
     cost: Math.abs(cost),
     products: {
       biodiversity: Math.abs(biodiversity),
@@ -87,9 +77,9 @@ const convertBidToProject = (
 const convertBidderToProjects = (
   bidder: DemoBidder,
   result?: Result,
-  mapIndex?: number,
+  mapRegion?: string,
 ): Project[] =>
-  bidder.bids.map((bid) => convertBidToProject(bidder, bid, result, mapIndex));
+  bidder.bids.map((bid) => convertBidToProject(bidder, bid, result, mapRegion));
 
 const isSellerBidder = (bidder: DemoBidder) => bidder.bids[0].v < 0;
 
@@ -132,7 +122,7 @@ const getProjectsForTrader = (
   bidders: DemoBidder[],
   trader?: DemoTrader,
   result?: Result,
-  mapIndex?: number,
+  mapRegion?: string,
 ): Project[] => {
   if (!trader) {
     return [];
@@ -141,7 +131,7 @@ const getProjectsForTrader = (
   const projects: Project[] = [];
 
   bidders.forEach((bidder) => {
-    projects.push(...convertBidderToProjects(bidder, result, mapIndex));
+    projects.push(...convertBidderToProjects(bidder, result, mapRegion));
   });
 
   const project = projects.filter(
@@ -183,7 +173,7 @@ export const LiveDemo: NextPage<LiveDemoProps> = ({ data }: LiveDemoProps) => {
   // TODO: Swap states based on shuffle button etc. at the end of a scenario
   // eslint-disable-next-line
   const [demoState, setDemoState] = useState<DemoState>(data.states[0]);
-  const [selectedMapIndex, setSelectedMapIndex] = useState<number>();
+  const [selectedMapRegion, setSelectedMapRegion] = useState<string>();
   const [playableTrader, setPlayableTrader] = useState<DemoTrader>();
 
   const onSolveMarketClick = useCallback(async () => {
@@ -210,13 +200,13 @@ export const LiveDemo: NextPage<LiveDemoProps> = ({ data }: LiveDemoProps) => {
   }, []);
 
   const onMapRegionClick = useCallback(
-    (region: string, mapIndex: number) => {
+    (region: string) => {
       const selectedTrader = data.playable_traders.find((trader) =>
         trader.locations.includes(region),
       );
 
       setPlayableTrader(selectedTrader);
-      setSelectedMapIndex(mapIndex);
+      setSelectedMapRegion(region);
     },
     [data.playable_traders],
   );
@@ -225,7 +215,7 @@ export const LiveDemo: NextPage<LiveDemoProps> = ({ data }: LiveDemoProps) => {
     demoState.bidders,
     playableTrader,
     result,
-    selectedMapIndex,
+    selectedMapRegion,
   );
 
   const hasMyProjects = !!myProjects.length;

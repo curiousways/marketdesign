@@ -1,4 +1,5 @@
 import { GetWalkthroughScenario } from '@/types/walkthrough';
+import { HighlightedMapRegions } from '../../../../../types/map';
 import { MarketState } from '../../../../../types/market';
 import { Project } from '../../../../../types/project';
 import { sidebarContent1 } from './sidebar-content/1';
@@ -202,17 +203,19 @@ const getMarketState = (stage: number): MarketState => {
   return MarketState.pending;
 };
 
-const getHighlightedMapRegions = (stage: number) => {
+const getHighlightedMapRegions = (
+  stage: number,
+): HighlightedMapRegions | undefined => {
   if (stage === 3) {
     return {
-      seller: 7,
+      seller: ['s3'],
     };
   }
 
   if (stage === 5) {
     return {
-      seller: 7,
-      buyer: 36,
+      seller: ['s3'],
+      buyer: ['b2'],
     };
   }
 };
