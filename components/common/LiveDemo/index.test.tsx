@@ -2,6 +2,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import { ReactNode } from 'react';
 import { MAP_REGION_KEYS } from '../../../constants/map';
 import { ProjectsContext } from '../../../context/ProjectsContext';
+import { getMarketParticipants } from '../../../test-utils/market';
 import { DemoData } from '../../../types/demo';
 import { MAP_REGION_PATHS } from '../MapRegion';
 import { LiveDemo } from './index';
@@ -178,6 +179,15 @@ describe('LiveDemo', () => {
 
     expect(mapPaths).toHaveLength(1);
     expect(mapPaths[0]).toEqual(MAP_REGION_PATHS[21]);
+
+    const { allParticipants } = getMarketParticipants();
+
+    expect(allParticipants).toHaveLength(5);
+    expect(allParticipants[0].title).toHaveTextContent('Buyer 2');
+    expect(allParticipants[1].title).toHaveTextContent('Seller 1Field 1');
+    expect(allParticipants[2].title).toHaveTextContent('Seller 1Field 2');
+    expect(allParticipants[3].title).toHaveTextContent('Seller 1Both');
+    expect(allParticipants[4].title).toHaveTextContent('Seller 2');
   });
 
   it('selects multiple map regions', async () => {
@@ -197,5 +207,12 @@ describe('LiveDemo', () => {
       MAP_REGION_PATHS[3],
       MAP_REGION_PATHS[4],
     ]);
+
+    const { allParticipants } = getMarketParticipants();
+
+    expect(allParticipants).toHaveLength(3);
+    expect(allParticipants[0].title).toHaveTextContent('Buyer 1');
+    expect(allParticipants[1].title).toHaveTextContent('Buyer 2');
+    expect(allParticipants[2].title).toHaveTextContent('Seller 2');
   });
 });

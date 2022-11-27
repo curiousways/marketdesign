@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import { MarketParticipantList } from './index';
 import { ProjectsContext } from '../../../context/ProjectsContext';
+import { getMarketParticipants } from '../../../test-utils/market';
 
 type WrapperProps = { children: ReactNode };
 
@@ -51,28 +52,6 @@ const sellerProjects = [
     discountOrBonus: 0,
   },
 ];
-
-const getMarketParticipant = (element: HTMLElement) => ({
-  title: within(element).getByTestId('market-participant-title'),
-  bidOrOffer: within(element).queryByTestId('bid-or-offer'),
-  discountOrBonus: within(element).queryByTestId('discount-or-bonus'),
-  paysOrReceived: within(element).queryByTestId('pays-or-received'),
-});
-
-const getMarketParticipants = () => ({
-  buyers: screen
-    .queryAllByTestId('buyer-participant')
-    .map(getMarketParticipant),
-  losingBuyers: screen
-    .queryAllByTestId('losing-buyer-participant')
-    .map(getMarketParticipant),
-  sellers: screen
-    .queryAllByTestId('seller-participant')
-    .map(getMarketParticipant),
-  losingSellers: screen
-    .queryAllByTestId('losing-seller-participant')
-    .map(getMarketParticipant),
-});
 
 describe('MarketOutcome', () => {
   it('renders some buyer and seller participants with all of the expected costs', () => {

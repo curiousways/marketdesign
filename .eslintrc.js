@@ -61,7 +61,7 @@ const commmonRules = {
   'import/prefer-default-export': 'off',
   'import/no-extraneous-dependencies': [
     'error',
-    { devDependencies: ['**/*.test.*', 'jest.*'] },
+    { devDependencies: ['**/*.test.*', 'jest.*', '**/test-utils/**'] },
   ],
   'react/no-unescaped-entities': 'off',
   // Disabled rules (painful / not relevant)
