@@ -4,6 +4,7 @@ import { ParsedUrlQuery } from 'querystring';
 import { getAllScenarioIds, isValidScenarioId } from '@/utils/walkthroughs';
 import { WalkthroughProvider } from '@/context/WalkthroughContext';
 import { Walkthrough } from '../../components/common/Walkthrough';
+import { ProjectsProvider } from '../../context/ProjectsContext';
 
 interface HowItWorksScenarioParams extends ParsedUrlQuery {
   scenarioId: string;
@@ -16,9 +17,11 @@ interface HowItWorksScenarioProps {
 const HowItWorksScenario: NextPage<HowItWorksScenarioProps> = ({
   scenarioId,
 }) => (
-  <WalkthroughProvider scenarioId={scenarioId}>
-    <Walkthrough />
-  </WalkthroughProvider>
+  <ProjectsProvider>
+    <WalkthroughProvider scenarioId={scenarioId}>
+      <Walkthrough />
+    </WalkthroughProvider>
+  </ProjectsProvider>
 );
 
 export const getStaticPaths: GetStaticPaths<HowItWorksScenarioParams> = () => ({

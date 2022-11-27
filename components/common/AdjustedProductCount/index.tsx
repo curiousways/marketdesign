@@ -1,11 +1,15 @@
-import ProductCount from './ProductCount';
+import { FC } from 'react';
+import { ProductCount } from '../ProductCount';
 
-type Props = {
+type AdjustedProductCountProps = {
   count: number;
   accepted: boolean | number;
 };
 
-const AdjustedProductCount = ({ count, accepted }: Props) => {
+export const AdjustedProductCount: FC<AdjustedProductCountProps> = ({
+  count,
+  accepted,
+}: AdjustedProductCountProps) => {
   const adjustedCount =
     typeof accepted === 'number' ? Math.round((accepted / 100) * count) : count;
 
@@ -22,5 +26,3 @@ const AdjustedProductCount = ({ count, accepted }: Props) => {
     </div>
   );
 };
-
-export default AdjustedProductCount;

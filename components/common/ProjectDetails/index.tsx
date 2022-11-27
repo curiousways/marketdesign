@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, FormEventHandler, useRef, useState } from 'react';
+import { ChangeEvent, FC, FormEvent, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
 import { fadeIn } from '@/utils/animations';
@@ -9,10 +9,10 @@ import NutrientsIcon from '@/components/walkthroughs/icons/NutrientsIcon';
 import { classNames } from '@/utils/index';
 import { RoleId } from '@/types/roles';
 import { roles } from '../../../data/roles';
-import { ProductCount } from '../ProductCount';
+import { Credit } from '../Credit';
 import { CostInput } from '../CostInput';
 import { Project } from '../../../types/project';
-import { isMyWalkthroughProject } from '../../../utils/walkthroughs';
+import { useProjectsContext } from '../../../context/ProjectsContext';
 
 type ProjectDetailsProps = {
   projects: Project[];
@@ -20,10 +20,8 @@ type ProjectDetailsProps = {
   isDivisibleInputEnabled?: boolean;
   showDivisibleInput?: boolean;
   isMarketSolvable?: boolean;
-  onFormSubmit: FormEventHandler;
+  onFormSubmit: () => void;
   roleId: RoleId;
-  getProjectCost: (project: Project) => number;
-  setProjectCost: (project: Project, cost: number) => void;
 };
 
 const getProjectValue = (project: Project, roleId: RoleId) => {
@@ -43,12 +41,8 @@ const getProjectValue = (project: Project, roleId: RoleId) => {
 };
 
 const getProjectBid = (project: Project): number | undefined => {
-  if (!isMyWalkthroughProject(project)) {
-    return;
-  }
-
-  if (project.bid) {
-    return project.bid;
+  if (project.fixedBid) {
+    return project.fixedBid;
   }
 
   return Array.isArray(project.cost) ? undefined : project.cost;
@@ -74,9 +68,8 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
   isMarketSolvable,
   onFormSubmit,
   roleId,
-  getProjectCost,
-  setProjectCost,
 }: ProjectDetailsProps) => {
+  const { getProjectCost, setProjectCost } = useProjectsContext();
   const priceInputNames = projects.map((_, index) => `project-${index}-price`);
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -96,6 +89,11 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
     setAnimatedInputName(firstInvalidInput?.name);
   };
 
+  const onSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    onFormSubmit();
+  };
+
   return (
     <motion.div
       variants={fadeIn}
@@ -110,7 +108,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
         <p>{roles[roleId].label}</p>
       </div>
 
-      <form ref={formRef} onSubmit={onFormSubmit} className="flex flex-col">
+      <form ref={formRef} onSubmit={onSubmit} className="flex flex-col">
         <ul>
           {projects.map((project, projectIndex) => {
             const projectValue = getProjectValue(project, roleId);
@@ -145,13 +143,13 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
 
                   {/* Credits */}
                   <div className="flex gap-x-2">
-                    <ProductCount
-                      productCount={project.products.biodiversity}
+                    <Credit
+                      count={project.products.biodiversity}
                       costPerCredit={project.costPerCredit}
                       Icon={<BiodiversityIconGray />}
                     />
-                    <ProductCount
-                      productCount={project.products.nutrients}
+                    <Credit
+                      count={project.products.nutrients}
                       costPerCredit={project.costPerCredit}
                       Icon={<NutrientsIcon />}
                     />

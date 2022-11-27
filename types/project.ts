@@ -7,4 +7,7 @@ export interface Project {
   products: Products;
   costPerCredit?: number;
   isInactive?: boolean;
+  fixedBid?: number;
+  accepted: (value: number) => boolean | number;
+  discountOrBonus: number;
 }

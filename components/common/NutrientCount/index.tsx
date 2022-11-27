@@ -1,20 +1,21 @@
-import AdjustedProductCount from './AdjustedProductCount';
+import { FC } from 'react';
+import { AdjustedProductCount } from '../AdjustedProductCount';
 
-type Props = {
+type NutrientCountProps = {
   count?: number;
-  adjustCount: boolean;
+  adjustCount?: boolean;
   accepted: number | boolean;
   shadowColor: string;
-  showLoserStyles: boolean;
+  showLoserStyles?: boolean;
 };
 
-const ProjectNutrients = ({
+export const NutrientCount: FC<NutrientCountProps> = ({
   count,
   accepted,
   adjustCount,
   shadowColor,
   showLoserStyles,
-}: Props) => {
+}: NutrientCountProps) => {
   if (typeof count !== 'number') {
     return null;
   }
@@ -36,7 +37,10 @@ const ProjectNutrients = ({
             stroke="white"
           />
         </svg>
-        <div className="border border-black rounded-full bg-white w-[20px] h-[20px] flex justify-center items-center absolute -right-[8px] -top-[8px]">
+        <div
+          data-testid="losing-product-count"
+          className="border border-black rounded-full bg-white w-[20px] h-[20px] flex justify-center items-center absolute -right-[8px] -top-[8px]"
+        >
           {count}
         </div>
       </div>
@@ -67,5 +71,3 @@ const ProjectNutrients = ({
     </div>
   );
 };
-
-export default ProjectNutrients;

@@ -1,34 +1,33 @@
+import { FC } from 'react';
 import { classNames } from '@/utils/index';
+import HammerIcon from '../../walkthroughs/icons/HammerIcon';
+import BalanceIcon from '../../walkthroughs/icons/BalanceIcon';
+import CartPlus from '../../walkthroughs/icons/CartPlus';
+import PoundcashTag from '../../walkthroughs/icons/PoundcashTag';
+import OfferIcon from '../../walkthroughs/icons/OfferIcon';
+import PoundIcon from '../../walkthroughs/icons/PoundIcon';
+import { Project } from '../../../types/project';
+import { useProjectsContext } from '../../../context/ProjectsContext';
 
-import {
-  WalkthroughMarketState,
-  WalkthroughProject,
-} from '@/types/walkthrough';
-import { useWalkthroughContext } from '@/context/WalkthroughContext';
-import HammerIcon from '../icons/HammerIcon';
-import BalanceIcon from '../icons/BalanceIcon';
-import CartPlus from '../icons/CartPlus';
-import PoundcashTag from '../icons/PoundcashTag';
-import OfferIcon from '../icons/OfferIcon';
-import PoundIcon from '../icons/PoundIcon';
-
-type Props = {
+type MarketOutcomeProps = {
   className?: string;
-  buyerProjects: WalkthroughProject[];
-  sellerProjects: WalkthroughProject[];
+  buyerProjects: Project[];
+  sellerProjects: Project[];
+  isMarketSolved?: boolean;
 };
 
 const sumProjectCosts = (
-  getProjectCost: (project: WalkthroughProject) => number,
-  projects: WalkthroughProject[],
+  getProjectCost: (project: Project) => number,
+  projects: Project[],
 ) => projects.reduce((acc, project) => acc + getProjectCost(project), 0);
 
-const MarketOutcome = ({
+export const MarketOutcome: FC<MarketOutcomeProps> = ({
   className = '',
   buyerProjects,
   sellerProjects,
-}: Props) => {
-  const { marketState, getProjectCost } = useWalkthroughContext();
+  isMarketSolved,
+}: MarketOutcomeProps) => {
+  const { getProjectCost } = useProjectsContext();
   const totalBids = sumProjectCosts(getProjectCost, buyerProjects);
   const totalOffers = sumProjectCosts(getProjectCost, sellerProjects);
 
@@ -54,7 +53,6 @@ const MarketOutcome = ({
               viewBox="0 0 512 512"
               className="w-5"
             >
-              <title>Checkmark</title>
               <path
                 fill="none"
                 stroke="currentColor"
@@ -89,7 +87,6 @@ const MarketOutcome = ({
               viewBox="0 0 512 512"
               className="w-5"
             >
-              <title>Checkmark</title>
               <path
                 fill="none"
                 stroke="currentColor"
@@ -129,7 +126,9 @@ const MarketOutcome = ({
             {/* Offer */}
             <div className="text-center text-sm relative -mt-2">
               <p className="text-white">Total Bids</p>
-              <p className="text-white">£{totalBids.toLocaleString()}</p>
+              <p className="text-white" data-testid="total-bids">
+                £{totalBids.toLocaleString()}
+              </p>
             </div>
           </div>
 
@@ -141,7 +140,9 @@ const MarketOutcome = ({
 
             <div className="text-center text-sm relative -mt-2">
               <p className="text-white">Total Offers</p>
-              <p className="text-white">£{totalOffers.toLocaleString()}</p>
+              <p className="text-white" data-testid="total-offers">
+                £{totalOffers.toLocaleString()}
+              </p>
             </div>
           </div>
         </div>
@@ -154,12 +155,14 @@ const MarketOutcome = ({
 
           <div className="text-center text-sm relative -mt-2">
             <p className="text-light-grey">Surplus</p>
-            <p>£{(totalBids - totalOffers).toLocaleString()}</p>
+            <p data-testid="surplus">
+              £{(totalBids - totalOffers).toLocaleString()}
+            </p>
           </div>
         </div>
 
         {/* Balance */}
-        {marketState === WalkthroughMarketState.solved && (
+        {isMarketSolved && (
           <div className="bg-white rounded-lg px-1 w-[95px]">
             <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white shadow-custom">
               <BalanceIcon />
@@ -167,7 +170,10 @@ const MarketOutcome = ({
 
             <div className="text-center text-sm relative -mt-2">
               <p className="text-light-grey">Balance</p>
-              <div className="flex justify-center items-center gap-x-1">
+              <div
+                className="flex justify-center items-center gap-x-1"
+                data-testid="balance"
+              >
                 <CartPlus />
                 <span>=</span>
                 <PoundcashTag />
@@ -179,5 +185,3 @@ const MarketOutcome = ({
     </div>
   );
 };
-
-export default MarketOutcome;

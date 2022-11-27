@@ -1,10 +1,6 @@
+import { HighlightedMapRegions } from './map';
 import { Project } from './project';
 import { RoleId } from './roles';
-
-export interface WalkthroughHighlightedMapRegions {
-  buyer?: number;
-  seller?: number;
-}
 
 export interface WalkthroughOptions {
   stages: number;
@@ -13,23 +9,15 @@ export interface WalkthroughOptions {
   showDetailsWidget: boolean;
   showDivisibleInput?: boolean;
   showMaps: boolean;
-  highlightedMapRegions?: WalkthroughHighlightedMapRegions;
+  highlightedMapRegions?: HighlightedMapRegions;
   showParticipants: boolean;
+  limitMarketInfo?: boolean;
 }
 
-export type WalkthroughProject = Project & {
-  accepted: (value: number) => boolean | number;
-  discountOrBonus: number;
-};
-
-export type WalkthroughUserProject = WalkthroughProject & {
-  bid?: number;
-};
-
 export interface WalkthroughScenario {
-  myProjects: WalkthroughUserProject[];
-  buyerProjects: WalkthroughProject[];
-  sellerProjects: WalkthroughProject[];
+  myProjects: Project[];
+  buyerProjects: Project[];
+  sellerProjects: Project[];
   sidebarContent?: {
     [key: number]: JSX.Element;
   };
@@ -37,7 +25,10 @@ export interface WalkthroughScenario {
   fixedMarketState?: WalkthroughMarketState;
 }
 
-export type GetWalkthroughScenario = (stage: number) => WalkthroughScenario;
+export type GetWalkthroughScenario = (
+  stage: number,
+  options?: { getProjectCost?: (project: Project) => number },
+) => WalkthroughScenario;
 
 export interface Walkthrough {
   title: string;
