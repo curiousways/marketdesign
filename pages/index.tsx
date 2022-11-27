@@ -166,7 +166,7 @@ const Home: NextPage = () => {
                 experience of the model and demonstrate how your choices can
                 affect outcomes in different circumstances.
               </p>
-              <Button text="Start trading" link="/" />
+              <Button text="Start trading" link="/live-demo" />
             </div>
 
             <div className="relative">
