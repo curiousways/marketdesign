@@ -30,7 +30,9 @@ describe('MapRegion', () => {
   it('calls the onClick callback', () => {
     const onClick = jest.fn();
 
-    render(<MapRegion index={MAP_INDICES.b1} onClick={onClick} />);
+    render(
+      <MapRegion roleId="buyer" index={MAP_INDICES.b1} onClick={onClick} />,
+    );
 
     const path = screen.getByTestId('map-region');
 
@@ -39,6 +41,19 @@ describe('MapRegion', () => {
     expect(onClick).toHaveBeenCalledTimes(1);
     expect(onClick).toHaveBeenCalledWith('b1', MAP_INDICES.b1);
     expect(path).toHaveClass('cursor-pointer');
+  });
+
+  it('does not make the path clickable if no role ID is given', () => {
+    const onClick = jest.fn();
+
+    render(<MapRegion index={MAP_INDICES.b1} onClick={onClick} />);
+
+    const path = screen.getByTestId('map-region');
+
+    fireEvent.click(path);
+
+    expect(onClick).not.toHaveBeenCalled();
+    expect(path).not.toHaveClass('cursor-pointer');
   });
 
   it.each`

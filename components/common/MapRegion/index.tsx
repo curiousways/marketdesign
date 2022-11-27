@@ -124,6 +124,21 @@ export const MapRegion: FunctionComponent<MapProps> = ({
     setBoundingBox(ref.current.getBBox());
   }, [pathOnly]);
 
+  const isClickable = onClick && roleId;
+
+  const handleClick = () => {
+    if (!isClickable) {
+      return;
+    }
+
+    const [region] =
+      Object.entries(MAP_INDICES).find((entry) => index === entry[1]) ?? [];
+
+    if (region) {
+      onClick?.(region, index);
+    }
+  };
+
   const pathJsx = (
     <path
       data-testid="map-region"
@@ -132,15 +147,8 @@ export const MapRegion: FunctionComponent<MapProps> = ({
       fill={getFillColour(roleId)}
       vectorEffect="non-scaling-stroke"
       stroke="black"
-      className={classNames(onClick ? 'cursor-pointer' : '')}
-      onClick={() => {
-        const [region] =
-          Object.entries(MAP_INDICES).find((entry) => index === entry[1]) ?? [];
-
-        if (region) {
-          onClick?.(region, index);
-        }
-      }}
+      className={classNames(isClickable ? 'cursor-pointer' : '')}
+      onClick={handleClick}
     />
   );
 

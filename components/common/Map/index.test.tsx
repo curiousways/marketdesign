@@ -77,6 +77,20 @@ describe('Map', () => {
     fireEvent.click(path);
 
     expect(onClick).toHaveBeenCalledTimes(1);
-    expect(onClick).toHaveBeenCalledWith('s1', 3);
+    expect(onClick).toHaveBeenCalledWith('s1', MAP_INDICES.s1);
+    expect(path).toHaveClass('cursor-pointer');
+  });
+
+  it('does not call the onClick callback for a non-clickable region', () => {
+    const onClick = jest.fn();
+
+    render(<Map onMapRegionClick={onClick} />);
+
+    const paths = screen.getAllByTestId('map-region');
+
+    fireEvent.click(paths[0]);
+
+    expect(onClick).not.toHaveBeenCalled();
+    expect(paths[0]).not.toHaveClass('cursor-pointer');
   });
 });
