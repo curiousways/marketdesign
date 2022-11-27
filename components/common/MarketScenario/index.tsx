@@ -113,7 +113,7 @@ export const MarketScenario: FC<MarketScenarioProps> = ({
     );
   }
 
-  if (showParticipants) {
+  if (showParticipants && roleId) {
     return (
       <>
         <motion.div
@@ -123,6 +123,7 @@ export const MarketScenario: FC<MarketScenarioProps> = ({
           animate="visible"
         >
           <MarketParticipantList
+            roleId={roleId}
             myProjects={myProjects}
             sellerProjects={getActiveProjects(sellerProjects, 'seller')}
             buyerProjects={getActiveProjects(buyerProjects, 'buyer')}

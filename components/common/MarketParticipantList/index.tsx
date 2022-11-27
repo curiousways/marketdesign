@@ -3,12 +3,14 @@ import { findProjectIndex, includesProject } from '@/utils/walkthroughs';
 import { MarketParticipant } from '../MarketParticipant';
 import { Project } from '../../../types/project';
 import { useProjectsContext } from '../../../context/ProjectsContext';
+import { RoleId } from '../../../types/roles';
 
 type MarketParticipantListProps = {
   myProjects: Project[];
   buyerProjects: Project[];
   sellerProjects: Project[];
   losingProjects: Project[];
+  roleId: RoleId;
   showCosts?: boolean;
   showWinners?: boolean;
   showSurpluses?: boolean;
@@ -23,9 +25,15 @@ const sortMyProjects = (
   buyerProjects: Project[],
   sellerProjects: Project[],
   losingProjects: Project[],
+  roleId: RoleId,
   showingWinners?: boolean,
-) =>
-  [...sellerProjects, ...buyerProjects].sort((a, b) => {
+) => {
+  const allProjects =
+    roleId === 'seller'
+      ? [...sellerProjects, ...buyerProjects]
+      : [...buyerProjects, ...sellerProjects];
+
+  return allProjects.sort((a, b) => {
     const isLoserA = showingWinners && includesProject(a, losingProjects);
     const isLoserB = showingWinners && includesProject(b, losingProjects);
     const isMyProjectA = myProjects.includes(a);
@@ -36,6 +44,7 @@ const sortMyProjects = (
       Number(isMyProjectB ?? 0) - Number(isMyProjectA ?? 0)
     );
   });
+};
 
 const getMyActiveProjects = (projects: Project[], myProjects: Project[]) =>
   myProjects.filter((project) => projects.includes(project));
@@ -70,6 +79,7 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
   buyerProjects,
   sellerProjects,
   losingProjects,
+  roleId,
   showCosts,
   showWinners,
   showSurpluses,
@@ -81,6 +91,7 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
     buyerProjects,
     sellerProjects,
     losingProjects,
+    roleId,
     showWinners,
   );
 
