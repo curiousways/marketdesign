@@ -14,8 +14,6 @@ const createProject = (overrides?: Partial<Project>) => ({
   ...overrides,
 });
 
-const selectedMapIndex = 10;
-
 type WrapperProps = { children: ReactNode };
 
 const setProjectCost = jest.fn();
@@ -25,8 +23,6 @@ const wrapper = ({ children }: WrapperProps) => (
     value={{
       setProjectCost,
       getProjectCost: jest.fn(),
-      setProjectMapIndex: jest.fn(),
-      getProjectMapIndex: () => selectedMapIndex,
     }}
   >
     {children}
@@ -226,9 +222,11 @@ describe('ProjectDetails', () => {
   });
 
   it('shows the selected map region', async () => {
+    const mapIndex = 10;
+
     render(
       <ProjectDetails
-        projects={[createProject()]}
+        projects={[createProject({ mapIndex })]}
         onFormSubmit={jest.fn()}
         roleId="buyer"
       />,
@@ -238,6 +236,27 @@ describe('ProjectDetails', () => {
     const mapRegion = screen.getByTestId('map-region');
     const path = mapRegion.getAttribute('d');
 
-    expect(path).toBe(MAP_REGION_PATHS[selectedMapIndex]);
+    expect(path).toBe(MAP_REGION_PATHS[mapIndex]);
+  });
+
+  it('shows multiple selected map regions', async () => {
+    const mapIndexA = 10;
+    const mapIndexB = 11;
+
+    render(
+      <ProjectDetails
+        projects={[createProject({ mapIndex: [mapIndexA, mapIndexB] })]}
+        onFormSubmit={jest.fn()}
+        roleId="buyer"
+      />,
+      { wrapper },
+    );
+
+    const mapRegions = screen.getAllByTestId('map-region');
+
+    expect(mapRegions.map((el) => el.getAttribute('d'))).toEqual([
+      MAP_REGION_PATHS[mapIndexA],
+      MAP_REGION_PATHS[mapIndexB],
+    ]);
   });
 });

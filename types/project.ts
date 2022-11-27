@@ -10,5 +10,5 @@ export interface Project {
   fixedBid?: number;
   accepted: (value: number) => boolean | number;
   discountOrBonus: number;
-  mapIndex?: number;
+  mapIndex?: number | number[];
 }

@@ -22,6 +22,8 @@ type ProjectDetailsProps = {
   roleId: RoleId;
 };
 
+const MAP_REGION_ICON_SIZE = 50;
+
 const getProjectValue = (project: Project, roleId: RoleId) => {
   if (project.costPerCredit) {
     return project.costPerCredit;
@@ -67,8 +69,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
   onFormSubmit,
   roleId,
 }: ProjectDetailsProps) => {
-  const { getProjectCost, setProjectCost, getProjectMapIndex } =
-    useProjectsContext();
+  const { getProjectCost, setProjectCost } = useProjectsContext();
 
   const priceInputNames = projects.map((_, index) => `project-${index}-price`);
 
@@ -112,7 +113,6 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
         <ul>
           {projects.map((project, projectIndex) => {
             const projectValue = getProjectValue(project, roleId);
-            const projectMapIndex = getProjectMapIndex(project);
 
             const value = project.costPerCredit
               ? project.costPerCredit
@@ -139,14 +139,27 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                   </span>
                 )}
                 <div className="flex gap-x-3 justify-between items-center">
-                  {/* Selected map region */}
-                  {!project.costPerCredit && projectMapIndex && (
-                    <MapRegion
-                      size={50}
-                      index={projectMapIndex}
-                      roleId={roleId}
-                    />
-                  )}
+                  {/* Selected map region(s) */}
+                  {!project.costPerCredit &&
+                    project.mapIndex &&
+                    (Array.isArray(project.mapIndex) ? (
+                      <div className="flex">
+                        {project.mapIndex.map((mapIndex, _index, arr) => (
+                          <MapRegion
+                            key={mapIndex}
+                            size={MAP_REGION_ICON_SIZE / arr.length}
+                            index={mapIndex}
+                            roleId={roleId}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <MapRegion
+                        size={MAP_REGION_ICON_SIZE}
+                        index={project.mapIndex}
+                        roleId={roleId}
+                      />
+                    ))}
 
                   {/* Credits */}
                   <div className="flex gap-x-2">

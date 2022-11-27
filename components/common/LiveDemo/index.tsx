@@ -8,7 +8,6 @@ import {
   DemoState,
   DemoTrader,
 } from '../../../types/demo';
-import { useProjectsContext } from '../../../context/ProjectsContext';
 import { MainContainer } from '../MainContainer';
 import { SideBar } from '../Sidebar';
 import { Market } from '../Market';
@@ -17,6 +16,7 @@ import { Project } from '../../../types/project';
 import { MarketState } from '../../../types/market';
 import { HighlightedMapRegions } from '../../../types/map';
 import { isProjectEqual } from '../../../utils/walkthroughs';
+import { MAP_REGION_KEYS } from '../../../constants/map';
 
 interface LiveDemoProps {
   data: DemoData;
@@ -37,9 +37,34 @@ const convertBidToProject = (
   const { winning = 0 } =
     result?.problem.bidders.find(({ name }) => name === title)?.bids[0] ?? {};
 
+  // Each `bid` contains an optional `label` with a very odd data structure, in
+  // that it is used to indicate both the subtitle of the project and the
+  // associated map region(s). It has the following possible formats:
+  // field 1
+  // field 1#s1
+  // field 1#s1+s2
+  // field 1#s1-woodland
+  const [subtitle = '', region = ''] = (label ?? '').split('#');
+  const regions = region.split('+').map((item) => item.split('-')[0]);
+  const mapIndices = regions
+    .map((r) => {
+      const [index] =
+        Object.entries(MAP_REGION_KEYS).find(
+          ([, regionKey]) => regionKey === r,
+        ) ?? [];
+
+      if (!index) {
+        return;
+      }
+
+      return Number(index);
+    })
+    .filter((index): index is number => typeof index !== 'undefined');
+
   return {
     title: capitalCase(title),
-    subtitle: label ? capitalCase(label.split('#')[0]) : undefined,
+    subtitle: subtitle ? capitalCase(subtitle) : undefined,
+    mapIndex: mapIndices,
     cost: Math.abs(cost),
     products: {
       biodiversity: Math.abs(biodiversity),
@@ -149,7 +174,6 @@ const getHighlightedMapRegions = (
 };
 
 export const LiveDemo: NextPage<LiveDemoProps> = ({ data }: LiveDemoProps) => {
-  const { setProjectMapIndex } = useProjectsContext();
   const [marketState, setMarketState] = useState<MarketState>(0);
   const [result, setResult] = useState<Result>();
 
@@ -182,24 +206,14 @@ export const LiveDemo: NextPage<LiveDemoProps> = ({ data }: LiveDemoProps) => {
   }, []);
 
   const onMapRegionClick = useCallback(
-    (region: string, mapIndex: number) => {
+    (region: string) => {
       const selectedTrader = data.playable_traders.find((trader) =>
         trader.locations.includes(region),
       );
 
-      const projects = getProjectsForTrader(
-        demoState.bidders,
-        selectedTrader,
-        result,
-      );
-
       setPlayableTrader(selectedTrader);
-
-      projects.forEach((project) => {
-        setProjectMapIndex(project, mapIndex);
-      });
     },
-    [data.playable_traders, demoState, result, setProjectMapIndex],
+    [data.playable_traders],
   );
 
   const myProjects = getProjectsForTrader(
