@@ -35,7 +35,7 @@ describe('CostInput', () => {
     expect(onInputChange).toHaveBeenCalledTimes(1);
   });
 
-  it('validates the input if a fixed bid is given', async () => {
+  it('validates the input against a fixed bid if given', async () => {
     render(
       <CostInput
         name="my-input"
@@ -53,6 +53,25 @@ describe('CostInput', () => {
     expect(textInput).not.toBeValid();
 
     fireEvent.change(textInput, { target: { value: '42' } });
+
+    expect(textInput).toBeValid();
+  });
+
+  it('still validates the input as required if no fixed bid is given', async () => {
+    render(
+      <CostInput
+        name="my-input"
+        cost={42}
+        onInputChange={jest.fn()}
+        onSelectChange={jest.fn()}
+      />,
+    );
+
+    const textInput = screen.getByRole('textbox');
+
+    expect(textInput).not.toBeValid();
+
+    fireEvent.change(textInput, { target: { value: '100' } });
 
     expect(textInput).toBeValid();
   });

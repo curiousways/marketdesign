@@ -1,4 +1,5 @@
 import { HighlightedMapRegions } from './map';
+import { MarketState } from './market';
 import { Project } from './project';
 import { RoleId } from './roles';
 
@@ -22,7 +23,7 @@ export interface WalkthroughScenario {
     [key: number]: JSX.Element;
   };
   options: WalkthroughOptions;
-  fixedMarketState?: WalkthroughMarketState;
+  fixedMarketState?: MarketState;
 }
 
 export type GetWalkthroughScenario = (
@@ -39,14 +40,3 @@ export type WalkthroughsByRole = {
   roleId: RoleId;
   walkthroughs: Walkthrough[];
 }[];
-
-export enum WalkthroughMarketState {
-  'pending',
-  'solvable',
-  'calculating_winners',
-  'showing_winners',
-  'distributing_surpluss',
-  'showing_surpluses',
-  'calculating_final_payments',
-  'solved',
-}

@@ -1,5 +1,3 @@
-import isEqual from 'lodash.isequal';
-import omit from 'lodash.omit';
 import { RoleId } from '@/types/roles';
 import { roles } from '../data/roles';
 import { walkthroughsByRole } from '../data/walkthroughs';
@@ -115,14 +113,8 @@ export const getNextScenarioId = (scenarioId: string): string | undefined => {
   return createScenarioId(roleId, walkthroughIndex, nextScenarioIndex);
 };
 
-export const isProjectEqual = (projectA: Project, projectB: Project) => {
-  const ignoredProperties = ['accepted'];
-
-  return isEqual(
-    omit(projectA, ignoredProperties),
-    omit(projectB, ignoredProperties),
-  );
-};
+export const isProjectEqual = (projectA: Project, projectB: Project) =>
+  projectA.title === projectB.title && projectA.subtitle === projectB.subtitle;
 
 export const includesProject = (
   project: Project,

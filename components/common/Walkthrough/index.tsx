@@ -1,7 +1,6 @@
 import { FC, MouseEvent, MouseEventHandler, useEffect, useState } from 'react';
 import { sentenceCase } from 'change-case';
 import { useWalkthroughContext } from '../../../context/WalkthroughContext';
-import { WalkthroughMarketState } from '../../../types/walkthrough';
 import {
   getNextScenarioId,
   parseScenarioId,
@@ -9,6 +8,8 @@ import {
 import { SideBar } from '../Sidebar';
 import { RoleId } from '../../../types/roles';
 import { Market } from '../Market';
+import { MarketState } from '../../../types/market';
+import { MainContainer } from '../MainContainer';
 
 const MARKET_SOLVING_TIMEOUT = 4000;
 const MARKET_SOLVING_STAGES = 5;
@@ -21,16 +22,16 @@ const getWalkthroughTitle = (roleId: RoleId, walkthroughIndex: number) => {
   return `WALKTHROUGH - ${sentenceCase(roleId)} ${walkthroughIndex + 1}`;
 };
 
-const getOverlayText = (marketState: WalkthroughMarketState) => {
-  if (marketState === WalkthroughMarketState.calculating_winners) {
+const getOverlayText = (marketState: MarketState) => {
+  if (marketState === MarketState.calculating_winners) {
     return 'Determining Market Winners';
   }
 
-  if (marketState === WalkthroughMarketState.distributing_surpluss) {
+  if (marketState === MarketState.distributing_surpluss) {
     return 'Distributing Market Surplus';
   }
 
-  if (marketState === WalkthroughMarketState.calculating_final_payments) {
+  if (marketState === MarketState.calculating_final_payments) {
     return 'Calculating Final Payments';
   }
 };
@@ -73,8 +74,8 @@ export const Walkthrough: FC = () => {
     }
 
     if (
-      marketState === WalkthroughMarketState.showing_winners ||
-      marketState === WalkthroughMarketState.showing_surpluses
+      marketState === MarketState.showing_winners ||
+      marketState === MarketState.showing_surpluses
     ) {
       timer = setTimeout(goToNextMarketState, MARKET_SOLVING_TIMEOUT);
 
@@ -101,9 +102,9 @@ export const Walkthrough: FC = () => {
       setMarketState(fixedMarketState);
 
       if (
-        fixedMarketState === WalkthroughMarketState.calculating_winners ||
-        fixedMarketState === WalkthroughMarketState.distributing_surpluss ||
-        fixedMarketState === WalkthroughMarketState.calculating_final_payments
+        fixedMarketState === MarketState.calculating_winners ||
+        fixedMarketState === MarketState.distributing_surpluss ||
+        fixedMarketState === MarketState.calculating_final_payments
       ) {
         timer = setTimeout(goToNextStage, MARKET_SOLVING_TIMEOUT);
       }
@@ -121,14 +122,14 @@ export const Walkthrough: FC = () => {
     // For the case where the user submits the form and puts the market into a
     // solveable state, then clicks the back button.
     if (isFormEnabled) {
-      setMarketState(WalkthroughMarketState.pending);
+      setMarketState(MarketState.pending);
     }
   }, [isFormEnabled, setMarketState]);
 
   const onFormSubmit = () => {
     // Proceed to next stage and market state when submit button is clicked.
     goToNextStage();
-    setMarketState(WalkthroughMarketState.solvable);
+    setMarketState(MarketState.solvable);
   };
 
   useEffect(() => {
@@ -142,68 +143,60 @@ export const Walkthrough: FC = () => {
       return;
     }
 
-    if (marketState === WalkthroughMarketState.solved) {
+    if (marketState === MarketState.solved) {
       setLoadingBarProgress(100);
     }
   }, [scenario.fixedMarketState, isMarketSolving, marketState]);
 
   return (
-    <main>
-      <div className="flex items-stretch font-poppins relative border-t border-green-dark min-h-screen">
-        <SideBar
-          title={walkthrough.title}
-          subtitle={getWalkthroughTitle(roleId, walkthroughIndex)}
-          hasNextPage={hasNextStage}
-          hasPreviousPage={hasPreviousStage}
-          onNextClick={goToNextStage}
-          onPreviousClick={goToPreviousStage}
-          showSolveMarketBtn={marketState === WalkthroughMarketState.solvable}
-          showDetailsWidget={scenario.options.showDetailsWidget}
-          onSolveMarketClick={onSolveMarketClick}
-          sidebarContent={scenario.sidebarContent?.[stage]}
-          isFormEnabled={isFormEnabled}
-          isDivisibleInputEnabled={isFormEnabled && allowDivision}
-          showDivisibleInput={showDivisibleInput}
-          isMarketSolvable={marketState >= WalkthroughMarketState.solvable}
-          onFormSubmit={onFormSubmit}
-          roleId={roleId}
-          projects={scenario.myProjects}
-        />
-        <Market
-          myProjects={scenario.myProjects}
-          buyerProjects={scenario.buyerProjects}
-          sellerProjects={scenario.sellerProjects}
-          showCosts={
-            scenario.options.limitMarketInfo
-              ? marketState > WalkthroughMarketState.solvable
-              : true
-          }
-          showAllProjects={marketState < WalkthroughMarketState.solvable}
-          showWinners={marketState >= WalkthroughMarketState.showing_winners}
-          showSurpluses={
-            marketState >= WalkthroughMarketState.showing_surpluses
-          }
-          isMarketSolved={marketState === WalkthroughMarketState.solved}
-          roleId={roleId}
-          link={
-            stage === scenario.options.stages && !getNextScenarioId(scenarioId)
-              ? {
-                  text: 'Return to Walkthrough index',
-                  href: `/how-it-works#${roleId}`,
-                }
-              : undefined
-          }
-          showParticipants={scenario.options.showParticipants}
-          showMap={scenario.options.showMaps}
-          highlightedMapRegions={scenario.options.highlightedMapRegions}
-          loadingOverlayText={getOverlayText(marketState)}
-          loadingBar={{
-            progress: loadingBarProgress,
-            loaderSpeed: MARKET_SOLVING_TIMEOUT + 1000,
-            waitingTime: MARKET_SOLVING_TIMEOUT,
-          }}
-        />
-      </div>
-    </main>
+    <MainContainer>
+      <SideBar
+        title={walkthrough.title}
+        subtitle={getWalkthroughTitle(roleId, walkthroughIndex)}
+        hasNextPage={hasNextStage}
+        hasPreviousPage={hasPreviousStage}
+        onNextClick={goToNextStage}
+        onPreviousClick={goToPreviousStage}
+        showSolveMarketBtn={marketState === MarketState.solvable}
+        showDetailsWidget={scenario.options.showDetailsWidget}
+        onSolveMarketClick={onSolveMarketClick}
+        sidebarContent={scenario.sidebarContent?.[stage]}
+        isFormEnabled={isFormEnabled}
+        isDivisibleInputEnabled={isFormEnabled && allowDivision}
+        showDivisibleInput={showDivisibleInput}
+        isMarketSolvable={marketState >= MarketState.solvable}
+        onFormSubmit={onFormSubmit}
+        roleId={roleId}
+        projects={scenario.myProjects}
+      />
+      <Market
+        myProjects={scenario.myProjects}
+        buyerProjects={scenario.buyerProjects}
+        sellerProjects={scenario.sellerProjects}
+        showCosts={marketState > MarketState.solvable}
+        showAllProjects={marketState < MarketState.solvable}
+        showWinners={marketState >= MarketState.showing_winners}
+        showSurpluses={marketState >= MarketState.showing_surpluses}
+        isMarketSolved={marketState === MarketState.solved}
+        roleId={roleId}
+        link={
+          stage === scenario.options.stages && !getNextScenarioId(scenarioId)
+            ? {
+                text: 'Return to Walkthrough index',
+                href: `/how-it-works#${roleId}`,
+              }
+            : undefined
+        }
+        showParticipants={scenario.options.showParticipants}
+        showMap={scenario.options.showMaps}
+        highlightedMapRegions={scenario.options.highlightedMapRegions}
+        loadingOverlayText={getOverlayText(marketState)}
+        loadingBar={{
+          progress: loadingBarProgress,
+          loaderSpeed: MARKET_SOLVING_TIMEOUT + 1000,
+          waitingTime: MARKET_SOLVING_TIMEOUT,
+        }}
+      />
+    </MainContainer>
   );
 };

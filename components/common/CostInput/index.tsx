@@ -82,6 +82,7 @@ export const CostInput: FC<CostInputProps> = ({
 
   return (
     <input
+      required
       ref={inputRef}
       onChange={handleInputChange}
       disabled={disabled}

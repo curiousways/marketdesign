@@ -15,14 +15,14 @@ type MarketScenarioProps = {
   myProjects: Project[];
   buyerProjects: Project[];
   sellerProjects: Project[];
-  roleId: RoleId;
+  roleId?: RoleId;
   showAllProjects?: boolean;
   showWinners: boolean;
   showSurpluses: boolean;
   isMarketSolved: boolean;
   showCosts: boolean;
   showParticipants: boolean;
-  showMap: boolean;
+  showMap?: boolean;
   highlightedMapRegions?: HighlightedMapRegions;
   link?: {
     href: string;
