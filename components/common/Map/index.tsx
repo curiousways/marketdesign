@@ -1,8 +1,8 @@
 import { FunctionComponent } from 'react';
-import { WalkthroughHighlightedMapRegions } from '@/types/walkthrough';
+import { HighlightedMapRegions } from '@/types/map';
 
 type Props = {
-  highlightedMapRegions?: WalkthroughHighlightedMapRegions;
+  highlightedMapRegions?: HighlightedMapRegions;
 };
 
 export const Map: FunctionComponent<Props> = ({

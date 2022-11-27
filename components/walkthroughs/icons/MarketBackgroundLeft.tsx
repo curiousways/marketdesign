@@ -1,4 +1,4 @@
-export const WalkthroughBackgroundLeft = () => (
+export const MarketBackgroundLeft = () => (
   <svg
     width="1010"
     height="533"

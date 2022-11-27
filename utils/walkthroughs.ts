@@ -3,12 +3,7 @@ import omit from 'lodash.omit';
 import { RoleId } from '@/types/roles';
 import { roles } from '../data/roles';
 import { walkthroughsByRole } from '../data/walkthroughs';
-import {
-  GetWalkthroughScenario,
-  Walkthrough,
-  WalkthroughProject,
-  WalkthroughUserProject,
-} from '../types/walkthrough';
+import { GetWalkthroughScenario, Walkthrough } from '../types/walkthrough';
 import { Project } from '../types/project';
 
 const SCENARIO_ID_DELIMITER = '-';
@@ -120,19 +115,7 @@ export const getNextScenarioId = (scenarioId: string): string | undefined => {
   return createScenarioId(roleId, walkthroughIndex, nextScenarioIndex);
 };
 
-export const isMyProject = (
-  projects: WalkthroughProject[],
-  project: WalkthroughProject,
-) => projects.includes(project);
-
-export const isMyWalkthroughProject = (
-  project: Project | WalkthroughProject,
-): project is WalkthroughUserProject => 'bid' in project;
-
-export const isProjectEqual = (
-  projectA: Project | WalkthroughProject,
-  projectB: Project | WalkthroughProject,
-) => {
+export const isProjectEqual = (projectA: Project, projectB: Project) => {
   const ignoredProperties = ['accepted'];
 
   return isEqual(
@@ -142,14 +125,12 @@ export const isProjectEqual = (
 };
 
 export const includesProject = (
-  project: WalkthroughProject,
-  projectsToCheck: WalkthroughProject[],
+  project: Project,
+  projectsToCheck: Project[],
 ): boolean =>
   !!projectsToCheck.find((checkedProject) =>
     isProjectEqual(checkedProject, project),
   );
 
-export const findProjectIndex = (
-  project: WalkthroughProject,
-  projects: WalkthroughProject[],
-) => projects.findIndex((p) => isProjectEqual(p, project));
+export const findProjectIndex = (project: Project, projects: Project[]) =>
+  projects.findIndex((p) => isProjectEqual(p, project));

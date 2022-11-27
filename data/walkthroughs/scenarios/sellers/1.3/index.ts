@@ -9,7 +9,7 @@ export const getSellerScenario1_3: GetWalkthroughScenario = (
     {
       title: 'My Project',
       cost: 60000,
-      bid: 100000,
+      fixedBid: 100000,
       accepted: () => false,
       discountOrBonus: 0,
       products: { biodiversity: 2, nutrients: 3 },

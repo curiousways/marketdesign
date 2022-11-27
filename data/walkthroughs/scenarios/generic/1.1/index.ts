@@ -1,8 +1,8 @@
 import {
   GetWalkthroughScenario,
   WalkthroughMarketState,
-  WalkthroughProject,
 } from '@/types/walkthrough';
+import { Project } from '../../../../../types/project';
 import { sidebarContent1 } from './sidebar-content/1';
 import { sidebarContent10 } from './sidebar-content/10';
 import { sidebarContent11 } from './sidebar-content/11';
@@ -22,7 +22,7 @@ import { sidebarContent7 } from './sidebar-content/7';
 import { sidebarContent8 } from './sidebar-content/8';
 import { sidebarContent9 } from './sidebar-content/9';
 
-const getBuyerProjects = (stage: number): WalkthroughProject[] => {
+const getBuyerProjects = (stage: number): Project[] => {
   if ([6, 7].includes(stage)) {
     return [
       {
@@ -95,7 +95,7 @@ const getBuyerProjects = (stage: number): WalkthroughProject[] => {
   return [];
 };
 
-const getSellerProjects = (stage: number): WalkthroughProject[] => {
+const getSellerProjects = (stage: number): Project[] => {
   if ([4, 6, 7].includes(stage)) {
     return [
       {
