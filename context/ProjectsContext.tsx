@@ -117,7 +117,7 @@ export const ProjectsProvider: FunctionComponent<ProjectsProviderProps> = ({
     (project: Project): number | undefined => {
       const { mapIndex: dynamicMapIndex } = findEntry(state, project) ?? {};
 
-      return dynamicMapIndex;
+      return dynamicMapIndex ?? project.mapIndex;
     },
     [state],
   );
