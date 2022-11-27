@@ -28,7 +28,7 @@ const convertBidderToProject = (
 ): Project => {
   const { name: title } = bidder;
   const { q: products, v: cost } = bidder.bids[0];
-  const { biodiversity, nutrients } = products;
+  const { biodiversity = 0, nutrients = 0 } = products;
 
   const discountOrBonus = result?.surplus_shares[title] ?? 0;
   const { winning = 0 } =
