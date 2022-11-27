@@ -17,11 +17,11 @@ interface HowItWorksScenarioProps {
 const HowItWorksScenario: NextPage<HowItWorksScenarioProps> = ({
   scenarioId,
 }) => (
-  <WalkthroughProvider scenarioId={scenarioId}>
-    <ProjectsProvider>
+  <ProjectsProvider>
+    <WalkthroughProvider scenarioId={scenarioId}>
       <Walkthrough />
-    </ProjectsProvider>
-  </WalkthroughProvider>
+    </WalkthroughProvider>
+  </ProjectsProvider>
 );
 
 export const getStaticPaths: GetStaticPaths<HowItWorksScenarioParams> = () => ({

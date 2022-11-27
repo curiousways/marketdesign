@@ -14,6 +14,7 @@ import { RoleId } from '@/types/roles';
 import { Walkthrough, WalkthroughScenario } from '@/types/walkthrough';
 import { getNextScenarioId, parseScenarioId } from '@/utils/walkthroughs';
 import { MarketState } from '../types/market';
+import { useProjectsContext } from './ProjectsContext';
 
 type WalkthroughContextType = {
   scenarioId: string;
@@ -42,10 +43,11 @@ type WalkthroughProviderProps = {
 export const WalkthroughProvider: FunctionComponent<
   WalkthroughProviderProps
 > = ({ scenarioId, children }) => {
+  const { getProjectCost } = useProjectsContext();
   const { roleId, getScenario, walkthrough } = parseScenarioId(scenarioId);
   const [stage, setStage] = useState(1);
 
-  const scenario = getScenario(stage);
+  const scenario = getScenario(stage, { getProjectCost });
   const router = useRouter();
   const [marketState, setMarketState] = useState<MarketState>(
     MarketState.pending,
