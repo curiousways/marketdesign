@@ -1,6 +1,8 @@
 import type { NextPage } from 'next';
 import { useCallback, useState } from 'react';
+import { capitalCase } from 'change-case';
 import {
+  DemoBid,
   DemoBidder,
   DemoData,
   DemoState,
@@ -22,12 +24,13 @@ interface LiveDemoProps {
 
 const API_URL = 'https://marketdesign.herokuapp.com/solve/lindsay2018';
 
-const convertBidderToProject = (
+const convertBidToProject = (
   bidder: DemoBidder,
+  bid: DemoBid,
   result?: Result,
 ): Project => {
   const { name: title } = bidder;
-  const { q: products, v: cost } = bidder.bids[0];
+  const { q: products, v: cost, label } = bid;
   const { biodiversity = 0, nutrients = 0 } = products;
 
   const discountOrBonus = result?.surplus_shares[title] ?? 0;
@@ -35,7 +38,8 @@ const convertBidderToProject = (
     result?.problem.bidders.find(({ name }) => name === title)?.bids[0] ?? {};
 
   return {
-    title,
+    title: capitalCase(title),
+    subtitle: label ? capitalCase(label.split('#')[0]) : undefined,
     cost: Math.abs(cost),
     products: {
       biodiversity: Math.abs(biodiversity),
@@ -54,6 +58,12 @@ const convertBidderToProject = (
   };
 };
 
+const convertBidderToProjects = (
+  bidder: DemoBidder,
+  result?: Result,
+): Project[] =>
+  bidder.bids.map((bid) => convertBidToProject(bidder, bid, result));
+
 const isSellerBidder = (bidder: DemoBidder) => bidder.bids[0].v < 0;
 
 const isBuyerBidder = (bidder: DemoBidder) => bidder.bids[0].v > 0;
@@ -61,40 +71,54 @@ const isBuyerBidder = (bidder: DemoBidder) => bidder.bids[0].v > 0;
 const getFilteredProjects = (
   filter: (bidder: DemoBidder) => boolean,
   bidders: DemoBidder[],
-  myProject?: Project,
+  myProjects?: Project[],
   result?: Result,
-): Project[] =>
-  bidders
+): Project[] => {
+  const projects: Project[] = [];
+
+  return bidders
     .filter(filter)
-    .map((bidder) => convertBidderToProject(bidder, result))
-    .filter((project) => !myProject || !isProjectEqual(project, myProject));
+    .reduce(
+      (acc, bidder) => [...acc, ...convertBidderToProjects(bidder, result)],
+      projects,
+    )
+    .filter(
+      (project) =>
+        !myProjects?.some((myProject) => isProjectEqual(project, myProject)),
+    );
+};
 
 const getSellerProjects = (
   bidders: DemoBidder[],
-  myProject?: Project,
+  myProjects?: Project[],
   result?: Result,
-): Project[] => getFilteredProjects(isSellerBidder, bidders, myProject, result);
+): Project[] =>
+  getFilteredProjects(isSellerBidder, bidders, myProjects, result);
 
 const getBuyerProjects = (
   bidders: DemoBidder[],
-  myProject?: Project,
+  myProjects?: Project[],
   result?: Result,
-): Project[] => getFilteredProjects(isBuyerBidder, bidders, myProject, result);
+): Project[] => getFilteredProjects(isBuyerBidder, bidders, myProjects, result);
 
-const getProjectForTrader = (
+const getProjectsForTrader = (
   bidders: DemoBidder[],
   trader?: DemoTrader,
   result?: Result,
-): Project | undefined => {
+): Project[] => {
   if (!trader) {
-    return undefined;
+    return [];
   }
 
-  const projects = bidders.map((bidder) =>
-    convertBidderToProject(bidder, result),
-  );
+  const projects: Project[] = [];
 
-  const project = projects.find(({ title }) => title === trader.name);
+  bidders.forEach((bidder) => {
+    projects.push(...convertBidderToProjects(bidder, result));
+  });
+
+  const project = projects.filter(
+    ({ title }) => capitalCase(title) === capitalCase(trader.name),
+  );
 
   if (!project) {
     throw new Error(`No bidder found with for name "${trader.name}"`);
@@ -132,9 +156,6 @@ export const LiveDemo: NextPage<LiveDemoProps> = ({ data }: LiveDemoProps) => {
   // TODO: Swap states based on shuffle button etc. at the end of a scenario
   // eslint-disable-next-line
   const [demoState, setDemoState] = useState<DemoState>(data.states[0]);
-
-  // TODO: Pick the playable trader from the map
-  // eslint-disable-next-line
   const [playableTrader, setPlayableTrader] = useState<DemoTrader>();
 
   const onSolveMarketClick = useCallback(async () => {
@@ -166,37 +187,36 @@ export const LiveDemo: NextPage<LiveDemoProps> = ({ data }: LiveDemoProps) => {
         trader.locations.includes(region),
       );
 
-      const project = getProjectForTrader(
+      const projects = getProjectsForTrader(
         demoState.bidders,
         selectedTrader,
         result,
       );
 
-      if (!project) {
-        throw new Error('Failed to find a project for the given region');
-      }
-
       setPlayableTrader(selectedTrader);
-      setProjectMapIndex(project, mapIndex);
+
+      projects.forEach((project) => {
+        setProjectMapIndex(project, mapIndex);
+      });
     },
     [data.playable_traders, demoState, result, setProjectMapIndex],
   );
 
-  const myProject = getProjectForTrader(
+  const myProjects = getProjectsForTrader(
     demoState.bidders,
     playableTrader,
     result,
   );
 
-  const myProjects = myProject ? [myProject] : [];
+  const hasMyProjects = !!myProjects.length;
   const roleId = playableTrader?.role;
   const isMarketSolvable = marketState === MarketState.solvable;
 
   return (
     <MainContainer>
       <SideBar
-        isFormEnabled={!!myProject && marketState === MarketState.pending}
-        showDetailsWidget={!!myProject}
+        isFormEnabled={hasMyProjects && marketState === MarketState.pending}
+        showDetailsWidget={hasMyProjects}
         title={data.title}
         sidebarContent={data.description}
         projects={myProjects}
@@ -208,15 +228,19 @@ export const LiveDemo: NextPage<LiveDemoProps> = ({ data }: LiveDemoProps) => {
       <Market
         showMap
         myProjects={myProjects}
-        buyerProjects={getBuyerProjects(demoState.bidders, myProject, result)}
-        sellerProjects={getSellerProjects(demoState.bidders, myProject, result)}
+        buyerProjects={getBuyerProjects(demoState.bidders, myProjects, result)}
+        sellerProjects={getSellerProjects(
+          demoState.bidders,
+          myProjects,
+          result,
+        )}
         showCosts={marketState > MarketState.solvable}
         showAllProjects={marketState < MarketState.solvable}
         showWinners={marketState >= MarketState.showing_winners}
         showSurpluses={marketState >= MarketState.showing_surpluses}
         isMarketSolved={marketState === MarketState.solved}
         roleId={roleId}
-        showParticipants={!!myProject}
+        showParticipants={hasMyProjects}
         highlightedMapRegions={getHighlightedMapRegions(data.playable_traders)}
         onMapRegionClick={onMapRegionClick}
       />

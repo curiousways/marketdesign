@@ -7,6 +7,7 @@ export type DemoBid = {
     nutrients: number;
   };
   divisibility: number;
+  label?: string;
 };
 
 export type DemoBidder = {
