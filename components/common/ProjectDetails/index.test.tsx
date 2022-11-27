@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { ProjectDetails } from './index';
 import { Project } from '../../../types/project';
 import { ProjectsContext } from '../../../context/ProjectsContext';
+import { MAP_REGION_PATHS } from '../MapRegion';
 
 const createProject = (overrides?: Partial<Project>) => ({
   title: 'My Project',
@@ -13,13 +14,20 @@ const createProject = (overrides?: Partial<Project>) => ({
   ...overrides,
 });
 
+const selectedMapIndex = 10;
+
 type WrapperProps = { children: ReactNode };
 
 const setProjectCost = jest.fn();
 
 const wrapper = ({ children }: WrapperProps) => (
   <ProjectsContext.Provider
-    value={{ setProjectCost, getProjectCost: jest.fn() }}
+    value={{
+      setProjectCost,
+      getProjectCost: jest.fn(),
+      setProjectMapIndex: jest.fn(),
+      getProjectMapIndex: () => selectedMapIndex,
+    }}
   >
     {children}
   </ProjectsContext.Provider>
@@ -215,5 +223,21 @@ describe('ProjectDetails', () => {
     fireEvent.submit(screen.getByText('Submit'));
 
     expect(onFormSubmit).toHaveBeenCalledTimes(1);
+  });
+
+  it('shows the selected map region', async () => {
+    render(
+      <ProjectDetails
+        projects={[createProject()]}
+        onFormSubmit={jest.fn()}
+        roleId="buyer"
+      />,
+      { wrapper },
+    );
+
+    const mapRegion = screen.getByTestId('map-region');
+    const path = mapRegion.getAttribute('d');
+
+    expect(path).toBe(MAP_REGION_PATHS[selectedMapIndex]);
   });
 });

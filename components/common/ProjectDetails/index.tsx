@@ -2,8 +2,6 @@ import { ChangeEvent, FC, FormEvent, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
 import { fadeIn } from '@/utils/animations';
-import SellerVector from '@/components/walkthroughs/icons/SellerVector';
-import BuyerVector from '@/components/walkthroughs/icons/BuyerVector';
 import BiodiversityIconGray from '@/components/walkthroughs/icons/BiodiversityIcon';
 import NutrientsIcon from '@/components/walkthroughs/icons/NutrientsIcon';
 import { classNames } from '@/utils/index';
@@ -13,6 +11,7 @@ import { Credit } from '../Credit';
 import { CostInput } from '../CostInput';
 import { Project } from '../../../types/project';
 import { useProjectsContext } from '../../../context/ProjectsContext';
+import { MapRegion } from '../MapRegion';
 
 type ProjectDetailsProps = {
   projects: Project[];
@@ -69,7 +68,9 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
   onFormSubmit,
   roleId,
 }: ProjectDetailsProps) => {
-  const { getProjectCost, setProjectCost } = useProjectsContext();
+  const { getProjectCost, setProjectCost, getProjectMapIndex } =
+    useProjectsContext();
+
   const priceInputNames = projects.map((_, index) => `project-${index}-price`);
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -112,6 +113,8 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
         <ul>
           {projects.map((project, projectIndex) => {
             const projectValue = getProjectValue(project, roleId);
+            const projectMapIndex = getProjectMapIndex(project);
+
             const value = project.costPerCredit
               ? project.costPerCredit
               : getProjectCost(project);
@@ -137,9 +140,14 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                   </span>
                 )}
                 <div className="flex gap-x-3 justify-between items-center">
-                  {/* Vector */}
-                  {!project.costPerCredit &&
-                    (roleId === 'seller' ? <SellerVector /> : <BuyerVector />)}
+                  {/* Selected map region */}
+                  {!project.costPerCredit && projectMapIndex && (
+                    <MapRegion
+                      size={50}
+                      index={projectMapIndex}
+                      roleId={roleId}
+                    />
+                  )}
 
                   {/* Credits */}
                   <div className="flex gap-x-2">
