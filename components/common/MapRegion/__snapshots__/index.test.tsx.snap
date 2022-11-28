@@ -1,5 +1,113 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`MapRegion renders a region filled with the wetland icon 1`] = `
+<g
+  data-testid="map-region-icon"
+>
+  <path
+    d="M966.5 387L992 297.5V297L873 296L855 368.5V404L873 466L864 493.5L827 541.5L909 527H966.5L978.5 465L966.5 387Z"
+    fill="url(#icon-21-wetland)"
+    fill-opacity="0.35"
+  />
+  <defs>
+    <pattern
+      height="40"
+      id="icon-21-wetland"
+      patternUnits="userSpaceOnUse"
+      width="40"
+    >
+      <image
+        height="30"
+        width="30"
+        x="0"
+        y="0"
+      />
+    </pattern>
+  </defs>
+</g>
+`;
+
+exports[`MapRegion renders a region filled with the woodland icon 1`] = `
+<g
+  data-testid="map-region-icon"
+>
+  <path
+    d="M966.5 387L992 297.5V297L873 296L855 368.5V404L873 466L864 493.5L827 541.5L909 527H966.5L978.5 465L966.5 387Z"
+    fill="url(#icon-21-woodland)"
+    fill-opacity="0.35"
+  />
+  <defs>
+    <pattern
+      height="40"
+      id="icon-21-woodland"
+      patternUnits="userSpaceOnUse"
+      width="40"
+    >
+      <image
+        height="30"
+        width="30"
+        x="0"
+        y="0"
+      />
+    </pattern>
+  </defs>
+</g>
+`;
+
+exports[`MapRegion renders a small region filled with the wetland icon 1`] = `
+<g
+  data-testid="map-region-icon"
+>
+  <path
+    d="M966.5 387L992 297.5V297L873 296L855 368.5V404L873 466L864 493.5L827 541.5L909 527H966.5L978.5 465L966.5 387Z"
+    fill="url(#icon-21-wetland-50)"
+    fill-opacity="0.5"
+  />
+  <defs>
+    <pattern
+      height="130"
+      id="icon-21-wetland-50"
+      patternUnits="userSpaceOnUse"
+      width="140"
+    >
+      <image
+        height="120"
+        width="120"
+        x="0"
+        y="0"
+      />
+    </pattern>
+  </defs>
+</g>
+`;
+
+exports[`MapRegion renders a small region filled with the woodland icon 1`] = `
+<g
+  data-testid="map-region-icon"
+>
+  <path
+    d="M966.5 387L992 297.5V297L873 296L855 368.5V404L873 466L864 493.5L827 541.5L909 527H966.5L978.5 465L966.5 387Z"
+    fill="url(#icon-21-woodland-50)"
+    fill-opacity="0.5"
+  />
+  <defs>
+    <pattern
+      height="130"
+      id="icon-21-woodland-50"
+      patternUnits="userSpaceOnUse"
+      width="140"
+    >
+      <image
+        height="120"
+        width="120"
+        x="0"
+        y="0"
+      />
+    </pattern>
+  </defs>
+</g>
+`;
+
 exports[`MapRegion returns the transformed path 1`] = `
 <div>
   <svg>

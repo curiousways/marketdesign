@@ -166,9 +166,11 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                     <div className="flex">
                       {project.mapRegions.map((mapRegion, _index, arr) => (
                         <MapRegion
+                          isSmall
                           key={mapRegion}
+                          region={mapRegion}
                           size={MAP_REGION_ICON_SIZE / arr.length}
-                          index={MAP_INDICES[mapRegion]}
+                          index={MAP_INDICES[mapRegion.split('-')[0]]}
                           roleId={roleId}
                         />
                       ))}

@@ -1,7 +1,6 @@
 import { FunctionComponent } from 'react';
 import { HighlightedMapRegions } from '@/types/map';
 import { MAP_REGION_PATHS, MapRegion } from '../MapRegion';
-import { RoleId } from '../../../types/roles';
 import {
   MAP_INDICES,
   MAP_VIEWBOX,
@@ -30,10 +29,21 @@ export const Map: FunctionComponent<Props> = ({
       <rect width="1014" height="868" transform="translate(1)" fill="#92C6F5" />
       <rect x="1" width="1014" height="497" fill="#7DBB67" />
       {MAP_REGION_PATHS.map((path, index) => {
-        const highlightedRegion = Object.entries(
-          highlightedMapRegions ?? {},
-        ).find(([, regions = []]) =>
-          regions.some((region) => MAP_INDICES[region] === index),
+        let matchedRoleId;
+        let matchedRegion;
+
+        Object.entries(highlightedMapRegions ?? {}).find(
+          ([roleId, regions = []]) =>
+            regions.some((region) => {
+              if (MAP_INDICES[region.split('-')[0]] !== index) {
+                return false;
+              }
+
+              matchedRegion = region;
+              matchedRoleId = roleId;
+
+              return true;
+            }),
         );
 
         return (
@@ -41,7 +51,8 @@ export const Map: FunctionComponent<Props> = ({
             pathOnly
             key={path}
             index={index}
-            roleId={highlightedRegion?.[0] as RoleId}
+            region={matchedRegion}
+            roleId={matchedRoleId}
             onClick={onMapRegionClick}
           />
         );

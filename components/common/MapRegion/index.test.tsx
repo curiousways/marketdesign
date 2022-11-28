@@ -31,7 +31,7 @@ describe('MapRegion', () => {
     const onClick = jest.fn();
 
     render(
-      <MapRegion roleId="buyer" index={MAP_INDICES.b1} onClick={onClick} />,
+      <MapRegion roleId="buyer" index={12} region="b1" onClick={onClick} />,
     );
 
     const path = screen.getByTestId('map-region');
@@ -39,14 +39,14 @@ describe('MapRegion', () => {
     fireEvent.click(path);
 
     expect(onClick).toHaveBeenCalledTimes(1);
-    expect(onClick).toHaveBeenCalledWith('b1', MAP_INDICES.b1);
+    expect(onClick).toHaveBeenCalledWith('b1', 12);
     expect(path).toHaveClass('cursor-pointer');
   });
 
   it('does not make the path clickable if no role ID is given', () => {
     const onClick = jest.fn();
 
-    render(<MapRegion index={MAP_INDICES.b1} onClick={onClick} />);
+    render(<MapRegion index={12} region="b1" onClick={onClick} />);
 
     const path = screen.getByTestId('map-region');
 
@@ -69,6 +69,32 @@ describe('MapRegion', () => {
       const path = screen.getByTestId('map-region');
 
       expect(path.getAttribute('fill')).toBe(expectedColour);
+    },
+  );
+
+  it.each(['woodland', 'wetland'])(
+    'renders a region filled with the %s icon',
+    (iconType) => {
+      render(<MapRegion index={21} roleId="buyer" region={`s1-${iconType}`} />);
+
+      expect(screen.getByTestId('map-region-icon')).toMatchSnapshot();
+    },
+  );
+
+  it.each(['woodland', 'wetland'])(
+    'renders a small region filled with the %s icon',
+    (iconType) => {
+      render(
+        <MapRegion
+          isSmall
+          size={50}
+          index={21}
+          roleId="buyer"
+          region={`s1-${iconType}`}
+        />,
+      );
+
+      expect(screen.getByTestId('map-region-icon')).toMatchSnapshot();
     },
   );
 });
