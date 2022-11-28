@@ -19,7 +19,7 @@ describe('Footer', () => {
       Home: '/',
       'About the model': '/about-the-model',
       'How it works': '/how-it-works',
-      'Live demo': '/live-demo',
+      'Market sandbox': '/market-sandbox',
     });
   });
 
