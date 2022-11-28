@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { FormEvent, FormEventHandler, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { capitalCase } from 'change-case';
 import {
   DemoBid,
