@@ -592,7 +592,7 @@ describe('MarketSandbox', () => {
       };
     });
 
-    render(<LiveDemo data={multipleBidsScenario} />, { wrapper });
+    render(<MarketSandbox data={multipleBidsScenario} />, { wrapper });
 
     const region = getHighlightedMapRegionByKey('s1');
 
