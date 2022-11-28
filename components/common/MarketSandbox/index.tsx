@@ -20,7 +20,7 @@ import { HighlightedMapRegions } from '../../../types/map';
 import { isProjectEqual } from '../../../utils/walkthroughs';
 import { useProjectsContext } from '../../../context/ProjectsContext';
 
-interface LiveDemoProps {
+interface MarketSandboxProps {
   data: DemoData;
 }
 
@@ -204,7 +204,9 @@ const getHighlightedMapRegions = (
   return regions;
 };
 
-export const LiveDemo: NextPage<LiveDemoProps> = ({ data }: LiveDemoProps) => {
+export const MarketSandbox: NextPage<MarketSandboxProps> = ({
+  data,
+}: MarketSandboxProps) => {
   const [marketState, setMarketState] = useState<MarketState>(0);
   const [result, setResult] = useState<Result>();
 
