@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { getDemoFiles } from '../../utils/demo';
 import { DemoFile } from '../../types/demo';
 
-type LiveDemoIndexProps = {
+type MarketSandboxIndexProps = {
   demoFiles: DemoFile[];
 };
 
@@ -20,9 +20,9 @@ const groupByCategories = (demoFiles: DemoFile[]) => {
   }, initialData);
 };
 
-const LiveDemoIndex: NextPage<LiveDemoIndexProps> = ({
+const MarketSandboxIndex: NextPage<MarketSandboxIndexProps> = ({
   demoFiles,
-}: LiveDemoIndexProps) => (
+}: MarketSandboxIndexProps) => (
   <div className="relative">
     <section className="mt-6 mx-10" id="scenarios">
       <h2 className="heading-2">List of Markets</h2>
@@ -43,7 +43,7 @@ const LiveDemoIndex: NextPage<LiveDemoIndexProps> = ({
                       <Link
                         className="underline-offset-8 text-lg hover:underline"
                         href={{
-                          pathname: '/live-demo/[slug]',
+                          pathname: '/market-sandbox/[slug]',
                           query: {
                             slug: demoFile.slug,
                           },
@@ -64,7 +64,7 @@ const LiveDemoIndex: NextPage<LiveDemoIndexProps> = ({
 );
 
 export const getServerSideProps: GetServerSideProps<
-  LiveDemoIndexProps
+  MarketSandboxIndexProps
 > = async () => {
   const demoFiles = await getDemoFiles();
 
@@ -75,4 +75,4 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-export default LiveDemoIndex;
+export default MarketSandboxIndex;

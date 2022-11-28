@@ -5,7 +5,7 @@ import { ProjectsContext } from '../../../context/ProjectsContext';
 import { getMarketParticipants } from '../../../test-utils/market';
 import { DemoData } from '../../../types/demo';
 import { MAP_REGION_PATHS } from '../MapRegion';
-import { LiveDemo } from './index';
+import { MarketSandbox } from './index';
 
 type WrapperProps = { children: ReactNode };
 
@@ -152,9 +152,9 @@ const getHighlightedMapRegionByKey = (key: string) => {
   return region;
 };
 
-describe('LiveDemo', () => {
+describe('MarketSandbox', () => {
   it('highlights the expected map regions', () => {
-    render(<LiveDemo data={multipleBidsScenario} />, { wrapper });
+    render(<MarketSandbox data={multipleBidsScenario} />, { wrapper });
 
     const highlightedMapPaths = getHighlightedMapRegions();
 
@@ -167,7 +167,7 @@ describe('LiveDemo', () => {
   });
 
   it('selects a single map region', async () => {
-    render(<LiveDemo data={multipleBidsScenario} />, { wrapper });
+    render(<MarketSandbox data={multipleBidsScenario} />, { wrapper });
 
     const region = getHighlightedMapRegionByKey('b1');
 
@@ -190,7 +190,7 @@ describe('LiveDemo', () => {
   });
 
   it('selects multiple map regions', async () => {
-    render(<LiveDemo data={multipleBidsScenario} />, { wrapper });
+    render(<MarketSandbox data={multipleBidsScenario} />, { wrapper });
 
     const region = getHighlightedMapRegionByKey('s1');
 
