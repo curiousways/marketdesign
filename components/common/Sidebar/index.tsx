@@ -1,4 +1,4 @@
-import { FC, FormEvent, MouseEventHandler, ReactNode } from 'react';
+import { FC, MouseEventHandler, ReactNode } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { fadeIn } from '@/utils/animations';
