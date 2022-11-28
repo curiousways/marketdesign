@@ -17,6 +17,7 @@ type ProjectDetailsProps = {
   projects: Project[];
   isFormEnabled?: boolean;
   isFormReviseEnabled?: boolean;
+  hasFixedBids?: boolean;
   isDivisibleInputEnabled?: boolean;
   showDivisibleInput?: boolean;
   isMarketSolvable?: boolean;
@@ -67,6 +68,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
   projects,
   isFormEnabled,
   isFormReviseEnabled,
+  hasFixedBids,
   isDivisibleInputEnabled,
   showDivisibleInput,
   isMarketSolvable,
@@ -194,7 +196,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                     <CostInput
                       cost={project.cost}
                       disabled={!isFormEnabled}
-                      bid={getProjectBid(project)}
+                      bid={hasFixedBids ? getProjectBid(project) : undefined}
                       value={value}
                       name={priceInputNames[projectIndex]}
                       animate={

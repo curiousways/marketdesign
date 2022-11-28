@@ -1,4 +1,4 @@
-type Bid = {
+export type Bid = {
   v: number;
   q: {
     biodiversity: number;
@@ -11,8 +11,6 @@ type Bid = {
 type Bidder = {
   name: string;
   bids: Bid[];
-  winningBids?: Bid[];
-  losingBids?: Bid[];
 };
 
 type Payments = {
