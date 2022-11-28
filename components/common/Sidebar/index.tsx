@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler, ReactNode } from 'react';
+import { FC, FormEvent, MouseEventHandler, ReactNode } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { fadeIn } from '@/utils/animations';
@@ -20,10 +20,12 @@ type SidebarProps = {
   onSolveMarketClick: MouseEventHandler;
   sidebarContent?: ReactNode;
   isFormEnabled?: boolean;
+  isFormReviseEnabled?: boolean;
   isDivisibleInputEnabled?: boolean;
   showDivisibleInput?: boolean;
   isMarketSolvable?: boolean;
   onFormSubmit: () => void;
+  onFormRevise?: () => void;
   roleId?: RoleId;
   projects: Project[];
 };
@@ -40,10 +42,12 @@ export const SideBar: FC<SidebarProps> = ({
   onSolveMarketClick,
   sidebarContent,
   isFormEnabled,
+  isFormReviseEnabled,
   isDivisibleInputEnabled,
   showDivisibleInput,
   isMarketSolvable,
   onFormSubmit,
+  onFormRevise,
   roleId,
   projects,
 }: SidebarProps) => (
@@ -56,10 +60,12 @@ export const SideBar: FC<SidebarProps> = ({
         {showDetailsWidget && roleId && (
           <ProjectDetails
             isFormEnabled={isFormEnabled}
+            isFormReviseEnabled={isFormReviseEnabled}
             isDivisibleInputEnabled={isDivisibleInputEnabled}
             showDivisibleInput={showDivisibleInput}
             isMarketSolvable={isMarketSolvable}
             onFormSubmit={onFormSubmit}
+            onFormRevise={onFormRevise}
             roleId={roleId}
             projects={projects}
           />

@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { useCallback, useState } from 'react';
+import { FormEvent, FormEventHandler, useCallback, useState } from 'react';
 import { capitalCase } from 'change-case';
 import {
   DemoBid,
@@ -62,6 +62,10 @@ const convertBidToProject = (
       nutrients: Math.abs(nutrients),
     },
     accepted: () => {
+      if (!result) {
+        return true;
+      }
+
       const acceptedPercentage = Math.abs(winning * 100);
 
       if ([100, 0].includes(acceptedPercentage)) {
@@ -199,6 +203,10 @@ export const LiveDemo: NextPage<LiveDemoProps> = ({ data }: LiveDemoProps) => {
     setMarketState(MarketState.solvable);
   }, []);
 
+  const onFormRevise = useCallback(() => {
+    setMarketState(MarketState.pending);
+  }, []);
+
   const onMapRegionClick = useCallback(
     (region: string) => {
       const selectedTrader = data.playable_traders.find((trader) =>
@@ -220,20 +228,22 @@ export const LiveDemo: NextPage<LiveDemoProps> = ({ data }: LiveDemoProps) => {
 
   const hasMyProjects = !!myProjects.length;
   const roleId = playableTrader?.role;
-  const isMarketSolvable = marketState === MarketState.solvable;
 
   return (
     <MainContainer>
       <SideBar
-        isFormEnabled={hasMyProjects && marketState === MarketState.pending}
+        isFormEnabled={marketState === MarketState.pending}
+        isFormReviseEnabled={marketState > MarketState.pending}
         showDetailsWidget={hasMyProjects}
         title={data.title}
         sidebarContent={data.description}
         projects={myProjects}
         onSolveMarketClick={onSolveMarketClick}
         onFormSubmit={onFormSubmit}
+        onFormRevise={onFormRevise}
         roleId={roleId}
-        showSolveMarketBtn={isMarketSolvable}
+        isMarketSolvable={marketState >= MarketState.solvable}
+        showSolveMarketBtn={marketState === MarketState.solvable}
       />
       <Market
         showMap

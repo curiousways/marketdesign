@@ -22,11 +22,115 @@ const wrapper = ({ children }: WrapperProps) => (
   </ProjectsContext.Provider>
 );
 
+const singleBidScenario: DemoData = {
+  categories: ['Single bids only'],
+  title: 'Market-WlkThruB1',
+  description: 'Lorem ipsum dolor sit amet',
+  playable_traders: [
+    {
+      name: 'seller 1',
+      role: 'seller',
+      locations: ['s1'],
+      enable_divisibility_element: false,
+    },
+    {
+      name: 'buyer 1',
+      role: 'buyer',
+      locations: ['b1'],
+      enable_divisibility_element: false,
+    },
+  ],
+  states: [
+    {
+      free_disposal: true,
+      bidders: [
+        {
+          name: 'seller 1',
+          bids: [
+            {
+              v: -12000,
+              q: {
+                biodiversity: 3,
+                nutrients: 1,
+              },
+              divisibility: 0,
+            },
+          ],
+        },
+        {
+          name: 'seller 2',
+          bids: [
+            {
+              v: -8000,
+              q: {
+                biodiversity: 2,
+                nutrients: 1,
+              },
+              divisibility: 0,
+            },
+          ],
+        },
+        {
+          name: 'seller 3',
+          bids: [
+            {
+              v: -10000,
+              q: {
+                biodiversity: 1,
+                nutrients: 4,
+              },
+              divisibility: 0,
+            },
+          ],
+        },
+        {
+          name: 'buyer 1',
+          bids: [
+            {
+              v: 8000,
+              q: {
+                biodiversity: -1,
+                nutrients: -3,
+              },
+              divisibility: 0,
+            },
+          ],
+        },
+        {
+          name: 'buyer 2',
+          bids: [
+            {
+              v: 10000,
+              q: {
+                biodiversity: -2,
+                nutrients: -2,
+              },
+              divisibility: 0,
+            },
+          ],
+        },
+        {
+          name: 'buyer 3',
+          bids: [
+            {
+              v: 11000,
+              q: {
+                biodiversity: -3,
+                nutrients: 0,
+              },
+              divisibility: 0,
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
 const multipleBidsScenario: DemoData = {
   categories: ['Multiple bids', 'XOR bids'],
   title: 'Market-WlkThruS5.2',
-  description:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc dapibus tempor massa, vel sagittis eros lobortis eu. Suspendisse condimentum enim id justo consectetur vestibulum. Maecenas eu lacus accumsan, tincidunt nulla vitae, dapibus sem. Cras in tincidunt nunc, in viverra eros. Donec ullamcorper magna turpis, in feugiat dolor eleifend in. Duis pulvinar sem quis urna fermentum tincidunt. Quisque facilisis faucibus nibh, vitae semper purus volutpat ac. ',
+  description: 'Lorem ipsum dolor sit amet',
   playable_traders: [
     {
       name: 'seller 1',
@@ -213,5 +317,33 @@ describe('LiveDemo', () => {
     expect(allParticipants[0].title).toHaveTextContent('Buyer 1');
     expect(allParticipants[1].title).toHaveTextContent('Buyer 2');
     expect(allParticipants[2].title).toHaveTextContent('Seller 2');
+  });
+
+  it('submits and revises a value for the selected project', async () => {
+    render(<LiveDemo data={singleBidScenario} />, { wrapper });
+
+    const region = getHighlightedMapRegionByKey('b1');
+
+    fireEvent.click(region);
+
+    const projectDetails = await screen.findByTestId('project-details');
+    const textInput = within(projectDetails).getByRole('textbox');
+    const submitButton = within(projectDetails).getByRole('button');
+
+    fireEvent.change(textInput, { target: { value: '8000' } });
+
+    expect(getMarketParticipants().buyers).toHaveLength(2);
+    expect(submitButton).toHaveTextContent('Submit');
+
+    fireEvent.click(submitButton);
+
+    expect(getMarketParticipants().buyers).toHaveLength(3);
+    expect(textInput).toHaveValue('8000');
+    expect(submitButton).toHaveTextContent('Revise');
+
+    fireEvent.click(submitButton);
+
+    expect(getMarketParticipants().buyers).toHaveLength(2);
+    expect(textInput).toHaveValue('');
   });
 });

@@ -16,10 +16,12 @@ import { MAP_INDICES } from '../../../constants/map';
 type ProjectDetailsProps = {
   projects: Project[];
   isFormEnabled?: boolean;
+  isFormReviseEnabled?: boolean;
   isDivisibleInputEnabled?: boolean;
   showDivisibleInput?: boolean;
   isMarketSolvable?: boolean;
   onFormSubmit: () => void;
+  onFormRevise?: () => void;
   roleId: RoleId;
 };
 
@@ -64,10 +66,12 @@ const getCostInputPlaceholder = (roleId: RoleId) => {
 export const ProjectDetails: FC<ProjectDetailsProps> = ({
   projects,
   isFormEnabled,
+  isFormReviseEnabled,
   isDivisibleInputEnabled,
   showDivisibleInput,
   isMarketSolvable,
   onFormSubmit,
+  onFormRevise,
   roleId,
 }: ProjectDetailsProps) => {
   const { getProjectCost, setProjectCost } = useProjectsContext();
@@ -94,6 +98,20 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
   const onSubmit = (event: FormEvent) => {
     event.preventDefault();
     onFormSubmit();
+  };
+
+  const onRevise = (event: FormEvent) => {
+    if (!isFormReviseEnabled) {
+      return;
+    }
+
+    if (!formRef.current) {
+      return;
+    }
+
+    formRef.current.reset();
+    onFormRevise?.();
+    event.preventDefault();
   };
 
   return (
@@ -223,7 +241,8 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
             <button
               ref={submitButtonRef}
               type="submit"
-              disabled={!isFormEnabled}
+              disabled={!isFormEnabled && !isFormReviseEnabled}
+              onClick={onRevise}
               className={classNames(
                 'w-full rounded-lg bg-[#848484] text-white text-xs py-2',
                 isFormEnabled ? 'hover:bg-black cursor-pointer' : '',
@@ -232,7 +251,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                   : '',
               )}
             >
-              Submit
+              {isFormReviseEnabled ? 'Revise' : 'Submit'}
             </button>
           </div>
         </div>
