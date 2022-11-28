@@ -389,7 +389,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
                       {isBuyer ? 'Bid' : 'Offer'}
                     </p>
                     <p>£{adjustedCost.toLocaleString()}</p>
-                    {adjustedCost !== projectCost && (
+                    {adjustedCost !== projectCost && showWinners && (
                       <p className={`${textColor} opacity-50`}>
                         £{projectCost.toLocaleString()}
                       </p>
