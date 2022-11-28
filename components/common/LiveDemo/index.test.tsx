@@ -1,46 +1,27 @@
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { ReactNode } from 'react';
 import nock from 'nock';
 import cloneDeep from 'clone-deep';
 import { MAP_INDICES } from '../../../constants/map';
-import { ProjectsContext } from '../../../context/ProjectsContext';
-import {
-  getMarketParticipants,
-  getMarketSummary,
-} from '../../../test-utils/market';
-import { DemoBid, DemoBidder, DemoData } from '../../../types/demo';
+import { ProjectsProvider } from '../../../context/ProjectsContext';
+import { getMarketParticipants } from '../../../test-utils/market';
+import { DemoBid, DemoBidder, DemoData, DemoState } from '../../../types/demo';
 import { MAP_REGION_PATHS } from '../MapRegion';
 import { LiveDemo } from './index';
-import { Bid, Result } from '../../../types/result';
+import { Bid } from '../../../types/result';
 
 type WrapperProps = { children: ReactNode };
 
-const wrapper = ({ children }: WrapperProps) => (
-  <ProjectsContext.Provider
-    value={{
-      setProjectCost: jest.fn(),
-      getProjectCost: jest.fn(({ cost }) =>
-        Array.isArray(cost) ? cost[0] : cost,
-      ),
-    }}
-  >
-    {children}
-  </ProjectsContext.Provider>
-);
+const wrapper = ({ children }: WrapperProps) => {
+  return <ProjectsProvider>{children}</ProjectsProvider>;
+};
 
 nock.disableNetConnect();
 
-const mockApiResponse = (result: Result) => {
+const mockApiResponse = (reply: any) =>
   nock('https://marketdesign.herokuapp.com')
     .post('/solve/lindsay2018')
-    .reply(200, result);
-};
+    .reply(200, reply);
 
 const singleBidScenario: DemoData = {
   categories: ['Single bids only'],
@@ -471,5 +452,131 @@ describe('LiveDemo', () => {
     expect(within(marketOutcome).getByTestId('surplus')).toHaveTextContent(
       '£1,000',
     );
+  });
+
+  it('gives the expected outcome for a partially accepted project when bidding above cost', async () => {
+    const biddersResult = cloneDeep(singleBidScenario.states[0].bidders);
+    let requestState: DemoState | undefined;
+
+    findBid(biddersResult, 'seller 1').winning = 1;
+    findBid(biddersResult, 'buyer 1').winning = 0.5;
+
+    mockApiResponse((_req: any, body: any) => {
+      requestState = body;
+
+      return {
+        rule: 'lindsay2018',
+        surplus: 2000.0,
+        surplus_shares: {
+          'seller 1': 1500,
+          'buyer 1': 2500,
+        },
+        payments: {
+          'seller 1': -12250.0,
+          'buyer 1': 9750.0,
+        },
+        problem: {
+          free_disposal: true,
+          goods: [],
+          bidders: biddersResult,
+        },
+      };
+    });
+
+    render(<LiveDemo data={singleBidScenario} />, { wrapper });
+
+    const region = getHighlightedMapRegionByKey('b1');
+
+    fireEvent.click(region);
+
+    const projectDetails = await screen.findByTestId('project-details');
+    const textInput = within(projectDetails).getByRole('textbox');
+
+    fireEvent.change(textInput, { target: { value: '15000' } });
+
+    expect(textInput).toBeValid();
+
+    fireEvent.click(within(projectDetails).getByText('Submit'));
+    fireEvent.click(await screen.findByText('Solve Market'));
+
+    const marketOutcome = await screen.findByTestId('market-outcome');
+    const { buyers, sellers } = getMarketParticipants();
+
+    expect(findBid(requestState!.bidders, 'buyer 1').v).toBe(15000);
+
+    expect(sellers).toHaveLength(1);
+    expect(buyers).toHaveLength(1);
+
+    expect(sellers[0].title).toHaveTextContent('Seller 1');
+    expect(sellers[0].bidOrOffer).toHaveTextContent('£12,000');
+    expect(sellers[0].discountOrBonus).toHaveTextContent('£1,500');
+    expect(sellers[0].paysOrReceived).toHaveTextContent('£13,500');
+
+    expect(buyers[0].title).toHaveTextContent('Buyer 1Accepted: 50%');
+    expect(buyers[0].bidOrOffer).toHaveTextContent('£7,500£15,000');
+    expect(buyers[0].discountOrBonus).toHaveTextContent('£2,500');
+    expect(buyers[0].paysOrReceived).toHaveTextContent('£5,000');
+
+    expect(within(marketOutcome).getByTestId('total-bids')).toHaveTextContent(
+      '£15,000',
+    );
+
+    expect(within(marketOutcome).getByTestId('total-offers')).toHaveTextContent(
+      '£12,000',
+    );
+
+    expect(within(marketOutcome).getByTestId('surplus')).toHaveTextContent(
+      '£3,000',
+    );
+  });
+
+  it('makes a request with a seller offer below cost', async () => {
+    const biddersResult = cloneDeep(singleBidScenario.states[0].bidders);
+    let requestState: DemoState | undefined;
+
+    findBid(biddersResult, 'seller 2').winning = 1;
+    findBid(biddersResult, 'buyer 1').winning = 1;
+
+    mockApiResponse((_req: any, body: any) => {
+      requestState = body;
+
+      return {
+        rule: 'lindsay2018',
+        surplus: 2000.0,
+        surplus_shares: {
+          'seller 1': 1500,
+          'buyer 1': 2500,
+        },
+        payments: {
+          'seller 1': -12250.0,
+          'buyer 1': 9750.0,
+        },
+        problem: {
+          free_disposal: true,
+          goods: [],
+          bidders: biddersResult,
+        },
+      };
+    });
+
+    render(<LiveDemo data={singleBidScenario} />, { wrapper });
+
+    const region = getHighlightedMapRegionByKey('s1');
+
+    fireEvent.click(region);
+
+    const projectDetails = await screen.findByTestId('project-details');
+    const textInput = within(projectDetails).getByRole('textbox');
+
+    fireEvent.change(textInput, { target: { value: '1000' } });
+
+    expect(textInput).toBeValid();
+
+    fireEvent.click(within(projectDetails).getByText('Submit'));
+    fireEvent.click(await screen.findByText('Solve Market'));
+
+    await screen.findByTestId('market-outcome');
+
+    expect(findBid(requestState!.bidders, 'seller 1').v).toBe(-1000);
   });
 });

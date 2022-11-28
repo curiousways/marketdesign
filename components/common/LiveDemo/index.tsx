@@ -2,6 +2,7 @@ import type { NextPage } from 'next';
 import { useCallback, useState } from 'react';
 import { capitalCase } from 'change-case';
 import fetch from 'isomorphic-unfetch';
+import cloneDeep from 'clone-deep';
 import {
   DemoBid,
   DemoBidder,
@@ -17,6 +18,7 @@ import { Project } from '../../../types/project';
 import { MarketState } from '../../../types/market';
 import { HighlightedMapRegions } from '../../../types/map';
 import { isProjectEqual } from '../../../utils/walkthroughs';
+import { useProjectsContext } from '../../../context/ProjectsContext';
 
 interface LiveDemoProps {
   data: DemoData;
@@ -117,6 +119,33 @@ const getFilteredProjects = (
     );
 };
 
+const findBidForProject = (
+  bidders: DemoBidder[],
+  project: Project,
+): DemoBid => {
+  let matchingBid: DemoBid | undefined;
+
+  bidders.some((bidder) =>
+    bidder.bids.some((bid) => {
+      const convertedProject = convertBidToProject(bidder, bid);
+
+      if (isProjectEqual(convertedProject, project)) {
+        matchingBid = bid;
+
+        return true;
+      }
+
+      return false;
+    }),
+  );
+
+  if (!matchingBid) {
+    throw new Error('No matching project found in the given bidders');
+  }
+
+  return matchingBid;
+};
+
 const getSellerProjects = (
   bidders: DemoBidder[],
   myProjects?: Project[],
@@ -187,6 +216,17 @@ export const LiveDemo: NextPage<LiveDemoProps> = ({ data }: LiveDemoProps) => {
   const [demoState, setDemoState] = useState<DemoState>(data.states[0]);
   const [selectedMapRegion, setSelectedMapRegion] = useState<string>();
   const [playableTrader, setPlayableTrader] = useState<DemoTrader>();
+  const { getProjectCost } = useProjectsContext();
+
+  const myProjects = getProjectsForTrader(
+    demoState.bidders,
+    playableTrader,
+    result,
+    selectedMapRegion,
+  );
+
+  const hasMyProjects = !!myProjects.length;
+  const roleId = playableTrader?.role;
 
   const onSolveMarketClick = useCallback(async () => {
     if (!demoState) {
@@ -195,9 +235,23 @@ export const LiveDemo: NextPage<LiveDemoProps> = ({ data }: LiveDemoProps) => {
       );
     }
 
+    // Clone of the demo state so as not to interfere with the original object.
+    const clonedDemoState = cloneDeep(demoState);
+
+    // Find the bid associated with each of "my projects" and modify its value.
+    myProjects.forEach((project) => {
+      const bid = findBidForProject(clonedDemoState.bidders, project);
+
+      bid.v = getProjectCost(project);
+
+      if (roleId === 'seller') {
+        bid.v *= -1;
+      }
+    });
+
     const res = await fetch(API_URL, {
       method: 'POST',
-      body: JSON.stringify(demoState),
+      body: JSON.stringify(clonedDemoState),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -205,7 +259,7 @@ export const LiveDemo: NextPage<LiveDemoProps> = ({ data }: LiveDemoProps) => {
 
     setResult(await res.json());
     setMarketState(MarketState.solved);
-  }, [demoState]);
+  }, [demoState, myProjects, roleId, getProjectCost]);
 
   const onFormSubmit = useCallback(() => {
     setMarketState(MarketState.solvable);
@@ -226,16 +280,6 @@ export const LiveDemo: NextPage<LiveDemoProps> = ({ data }: LiveDemoProps) => {
     },
     [data.playable_traders],
   );
-
-  const myProjects = getProjectsForTrader(
-    demoState.bidders,
-    playableTrader,
-    result,
-    selectedMapRegion,
-  );
-
-  const hasMyProjects = !!myProjects.length;
-  const roleId = playableTrader?.role;
 
   return (
     <MainContainer>

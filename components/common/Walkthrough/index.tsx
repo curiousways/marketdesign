@@ -151,6 +151,7 @@ export const Walkthrough: FC = () => {
   return (
     <MainContainer>
       <SideBar
+        hasFixedBids
         title={walkthrough.title}
         subtitle={getWalkthroughTitle(roleId, walkthroughIndex)}
         hasNextPage={hasNextStage}
