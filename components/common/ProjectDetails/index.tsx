@@ -24,6 +24,7 @@ type ProjectDetailsProps = {
   onFormSubmit: () => void;
   onFormRevise?: () => void;
   roleId: RoleId;
+  animateNextSteps?: boolean;
 };
 
 const MAP_REGION_ICON_SIZE = 50;
@@ -75,6 +76,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
   onFormSubmit,
   onFormRevise,
   roleId,
+  animateNextSteps,
 }: ProjectDetailsProps) => {
   const { getProjectCost, setProjectCost } = useProjectsContext();
 
@@ -203,6 +205,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                       name={priceInputNames[projectIndex]}
                       animate={
                         !!isFormEnabled &&
+                        animateNextSteps &&
                         animatedInputName === priceInputNames[projectIndex]
                       }
                       onInputChange={onCostInputChange}
@@ -224,7 +227,8 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                 isDivisibleInputEnabled ? 'cursor-pointer' : '',
                 isFormEnabled &&
                   animatedInputName === 'is-divisible' &&
-                  isDivisibleInputEnabled
+                  isDivisibleInputEnabled &&
+                  animateNextSteps
                   ? 'animate-scale-large'
                   : '',
               )}
@@ -250,7 +254,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
               className={classNames(
                 'w-full rounded-lg bg-[#848484] text-white text-xs py-2',
                 isFormEnabled ? 'hover:bg-black cursor-pointer' : '',
-                isFormEnabled && !animatedInputName
+                isFormEnabled && !animatedInputName && animateNextSteps
                   ? 'animate-scale-large'
                   : '',
               )}

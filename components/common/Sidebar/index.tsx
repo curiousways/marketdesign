@@ -21,6 +21,7 @@ type SidebarProps = {
   sidebarContent?: ReactNode;
   isFormEnabled?: boolean;
   isFormReviseEnabled?: boolean;
+  animateNextSteps?: boolean;
   hasFixedBids?: boolean;
   isDivisibleInputEnabled?: boolean;
   showDivisibleInput?: boolean;
@@ -44,6 +45,7 @@ export const SideBar: FC<SidebarProps> = ({
   sidebarContent,
   isFormEnabled,
   isFormReviseEnabled,
+  animateNextSteps,
   hasFixedBids,
   isDivisibleInputEnabled,
   showDivisibleInput,
@@ -71,6 +73,7 @@ export const SideBar: FC<SidebarProps> = ({
             onFormRevise={onFormRevise}
             roleId={roleId}
             projects={projects}
+            animateNextSteps={animateNextSteps}
           />
         )}
 
@@ -97,6 +100,7 @@ export const SideBar: FC<SidebarProps> = ({
           hasPreviousPage={hasPreviousPage}
           onNextClick={onNextClick}
           onPreviousClick={onPreviousClick}
+          animateNextSteps={animateNextSteps}
         />
 
         {/* Walkthrough Description text */}
