@@ -53,9 +53,9 @@ export const MarketParticipantTitle: FC<MarketParticipantTitleProps> = ({
         </div>
       )}
       {!showLoserStyles &&
-        (acceptedPercentage ? (
+        (typeof acceptedPercentage === 'number' ? (
           <span className="bg-white rounded-full px-3 py-1 mt-1">
-            Accepted: {acceptedPercentage}%
+            Accepted: {Math.round(acceptedPercentage)}%
           </span>
         ) : (
           subtitle && <p className={commonTextClassNames}>{subtitle}</p>
