@@ -58,11 +58,11 @@ export const Nav: FC<NavProps> = ({
       </li>
       <li>
         <NavLink
-          href="/live-demo"
+          href="/market-sandbox"
           activeClassName={activeClassName}
           inactiveClassName={inactiveClassName}
         >
-          Live demo
+          Market sandbox
         </NavLink>
       </li>
     </ul>

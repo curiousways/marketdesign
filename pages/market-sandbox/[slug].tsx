@@ -3,24 +3,26 @@ import { ParsedUrlQuery } from 'querystring';
 import { DemoData } from '../../types/demo';
 import { getDemoFiles } from '../../utils/demo';
 import { ProjectsProvider } from '../../context/ProjectsContext';
-import { LiveDemo } from '../../components/common/LiveDemo';
+import { MarketSandbox } from '../../components/common/MarketSandbox';
 
-interface LiveDemoScenarioParams extends ParsedUrlQuery {
+interface MarketSandboxScenarioParams extends ParsedUrlQuery {
   slug: string;
 }
 
-interface LiveDemoScenarioProps {
+interface MarketSandboxScenarioProps {
   data: DemoData;
 }
 
-const LiveDemoScenario: NextPage<LiveDemoScenarioProps> = ({ data }) => (
+const MarketSandboxScenario: NextPage<MarketSandboxScenarioProps> = ({
+  data,
+}) => (
   <ProjectsProvider>
-    <LiveDemo data={data} />
+    <MarketSandbox data={data} />
   </ProjectsProvider>
 );
 
 export const getStaticPaths: GetStaticPaths<
-  LiveDemoScenarioParams
+  MarketSandboxScenarioParams
 > = async () => {
   const demoFiles = await getDemoFiles();
 
@@ -35,8 +37,8 @@ export const getStaticPaths: GetStaticPaths<
 };
 
 export const getStaticProps: GetStaticProps<
-  LiveDemoScenarioProps,
-  LiveDemoScenarioParams
+  MarketSandboxScenarioProps,
+  MarketSandboxScenarioParams
 > = async ({ params }) => {
   const demoFiles = await getDemoFiles();
   const demoFile = demoFiles.find(({ slug }) => slug === params?.slug);
@@ -55,4 +57,4 @@ export const getStaticProps: GetStaticProps<
   };
 };
 
-export default LiveDemoScenario;
+export default MarketSandboxScenario;
