@@ -192,7 +192,9 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                   </div>
 
                   {/* Project Value */}
-                  <p className="font-light">£{projectValue.toLocaleString()}</p>
+                  <p className="font-light">
+                    £{Math.round(projectValue).toLocaleString()}
+                  </p>
 
                   <div className="flex-1 max-w-[50%]">
                     <CostInput

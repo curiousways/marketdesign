@@ -128,7 +128,7 @@ export const MarketOutcome: FC<MarketOutcomeProps> = ({
             <div className="text-center text-sm relative -mt-2">
               <p className="text-white">Total Bids</p>
               <p className="text-white" data-testid="total-bids">
-                £{totalBids.toLocaleString()}
+                £{Math.round(totalBids).toLocaleString()}
               </p>
             </div>
           </div>
@@ -142,7 +142,7 @@ export const MarketOutcome: FC<MarketOutcomeProps> = ({
             <div className="text-center text-sm relative -mt-2">
               <p className="text-white">Total Offers</p>
               <p className="text-white" data-testid="total-offers">
-                £{totalOffers.toLocaleString()}
+                £{Math.round(totalOffers).toLocaleString()}
               </p>
             </div>
           </div>
@@ -157,7 +157,7 @@ export const MarketOutcome: FC<MarketOutcomeProps> = ({
           <div className="text-center text-sm relative -mt-2">
             <p className="text-light-grey">Surplus</p>
             <p data-testid="surplus">
-              £{(totalBids - totalOffers).toLocaleString()}
+              £{Math.round(totalBids - totalOffers).toLocaleString()}
             </p>
           </div>
         </div>

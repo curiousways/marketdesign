@@ -47,7 +47,7 @@ export const MarketParticipantTitle: FC<MarketParticipantTitleProps> = ({
           </p>
           {showLoserStyles && (
             <p className={commonTextClassNames}>
-              £{projectCost.toLocaleString()}
+              £{Math.round(projectCost).toLocaleString()}
             </p>
           )}
         </div>
