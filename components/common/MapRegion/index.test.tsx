@@ -1,5 +1,4 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { MAP_INDICES } from '../../../constants/map';
 import { MAP_REGION_PATHS, MapRegion } from './index';
 
 describe('MapRegion', () => {
