@@ -343,7 +343,7 @@ describe('MarketSandbox', () => {
   });
 
   it('submits and revises a value for the selected project', async () => {
-    render(<LiveDemo data={singleBidScenario} />, { wrapper });
+    render(<MarketSandbox data={singleBidScenario} />, { wrapper });
 
     const region = getHighlightedMapRegionByKey('b1');
 
@@ -399,7 +399,7 @@ describe('MarketSandbox', () => {
       },
     });
 
-    render(<LiveDemo data={singleBidScenario} />, { wrapper });
+    render(<MarketSandbox data={singleBidScenario} />, { wrapper });
 
     const region = getHighlightedMapRegionByKey('b1');
 
@@ -483,7 +483,7 @@ describe('MarketSandbox', () => {
       };
     });
 
-    render(<LiveDemo data={singleBidScenario} />, { wrapper });
+    render(<MarketSandbox data={singleBidScenario} />, { wrapper });
 
     const region = getHighlightedMapRegionByKey('b1');
 
@@ -559,7 +559,7 @@ describe('MarketSandbox', () => {
       };
     });
 
-    render(<LiveDemo data={singleBidScenario} />, { wrapper });
+    render(<MarketSandbox data={singleBidScenario} />, { wrapper });
 
     const region = getHighlightedMapRegionByKey('s1');
 
