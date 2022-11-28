@@ -1,6 +1,5 @@
 import { ChangeEvent, FC, FormEvent, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-
 import { fadeIn } from '@/utils/animations';
 import BiodiversityIconGray from '@/components/walkthroughs/icons/BiodiversityIcon';
 import NutrientsIcon from '@/components/walkthroughs/icons/NutrientsIcon';
@@ -12,6 +11,7 @@ import { CostInput } from '../CostInput';
 import { Project } from '../../../types/project';
 import { useProjectsContext } from '../../../context/ProjectsContext';
 import { MapRegion } from '../MapRegion';
+import { MAP_INDICES } from '../../../constants/map';
 
 type ProjectDetailsProps = {
   projects: Project[];
@@ -22,6 +22,8 @@ type ProjectDetailsProps = {
   onFormSubmit: () => void;
   roleId: RoleId;
 };
+
+const MAP_REGION_ICON_SIZE = 50;
 
 const getProjectValue = (project: Project, roleId: RoleId) => {
   if (project.costPerCredit) {
@@ -68,8 +70,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
   onFormSubmit,
   roleId,
 }: ProjectDetailsProps) => {
-  const { getProjectCost, setProjectCost, getProjectMapIndex } =
-    useProjectsContext();
+  const { getProjectCost, setProjectCost } = useProjectsContext();
 
   const priceInputNames = projects.map((_, index) => `project-${index}-price`);
 
@@ -103,6 +104,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
       exit="hidden"
       layout
       className="border-2 border-black px-5 py-4 rounded-lg w-full"
+      data-testid="project-details"
     >
       <div className="text-black text-l">
         <p className="font-bold">My Project{projects.length ? 's' : ''}</p>
@@ -113,7 +115,6 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
         <ul>
           {projects.map((project, projectIndex) => {
             const projectValue = getProjectValue(project, roleId);
-            const projectMapIndex = getProjectMapIndex(project);
 
             const value = project.costPerCredit
               ? project.costPerCredit
@@ -128,7 +129,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
 
             return (
               <li
-                key={project.title + project.subtitle}
+                key={JSON.stringify(project)}
                 className={classNames(
                   'mb-3',
                   isMarketSolvable && project.isInactive ? 'opacity-30' : '',
@@ -140,13 +141,18 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                   </span>
                 )}
                 <div className="flex gap-x-3 justify-between items-center">
-                  {/* Selected map region */}
-                  {!project.costPerCredit && projectMapIndex && (
-                    <MapRegion
-                      size={50}
-                      index={projectMapIndex}
-                      roleId={roleId}
-                    />
+                  {/* Selected map region(s) */}
+                  {!project.costPerCredit && project.mapRegions && (
+                    <div className="flex">
+                      {project.mapRegions.map((mapRegion, _index, arr) => (
+                        <MapRegion
+                          key={mapRegion}
+                          size={MAP_REGION_ICON_SIZE / arr.length}
+                          index={MAP_INDICES[mapRegion]}
+                          roleId={roleId}
+                        />
+                      ))}
+                    </div>
                   )}
 
                   {/* Credits */}

@@ -13,14 +13,11 @@ import { Project } from '../types/project';
 type ProjectsContextType = {
   getProjectCost: (project: Project) => number;
   setProjectCost: (project: Project, cost: number) => void;
-  getProjectMapIndex: (project: Project) => number | undefined;
-  setProjectMapIndex: (project: Project, mapIndex: number) => void;
 };
 
 type ProjectsState = {
   project: Project;
   cost?: number;
-  mapIndex?: number;
 }[];
 
 type ProjectsUpdateCostAction = {
@@ -28,12 +25,7 @@ type ProjectsUpdateCostAction = {
   value: { project: Project; cost: number };
 };
 
-type ProjectsUpdateMapIndexAction = {
-  type: 'UPDATE_MAP_INDEX';
-  value: { project: Project; mapIndex: number };
-};
-
-type ProjectsAction = ProjectsUpdateCostAction | ProjectsUpdateMapIndexAction;
+type ProjectsAction = ProjectsUpdateCostAction;
 
 const findEntry = (state: ProjectsState, project: Project) =>
   state.find((item) => isProjectEqual(item.project, project));
@@ -54,19 +46,6 @@ const reducer = (
       }
 
       return [...state, { project, cost }];
-    }
-
-    case 'UPDATE_MAP_INDEX': {
-      const { project, mapIndex } = action.value;
-      const entry = findEntry(state, action.value.project);
-
-      if (entry) {
-        entry.mapIndex = mapIndex;
-
-        return state;
-      }
-
-      return [...state, { project, mapIndex }];
     }
 
     default:
@@ -106,30 +85,12 @@ export const ProjectsProvider: FunctionComponent<ProjectsProviderProps> = ({
     [state],
   );
 
-  const setProjectMapIndex = useCallback(
-    (project: Project, mapIndex: number) => {
-      dispatch({ type: 'UPDATE_MAP_INDEX', value: { project, mapIndex } });
-    },
-    [],
-  );
-
-  const getProjectMapIndex = useCallback(
-    (project: Project): number | undefined => {
-      const { mapIndex: dynamicMapIndex } = findEntry(state, project) ?? {};
-
-      return dynamicMapIndex ?? project.mapIndex;
-    },
-    [state],
-  );
-
   const value = useMemo(
     (): ProjectsContextType => ({
       getProjectCost,
       setProjectCost,
-      getProjectMapIndex,
-      setProjectMapIndex,
     }),
-    [getProjectCost, setProjectCost, getProjectMapIndex, setProjectMapIndex],
+    [getProjectCost, setProjectCost],
   );
 
   return (

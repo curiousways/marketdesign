@@ -11,6 +11,7 @@ export const getBuyerScenario3_2: GetWalkthroughScenario = (stage: number) => ({
       accepted: () => true,
       discountOrBonus: 15000,
       products: { biodiversity: 1, nutrients: 2 },
+      mapRegions: ['b1'],
     },
   ],
   buyerProjects: [

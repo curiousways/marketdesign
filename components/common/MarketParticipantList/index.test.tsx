@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import { MarketParticipantList } from './index';
 import { ProjectsContext } from '../../../context/ProjectsContext';
+import { getMarketParticipants } from '../../../test-utils/market';
 
 type WrapperProps = { children: ReactNode };
 
@@ -12,8 +13,6 @@ const wrapper = ({ children }: WrapperProps) => (
       getProjectCost: jest.fn(({ cost }) =>
         Array.isArray(cost) ? cost[0] : cost,
       ),
-      setProjectMapIndex: jest.fn(),
-      getProjectMapIndex: () => 1,
     }}
   >
     {children}
@@ -54,28 +53,6 @@ const sellerProjects = [
   },
 ];
 
-const getMarketParticipant = (element: HTMLElement) => ({
-  title: within(element).getByTestId('market-participant-title'),
-  bidOrOffer: within(element).queryByTestId('bid-or-offer'),
-  discountOrBonus: within(element).queryByTestId('discount-or-bonus'),
-  paysOrReceived: within(element).queryByTestId('pays-or-received'),
-});
-
-const getMarketParticipants = () => ({
-  buyers: screen
-    .queryAllByTestId('buyer-participant')
-    .map(getMarketParticipant),
-  losingBuyers: screen
-    .queryAllByTestId('losing-buyer-participant')
-    .map(getMarketParticipant),
-  sellers: screen
-    .queryAllByTestId('seller-participant')
-    .map(getMarketParticipant),
-  losingSellers: screen
-    .queryAllByTestId('losing-seller-participant')
-    .map(getMarketParticipant),
-});
-
 describe('MarketOutcome', () => {
   it('renders some buyer and seller participants with all of the expected costs', () => {
     render(
@@ -84,6 +61,7 @@ describe('MarketOutcome', () => {
         losingProjects={[]}
         buyerProjects={buyerProjects}
         sellerProjects={sellerProjects}
+        roleId="seller"
       />,
       { wrapper },
     );
@@ -121,6 +99,7 @@ describe('MarketOutcome', () => {
         losingProjects={[]}
         buyerProjects={[buyerProjects[0]]}
         sellerProjects={[sellerProjects[0]]}
+        roleId="seller"
       />,
       { wrapper },
     );
@@ -143,6 +122,7 @@ describe('MarketOutcome', () => {
         losingProjects={[]}
         buyerProjects={[buyerProjects[0]]}
         sellerProjects={[sellerProjects[0]]}
+        roleId="seller"
       />,
       { wrapper },
     );
@@ -169,6 +149,7 @@ describe('MarketOutcome', () => {
         losingProjects={[]}
         buyerProjects={[buyerProjects[0]]}
         sellerProjects={[sellerProjects[0]]}
+        roleId="seller"
       />,
       { wrapper },
     );
@@ -199,6 +180,7 @@ describe('MarketOutcome', () => {
         losingProjects={[]}
         buyerProjects={[buyerProjects[0]]}
         sellerProjects={[sellerProjects[0]]}
+        roleId="seller"
       />,
       { wrapper },
     );
@@ -230,6 +212,7 @@ describe('MarketOutcome', () => {
         losingProjects={[]}
         buyerProjects={[buyerProjects[0]]}
         sellerProjects={[sellerProjects[0]]}
+        roleId="seller"
       />,
       { wrapper },
     );
@@ -262,6 +245,7 @@ describe('MarketOutcome', () => {
         losingProjects={[buyerProjects[1], sellerProjects[1]]}
         buyerProjects={buyerProjects}
         sellerProjects={sellerProjects}
+        roleId="seller"
       />,
       { wrapper },
     );
@@ -284,5 +268,69 @@ describe('MarketOutcome', () => {
     expect(losingSellers[0].bidOrOffer).toBeNull();
     expect(losingSellers[0].discountOrBonus).toBeNull();
     expect(losingSellers[0].paysOrReceived).toBeNull();
+  });
+
+  it('sorts sellers above buyers if the role ID is seller', () => {
+    render(
+      <MarketParticipantList
+        roleId="seller"
+        myProjects={[]}
+        losingProjects={[]}
+        buyerProjects={buyerProjects}
+        sellerProjects={sellerProjects}
+      />,
+      { wrapper },
+    );
+
+    const participants = screen.getAllByTestId(/^(buyer|seller)-participant$/);
+
+    expect(participants).toHaveLength(4);
+    expect(
+      within(participants[0]).getByTestId('market-participant-title'),
+    ).toHaveTextContent('Seller 1');
+
+    expect(
+      within(participants[1]).getByTestId('market-participant-title'),
+    ).toHaveTextContent('Seller 2');
+
+    expect(
+      within(participants[2]).getByTestId('market-participant-title'),
+    ).toHaveTextContent('Buyer 1');
+
+    expect(
+      within(participants[3]).getByTestId('market-participant-title'),
+    ).toHaveTextContent('Buyer 2');
+  });
+
+  it('sorts buyers above sellers if the role ID is buyer', () => {
+    render(
+      <MarketParticipantList
+        roleId="buyer"
+        myProjects={[]}
+        losingProjects={[]}
+        buyerProjects={buyerProjects}
+        sellerProjects={sellerProjects}
+      />,
+      { wrapper },
+    );
+
+    const participants = screen.getAllByTestId(/^(buyer|seller)-participant$/);
+
+    expect(participants).toHaveLength(4);
+    expect(
+      within(participants[0]).getByTestId('market-participant-title'),
+    ).toHaveTextContent('Buyer 1');
+
+    expect(
+      within(participants[1]).getByTestId('market-participant-title'),
+    ).toHaveTextContent('Buyer 2');
+
+    expect(
+      within(participants[2]).getByTestId('market-participant-title'),
+    ).toHaveTextContent('Seller 1');
+
+    expect(
+      within(participants[3]).getByTestId('market-participant-title'),
+    ).toHaveTextContent('Seller 2');
   });
 });

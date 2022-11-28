@@ -13,6 +13,7 @@ const myProject = {
   discountOrBonus: 12000,
   accepted: (value: number) => value === 60000,
   products: { biodiversity: 2, nutrients: 3 },
+  mapRegions: ['s1'],
 };
 
 export const getSellerScenario1_4: GetWalkthroughScenario = (

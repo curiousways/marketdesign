@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import { MAP_INDICES } from '../../../constants/map';
 import { MAP_REGION_PATHS, MapRegion } from './index';
 
 describe('MapRegion', () => {
@@ -29,15 +30,30 @@ describe('MapRegion', () => {
   it('calls the onClick callback', () => {
     const onClick = jest.fn();
 
-    render(<MapRegion index={21} onClick={onClick} />);
+    render(
+      <MapRegion roleId="buyer" index={MAP_INDICES.b1} onClick={onClick} />,
+    );
 
     const path = screen.getByTestId('map-region');
 
     fireEvent.click(path);
 
     expect(onClick).toHaveBeenCalledTimes(1);
-    expect(onClick).toHaveBeenCalledWith('b1', 21);
+    expect(onClick).toHaveBeenCalledWith('b1', MAP_INDICES.b1);
     expect(path).toHaveClass('cursor-pointer');
+  });
+
+  it('does not make the path clickable if no role ID is given', () => {
+    const onClick = jest.fn();
+
+    render(<MapRegion index={MAP_INDICES.b1} onClick={onClick} />);
+
+    const path = screen.getByTestId('map-region');
+
+    fireEvent.click(path);
+
+    expect(onClick).not.toHaveBeenCalled();
+    expect(path).not.toHaveClass('cursor-pointer');
   });
 
   it.each`

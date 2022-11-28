@@ -10,5 +10,13 @@ export interface Project {
   fixedBid?: number;
   accepted: (value: number) => boolean | number;
   discountOrBonus: number;
-  mapIndex?: number;
+  mapRegions?: string[];
 }
+
+// My projects require either a cost per credit or a highlighted map region, but
+// not both.
+export type MyProject = Project &
+  (
+    | { mapRegions: string[]; costPerCredit?: never }
+    | { mapIndex?: never; costPerCredit: number }
+  );

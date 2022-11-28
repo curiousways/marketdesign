@@ -4,6 +4,7 @@ import { ProjectDetails } from './index';
 import { Project } from '../../../types/project';
 import { ProjectsContext } from '../../../context/ProjectsContext';
 import { MAP_REGION_PATHS } from '../MapRegion';
+import { MAP_INDICES } from '../../../constants/map';
 
 const createProject = (overrides?: Partial<Project>) => ({
   title: 'My Project',
@@ -14,8 +15,6 @@ const createProject = (overrides?: Partial<Project>) => ({
   ...overrides,
 });
 
-const selectedMapIndex = 10;
-
 type WrapperProps = { children: ReactNode };
 
 const setProjectCost = jest.fn();
@@ -25,8 +24,6 @@ const wrapper = ({ children }: WrapperProps) => (
     value={{
       setProjectCost,
       getProjectCost: jest.fn(),
-      setProjectMapIndex: jest.fn(),
-      getProjectMapIndex: () => selectedMapIndex,
     }}
   >
     {children}
@@ -226,9 +223,11 @@ describe('ProjectDetails', () => {
   });
 
   it('shows the selected map region', async () => {
+    const region = 's1';
+
     render(
       <ProjectDetails
-        projects={[createProject()]}
+        projects={[createProject({ mapRegions: [region] })]}
         onFormSubmit={jest.fn()}
         roleId="buyer"
       />,
@@ -238,6 +237,27 @@ describe('ProjectDetails', () => {
     const mapRegion = screen.getByTestId('map-region');
     const path = mapRegion.getAttribute('d');
 
-    expect(path).toBe(MAP_REGION_PATHS[selectedMapIndex]);
+    expect(path).toBe(MAP_REGION_PATHS[MAP_INDICES[region]]);
+  });
+
+  it('shows multiple selected map regions', async () => {
+    const regionA = 's1';
+    const regionB = 's2';
+
+    render(
+      <ProjectDetails
+        projects={[createProject({ mapRegions: [regionA, regionB] })]}
+        onFormSubmit={jest.fn()}
+        roleId="buyer"
+      />,
+      { wrapper },
+    );
+
+    const mapRegions = screen.getAllByTestId('map-region');
+
+    expect(mapRegions.map((el) => el.getAttribute('d'))).toEqual([
+      MAP_REGION_PATHS[MAP_INDICES[regionA]],
+      MAP_REGION_PATHS[MAP_INDICES[regionB]],
+    ]);
   });
 });

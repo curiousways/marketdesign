@@ -12,8 +12,6 @@ const wrapper = ({ children }: WrapperProps) => (
       getProjectCost: jest.fn(({ cost }) =>
         Array.isArray(cost) ? cost[0] : cost,
       ),
-      setProjectMapIndex: jest.fn(),
-      getProjectMapIndex: () => 1,
     }}
   >
     {children}

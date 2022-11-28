@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect, useRef, useState } from 'react';
 import {
-  MAP_REGION_KEYS,
+  MAP_INDICES,
   MAP_VIEWBOX,
   MAP_VIEWBOX_HEIGHT,
   MAP_VIEWBOX_WIDTH,
@@ -124,7 +124,22 @@ export const MapRegion: FunctionComponent<MapProps> = ({
     setBoundingBox(ref.current.getBBox());
   }, [pathOnly]);
 
-  const region = (
+  const isClickable = onClick && roleId;
+
+  const handleClick = () => {
+    if (!isClickable) {
+      return;
+    }
+
+    const [region] =
+      Object.entries(MAP_INDICES).find((entry) => index === entry[1]) ?? [];
+
+    if (region) {
+      onClick?.(region, index);
+    }
+  };
+
+  const pathJsx = (
     <path
       data-testid="map-region"
       d={MAP_REGION_PATHS[index]}
@@ -132,15 +147,13 @@ export const MapRegion: FunctionComponent<MapProps> = ({
       fill={getFillColour(roleId)}
       vectorEffect="non-scaling-stroke"
       stroke="black"
-      className={classNames(onClick ? 'cursor-pointer' : '')}
-      onClick={() => {
-        onClick?.(MAP_REGION_KEYS[index], index);
-      }}
+      className={classNames(isClickable ? 'cursor-pointer' : '')}
+      onClick={handleClick}
     />
   );
 
   if (pathOnly) {
-    return region;
+    return pathJsx;
   }
 
   const scale = getScale(boundingBox);
@@ -167,7 +180,7 @@ export const MapRegion: FunctionComponent<MapProps> = ({
         <g
           transform={`translate(-${translateX}, -${translateY}) scale(${scale}, ${scale})`}
         >
-          <g>{region}</g>
+          <g>{pathJsx}</g>
         </g>
       </svg>
     </svg>
