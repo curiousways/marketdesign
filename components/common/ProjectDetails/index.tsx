@@ -155,7 +155,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                   isMarketSolvable && project.isInactive ? 'opacity-30' : '',
                 )}
               >
-                {!!project.subtitle && (
+                {!!project.subtitle && projects.length > 1 && (
                   <span className="flex justify-end text-sm underline">
                     {project.subtitle}
                   </span>
