@@ -387,11 +387,6 @@ describe('LiveDemo', () => {
         'buyer 2': 250.0,
         'buyer 3': 250.0,
       },
-      payments: {
-        'seller 1': -12250.0,
-        'seller 2': -8250.0,
-        'buyer 2': 9750.0,
-      },
       problem: {
         free_disposal: true,
         goods: [],
@@ -471,10 +466,6 @@ describe('LiveDemo', () => {
           'seller 1': 1500,
           'buyer 1': 2500,
         },
-        payments: {
-          'seller 1': -12250.0,
-          'buyer 1': 9750.0,
-        },
         problem: {
           free_disposal: true,
           goods: [],
@@ -547,10 +538,6 @@ describe('LiveDemo', () => {
           'seller 1': 1500,
           'buyer 1': 2500,
         },
-        payments: {
-          'seller 1': -12250.0,
-          'buyer 1': 9750.0,
-        },
         problem: {
           free_disposal: true,
           goods: [],
@@ -578,5 +565,97 @@ describe('LiveDemo', () => {
     await screen.findByTestId('market-outcome');
 
     expect(findBid(requestState!.bidders, 'seller 1').v).toBe(-1000);
+  });
+
+  it('gives the expected outcome for an XOR scenario where one option is accepted', async () => {
+    const biddersResult = cloneDeep(multipleBidsScenario.states[0].bidders);
+    let requestState: DemoState | undefined;
+
+    findBid(biddersResult, 'seller 1', 'both#s1+s2').winning = 1;
+    findBid(biddersResult, 'buyer 1').winning = 1;
+
+    mockApiResponse((_req: any, body: any) => {
+      requestState = body;
+
+      return {
+        rule: 'lindsay2018',
+        surplus: 2000.0,
+        surplus_shares: {
+          'seller 1': 7500,
+          'buyer 1': 2500,
+        },
+        problem: {
+          free_disposal: true,
+          goods: [],
+          bidders: biddersResult,
+        },
+      };
+    });
+
+    render(<LiveDemo data={multipleBidsScenario} />, { wrapper });
+
+    const region = getHighlightedMapRegionByKey('s1');
+
+    fireEvent.click(region);
+
+    const projectDetails = await screen.findByTestId('project-details');
+    const textInputs = within(projectDetails).getAllByRole('textbox');
+
+    textInputs.forEach((textInput) => {
+      fireEvent.change(textInput, { target: { value: '10000' } });
+    });
+
+    fireEvent.click(within(projectDetails).getByText('Submit'));
+    fireEvent.click(await screen.findByText('Solve Market'));
+
+    const marketOutcome = await screen.findByTestId('market-outcome');
+    const { buyers, sellers } = getMarketParticipants();
+
+    expect(findBid(requestState!.bidders, 'seller 1', 'field 1#s1').v).toBe(
+      -10000,
+    );
+
+    expect(findBid(requestState!.bidders, 'seller 1', 'field 2#s2').v).toBe(
+      -10000,
+    );
+
+    expect(findBid(requestState!.bidders, 'seller 1', 'both#s1+s2').v).toBe(
+      -10000,
+    );
+
+    expect(sellers).toHaveLength(3);
+    expect(buyers).toHaveLength(1);
+
+    expect(sellers[0].title).toHaveTextContent('Field 1');
+    expect(sellers[0].bidOrOffer).toHaveTextContent('£10,000');
+    expect(sellers[0].discountOrBonus).toHaveTextContent('£0');
+    expect(sellers[0].paysOrReceived).toHaveTextContent('£10,000');
+
+    expect(sellers[1].title).toHaveTextContent('Field 2');
+    expect(sellers[1].bidOrOffer).toHaveTextContent('£10,000');
+    expect(sellers[1].discountOrBonus).toHaveTextContent('£0');
+    expect(sellers[1].paysOrReceived).toHaveTextContent('£10,000');
+
+    expect(sellers[2].title).toHaveTextContent('Both');
+    expect(sellers[2].bidOrOffer).toHaveTextContent('£10,000');
+    expect(sellers[2].discountOrBonus).toHaveTextContent('£7,500');
+    expect(sellers[2].paysOrReceived).toHaveTextContent('£17,500');
+
+    expect(buyers[0].title).toHaveTextContent('Buyer 1');
+    expect(buyers[0].bidOrOffer).toHaveTextContent('£27,000');
+    expect(buyers[0].discountOrBonus).toHaveTextContent('£2,500');
+    expect(buyers[0].paysOrReceived).toHaveTextContent('£24,500');
+
+    expect(within(marketOutcome).getByTestId('total-bids')).toHaveTextContent(
+      '£27,000',
+    );
+
+    expect(within(marketOutcome).getByTestId('total-offers')).toHaveTextContent(
+      '£10,000',
+    );
+
+    expect(within(marketOutcome).getByTestId('surplus')).toHaveTextContent(
+      '£17,000',
+    );
   });
 });

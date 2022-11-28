@@ -401,7 +401,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
                 <motion.div
                   variants={fadeInDown}
                   initial="hidden"
-                  animate={showSurpluses ? 'visible' : ''}
+                  animate={showSurpluses && !isNotAccepted ? 'visible' : ''}
                   className="bg-white rounded-lg border border-black px-1 w-[95px]"
                   data-testid="discount-or-bonus"
                 >

@@ -57,7 +57,7 @@ export const Market: FC<MarketProps> = ({
       {loadingBar && <TopProgressBar {...loadingBar} />}
       <LoadingOverlay text={loadingOverlayText} />
     </div>
-    <div className="z-10">
+    <div className="z-10 mb-8">
       <MarketScenario
         myProjects={myProjects}
         buyerProjects={buyerProjects}
