@@ -16,10 +16,13 @@ import { MAP_INDICES } from '../../../constants/map';
 type ProjectDetailsProps = {
   projects: Project[];
   isFormEnabled?: boolean;
+  isFormReviseEnabled?: boolean;
+  hasFixedBids?: boolean;
   isDivisibleInputEnabled?: boolean;
   showDivisibleInput?: boolean;
   isMarketSolvable?: boolean;
   onFormSubmit: () => void;
+  onFormRevise?: () => void;
   roleId: RoleId;
 };
 
@@ -64,10 +67,13 @@ const getCostInputPlaceholder = (roleId: RoleId) => {
 export const ProjectDetails: FC<ProjectDetailsProps> = ({
   projects,
   isFormEnabled,
+  isFormReviseEnabled,
+  hasFixedBids,
   isDivisibleInputEnabled,
   showDivisibleInput,
   isMarketSolvable,
   onFormSubmit,
+  onFormRevise,
   roleId,
 }: ProjectDetailsProps) => {
   const { getProjectCost, setProjectCost } = useProjectsContext();
@@ -94,6 +100,20 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
   const onSubmit = (event: FormEvent) => {
     event.preventDefault();
     onFormSubmit();
+  };
+
+  const onRevise = (event: FormEvent) => {
+    if (!isFormReviseEnabled) {
+      return;
+    }
+
+    if (!formRef.current) {
+      return;
+    }
+
+    formRef.current.reset();
+    onFormRevise?.();
+    event.preventDefault();
   };
 
   return (
@@ -146,9 +166,11 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                     <div className="flex">
                       {project.mapRegions.map((mapRegion, _index, arr) => (
                         <MapRegion
+                          isSmall
                           key={mapRegion}
+                          region={mapRegion}
                           size={MAP_REGION_ICON_SIZE / arr.length}
-                          index={MAP_INDICES[mapRegion]}
+                          index={MAP_INDICES[mapRegion.split('-')[0]]}
                           roleId={roleId}
                         />
                       ))}
@@ -176,7 +198,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                     <CostInput
                       cost={project.cost}
                       disabled={!isFormEnabled}
-                      bid={getProjectBid(project)}
+                      bid={hasFixedBids ? getProjectBid(project) : undefined}
                       value={value}
                       name={priceInputNames[projectIndex]}
                       animate={
@@ -223,7 +245,8 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
             <button
               ref={submitButtonRef}
               type="submit"
-              disabled={!isFormEnabled}
+              disabled={!isFormEnabled && !isFormReviseEnabled}
+              onClick={onRevise}
               className={classNames(
                 'w-full rounded-lg bg-[#848484] text-white text-xs py-2',
                 isFormEnabled ? 'hover:bg-black cursor-pointer' : '',
@@ -232,7 +255,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                   : '',
               )}
             >
-              Submit
+              {isFormReviseEnabled ? 'Revise' : 'Submit'}
             </button>
           </div>
         </div>

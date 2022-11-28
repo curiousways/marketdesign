@@ -1,19 +1,28 @@
 import { FunctionComponent, useEffect, useRef, useState } from 'react';
+import { StaticImageData } from 'next/image';
 import {
-  MAP_INDICES,
   MAP_VIEWBOX,
   MAP_VIEWBOX_HEIGHT,
   MAP_VIEWBOX_WIDTH,
 } from '../../../constants/map';
 import { RoleId } from '../../../types/roles';
 import { classNames } from '../../../utils';
+import oakTree from '../../../public/assets/images/oak-tree.png';
+import swamp from '../../../public/assets/images/swamp.png';
 
-type MapProps = {
+type MapRegionProps = {
   index: number;
+  region?: string;
   size?: number;
   roleId?: RoleId;
   onClick?: (region: string, index: number) => void;
   pathOnly?: boolean;
+  isSmall?: boolean;
+};
+
+const ICONS: { [x in string]: StaticImageData } = {
+  woodland: swamp,
+  wetland: oakTree,
 };
 
 export const MAP_REGION_PATHS = [
@@ -106,15 +115,20 @@ const getScale = (boundingBox?: DOMRect) => {
   return Math.min(widthScale, heightScale);
 };
 
-export const MapRegion: FunctionComponent<MapProps> = ({
+export const MapRegion: FunctionComponent<MapRegionProps> = ({
   index,
+  region,
   roleId,
   size,
   onClick,
   pathOnly,
-}: MapProps) => {
+  isSmall,
+}: MapRegionProps) => {
   const ref = useRef<SVGPathElement>(null);
   const [boundingBox, setBoundingBox] = useState<DOMRect>();
+
+  // Split the possible icon type from the given region.
+  const [finalRegion, iconType] = (region ?? '').split('-');
 
   useEffect(() => {
     if (!ref.current || pathOnly) {
@@ -131,25 +145,50 @@ export const MapRegion: FunctionComponent<MapProps> = ({
       return;
     }
 
-    const [region] =
-      Object.entries(MAP_INDICES).find((entry) => index === entry[1]) ?? [];
-
-    if (region) {
-      onClick?.(region, index);
-    }
+    onClick?.(finalRegion, index);
   };
 
+  const getIconId = (suffix: string) =>
+    ['icon', index, suffix, size].filter((x) => x).join('-');
+
   const pathJsx = (
-    <path
-      data-testid="map-region"
-      d={MAP_REGION_PATHS[index]}
-      ref={ref}
-      fill={getFillColour(roleId)}
-      vectorEffect="non-scaling-stroke"
-      stroke="black"
-      className={classNames(isClickable ? 'cursor-pointer' : '')}
-      onClick={handleClick}
-    />
+    <>
+      <path
+        data-testid="map-region"
+        d={MAP_REGION_PATHS[index]}
+        ref={ref}
+        fill={getFillColour(roleId)}
+        vectorEffect="non-scaling-stroke"
+        stroke="black"
+        className={classNames(isClickable ? 'cursor-pointer' : '')}
+        onClick={handleClick}
+      />
+      {iconType && (
+        <g data-testid="map-region-icon">
+          <path
+            d={MAP_REGION_PATHS[index]}
+            fill={`url(#${getIconId(iconType)})`}
+            fillOpacity={isSmall ? 0.5 : 0.35}
+          />
+          <defs>
+            <pattern
+              id={getIconId(iconType)}
+              patternUnits="userSpaceOnUse"
+              width={isSmall ? 140 : 40}
+              height={isSmall ? 130 : 40}
+            >
+              <image
+                href={ICONS[iconType].src}
+                x="0"
+                y="0"
+                width={isSmall ? 120 : 30}
+                height={isSmall ? 120 : 30}
+              />
+            </pattern>
+          </defs>
+        </g>
+      )}
+    </>
   );
 
   if (pathOnly) {

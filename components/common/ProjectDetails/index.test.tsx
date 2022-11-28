@@ -222,6 +222,46 @@ describe('ProjectDetails', () => {
     expect(onFormSubmit).toHaveBeenCalledTimes(1);
   });
 
+  it('revises the form if enabled', () => {
+    const onFormRevise = jest.fn();
+
+    render(
+      <ProjectDetails
+        isFormReviseEnabled
+        projects={[createProject()]}
+        onFormSubmit={jest.fn()}
+        onFormRevise={onFormRevise}
+        roleId="buyer"
+      />,
+      { wrapper },
+    );
+
+    fireEvent.click(screen.getByText('Revise'));
+
+    expect(onFormRevise).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not revise the form if not enabled', () => {
+    const onFormRevise = jest.fn();
+
+    render(
+      <ProjectDetails
+        isFormEnabled
+        projects={[createProject()]}
+        onFormSubmit={jest.fn()}
+        onFormRevise={onFormRevise}
+        roleId="buyer"
+      />,
+      { wrapper },
+    );
+
+    expect(screen.queryByText('Revise')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('Submit'));
+
+    expect(onFormRevise).not.toHaveBeenCalled();
+  });
+
   it('shows the selected map region', async () => {
     const region = 's1';
 

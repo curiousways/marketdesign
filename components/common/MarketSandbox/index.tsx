@@ -1,6 +1,8 @@
 import type { NextPage } from 'next';
 import { useCallback, useState } from 'react';
 import { capitalCase } from 'change-case';
+import fetch from 'isomorphic-unfetch';
+import cloneDeep from 'clone-deep';
 import {
   DemoBid,
   DemoBidder,
@@ -16,12 +18,34 @@ import { Project } from '../../../types/project';
 import { MarketState } from '../../../types/market';
 import { HighlightedMapRegions } from '../../../types/map';
 import { isProjectEqual } from '../../../utils/walkthroughs';
+import { useProjectsContext } from '../../../context/ProjectsContext';
 
 interface MarketSandboxProps {
   data: DemoData;
 }
 
 const API_URL = 'https://marketdesign.herokuapp.com/solve/lindsay2018';
+
+const isProjectAccepted = (bidder: DemoBidder, result?: Result) => {
+  // Assume a project is accepted by default (i.e. before we call the API to
+  // solve the market).
+  if (!result) {
+    return true;
+  }
+
+  const { winning = 0 } =
+    result.problem.bidders.find(({ name }) => name === bidder.name)?.bids[0] ??
+    {};
+
+  // Convert the `winning` property from the API data to a percentage.
+  const acceptedPercentage = Math.abs(winning * 100);
+
+  if ([100, 0].includes(acceptedPercentage)) {
+    return !!acceptedPercentage;
+  }
+
+  return acceptedPercentage;
+};
 
 const convertBidToProject = (
   bidder: DemoBidder,
@@ -34,8 +58,6 @@ const convertBidToProject = (
   const { biodiversity = 0, nutrients = 0 } = products;
 
   const discountOrBonus = result?.surplus_shares[title] ?? 0;
-  const { winning = 0 } =
-    result?.problem.bidders.find(({ name }) => name === title)?.bids[0] ?? {};
 
   // Each `bid` contains an optional `label` with a very odd data structure, in
   // that it is used to indicate both the subtitle of the project and the
@@ -45,10 +67,7 @@ const convertBidToProject = (
   // field 1#s1+s2
   // field 1#s1-woodland
   const [subtitle = '', region = ''] = (label ?? '').split('#');
-  const regions = region
-    .split('+')
-    .map((item) => item.split('-')[0])
-    .filter((x): x is string => !!x);
+  const regions = region.split('+').filter((x): x is string => !!x);
 
   return {
     title: capitalCase(title),
@@ -61,16 +80,8 @@ const convertBidToProject = (
       biodiversity: Math.abs(biodiversity),
       nutrients: Math.abs(nutrients),
     },
-    accepted: () => {
-      const acceptedPercentage = Math.abs(winning * 100);
-
-      if ([100, 0].includes(acceptedPercentage)) {
-        return !!acceptedPercentage;
-      }
-
-      return acceptedPercentage;
-    },
     discountOrBonus: Math.round(Math.abs(discountOrBonus)),
+    accepted: () => isProjectAccepted(bidder, result),
   };
 };
 
@@ -103,6 +114,33 @@ const getFilteredProjects = (
       (project) =>
         !myProjects?.some((myProject) => isProjectEqual(project, myProject)),
     );
+};
+
+const findBidForProject = (
+  bidders: DemoBidder[],
+  project: Project,
+): DemoBid => {
+  let matchingBid: DemoBid | undefined;
+
+  bidders.some((bidder) =>
+    bidder.bids.some((bid) => {
+      const convertedProject = convertBidToProject(bidder, bid);
+
+      if (isProjectEqual(convertedProject, project)) {
+        matchingBid = bid;
+
+        return true;
+      }
+
+      return false;
+    }),
+  );
+
+  if (!matchingBid) {
+    throw new Error('No matching project found in the given bidders');
+  }
+
+  return matchingBid;
 };
 
 const getSellerProjects = (
@@ -177,6 +215,17 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
   const [demoState, setDemoState] = useState<DemoState>(data.states[0]);
   const [selectedMapRegion, setSelectedMapRegion] = useState<string>();
   const [playableTrader, setPlayableTrader] = useState<DemoTrader>();
+  const { getProjectCost } = useProjectsContext();
+
+  const myProjects = getProjectsForTrader(
+    demoState.bidders,
+    playableTrader,
+    result,
+    selectedMapRegion,
+  );
+
+  const hasMyProjects = !!myProjects.length;
+  const roleId = playableTrader?.role;
 
   const onSolveMarketClick = useCallback(async () => {
     if (!demoState) {
@@ -185,9 +234,23 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
       );
     }
 
+    // Clone of the demo state so as not to interfere with the original object.
+    const clonedDemoState = cloneDeep(demoState);
+
+    // Find the bid associated with each of "my projects" and modify its value.
+    myProjects.forEach((project) => {
+      const bid = findBidForProject(clonedDemoState.bidders, project);
+
+      bid.v = getProjectCost(project);
+
+      if (roleId === 'seller') {
+        bid.v *= -1;
+      }
+    });
+
     const res = await fetch(API_URL, {
       method: 'POST',
-      body: JSON.stringify(demoState),
+      body: JSON.stringify(clonedDemoState),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -195,10 +258,14 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
 
     setResult(await res.json());
     setMarketState(MarketState.solved);
-  }, [demoState]);
+  }, [demoState, myProjects, roleId, getProjectCost]);
 
   const onFormSubmit = useCallback(() => {
     setMarketState(MarketState.solvable);
+  }, []);
+
+  const onFormRevise = useCallback(() => {
+    setMarketState(MarketState.pending);
   }, []);
 
   const onMapRegionClick = useCallback(
@@ -213,29 +280,21 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
     [data.playable_traders],
   );
 
-  const myProjects = getProjectsForTrader(
-    demoState.bidders,
-    playableTrader,
-    result,
-    selectedMapRegion,
-  );
-
-  const hasMyProjects = !!myProjects.length;
-  const roleId = playableTrader?.role;
-  const isMarketSolvable = marketState === MarketState.solvable;
-
   return (
     <MainContainer>
       <SideBar
-        isFormEnabled={hasMyProjects && marketState === MarketState.pending}
+        isFormEnabled={marketState === MarketState.pending}
+        isFormReviseEnabled={marketState > MarketState.pending}
         showDetailsWidget={hasMyProjects}
         title={data.title}
         sidebarContent={data.description}
         projects={myProjects}
         onSolveMarketClick={onSolveMarketClick}
         onFormSubmit={onFormSubmit}
+        onFormRevise={onFormRevise}
         roleId={roleId}
-        showSolveMarketBtn={isMarketSolvable}
+        isMarketSolvable={marketState >= MarketState.solvable}
+        showSolveMarketBtn={marketState === MarketState.solvable}
       />
       <Market
         showMap

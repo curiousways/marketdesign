@@ -20,10 +20,13 @@ type SidebarProps = {
   onSolveMarketClick: MouseEventHandler;
   sidebarContent?: ReactNode;
   isFormEnabled?: boolean;
+  isFormReviseEnabled?: boolean;
+  hasFixedBids?: boolean;
   isDivisibleInputEnabled?: boolean;
   showDivisibleInput?: boolean;
   isMarketSolvable?: boolean;
   onFormSubmit: () => void;
+  onFormRevise?: () => void;
   roleId?: RoleId;
   projects: Project[];
 };
@@ -40,10 +43,13 @@ export const SideBar: FC<SidebarProps> = ({
   onSolveMarketClick,
   sidebarContent,
   isFormEnabled,
+  isFormReviseEnabled,
+  hasFixedBids,
   isDivisibleInputEnabled,
   showDivisibleInput,
   isMarketSolvable,
   onFormSubmit,
+  onFormRevise,
   roleId,
   projects,
 }: SidebarProps) => (
@@ -56,10 +62,13 @@ export const SideBar: FC<SidebarProps> = ({
         {showDetailsWidget && roleId && (
           <ProjectDetails
             isFormEnabled={isFormEnabled}
+            isFormReviseEnabled={isFormReviseEnabled}
+            hasFixedBids={hasFixedBids}
             isDivisibleInputEnabled={isDivisibleInputEnabled}
             showDivisibleInput={showDivisibleInput}
             isMarketSolvable={isMarketSolvable}
             onFormSubmit={onFormSubmit}
+            onFormRevise={onFormRevise}
             roleId={roleId}
             projects={projects}
           />
