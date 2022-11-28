@@ -5,8 +5,19 @@ import { sidebarContentStage3 } from './sidebar-content/3';
 import { sidebarContentStage12 } from './sidebar-content/12';
 import { sidebarContentStage4 } from './sidebar-content/4';
 import { sidebarContentStage5 } from './sidebar-content/5';
+import { HighlightedMapRegions } from '../../../../../types/map';
 
-const HIGHLIGHTED_MAP_REGION = 's1';
+const getHighlightedMapRegions = (
+  stage: number,
+): HighlightedMapRegions | undefined => {
+  if (stage === 2) {
+    return { seller: ['s1-woodland'] };
+  }
+
+  if (stage === 3) {
+    return { seller: ['s1-wetland'] };
+  }
+};
 
 export const getSellerScenario4_1: GetWalkthroughScenario = (
   stage: number,
@@ -19,7 +30,8 @@ export const getSellerScenario4_1: GetWalkthroughScenario = (
       discountOrBonus: 44000,
       accepted: () => true,
       products: { biodiversity: 4, nutrients: 1 },
-      mapRegions: [HIGHLIGHTED_MAP_REGION],
+      mapRegions: ['s1-woodland'],
+      mapRegionIcon: 'woodland',
     },
     {
       title: 'My Project',
@@ -29,7 +41,7 @@ export const getSellerScenario4_1: GetWalkthroughScenario = (
       accepted: () => false,
       isInactive: true,
       products: { biodiversity: 2, nutrients: 5 },
-      mapRegions: [HIGHLIGHTED_MAP_REGION],
+      mapRegions: ['s1-wetland'],
     },
   ],
   buyerProjects: [
@@ -77,9 +89,7 @@ export const getSellerScenario4_1: GetWalkthroughScenario = (
     isFormEnabled: stage === 5,
     showDetailsWidget: stage >= 2,
     showMaps: true,
-    highlightedMapRegions: {
-      seller: stage >= 2 ? [HIGHLIGHTED_MAP_REGION] : undefined,
-    },
+    highlightedMapRegions: getHighlightedMapRegions(stage),
     showParticipants: stage >= 4,
   },
 });

@@ -67,10 +67,7 @@ const convertBidToProject = (
   // field 1#s1+s2
   // field 1#s1-woodland
   const [subtitle = '', region = ''] = (label ?? '').split('#');
-  const regions = region
-    .split('+')
-    .map((item) => item.split('-')[0])
-    .filter((x): x is string => !!x);
+  const regions = region.split('+').filter((x): x is string => !!x);
 
   return {
     title: capitalCase(title),
