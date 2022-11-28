@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import { useCallback, useState } from 'react';
 import { capitalCase } from 'change-case';
+import fetch from 'isomorphic-unfetch';
 import {
   DemoBid,
   DemoBidder,

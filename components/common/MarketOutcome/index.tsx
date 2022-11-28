@@ -33,6 +33,7 @@ export const MarketOutcome: FC<MarketOutcomeProps> = ({
 
   return (
     <div
+      data-testid="market-outcome"
       className={classNames(
         'bg-blue-light px-10 py-5 rounded-lg flex items-center gap-x-12 select-none',
         className,
