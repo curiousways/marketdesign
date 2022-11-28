@@ -23,6 +23,27 @@ interface LiveDemoProps {
 
 const API_URL = 'https://marketdesign.herokuapp.com/solve/lindsay2018';
 
+const isProjectAccepted = (bidder: DemoBidder, result?: Result) => {
+  // Assume a project is accepted by default (i.e. before we call the API to
+  // solve the market).
+  if (!result) {
+    return true;
+  }
+
+  const { winning = 0 } =
+    result.problem.bidders.find(({ name }) => name === bidder.name)?.bids[0] ??
+    {};
+
+  // Convert the `winning` property from the API data to a percentage.
+  const acceptedPercentage = Math.abs(winning * 100);
+
+  if ([100, 0].includes(acceptedPercentage)) {
+    return !!acceptedPercentage;
+  }
+
+  return acceptedPercentage;
+};
+
 const convertBidToProject = (
   bidder: DemoBidder,
   bid: DemoBid,
@@ -34,8 +55,6 @@ const convertBidToProject = (
   const { biodiversity = 0, nutrients = 0 } = products;
 
   const discountOrBonus = result?.surplus_shares[title] ?? 0;
-  const { winning = 0 } =
-    result?.problem.bidders.find(({ name }) => name === title)?.bids[0] ?? {};
 
   // Each `bid` contains an optional `label` with a very odd data structure, in
   // that it is used to indicate both the subtitle of the project and the
@@ -61,20 +80,8 @@ const convertBidToProject = (
       biodiversity: Math.abs(biodiversity),
       nutrients: Math.abs(nutrients),
     },
-    accepted: () => {
-      if (!result) {
-        return true;
-      }
-
-      const acceptedPercentage = Math.abs(winning * 100);
-
-      if ([100, 0].includes(acceptedPercentage)) {
-        return !!acceptedPercentage;
-      }
-
-      return acceptedPercentage;
-    },
     discountOrBonus: Math.round(Math.abs(discountOrBonus)),
+    accepted: () => isProjectAccepted(bidder, result),
   };
 };
 
