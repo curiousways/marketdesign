@@ -7,7 +7,7 @@ export const getBuyerScenario1_3: GetWalkthroughScenario = (stage: number) => ({
     {
       title: 'My Project',
       cost: 120000,
-      fixedBid: 100000,
+      fixedBid: 80000,
       discountOrBonus: 0,
       accepted: () => false,
       products: { biodiversity: 1, nutrients: 3 },
