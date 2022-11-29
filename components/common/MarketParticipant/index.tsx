@@ -290,7 +290,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
       initial="hidden"
       animate={rowAnimation}
       style={{ overflow: 'visible' }}
-      className="overflow-hidden bg-white select-none"
+      className="overflow-hidden select-none"
     >
       {/* Add a divider between multiple user projects. */}
       {isMySubsequentProject && (
