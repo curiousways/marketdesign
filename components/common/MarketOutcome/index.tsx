@@ -19,7 +19,10 @@ type MarketOutcomeProps = {
 const sumProjectCosts = (
   getProjectCost: (project: Project) => number,
   projects: Project[],
-) => projects.reduce((acc, project) => acc + getProjectCost(project), 0);
+) =>
+  projects
+    .filter((project) => !!project.accepted(getProjectCost(project)))
+    .reduce((acc, project) => acc + getProjectCost(project), 0);
 
 export const MarketOutcome: FC<MarketOutcomeProps> = ({
   className = '',

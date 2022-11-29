@@ -9,6 +9,7 @@ type PaginationProps = {
   hasPreviousPage?: boolean;
   onNextClick?: () => void;
   onPreviousClick?: () => void;
+  animateNextSteps?: boolean;
 };
 
 const noop = () => {};
@@ -20,6 +21,7 @@ export const Pagination: FC<PaginationProps> = ({
   hasPreviousPage,
   onNextClick = noop,
   onPreviousClick = noop,
+  animateNextSteps,
 }: PaginationProps) => (
   <motion.div layout className="text-center text-l w-full mt-2">
     {!!subtitle && <p className="text-green-dark mb-1">{subtitle}</p>}
@@ -40,7 +42,7 @@ export const Pagination: FC<PaginationProps> = ({
 
       {/* Next button */}
       <ArrowButton
-        className="animate-scale-large"
+        className={animateNextSteps ? 'animate-scale-large' : ''}
         onClick={onNextClick}
         hide={!hasNextPage}
         ariaLabel="Next"

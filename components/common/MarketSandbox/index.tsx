@@ -26,7 +26,11 @@ interface MarketSandboxProps {
 
 const API_URL = 'https://marketdesign.herokuapp.com/solve/lindsay2018';
 
-const isProjectAccepted = (bidder: DemoBidder, result?: Result) => {
+const isProjectAccepted = (
+  bidder: DemoBidder,
+  bid: DemoBid,
+  result?: Result,
+) => {
   // Assume a project is accepted by default (i.e. before we call the API to
   // solve the market).
   if (!result) {
@@ -34,8 +38,9 @@ const isProjectAccepted = (bidder: DemoBidder, result?: Result) => {
   }
 
   const { winning = 0 } =
-    result.problem.bidders.find(({ name }) => name === bidder.name)?.bids[0] ??
-    {};
+    result.problem.bidders
+      .find(({ name }) => name === bidder.name)
+      ?.bids.find(({ label }) => label === bid.label) ?? {};
 
   // Convert the `winning` property from the API data to a percentage.
   const acceptedPercentage = Math.abs(winning * 100);
@@ -57,7 +62,8 @@ const convertBidToProject = (
   const { q: products, v: cost, label } = bid;
   const { biodiversity = 0, nutrients = 0 } = products;
 
-  const discountOrBonus = result?.surplus_shares[title] ?? 0;
+  const accepted = isProjectAccepted(bidder, bid, result);
+  const discountOrBonus = accepted ? result?.surplus_shares[title] ?? 0 : 0;
 
   // Each `bid` contains an optional `label` with a very odd data structure, in
   // that it is used to indicate both the subtitle of the project and the
@@ -81,7 +87,7 @@ const convertBidToProject = (
       nutrients: Math.abs(nutrients),
     },
     discountOrBonus: Math.round(Math.abs(discountOrBonus)),
-    accepted: () => isProjectAccepted(bidder, result),
+    accepted: () => isProjectAccepted(bidder, bid, result),
   };
 };
 
