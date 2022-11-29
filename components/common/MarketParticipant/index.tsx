@@ -62,56 +62,87 @@ const calculatePayment = (
   return Math.round(adjustedCost + discountOrBonus);
 };
 
-const getMyProjectStyles = (
+const getBorderRadiusStyles = (
   isMyProject?: boolean,
   isMyFirstProject?: boolean,
   isMyLastProject?: boolean,
 ): CSSProperties => {
   const borderRadius = '0.5rem';
-  const borderWidth = '2px';
-  const borderColor = 'black';
-  const borderStyle = 'solid';
 
   if (!isMyProject) {
     return { borderRadius };
   }
 
-  const myProjectStyles: CSSProperties = {
-    borderRightColor: borderColor,
-    borderLeftColor: borderColor,
-    borderRightStyle: borderStyle,
-    borderLeftStyle: borderStyle,
-    borderRightWidth: borderWidth,
-    borderLeftWidth: borderWidth,
-  };
+  const styles: CSSProperties = {};
 
   if (isMyFirstProject) {
-    Object.assign(myProjectStyles, {
-      borderTopColor: borderColor,
-      borderTopStyle: borderStyle,
-      borderTopWidth: borderWidth,
+    Object.assign(styles, {
       borderTopLeftRadius: borderRadius,
       borderTopRightRadius: borderRadius,
     });
   }
 
   if (isMyLastProject) {
-    Object.assign(myProjectStyles, {
-      borderBottomColor: borderColor,
-      borderBottomStyle: borderStyle,
-      borderBottomWidth: borderWidth,
+    Object.assign(styles, {
       borderBottomLeftRadius: borderRadius,
       borderBottomRightRadius: borderRadius,
     });
+  }
+
+  return styles;
+};
+
+const getMyProjectStyles = (
+  isMyProject?: boolean,
+  isMyFirstProject?: boolean,
+  isMyLastProject?: boolean,
+): CSSProperties => {
+  const styles = getBorderRadiusStyles(
+    isMyProject,
+    isMyFirstProject,
+    isMyLastProject,
+  );
+
+  const borderWidth = '2px';
+  const borderColor = 'black';
+  const borderStyle = 'solid';
+
+  if (!isMyProject) {
+    return styles;
+  }
+
+  Object.assign(styles, {
+    borderRightColor: borderColor,
+    borderLeftColor: borderColor,
+    borderRightStyle: borderStyle,
+    borderLeftStyle: borderStyle,
+    borderRightWidth: borderWidth,
+    borderLeftWidth: borderWidth,
+  });
+
+  if (isMyFirstProject) {
+    Object.assign(styles, {
+      borderTopColor: borderColor,
+      borderTopStyle: borderStyle,
+      borderTopWidth: borderWidth,
+    });
+  }
+
+  if (isMyLastProject) {
+    Object.assign(styles, {
+      borderBottomColor: borderColor,
+      borderBottomStyle: borderStyle,
+      borderBottomWidth: borderWidth,
+    });
 
     if (!isMyFirstProject) {
-      Object.assign(myProjectStyles, {
+      Object.assign(styles, {
         marginTop: 0,
       });
     }
   }
 
-  return myProjectStyles;
+  return styles;
 };
 
 const useRowAnimation = (
@@ -291,6 +322,15 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
   // Adjust metrics for projects that were only partially accepted.
   const adjustedCost = getAdjustedCost(projectCost, accepted);
 
+  // Because of the way some project bars get merged and the discount/pays boxes
+  // float between the bars we can't use overflow: hidden here and instead need
+  // to apply the border radius to multiple elements.
+  const borderRadiusStyles = getBorderRadiusStyles(
+    isMyProject,
+    isMyFirstProject,
+    isMyLastProject,
+  );
+
   return (
     <motion.div
       data-testid={`${isLoser ? 'losing-' : ''}${projectRoleId}-participant`}
@@ -323,6 +363,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
           <div
             className={`absolute h-full ${backgroundColor} top-0 left-0`}
             style={{
+              ...borderRadiusStyles,
               width:
                 typeof accepted === 'number' && showWinners
                   ? `${accepted}%`
@@ -332,6 +373,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
 
           {/* Full-width background colour */}
           <div
+            style={borderRadiusStyles}
             className={`absolute h-full w-full ${backgroundColor} top-0 left-0 opacity-50`}
           />
 
