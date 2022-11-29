@@ -1,5 +1,3 @@
-import { RoleId } from './roles';
-
 export type DemoBid = {
   v: number;
   q: {
@@ -23,7 +21,7 @@ export type DemoState = {
 
 export type DemoTrader = {
   name: string;
-  role: RoleId;
+  role: string;
   locations: string[];
   enable_divisibility_element: boolean;
 };

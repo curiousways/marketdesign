@@ -19,6 +19,7 @@ import { MarketState } from '../../../types/market';
 import { HighlightedMapRegions } from '../../../types/map';
 import { isProjectEqual } from '../../../utils/walkthroughs';
 import { useProjectsContext } from '../../../context/ProjectsContext';
+import { RoleId } from '../../../types/roles';
 
 interface MarketSandboxProps {
   data: DemoData;
@@ -189,6 +190,20 @@ const getProjectsForTrader = (
   return project;
 };
 
+const getRoleId = (trader: DemoTrader): RoleId => {
+  const { role } = trader;
+
+  if (['buyer', 'investor'].includes(trader.role)) {
+    return 'buyer';
+  }
+
+  if (trader.role === 'seller') {
+    return 'seller';
+  }
+
+  throw new Error(`Trader has an invalid role: ${role}`);
+};
+
 const getHighlightedMapRegions = (
   traders: DemoTrader[],
 ): HighlightedMapRegions => {
@@ -198,11 +213,11 @@ const getHighlightedMapRegions = (
   };
 
   traders.forEach((trader) => {
-    if (trader.role === 'buyer') {
+    if (getRoleId(trader) === 'buyer') {
       regions.buyer.push(...trader.locations);
     }
 
-    if (trader.role === 'seller') {
+    if (getRoleId(trader) === 'seller') {
       regions.seller.push(...trader.locations);
     }
   }, regions);
@@ -231,7 +246,7 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
   );
 
   const hasMyProjects = !!myProjects.length;
-  const roleId = playableTrader?.role;
+  const roleId = playableTrader ? getRoleId(playableTrader) : undefined;
 
   const onSolveMarketClick = useCallback(async () => {
     if (!demoState) {
