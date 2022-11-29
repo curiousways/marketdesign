@@ -47,11 +47,13 @@ export const Walkthrough: FC = () => {
     setMarketState,
     hasPreviousStage,
     hasNextStage,
+    setStage,
     goToNextStage,
     goToPreviousStage,
     marketState,
     goToNextMarketState,
     isMarketSolving,
+    wasSolvableStage,
   } = useWalkthroughContext();
 
   const onSolveMarketClick: MouseEventHandler = (
@@ -132,6 +134,22 @@ export const Walkthrough: FC = () => {
     setMarketState(MarketState.solvable);
   };
 
+  const onPreviousClick = () => {
+    const hasPreviousSidebarContent = scenario.sidebarContent?.[stage - 1];
+
+    // If the previous stage had no sidebar content and we have already passed
+    // the "Solve market" stage then go back to that stage when the previous
+    // button is clicked.
+    if (!hasPreviousSidebarContent && typeof wasSolvableStage === 'number') {
+      setMarketState(MarketState.solvable);
+      setStage(wasSolvableStage);
+
+      return;
+    }
+
+    goToPreviousStage();
+  };
+
   useEffect(() => {
     if (typeof scenario.fixedMarketState !== 'undefined') {
       return;
@@ -158,7 +176,7 @@ export const Walkthrough: FC = () => {
         hasNextPage={hasNextStage}
         hasPreviousPage={hasPreviousStage}
         onNextClick={goToNextStage}
-        onPreviousClick={goToPreviousStage}
+        onPreviousClick={onPreviousClick}
         showSolveMarketBtn={marketState === MarketState.solvable}
         showDetailsWidget={scenario.options.showDetailsWidget}
         onSolveMarketClick={onSolveMarketClick}
