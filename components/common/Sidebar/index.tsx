@@ -7,6 +7,7 @@ import { DescriptionBox } from '../DescriptionBox';
 import { ProjectDetails } from '../ProjectDetails';
 import { RoleId } from '../../../types/roles';
 import { Project } from '../../../types/project';
+import { classNames } from '../../../utils';
 
 type SidebarProps = {
   title: string;
@@ -21,6 +22,7 @@ type SidebarProps = {
   sidebarContent?: ReactNode;
   isFormEnabled?: boolean;
   isFormReviseEnabled?: boolean;
+  animateNextSteps?: boolean;
   hasFixedBids?: boolean;
   isDivisibleInputEnabled?: boolean;
   showDivisibleInput?: boolean;
@@ -44,6 +46,7 @@ export const SideBar: FC<SidebarProps> = ({
   sidebarContent,
   isFormEnabled,
   isFormReviseEnabled,
+  animateNextSteps,
   hasFixedBids,
   isDivisibleInputEnabled,
   showDivisibleInput,
@@ -71,6 +74,7 @@ export const SideBar: FC<SidebarProps> = ({
             onFormRevise={onFormRevise}
             roleId={roleId}
             projects={projects}
+            animateNextSteps={animateNextSteps}
           />
         )}
 
@@ -83,7 +87,10 @@ export const SideBar: FC<SidebarProps> = ({
             exit="hidden"
             layout
             onClick={onSolveMarketClick}
-            className="text-center border-2 border-black rounded-lg p-3 text-black text-l hover:bg-black hover:text-white duration-300 animate-scale"
+            className={classNames(
+              'text-center border-2 border-black rounded-lg p-3 text-black text-l hover:bg-black hover:text-white duration-300',
+              animateNextSteps ? 'animate-scale' : '',
+            )}
           >
             Solve Market
           </motion.button>
@@ -97,6 +104,7 @@ export const SideBar: FC<SidebarProps> = ({
           hasPreviousPage={hasPreviousPage}
           onNextClick={onNextClick}
           onPreviousClick={onPreviousClick}
+          animateNextSteps={animateNextSteps}
         />
 
         {/* Walkthrough Description text */}

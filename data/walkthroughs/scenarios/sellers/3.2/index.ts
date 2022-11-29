@@ -35,7 +35,7 @@ export const getSellerScenario3_2: GetWalkthroughScenario = (
       title: 'Buyer 3',
       cost: 120000,
       accepted: () => true,
-      discountOrBonus: 73000,
+      discountOrBonus: 47000,
       products: { biodiversity: 3, nutrients: 0 },
     },
   ],

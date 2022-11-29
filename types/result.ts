@@ -5,6 +5,7 @@ export type Bid = {
     nutrients: number;
   };
   winning?: number;
+  label?: string;
   divisibility?: number;
 };
 
