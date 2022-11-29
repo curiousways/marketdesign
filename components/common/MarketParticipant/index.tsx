@@ -55,7 +55,7 @@ const calculatePayment = (
     return adjustedCost - discountOrBonus;
   }
 
-  return adjustedCost + discountOrBonus;
+  return Math.round(adjustedCost + discountOrBonus);
 };
 
 const getMyProjectStyles = (
@@ -388,10 +388,10 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
                     <p className="text-light-grey">
                       {isBuyer ? 'Bid' : 'Offer'}
                     </p>
-                    <p>£{adjustedCost.toLocaleString()}</p>
-                    {adjustedCost !== projectCost && (
+                    <p>£{Math.round(adjustedCost).toLocaleString()}</p>
+                    {adjustedCost !== projectCost && showWinners && (
                       <p className={`${textColor} opacity-50`}>
-                        £{projectCost.toLocaleString()}
+                        £{Math.round(projectCost).toLocaleString()}
                       </p>
                     )}
                   </div>
@@ -412,7 +412,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
                     <p className="text-light-grey">
                       {isBuyer ? 'Discount' : 'Bonus'}
                     </p>
-                    <p>£{discountOrBonus.toLocaleString()}</p>
+                    <p>£{Math.round(discountOrBonus).toLocaleString()}</p>
                   </div>
                 </motion.div>
 

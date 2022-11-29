@@ -13,7 +13,9 @@ export const getBuyerScenario4_1: GetWalkthroughScenario = (stage: number) => ({
       title: 'My Project',
       subtitle: 'Divisible',
       cost: 180000,
-      accepted: () => 67,
+      // The number below is so specific because we wanted specifically 120,000
+      // to be accepted (67% of 180,000 is actually 120,600).
+      accepted: () => 66.666666667,
       discountOrBonus: 19000,
       products: { biodiversity: 3, nutrients: 6 },
       mapRegions: [HIGHLIGHTED_MAP_REGION],

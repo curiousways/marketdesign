@@ -47,15 +47,15 @@ export const MarketParticipantTitle: FC<MarketParticipantTitleProps> = ({
           </p>
           {showLoserStyles && (
             <p className={commonTextClassNames}>
-              £{projectCost.toLocaleString()}
+              £{Math.round(projectCost).toLocaleString()}
             </p>
           )}
         </div>
       )}
       {!showLoserStyles &&
-        (acceptedPercentage ? (
+        (typeof acceptedPercentage === 'number' ? (
           <span className="bg-white rounded-full px-3 py-1 mt-1">
-            Accepted: {acceptedPercentage}%
+            Accepted: {Math.round(acceptedPercentage)}%
           </span>
         ) : (
           subtitle && <p className={commonTextClassNames}>{subtitle}</p>
