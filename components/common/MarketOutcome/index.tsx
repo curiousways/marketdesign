@@ -38,17 +38,15 @@ export const MarketOutcome: FC<MarketOutcomeProps> = ({
     <div
       data-testid="market-outcome"
       className={classNames(
-        'bg-blue-light px-10 py-5 rounded-lg flex items-center gap-x-12 select-none',
+        'z-10 items-center flex w-full gap-x-10 justify-between bg-blue-light p-5 rounded-lg select-none',
         className,
       )}
     >
-      <div>
-        <p className="text-black">
-          Market <br /> Outcome
-        </p>
+      <div className="flex flex-col text-black text-center whitespace-nowrap flex-[30%] min-w-[75px]">
+        <p className="text-black">Market Outcome</p>
       </div>
 
-      <div className="flex gap-x-10">
+      <div className="flex gap-x-10 flex-[20%]">
         {/* Biodiversity */}
         <div className="h-[66px] w-[66px] neo-shadow-blue rounded-lg flex items-center justify-center relative">
           <div className="absolute -right-3 -top-2 rounded-full bg-white w-[29px] h-[29px] flex justify-center items-center">
@@ -119,10 +117,10 @@ export const MarketOutcome: FC<MarketOutcomeProps> = ({
         </div>
       </div>
 
-      <div className="flex items-center gap-x-10">
-        <div className="space-y-4">
+      <div className="flex gap-x-10 flex-[50%]">
+        <div className="space-y-5">
           {/* Total Bids */}
-          <div className="bg-brown rounded-lg px-1 w-[95px]">
+          <div className="bg-brown rounded-lg px-1 pb-1 w-[95px]">
             <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white shadow-custom">
               <HammerIcon />
             </div>
@@ -152,35 +150,38 @@ export const MarketOutcome: FC<MarketOutcomeProps> = ({
         </div>
 
         {/* Surplus */}
-        <div className="bg-white rounded-lg px-1 w-[95px]">
-          <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white shadow-custom">
-            <PoundIcon />
-          </div>
-
-          <div className="text-center text-sm relative -mt-2">
-            <p className="text-light-grey">Surplus</p>
-            <p data-testid="surplus">
-              £{(totalBids - totalOffers).toLocaleString()}
-            </p>
+        <div className="flex items-center justify-center">
+          <div className="bg-white rounded-lg px-1 pb-1 w-[95px]">
+            <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white shadow-custom">
+              <PoundIcon />
+            </div>
+            <div className="text-center text-sm relative -mt-2">
+              <p className="text-light-grey">Surplus</p>
+              <p data-testid="surplus">
+                £{(totalBids - totalOffers).toLocaleString()}
+              </p>
+            </div>
           </div>
         </div>
 
         {/* Balance */}
         {isMarketSolved && (
-          <div className="bg-white rounded-lg px-1 w-[95px]">
-            <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white shadow-custom">
-              <BalanceIcon />
-            </div>
+          <div className="flex items-center justify-center">
+            <div className="bg-white rounded-lg px-1 pb-1 w-[95px]">
+              <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white shadow-custom">
+                <BalanceIcon />
+              </div>
 
-            <div className="text-center text-sm relative -mt-2">
-              <p className="text-light-grey">Balance</p>
-              <div
-                className="flex justify-center items-center gap-x-1"
-                data-testid="balance"
-              >
-                <CartPlus />
-                <span>=</span>
-                <PoundcashTag />
+              <div className="text-center text-sm relative -mt-2">
+                <p className="text-light-grey">Balance</p>
+                <div
+                  className="flex justify-center items-center gap-x-1"
+                  data-testid="balance"
+                >
+                  <CartPlus />
+                  <span>=</span>
+                  <PoundcashTag />
+                </div>
               </div>
             </div>
           </div>
