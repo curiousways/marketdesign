@@ -85,7 +85,7 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
   showSurpluses,
   isMarketSolved,
 }: MarketParticipantListProps) => {
-  const { getProjectCost } = useProjectsContext();
+  const { getProjectCost, getAcceptedProjectCost } = useProjectsContext();
   const sortedProjects = sortMyProjects(
     myProjects,
     buyerProjects,
@@ -123,14 +123,7 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
         // The total cost for all projects in a grop is needed for the case
         // where a project comprises multple "sub-projects" (e.g. investor bidding).
         const totalCost = groupedProjects
-          .map((groupedProject) => {
-            const groupedProjectCost = getProjectCost(groupedProject);
-            const accepted = groupedProject.accepted(groupedProjectCost);
-
-            return typeof accepted === 'number'
-              ? (accepted / 100) * groupedProjectCost
-              : groupedProjectCost;
-          })
+          .map(getAcceptedProjectCost)
           .reduce((a, b) => a + b, 0);
 
         const isGroupedProject = !!groupedProjects.length;

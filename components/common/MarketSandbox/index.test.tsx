@@ -88,7 +88,7 @@ const singleBidScenario: DemoData = {
           name: 'buyer 1',
           bids: [
             {
-              v: 8000,
+              v: 25000,
               q: {
                 biodiversity: -1,
                 nutrients: -3,
@@ -600,7 +600,7 @@ describe('MarketSandbox', () => {
     const projectDetails = await screen.findByTestId('project-details');
     const textInput = within(projectDetails).getByRole('textbox');
 
-    fireEvent.change(textInput, { target: { value: '15000' } });
+    fireEvent.change(textInput, { target: { value: '30000' } });
 
     expect(textInput).toBeValid();
 
@@ -610,7 +610,7 @@ describe('MarketSandbox', () => {
     const marketOutcome = await screen.findByTestId('market-outcome');
     const { buyers, sellers } = getMarketParticipants();
 
-    expect(findBid(requestState!.bidders, 'buyer 1').v).toBe(15000);
+    expect(findBid(requestState!.bidders, 'buyer 1').v).toBe(30000);
 
     expect(sellers).toHaveLength(1);
     expect(buyers).toHaveLength(1);
@@ -621,9 +621,9 @@ describe('MarketSandbox', () => {
     expect(sellers[0].paysOrReceived).toHaveTextContent('£13,500');
 
     expect(buyers[0].title).toHaveTextContent('Buyer 1Accepted: 50%');
-    expect(buyers[0].bidOrOffer).toHaveTextContent('£7,500£15,000');
+    expect(buyers[0].bidOrOffer).toHaveTextContent('£15,000£30,000');
     expect(buyers[0].discountOrBonus).toHaveTextContent('£2,500');
-    expect(buyers[0].paysOrReceived).toHaveTextContent('£5,000');
+    expect(buyers[0].paysOrReceived).toHaveTextContent('£12,500');
 
     expect(within(marketOutcome).getByTestId('total-bids')).toHaveTextContent(
       '£15,000',
@@ -843,7 +843,7 @@ describe('MarketSandbox', () => {
     expect(buyers[0].paysOrReceived).toHaveTextContent('£5,333');
 
     expect(within(marketOutcome).getByTestId('total-bids')).toHaveTextContent(
-      '£25,000',
+      '£21,500',
     );
 
     expect(within(marketOutcome).getByTestId('total-offers')).toHaveTextContent(
@@ -851,7 +851,7 @@ describe('MarketSandbox', () => {
     );
 
     expect(within(marketOutcome).getByTestId('surplus')).toHaveTextContent(
-      '£14,000',
+      '£10,500',
     );
   });
 });

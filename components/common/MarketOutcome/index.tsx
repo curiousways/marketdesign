@@ -30,9 +30,9 @@ export const MarketOutcome: FC<MarketOutcomeProps> = ({
   sellerProjects,
   isMarketSolved,
 }: MarketOutcomeProps) => {
-  const { getProjectCost } = useProjectsContext();
-  const totalBids = sumProjectCosts(getProjectCost, buyerProjects);
-  const totalOffers = sumProjectCosts(getProjectCost, sellerProjects);
+  const { getAcceptedProjectCost } = useProjectsContext();
+  const totalBids = sumProjectCosts(getAcceptedProjectCost, buyerProjects);
+  const totalOffers = sumProjectCosts(getAcceptedProjectCost, sellerProjects);
 
   return (
     <div

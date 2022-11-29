@@ -9,7 +9,8 @@ const wrapper = ({ children }: WrapperProps) => (
   <ProjectsContext.Provider
     value={{
       setProjectCost: jest.fn(),
-      getProjectCost: jest.fn(({ cost }) =>
+      getProjectCost: jest.fn(),
+      getAcceptedProjectCost: jest.fn(({ cost }) =>
         Array.isArray(cost) ? cost[0] : cost,
       ),
     }}

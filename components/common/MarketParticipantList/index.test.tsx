@@ -10,6 +10,15 @@ const wrapper = ({ children }: WrapperProps) => (
   <ProjectsContext.Provider
     value={{
       setProjectCost: jest.fn(),
+      getAcceptedProjectCost: jest.fn((project) => {
+        const cost = Array.isArray(project.cost)
+          ? project.cost[0]
+          : project.cost;
+
+        const accepted = project.accepted(cost);
+
+        return typeof accepted === 'number' ? (accepted / 100) * cost : cost;
+      }),
       getProjectCost: jest.fn(({ cost }) =>
         Array.isArray(cost) ? cost[0] : cost,
       ),

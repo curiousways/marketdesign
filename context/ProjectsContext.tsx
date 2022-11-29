@@ -9,10 +9,12 @@ import {
 } from 'react';
 import { isProjectEqual } from '@/utils/walkthroughs';
 import { Project } from '../types/project';
+import { getAdjustedCost } from '../utils/project';
 
 type ProjectsContextType = {
   getProjectCost: (project: Project) => number;
   setProjectCost: (project: Project, cost: number) => void;
+  getAcceptedProjectCost: (project: Project) => number;
 };
 
 type ProjectsState = {
@@ -85,12 +87,23 @@ export const ProjectsProvider: FunctionComponent<ProjectsProviderProps> = ({
     [state],
   );
 
+  const getAcceptedProjectCost = useCallback(
+    (project: Project): number => {
+      const cost = getProjectCost(project);
+      const accepted = project.accepted(cost);
+
+      return getAdjustedCost(cost, accepted);
+    },
+    [getProjectCost],
+  );
+
   const value = useMemo(
     (): ProjectsContextType => ({
       getProjectCost,
       setProjectCost,
+      getAcceptedProjectCost,
     }),
-    [getProjectCost, setProjectCost],
+    [getProjectCost, setProjectCost, getAcceptedProjectCost],
   );
 
   return (

@@ -11,6 +11,7 @@ import { MarketParticipantTitle } from '../MarketParticipantTitle';
 import { Products } from '../../../types/products';
 import { BiodiversityCount } from '../BiodiversityCount';
 import { NutrientCount } from '../NutrientCount';
+import { getAdjustedCost } from '../../../utils/project';
 
 const PROJECT_HEIGHT = 120;
 const PROJECT_WIDTH = 800;
@@ -42,9 +43,6 @@ type MarketParticipantProps = {
   isGroupedProject?: boolean;
   totalCost: number;
 };
-
-const getAdjustedCost = (cost: number, accepted: boolean | number) =>
-  typeof accepted === 'number' ? (accepted / 100) * cost : cost;
 
 const calculatePayment = (
   cost: number,
