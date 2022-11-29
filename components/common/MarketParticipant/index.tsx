@@ -38,7 +38,8 @@ type MarketParticipantProps = {
   showWinners?: boolean;
   showSurpluses?: boolean;
   isMarketSolved?: boolean;
-  showGroupResults?: boolean;
+  showResults?: boolean;
+  isGroupedProject?: boolean;
   totalCost: number;
 };
 
@@ -50,9 +51,11 @@ const calculatePayment = (
   discountOrBonus: number,
   accepted: boolean | number,
   projectRoleId: RoleId,
-  isSplitProject: boolean,
+  isGroupedProject?: boolean,
 ) => {
-  const adjustedCost = isSplitProject ? cost : getAdjustedCost(cost, accepted);
+  const adjustedCost = isGroupedProject
+    ? cost
+    : getAdjustedCost(cost, accepted);
 
   if (projectRoleId === 'buyer') {
     return adjustedCost - discountOrBonus;
@@ -263,15 +266,15 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
   showWinners,
   showSurpluses,
   isMarketSolved,
-  showGroupResults,
+  showResults,
   totalCost,
+  isGroupedProject,
 }: MarketParticipantProps) => {
   const isBuyer = projectRoleId === 'buyer';
 
   const showLoserStyles = isLoser && showWinners;
   const isNotAccepted = showWinners && !accepted;
-  const isSplitProject = !!(totalCost && totalCost !== projectCost);
-  const shiftResults = isSplitProject && showGroupResults;
+  const shiftResults = isGroupedProject && showResults;
 
   const rowAnimation = useRowAnimation(showLoserStyles, isMySubsequentProject);
 
@@ -406,7 +409,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
                   variants={fadeInDown}
                   initial="hidden"
                   animate={
-                    showSurpluses && !isNotAccepted && showGroupResults
+                    showSurpluses && !isNotAccepted && showResults
                       ? 'visible'
                       : ''
                   }
@@ -436,7 +439,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
                   variants={fadeInDown}
                   initial="hidden"
                   animate={
-                    isMarketSolved && !isNotAccepted && showGroupResults
+                    isMarketSolved && !isNotAccepted && showResults
                       ? 'visible'
                       : ''
                   }
@@ -459,11 +462,11 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
                       <p>
                         £
                         {calculatePayment(
-                          totalCost ?? projectCost,
+                          isGroupedProject ? totalCost : projectCost,
                           discountOrBonus,
                           accepted,
                           projectRoleId,
-                          isSplitProject,
+                          isGroupedProject,
                         ).toLocaleString()}
                       </p>
                     </div>

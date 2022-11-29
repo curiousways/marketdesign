@@ -53,7 +53,7 @@ const sellerProjects = [
   },
 ];
 
-describe('MarketOutcome', () => {
+describe('MarketParticipantList', () => {
   it('renders some buyer and seller participants with all of the expected costs', () => {
     render(
       <MarketParticipantList
@@ -332,5 +332,55 @@ describe('MarketOutcome', () => {
     expect(
       within(participants[3]).getByTestId('market-participant-title'),
     ).toHaveTextContent('Seller 2');
+  });
+
+  it('groups investor projects', () => {
+    render(
+      <MarketParticipantList
+        myProjects={[]}
+        losingProjects={[]}
+        buyerProjects={[
+          {
+            title: 'Investor',
+            subtitle: 'Biodiversity',
+            cost: 10000,
+            products: { biodiversity: 1, nutrients: 0 },
+            accepted: () => 50,
+            discountOrBonus: 2500,
+            groupId: 'investor',
+          },
+          {
+            title: 'Investor',
+            subtitle: 'Nutrients',
+            cost: 18000,
+            products: { biodiversity: 0, nutrients: 2 },
+            accepted: () => 75,
+            discountOrBonus: 2500,
+            groupId: 'investor',
+          },
+        ]}
+        sellerProjects={[]}
+        roleId="seller"
+        showCosts
+        showSurpluses
+        showWinners
+      />,
+      { wrapper },
+    );
+
+    const { buyers, sellers } = getMarketParticipants();
+
+    expect(buyers).toHaveLength(2);
+    expect(sellers).toHaveLength(0);
+
+    expect(buyers[0].title).toHaveTextContent(/^InvestorAccepted: 50%$/);
+    expect(buyers[0].bidOrOffer).toHaveTextContent('£10,000');
+    expect(buyers[0].discountOrBonus).toHaveStyle({ opacity: 0 });
+    expect(buyers[0].paysOrReceived).toHaveStyle({ opacity: 0 });
+
+    expect(buyers[1].title).toHaveTextContent(/^InvestorAccepted: 75%$/);
+    expect(buyers[1].bidOrOffer).toHaveTextContent('£18,000');
+    expect(buyers[1].discountOrBonus).toHaveTextContent('£2,500');
+    expect(buyers[1].paysOrReceived).toHaveTextContent('£16,000');
   });
 });

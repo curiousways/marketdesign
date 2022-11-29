@@ -133,6 +133,8 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
           })
           .reduce((a, b) => a + b, 0);
 
+        const isGroupedProject = !!groupedProjects.length;
+
         return (
           <li key={JSON.stringify(project)}>
             <MarketParticipant
@@ -159,10 +161,11 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
               showWinners={showWinners}
               showSurpluses={showSurpluses}
               isMarketSolved={isMarketSolved}
-              showGroupResults={
-                !groupedProjects.length ||
+              showResults={
+                !isGroupedProject ||
                 project === groupedProjects[groupedProjects.length - 1]
               }
+              isGroupedProject={isGroupedProject}
               totalCost={totalCost}
             />
           </li>

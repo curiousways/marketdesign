@@ -835,12 +835,12 @@ describe('MarketSandbox', () => {
     expect(buyers[0].title).toHaveTextContent(/^InvestorAccepted: 75%$/);
     expect(buyers[0].bidOrOffer).toHaveTextContent('£6,000');
     expect(buyers[0].discountOrBonus).toHaveTextContent('£2,167');
-    expect(buyers[0].paysOrReceived).toHaveTextContent('£3,833');
+    expect(buyers[0].paysOrReceived).toHaveTextContent('£5,333');
 
     expect(buyers[1].title).toHaveTextContent(/^Accepted: 50%$/);
     expect(buyers[1].bidOrOffer).toHaveTextContent('£1,500');
-    expect(buyers[1].discountOrBonus).toHaveTextContent('£2,167');
-    expect(buyers[1].paysOrReceived).toHaveTextContent('£-667');
+    expect(buyers[0].discountOrBonus).toHaveTextContent('£2,167');
+    expect(buyers[0].paysOrReceived).toHaveTextContent('£5,333');
 
     expect(within(marketOutcome).getByTestId('total-bids')).toHaveTextContent(
       '£25,000',
