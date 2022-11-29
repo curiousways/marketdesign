@@ -7,6 +7,7 @@ import {
   SetStateAction,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -31,6 +32,7 @@ type WalkthroughContextType = {
   marketState: MarketState;
   goToNextMarketState: () => void;
   setMarketState: Dispatch<SetStateAction<MarketState>>;
+  wasSolvableStage?: number;
 };
 
 const WalkthroughContext = createContext<WalkthroughContextType | null>(null);
@@ -46,6 +48,7 @@ export const WalkthroughProvider: FunctionComponent<
   const { getProjectCost } = useProjectsContext();
   const { roleId, getScenario, walkthrough } = parseScenarioId(scenarioId);
   const [stage, setStage] = useState(1);
+  const [wasSolvableStage, setWasSolvableStage] = useState<number>();
 
   const scenario = getScenario(stage, { getProjectCost });
   const router = useRouter();
@@ -101,6 +104,14 @@ export const WalkthroughProvider: FunctionComponent<
     setMarketState((prev) => prev + 1);
   }, []);
 
+  // Remember the stage we were at when the market was solvable, so that we can
+  // go back to this stage via the back button once the market is solved.
+  useEffect(() => {
+    if (marketState === MarketState.solvable) {
+      setWasSolvableStage(stage);
+    }
+  }, [marketState, stage]);
+
   const value = useMemo(
     (): WalkthroughContextType => ({
       scenarioId,
@@ -117,6 +128,7 @@ export const WalkthroughProvider: FunctionComponent<
       isMarketSolving,
       marketState,
       goToNextMarketState,
+      wasSolvableStage,
     }),
     [
       scenarioId,
@@ -131,6 +143,7 @@ export const WalkthroughProvider: FunctionComponent<
       isMarketSolving,
       marketState,
       goToNextMarketState,
+      wasSolvableStage,
     ],
   );
 

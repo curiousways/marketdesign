@@ -317,7 +317,10 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
             isMyFirstProject,
             isMyLastProject,
           )}
-          className={classNames('absolute flex left-0 top-0', className)}
+          className={classNames(
+            'absolute flex left-0 top-0 bg-white',
+            className,
+          )}
         >
           {/* Percentage-based background colour */}
           <div
