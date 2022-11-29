@@ -310,7 +310,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
             isMyLastProject,
           )}
           className={classNames(
-            'absolute flex overflow-hidden left-0 top-0',
+            'absolute flex overflow-hidden left-0 top-0 bg-white',
             className,
           )}
         >
