@@ -229,23 +229,142 @@ const multipleBidsScenario: DemoData = {
   ],
 };
 
-const findBid = (bidders: DemoBidder[], name: string, label?: string): Bid => {
+const investorBidScenario: DemoData = {
+  categories: ['Multiple bids', 'Divisible bids', 'Investor bids'],
+  title: 'Market-WlkThruI1',
+  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  playable_traders: [
+    {
+      name: 'seller 1',
+      role: 'seller',
+      locations: ['s1'],
+      enable_divisibility_element: false,
+    },
+    {
+      name: 'investor',
+      role: 'investor',
+      locations: ['i1'],
+      enable_divisibility_element: false,
+    },
+  ],
+  states: [
+    {
+      free_disposal: true,
+      bidders: [
+        {
+          name: 'seller 1',
+          bids: [
+            {
+              v: -5000,
+              q: {
+                biodiversity: 3,
+                nutrients: 0,
+              },
+              divisibility: 0,
+            },
+          ],
+        },
+        {
+          name: 'seller 2',
+          bids: [
+            {
+              v: -14000,
+              q: {
+                biodiversity: 4,
+                nutrients: 4,
+              },
+              divisibility: 0,
+            },
+          ],
+        },
+        {
+          name: 'seller 3',
+          bids: [
+            {
+              v: -6000,
+              q: {
+                biodiversity: 1,
+                nutrients: 4,
+              },
+              divisibility: 0,
+            },
+          ],
+        },
+        {
+          name: 'investor',
+          bids: [
+            {
+              v: 8000,
+              q: {
+                biodiversity: -4,
+                nutrients: 0,
+              },
+              divisibility: 1,
+            },
+            {
+              v: 3000,
+              q: {
+                biodiversity: 0,
+                nutrients: -2,
+              },
+              divisibility: 1,
+            },
+          ],
+        },
+        {
+          name: 'buyer 2',
+          bids: [
+            {
+              v: 14000,
+              q: {
+                biodiversity: -1,
+                nutrients: -3,
+              },
+              divisibility: 0,
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+const findBid = (
+  bidders: DemoBidder[],
+  name: string,
+  opts: { label?: string; bidIndex?: number } = {},
+): Bid => {
+  const { label, bidIndex } = opts;
   let foundBid: DemoBid | undefined;
 
   bidders.some((bidder) =>
-    bidder.bids.some((bid) => {
-      if (bidder.name === name && bid.label === label) {
-        foundBid = bid;
+    bidder.bids.some((bid, i) => {
+      let matches = false;
 
-        return true;
+      if (bidder.name === name) {
+        matches = true;
       }
 
-      return false;
+      if (label && bid.label !== label) {
+        matches = false;
+      }
+
+      if (typeof bidIndex === 'number' && i !== bidIndex) {
+        matches = false;
+      }
+
+      if (matches) {
+        foundBid = bid;
+      }
+
+      return matches;
     }),
   );
 
   if (!foundBid) {
-    throw new Error('No bid found for the given name and label');
+    throw new Error(
+      `No bid found for name "${name}" and options ${JSON.stringify(opts)}`,
+    );
   }
 
   return foundBid;
@@ -380,7 +499,6 @@ describe('MarketSandbox', () => {
 
     mockApiResponse({
       rule: 'lindsay2018',
-      surplus: 1000.0,
       surplus_shares: {
         'seller 1': 250.0,
         'seller 2': 250.0,
@@ -461,7 +579,6 @@ describe('MarketSandbox', () => {
 
       return {
         rule: 'lindsay2018',
-        surplus: 2000.0,
         surplus_shares: {
           'seller 1': 1500,
           'buyer 1': 2500,
@@ -533,7 +650,6 @@ describe('MarketSandbox', () => {
 
       return {
         rule: 'lindsay2018',
-        surplus: 2000.0,
         surplus_shares: {
           'seller 1': 1500,
           'buyer 1': 2500,
@@ -571,7 +687,7 @@ describe('MarketSandbox', () => {
     const biddersResult = cloneDeep(multipleBidsScenario.states[0].bidders);
     let requestState: DemoState | undefined;
 
-    findBid(biddersResult, 'seller 1', 'both#s1+s2').winning = 1;
+    findBid(biddersResult, 'seller 1', { label: 'both#s1+s2' }).winning = 1;
     findBid(biddersResult, 'buyer 1').winning = 1;
 
     mockApiResponse((_req: any, body: any) => {
@@ -579,7 +695,6 @@ describe('MarketSandbox', () => {
 
       return {
         rule: 'lindsay2018',
-        surplus: 2000.0,
         surplus_shares: {
           'seller 1': 7500,
           'buyer 1': 2500,
@@ -611,17 +726,17 @@ describe('MarketSandbox', () => {
     const marketOutcome = await screen.findByTestId('market-outcome');
     const { buyers, sellers } = getMarketParticipants();
 
-    expect(findBid(requestState!.bidders, 'seller 1', 'field 1#s1').v).toBe(
-      -10000,
-    );
+    expect(
+      findBid(requestState!.bidders, 'seller 1', { label: 'field 1#s1' }).v,
+    ).toBe(-10000);
 
-    expect(findBid(requestState!.bidders, 'seller 1', 'field 2#s2').v).toBe(
-      -10000,
-    );
+    expect(
+      findBid(requestState!.bidders, 'seller 1', { label: 'field 2#s2' }).v,
+    ).toBe(-10000);
 
-    expect(findBid(requestState!.bidders, 'seller 1', 'both#s1+s2').v).toBe(
-      -10000,
-    );
+    expect(
+      findBid(requestState!.bidders, 'seller 1', { label: 'both#s1+s2' }).v,
+    ).toBe(-10000);
 
     expect(sellers).toHaveLength(3);
     expect(buyers).toHaveLength(1);
@@ -656,6 +771,87 @@ describe('MarketSandbox', () => {
 
     expect(within(marketOutcome).getByTestId('surplus')).toHaveTextContent(
       '£17,000',
+    );
+  });
+
+  it('gives the expected outcome for an investor bidding scenario', async () => {
+    const biddersResult = cloneDeep(investorBidScenario.states[0].bidders);
+
+    findBid(biddersResult, 'investor', { bidIndex: 0 }).winning = 0.75;
+    findBid(biddersResult, 'investor', { bidIndex: 1 }).winning = 0.5;
+    findBid(biddersResult, 'seller 1').winning = 1;
+    findBid(biddersResult, 'seller 3').winning = 1;
+    findBid(biddersResult, 'buyer 2').winning = 1;
+
+    mockApiResponse({
+      rule: 'lindsay2018',
+      surplus_shares: {
+        'seller 1': 416.6666666666667,
+        'seller 3': 2250.0,
+        investor: 2166.6666666666665,
+        'buyer 2': 5666.666666666667,
+      },
+      problem: {
+        free_disposal: true,
+        goods: [],
+        bidders: biddersResult,
+      },
+    });
+
+    render(<MarketSandbox data={investorBidScenario} />, { wrapper });
+
+    const region = getHighlightedMapRegionByKey('i1');
+
+    fireEvent.click(region);
+
+    const projectDetails = await screen.findByTestId('project-details');
+    const textInputs = within(projectDetails).getAllByRole('textbox');
+
+    fireEvent.change(textInputs[0], { target: { value: '8000' } });
+    fireEvent.change(textInputs[1], { target: { value: '3000' } });
+
+    expect(textInputs[0]).toBeValid();
+    expect(textInputs[1]).toBeValid();
+
+    fireEvent.click(within(projectDetails).getByText('Submit'));
+    fireEvent.click(await screen.findByText('Solve Market'));
+
+    const marketOutcome = await screen.findByTestId('market-outcome');
+    const { buyers, sellers } = getMarketParticipants();
+
+    expect(sellers).toHaveLength(2);
+    expect(buyers).toHaveLength(3);
+
+    expect(sellers[0].title).toHaveTextContent(/^Seller 1$/);
+    expect(sellers[0].bidOrOffer).toHaveTextContent('£5,000');
+    expect(sellers[0].discountOrBonus).toHaveTextContent('£417');
+    expect(sellers[0].paysOrReceived).toHaveTextContent('£5,417');
+
+    expect(sellers[1].title).toHaveTextContent(/^Seller 3$/);
+    expect(sellers[1].bidOrOffer).toHaveTextContent('£6,000');
+    expect(sellers[1].discountOrBonus).toHaveTextContent('£2,250');
+    expect(sellers[1].paysOrReceived).toHaveTextContent('£8,250');
+
+    expect(buyers[0].title).toHaveTextContent(/^InvestorAccepted: 75%$/);
+    expect(buyers[0].bidOrOffer).toHaveTextContent('£6,000');
+    expect(buyers[0].discountOrBonus).toHaveTextContent('£2,167');
+    expect(buyers[0].paysOrReceived).toHaveTextContent('£3,833');
+
+    expect(buyers[1].title).toHaveTextContent(/^Accepted: 50%$/);
+    expect(buyers[1].bidOrOffer).toHaveTextContent('£1,500');
+    expect(buyers[1].discountOrBonus).toHaveTextContent('£2,167');
+    expect(buyers[1].paysOrReceived).toHaveTextContent('£-667');
+
+    expect(within(marketOutcome).getByTestId('total-bids')).toHaveTextContent(
+      '£25,000',
+    );
+
+    expect(within(marketOutcome).getByTestId('total-offers')).toHaveTextContent(
+      '£11,000',
+    );
+
+    expect(within(marketOutcome).getByTestId('surplus')).toHaveTextContent(
+      '£14,000',
     );
   });
 });

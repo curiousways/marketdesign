@@ -13,7 +13,7 @@ import {
 import { MainContainer } from '../MainContainer';
 import { SideBar } from '../Sidebar';
 import { Market } from '../Market';
-import { Result } from '../../../types/result';
+import { Bid, Result } from '../../../types/result';
 import { Project } from '../../../types/project';
 import { MarketState } from '../../../types/market';
 import { HighlightedMapRegions } from '../../../types/map';
@@ -27,7 +27,45 @@ interface MarketSandboxProps {
 
 const API_URL = 'https://marketdesign.herokuapp.com/solve/lindsay2018';
 
+const getProductsForBid = (bid: DemoBid | Bid, isInvestor?: boolean) => {
+  const { q } = bid;
+
+  return Object.entries(q).reduce((acc, [key, value]) => {
+    const absValue = Math.abs(value);
+
+    if (isInvestor && !absValue) {
+      return acc;
+    }
+
+    return {
+      ...acc,
+      [key]: absValue,
+    };
+  }, {});
+};
+
+const getSubtitle = (bid: DemoBid | Bid, isInvestor: boolean) => {
+  const products = getProductsForBid(bid, isInvestor);
+  const [firstProductKey] = Object.keys(products);
+  const [subtitle] = (bid.label ?? '').split('#');
+
+  // We have a scenario where an "investor" has two bids but no identifiable
+  // subtitle to distinguish between them, so we add one here based on the
+  // product they are bidding for (i.e. biodiversity or nutrients).e
+  if (!subtitle && isInvestor) {
+    return capitalCase(firstProductKey);
+  }
+
+  return subtitle ? capitalCase(subtitle) : undefined;
+};
+
+const findPlayableTraderForBidder = (
+  playableTraders: DemoTrader[],
+  bidder: DemoBidder,
+) => playableTraders.find(({ name }) => name === bidder.name);
+
 const isProjectAccepted = (
+  playableTraders: DemoTrader[],
   bidder: DemoBidder,
   bid: DemoBid,
   result?: Result,
@@ -38,10 +76,19 @@ const isProjectAccepted = (
     return true;
   }
 
-  const { winning = 0 } =
-    result.problem.bidders
-      .find(({ name }) => name === bidder.name)
-      ?.bids.find(({ label }) => label === bid.label) ?? {};
+  const matchingBidder = result.problem.bidders.find(
+    ({ name }) => name === bidder.name,
+  );
+
+  const isInvestor =
+    findPlayableTraderForBidder(playableTraders, bidder)?.role === 'investor';
+
+  const matchingBid = matchingBidder?.bids.find(
+    (resultBid) =>
+      getSubtitle(resultBid, isInvestor) === getSubtitle(bid, isInvestor),
+  );
+
+  const { winning = 0 } = matchingBid ?? {};
 
   // Convert the `winning` property from the API data to a percentage.
   const acceptedPercentage = Math.abs(winning * 100);
@@ -54,16 +101,18 @@ const isProjectAccepted = (
 };
 
 const convertBidToProject = (
+  playableTraders: DemoTrader[],
   bidder: DemoBidder,
   bid: DemoBid,
   result?: Result,
   mapRegion?: string,
 ): Project => {
   const { name: title } = bidder;
-  const { q: products, v: cost, label } = bid;
-  const { biodiversity = 0, nutrients = 0 } = products;
+  const { v, label } = bid;
+  const isInvestor =
+    findPlayableTraderForBidder(playableTraders, bidder)?.role === 'investor';
 
-  const accepted = isProjectAccepted(bidder, bid, result);
+  const accepted = isProjectAccepted(playableTraders, bidder, bid, result);
   const discountOrBonus = accepted ? result?.surplus_shares[title] ?? 0 : 0;
 
   // Each `bid` contains an optional `label` with a very odd data structure, in
@@ -73,31 +122,35 @@ const convertBidToProject = (
   // field 1#s1
   // field 1#s1+s2
   // field 1#s1-woodland
-  const [subtitle = '', region = ''] = (label ?? '').split('#');
+  const [, region = ''] = (label ?? '').split('#');
   const regions = region.split('+').filter((x): x is string => !!x);
+  const cost = Math.abs(v);
+  const costPerCredit = isInvestor ? cost : undefined;
 
   return {
     title: capitalCase(title),
-    subtitle: subtitle ? capitalCase(subtitle) : undefined,
+    subtitle: getSubtitle(bid, isInvestor),
     mapRegions: regions.length
       ? regions
       : [mapRegion].filter((x): x is string => !!x),
     cost: Math.abs(cost),
-    products: {
-      biodiversity: Math.abs(biodiversity),
-      nutrients: Math.abs(nutrients),
-    },
+    costPerCredit,
+    products: getProductsForBid(bid, isInvestor),
     discountOrBonus: Math.round(Math.abs(discountOrBonus)),
-    accepted: () => isProjectAccepted(bidder, bid, result),
+    accepted: () => isProjectAccepted(playableTraders, bidder, bid, result),
+    groupId: isInvestor ? 'investor' : undefined,
   };
 };
 
 const convertBidderToProjects = (
+  playableTraders: DemoTrader[],
   bidder: DemoBidder,
   result?: Result,
   mapRegion?: string,
 ): Project[] =>
-  bidder.bids.map((bid) => convertBidToProject(bidder, bid, result, mapRegion));
+  bidder.bids.map((bid) =>
+    convertBidToProject(playableTraders, bidder, bid, result, mapRegion),
+  );
 
 const isSellerBidder = (bidder: DemoBidder) => bidder.bids[0].v < 0;
 
@@ -105,6 +158,7 @@ const isBuyerBidder = (bidder: DemoBidder) => bidder.bids[0].v > 0;
 
 const getFilteredProjects = (
   filter: (bidder: DemoBidder) => boolean,
+  playableTraders: DemoTrader[],
   bidders: DemoBidder[],
   myProjects?: Project[],
   result?: Result,
@@ -114,7 +168,10 @@ const getFilteredProjects = (
   return bidders
     .filter(filter)
     .reduce(
-      (acc, bidder) => [...acc, ...convertBidderToProjects(bidder, result)],
+      (acc, bidder) => [
+        ...acc,
+        ...convertBidderToProjects(playableTraders, bidder, result),
+      ],
       projects,
     )
     .filter(
@@ -124,6 +181,7 @@ const getFilteredProjects = (
 };
 
 const findBidForProject = (
+  playableTraders: DemoTrader[],
   bidders: DemoBidder[],
   project: Project,
 ): DemoBid => {
@@ -131,7 +189,11 @@ const findBidForProject = (
 
   bidders.some((bidder) =>
     bidder.bids.some((bid) => {
-      const convertedProject = convertBidToProject(bidder, bid);
+      const convertedProject = convertBidToProject(
+        playableTraders,
+        bidder,
+        bid,
+      );
 
       if (isProjectEqual(convertedProject, project)) {
         matchingBid = bid;
@@ -151,19 +213,35 @@ const findBidForProject = (
 };
 
 const getSellerProjects = (
+  playableTraders: DemoTrader[],
   bidders: DemoBidder[],
   myProjects?: Project[],
   result?: Result,
 ): Project[] =>
-  getFilteredProjects(isSellerBidder, bidders, myProjects, result);
+  getFilteredProjects(
+    isSellerBidder,
+    playableTraders,
+    bidders,
+    myProjects,
+    result,
+  );
 
 const getBuyerProjects = (
+  playableTraders: DemoTrader[],
   bidders: DemoBidder[],
   myProjects?: Project[],
   result?: Result,
-): Project[] => getFilteredProjects(isBuyerBidder, bidders, myProjects, result);
+): Project[] =>
+  getFilteredProjects(
+    isBuyerBidder,
+    playableTraders,
+    bidders,
+    myProjects,
+    result,
+  );
 
 const getProjectsForTrader = (
+  playableTraders: DemoTrader[],
   bidders: DemoBidder[],
   trader?: DemoTrader,
   result?: Result,
@@ -176,7 +254,9 @@ const getProjectsForTrader = (
   const projects: Project[] = [];
 
   bidders.forEach((bidder) => {
-    projects.push(...convertBidderToProjects(bidder, result, mapRegion));
+    projects.push(
+      ...convertBidderToProjects(playableTraders, bidder, result, mapRegion),
+    );
   });
 
   const project = projects.filter(
@@ -237,8 +317,10 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
   const [selectedMapRegion, setSelectedMapRegion] = useState<string>();
   const [playableTrader, setPlayableTrader] = useState<DemoTrader>();
   const { getProjectCost } = useProjectsContext();
+  const { playable_traders: playableTraders } = data;
 
   const myProjects = getProjectsForTrader(
+    playableTraders,
     demoState.bidders,
     playableTrader,
     result,
@@ -260,7 +342,11 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
 
     // Find the bid associated with each of "my projects" and modify its value.
     myProjects.forEach((project) => {
-      const bid = findBidForProject(clonedDemoState.bidders, project);
+      const bid = findBidForProject(
+        playableTraders,
+        clonedDemoState.bidders,
+        project,
+      );
 
       bid.v = getProjectCost(project);
 
@@ -279,7 +365,7 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
 
     setResult(await res.json());
     setMarketState(MarketState.solved);
-  }, [demoState, myProjects, roleId, getProjectCost]);
+  }, [demoState, myProjects, roleId, getProjectCost, playableTraders]);
 
   const onFormSubmit = useCallback(() => {
     setMarketState(MarketState.solvable);
@@ -291,14 +377,14 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
 
   const onMapRegionClick = useCallback(
     (region: string) => {
-      const selectedTrader = data.playable_traders.find((trader) =>
+      const selectedTrader = playableTraders.find((trader) =>
         trader.locations.includes(region),
       );
 
       setPlayableTrader(selectedTrader);
       setSelectedMapRegion(region);
     },
-    [data.playable_traders],
+    [playableTraders],
   );
 
   return (
@@ -320,8 +406,14 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
       <Market
         showMap
         myProjects={myProjects}
-        buyerProjects={getBuyerProjects(demoState.bidders, myProjects, result)}
+        buyerProjects={getBuyerProjects(
+          playableTraders,
+          demoState.bidders,
+          myProjects,
+          result,
+        )}
         sellerProjects={getSellerProjects(
+          playableTraders,
           demoState.bidders,
           myProjects,
           result,
