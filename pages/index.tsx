@@ -4,13 +4,13 @@ import Image from 'next/image';
 
 import Button from '@/components/common/Button';
 import Header from '@/components/common/Header';
-import Faqs from '@/components/home/Faqs';
 
 import UnderstandingTheModel from '../public/assets/images/home/understanding-the-model.png';
 import Frame from '../public/assets/images/home/frame.png';
 import Frame2 from '../public/assets/images/home/frame-2.png';
 import HeaderImg from '../public/assets/images/home/header.png';
 import HeaderThumb from '../public/assets/images/home/header-thumb.png';
+import { Faqs } from '../components/Faqs';
 
 const Home: NextPage = () => {
   return (

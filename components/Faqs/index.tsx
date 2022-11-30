@@ -1,4 +1,5 @@
 import * as Accordion from '@radix-ui/react-accordion';
+import { FC } from 'react';
 
 const faqs = [
   {
@@ -44,7 +45,7 @@ const ChevronIcon = () => (
   </svg>
 );
 
-const Faqs = () => {
+export const Faqs: FC = () => {
   return (
     <>
       {/* FAQs */}
@@ -74,5 +75,3 @@ const Faqs = () => {
     </>
   );
 };
-
-export default Faqs;
