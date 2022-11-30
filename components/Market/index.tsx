@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { LoadingOverlay } from '../LoadingOverlay';
 import { TopProgressBar } from '../TopProgressBar';
-import { MarketBackgroundLeft } from '../walkthroughs/icons/MarketBackgroundLeft';
-import { MarketBackgroundRight } from '../walkthroughs/icons/MarketBackground';
+import { MarketBackgroundLeft } from '../../icons/MarketBackgroundLeft';
+import { MarketBackgroundRight } from '../../icons/MarketBackground';
 import { MarketScenario } from '../MarketScenario';
 import { Project } from '../../types/project';
 import { RoleId } from '../../types/roles';

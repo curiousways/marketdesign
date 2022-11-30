@@ -1,11 +1,11 @@
 import { FC } from 'react';
 import { classNames } from '@/utils/index';
-import HammerIcon from '../walkthroughs/icons/HammerIcon';
-import BalanceIcon from '../walkthroughs/icons/BalanceIcon';
-import CartPlus from '../walkthroughs/icons/CartPlus';
-import PoundcashTag from '../walkthroughs/icons/PoundcashTag';
-import OfferIcon from '../walkthroughs/icons/OfferIcon';
-import PoundIcon from '../walkthroughs/icons/PoundIcon';
+import HammerIcon from '../../icons/HammerIcon';
+import BalanceIcon from '../../icons/BalanceIcon';
+import CartPlus from '../../icons/CartPlus';
+import PoundcashTag from '../../icons/PoundcashTag';
+import OfferIcon from '../../icons/OfferIcon';
+import PoundIcon from '../../icons/PoundIcon';
 import { Project } from '../../types/project';
 import { useProjectsContext } from '../../context/ProjectsContext';
 
