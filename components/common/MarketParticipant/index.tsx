@@ -68,6 +68,7 @@ const getBorderRadiusStyles = (
   isGroupedProject?: boolean,
   isFirstGroupedProject?: boolean,
   isLastGroupedProject?: boolean,
+  isNotFullWidth?: boolean,
 ): CSSProperties => {
   const borderRadius = '0.5rem';
 
@@ -80,14 +81,14 @@ const getBorderRadiusStyles = (
   if (isFirstGroupedProject) {
     Object.assign(styles, {
       borderTopLeftRadius: borderRadius,
-      borderTopRightRadius: borderRadius,
+      borderTopRightRadius: isNotFullWidth ? 0 : borderRadius,
     });
   }
 
   if (isLastGroupedProject) {
     Object.assign(styles, {
       borderBottomLeftRadius: borderRadius,
-      borderBottomRightRadius: borderRadius,
+      borderBottomRightRadius: isNotFullWidth ? 0 : borderRadius,
     });
   }
 
@@ -327,14 +328,9 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
   // Adjust metrics for projects that were only partially accepted.
   const adjustedCost = getAdjustedCost(projectCost, accepted);
 
-  // Because of the way some project bars get merged and the discount/pays boxes
-  // float between the bars we can't use overflow: hidden here and instead need
-  // to apply the border radius to multiple elements.
-  const borderRadiusStyles = getBorderRadiusStyles(
-    isGroupedProject,
-    isFirstGroupedProject,
-    isLastGroupedProject,
-  );
+  // The width of the main colour bar for partially accepted projects.
+  const backgroundColourWidth =
+    typeof accepted === 'number' && showWinners ? `${accepted}%` : '100%';
 
   return (
     <motion.div
@@ -376,17 +372,23 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
           <div
             className={`absolute h-full ${backgroundColor} top-0 left-0`}
             style={{
-              ...borderRadiusStyles,
-              width:
-                typeof accepted === 'number' && showWinners
-                  ? `${accepted}%`
-                  : '100%',
+              ...getBorderRadiusStyles(
+                isGroupedProject,
+                isFirstGroupedProject,
+                isLastGroupedProject,
+                backgroundColourWidth !== '100%',
+              ),
+              width: backgroundColourWidth,
             }}
           />
 
           {/* Full-width background colour */}
           <div
-            style={borderRadiusStyles}
+            style={getBorderRadiusStyles(
+              isGroupedProject,
+              isFirstGroupedProject,
+              isLastGroupedProject,
+            )}
             className={`absolute h-full w-full ${backgroundColor} top-0 left-0 opacity-50`}
           />
 
