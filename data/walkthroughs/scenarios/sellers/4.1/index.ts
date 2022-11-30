@@ -19,31 +19,44 @@ const getHighlightedMapRegions = (
   }
 };
 
+const getMyProjects = (stage: number) => {
+  const projectOne = {
+    title: 'My Project',
+    subtitle: 'Project 1',
+    cost: 140000,
+    discountOrBonus: 44000,
+    accepted: () => true,
+    products: { biodiversity: 4, nutrients: 1 },
+    mapRegions: ['s1-woodland'],
+    mapRegionIcon: 'woodland',
+  };
+
+  const projectTwo = {
+    title: 'My Project',
+    subtitle: 'Project 2',
+    cost: 180000,
+    discountOrBonus: 0,
+    accepted: () => false,
+    isInactive: stage > 3,
+    products: { biodiversity: 2, nutrients: 5 },
+    mapRegions: ['s1-wetland'],
+  };
+
+  if (stage === 2) {
+    return [projectOne];
+  }
+
+  if (stage === 3) {
+    return [projectTwo];
+  }
+
+  return [projectOne, projectTwo];
+};
+
 export const getSellerScenario4_1: GetWalkthroughScenario = (
   stage: number,
 ) => ({
-  myProjects: [
-    {
-      title: 'My Project',
-      subtitle: 'Project 1',
-      cost: 140000,
-      discountOrBonus: 44000,
-      accepted: () => true,
-      products: { biodiversity: 4, nutrients: 1 },
-      mapRegions: ['s1-woodland'],
-      mapRegionIcon: 'woodland',
-    },
-    {
-      title: 'My Project',
-      subtitle: 'Project 2',
-      cost: 180000,
-      discountOrBonus: 0,
-      accepted: () => false,
-      isInactive: true,
-      products: { biodiversity: 2, nutrients: 5 },
-      mapRegions: ['s1-wetland'],
-    },
-  ],
+  myProjects: getMyProjects(stage),
   buyerProjects: [
     {
       title: 'Buyer 1',

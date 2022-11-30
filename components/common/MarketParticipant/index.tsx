@@ -12,6 +12,7 @@ import { Products } from '../../../types/products';
 import { BiodiversityCount } from '../BiodiversityCount';
 import { NutrientCount } from '../NutrientCount';
 import { getAdjustedCost } from '../../../utils/project';
+import { MarketParticipantMetric } from '../MarketParticipantMetric';
 
 const PROJECT_HEIGHT = 120;
 const PROJECT_WIDTH = 800;
@@ -19,6 +20,7 @@ const PROJECT_BOTTOM_MARGIN = 15;
 const COLLAPSED_PROJECT_HEIGHT = 60;
 const COLLAPSED_PROJECT_WIDTH = 210;
 const SHOW_LOSERS_MAX_SCREEN_WIDTH = 1700;
+const PROJECT_PADDING = '1.25rem';
 
 type MarketParticipantProps = {
   title: string;
@@ -32,15 +34,15 @@ type MarketParticipantProps = {
   loserIndex?: number;
   className?: string;
   isMyProject?: boolean;
-  isMyFirstProject?: boolean;
-  isMyLastProject?: boolean;
-  isMySubsequentProject?: boolean;
+  isFirstGroupedProject?: boolean;
+  isLastGroupedProject?: boolean;
+  isSubsequentGroupedProject?: boolean;
   showCosts?: boolean;
   showWinners?: boolean;
   showSurpluses?: boolean;
   isMarketSolved?: boolean;
-  showResults?: boolean;
   isGroupedProject?: boolean;
+  isDivisible?: boolean;
   totalCost: number;
 };
 
@@ -63,29 +65,30 @@ const calculatePayment = (
 };
 
 const getBorderRadiusStyles = (
-  isMyProject?: boolean,
-  isMyFirstProject?: boolean,
-  isMyLastProject?: boolean,
+  isGroupedProject?: boolean,
+  isFirstGroupedProject?: boolean,
+  isLastGroupedProject?: boolean,
+  isNotFullWidth?: boolean,
 ): CSSProperties => {
   const borderRadius = '0.5rem';
 
-  if (!isMyProject) {
+  if (!isGroupedProject) {
     return { borderRadius };
   }
 
   const styles: CSSProperties = {};
 
-  if (isMyFirstProject) {
+  if (isFirstGroupedProject) {
     Object.assign(styles, {
       borderTopLeftRadius: borderRadius,
-      borderTopRightRadius: borderRadius,
+      borderTopRightRadius: isNotFullWidth ? 0 : borderRadius,
     });
   }
 
-  if (isMyLastProject) {
+  if (isLastGroupedProject) {
     Object.assign(styles, {
       borderBottomLeftRadius: borderRadius,
-      borderBottomRightRadius: borderRadius,
+      borderBottomRightRadius: isNotFullWidth ? 0 : borderRadius,
     });
   }
 
@@ -94,13 +97,13 @@ const getBorderRadiusStyles = (
 
 const getMyProjectStyles = (
   isMyProject?: boolean,
-  isMyFirstProject?: boolean,
-  isMyLastProject?: boolean,
+  isFirstGroupedProject?: boolean,
+  isLastGroupedProject?: boolean,
 ): CSSProperties => {
   const styles = getBorderRadiusStyles(
     isMyProject,
-    isMyFirstProject,
-    isMyLastProject,
+    isFirstGroupedProject,
+    isLastGroupedProject,
   );
 
   const borderWidth = '2px';
@@ -120,7 +123,7 @@ const getMyProjectStyles = (
     borderLeftWidth: borderWidth,
   });
 
-  if (isMyFirstProject) {
+  if (isFirstGroupedProject) {
     Object.assign(styles, {
       borderTopColor: borderColor,
       borderTopStyle: borderStyle,
@@ -128,14 +131,14 @@ const getMyProjectStyles = (
     });
   }
 
-  if (isMyLastProject) {
+  if (isLastGroupedProject) {
     Object.assign(styles, {
       borderBottomColor: borderColor,
       borderBottomStyle: borderStyle,
       borderBottomWidth: borderWidth,
     });
 
-    if (!isMyFirstProject) {
+    if (!isFirstGroupedProject) {
       Object.assign(styles, {
         marginTop: 0,
       });
@@ -147,7 +150,7 @@ const getMyProjectStyles = (
 
 const useRowAnimation = (
   showLoserStyles?: boolean,
-  isMySubsequentProject?: boolean,
+  isSubsequentGroupedProject?: boolean,
 ) => {
   const [animation, setAnimation] = useState<AnimationProps['animate']>();
 
@@ -157,7 +160,9 @@ const useRowAnimation = (
       width: PROJECT_WIDTH,
     };
 
-    const marginTop = isMySubsequentProject ? -PROJECT_BOTTOM_MARGIN : 0;
+    const marginTop = isSubsequentGroupedProject
+      ? -PROJECT_BOTTOM_MARGIN + 2
+      : 0;
 
     if (!showLoserStyles) {
       setAnimation({
@@ -191,7 +196,7 @@ const useRowAnimation = (
       ],
       ...commonStyles,
     });
-  }, [showLoserStyles, isMySubsequentProject]);
+  }, [showLoserStyles, isSubsequentGroupedProject]);
 
   return animation;
 };
@@ -225,7 +230,7 @@ const useProjectAnimation = (
 
     if (!showLoserStyles) {
       setAnimation({
-        padding: '1.25rem',
+        padding: PROJECT_PADDING,
         height: PROJECT_HEIGHT,
         width: PROJECT_WIDTH,
         transform: defaultTransform,
@@ -288,24 +293,28 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
   loserIndex,
   className = '',
   isMyProject,
-  isMyFirstProject,
-  isMyLastProject,
-  isMySubsequentProject,
+  isFirstGroupedProject,
+  isLastGroupedProject,
+  isSubsequentGroupedProject,
   showCosts,
   showWinners,
   showSurpluses,
   isMarketSolved,
-  showResults,
   totalCost,
   isGroupedProject,
+  isDivisible,
 }: MarketParticipantProps) => {
   const isBuyer = projectRoleId === 'buyer';
 
   const showLoserStyles = isLoser && showWinners;
   const isNotAccepted = showWinners && !accepted;
-  const shiftResults = isGroupedProject && showResults;
+  const showResults = !isDivisible || isLastGroupedProject;
+  const shiftResults = isDivisible && !!(isGroupedProject && showResults);
 
-  const rowAnimation = useRowAnimation(showLoserStyles, isMySubsequentProject);
+  const rowAnimation = useRowAnimation(
+    showLoserStyles,
+    isSubsequentGroupedProject,
+  );
 
   const projectAnimation = useProjectAnimation(
     showLoserStyles,
@@ -322,14 +331,9 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
   // Adjust metrics for projects that were only partially accepted.
   const adjustedCost = getAdjustedCost(projectCost, accepted);
 
-  // Because of the way some project bars get merged and the discount/pays boxes
-  // float between the bars we can't use overflow: hidden here and instead need
-  // to apply the border radius to multiple elements.
-  const borderRadiusStyles = getBorderRadiusStyles(
-    isMyProject,
-    isMyFirstProject,
-    isMyLastProject,
-  );
+  // The width of the main colour bar for partially accepted projects.
+  const backgroundColourWidth =
+    typeof accepted === 'number' && showWinners ? `${accepted}%` : '100%';
 
   return (
     <motion.div
@@ -341,11 +345,29 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
       className="select-none"
     >
       {/* Add a divider between multiple user projects. */}
-      {isMySubsequentProject && (
-        <div className="border-black border-l-2 border-r-2 relative h-[2px] bg-white">
+      {isSubsequentGroupedProject && (
+        <div className="relative">
           <div
-            className={`border-t-2 border-dashed ${dividerColor} w-full absolute`}
-          />
+            className={classNames(
+              'border-l-2 border-r-2 h-[2px] absolute w-full -top-[2px]',
+              isMyProject ? 'border-black' : '',
+            )}
+          >
+            <div
+              className={classNames(
+                'border-t-2 border-dashed w-full absolute',
+                dividerColor,
+                isNotAccepted ? 'opacity-50' : '',
+              )}
+            />
+          </div>
+          {!showWinners && (
+            <div
+              className={`absolute z-20 top-0 text-white font-bold mx-10 px-1 translate-y-[-50%] -top-[2px] ${backgroundColor}`}
+            >
+              {isDivisible ? 'mix' : 'or'}
+            </div>
+          )}
         </div>
       )}
 
@@ -354,8 +376,8 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
           animate={projectAnimation}
           style={getMyProjectStyles(
             isMyProject,
-            isMyFirstProject,
-            isMyLastProject,
+            isFirstGroupedProject,
+            isLastGroupedProject,
           )}
           className={classNames(
             'absolute flex left-0 top-0 bg-white',
@@ -366,17 +388,23 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
           <div
             className={`absolute h-full ${backgroundColor} top-0 left-0`}
             style={{
-              ...borderRadiusStyles,
-              width:
-                typeof accepted === 'number' && showWinners
-                  ? `${accepted}%`
-                  : '100%',
+              ...getBorderRadiusStyles(
+                isGroupedProject,
+                isFirstGroupedProject,
+                isLastGroupedProject,
+                backgroundColourWidth !== '100%',
+              ),
+              width: backgroundColourWidth,
             }}
           />
 
           {/* Full-width background colour */}
           <div
-            style={borderRadiusStyles}
+            style={getBorderRadiusStyles(
+              isGroupedProject,
+              isFirstGroupedProject,
+              isLastGroupedProject,
+            )}
             className={`absolute h-full w-full ${backgroundColor} top-0 left-0 opacity-50`}
           />
 
@@ -389,12 +417,12 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
           >
             <MarketParticipantTitle
               title={title}
-              subtitle={subtitle}
+              subtitle={isDivisible ? 'Divisible' : subtitle}
               isMyProject={isMyProject}
               accepted={accepted}
               showAcceptedCosts={showCosts && showWinners}
               projectCost={projectCost}
-              hideMainTitle={isMySubsequentProject}
+              hideMainTitle={isSubsequentGroupedProject}
               showLoserStyles={showLoserStyles}
             />
 
@@ -424,100 +452,64 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
             {!showLoserStyles && (
               <div className="flex gap-x-10 flex-[50%]">
                 {/* Bid/Offer */}
-                <motion.div
-                  variants={fadeInDown}
-                  initial="hidden"
-                  animate={showCosts ? 'visible' : ''}
-                  className="bg-white rounded-lg border border-black px-1 w-[95px]"
-                  data-testid="bid-or-offer"
+                <MarketParticipantMetric
+                  heading={isBuyer ? 'Bid' : 'Offer'}
+                  show={!!showCosts}
+                  icon={isBuyer ? <HammerIcon /> : <OfferIcon />}
+                  shiftOffset={PROJECT_PADDING}
+                  testID="bid-or-offer"
                 >
-                  <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
-                    {isBuyer ? <HammerIcon /> : <OfferIcon />}
-                  </div>
-                  <div className="text-center text-sm relative -mt-2">
-                    <p className="text-light-grey">
-                      {isBuyer ? 'Bid' : 'Offer'}
+                  <p>£{Math.round(adjustedCost).toLocaleString()}</p>
+                  {adjustedCost !== projectCost && showWinners && (
+                    <p className={`${textColor} opacity-50`}>
+                      £{Math.round(projectCost).toLocaleString()}
                     </p>
-                    <p>£{Math.round(adjustedCost).toLocaleString()}</p>
-                    {adjustedCost !== projectCost && showWinners && (
-                      <p className={`${textColor} opacity-50`}>
-                        £{Math.round(projectCost).toLocaleString()}
-                      </p>
-                    )}
-                  </div>
-                </motion.div>
+                  )}
+                </MarketParticipantMetric>
 
                 {/* Discount/Bonus */}
-                <motion.div
-                  variants={fadeInDown}
-                  initial="hidden"
-                  animate={
-                    showSurpluses && !isNotAccepted && showResults
-                      ? 'visible'
-                      : ''
-                  }
-                  className="w-[95px] z-20"
-                  data-testid="discount-or-bonus"
+                <MarketParticipantMetric
+                  heading={isBuyer ? 'Discount' : 'Bonus'}
+                  show={!!(showSurpluses && !isNotAccepted && showResults)}
+                  icon={isBuyer ? '-' : '+'}
+                  shiftResults={shiftResults}
+                  shiftOffset={PROJECT_PADDING}
+                  testID="discount-or-bonus"
                 >
-                  <div
-                    className={classNames(
-                      'bg-white rounded-lg border border-black px-1 z-10',
-                      shiftResults ? '-translate-y-[75%]' : '',
-                    )}
-                  >
-                    <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
-                      <p className="text-black">{isBuyer ? '-' : '+'}</p>
-                    </div>
-                    <div className="text-center text-sm relative -mt-2">
-                      <p className="text-light-grey">
-                        {isBuyer ? 'Discount' : 'Bonus'}
-                      </p>
-                      <p>£{Math.round(discountOrBonus).toLocaleString()}</p>
-                    </div>
-                  </div>
-                </motion.div>
+                  <p>£{Math.round(discountOrBonus).toLocaleString()}</p>
+                </MarketParticipantMetric>
 
                 {/* Pays/Received */}
-                <motion.div
-                  variants={fadeInDown}
-                  initial="hidden"
-                  animate={
-                    isMarketSolved && !isNotAccepted && showResults
-                      ? 'visible'
-                      : ''
-                  }
-                  className="w-[95px]"
-                  data-testid="pays-or-received"
+                <MarketParticipantMetric
+                  heading={isBuyer ? 'Pays' : 'Received'}
+                  show={!!(isMarketSolved && !isNotAccepted && showResults)}
+                  icon={isBuyer ? <PoundcashTag /> : <CartPlus />}
+                  shiftResults={shiftResults}
+                  shiftOffset={PROJECT_PADDING}
+                  testID="pays-or-received"
                 >
-                  <div
-                    className={classNames(
-                      'bg-white rounded-lg border border-black px-1 z-10',
-                      shiftResults ? '-translate-y-[75%]' : '',
-                    )}
-                  >
-                    <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
-                      {isBuyer ? <PoundcashTag /> : <CartPlus />}
-                    </div>
-                    <div className="text-center text-sm relative -mt-2">
-                      <p className="text-light-grey">
-                        {isBuyer ? 'Pays' : 'Received'}
-                      </p>
-                      <p>
-                        £
-                        {calculatePayment(
-                          isGroupedProject ? totalCost : projectCost,
-                          discountOrBonus,
-                          accepted,
-                          projectRoleId,
-                          isGroupedProject,
-                        ).toLocaleString()}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
+                  <p>
+                    £
+                    {calculatePayment(
+                      isGroupedProject ? totalCost : projectCost,
+                      discountOrBonus,
+                      accepted,
+                      projectRoleId,
+                      isGroupedProject,
+                    ).toLocaleString()}
+                  </p>
+                </MarketParticipantMetric>
               </div>
             )}
           </div>
+          {isMarketSolved && isNotAccepted && !isDivisible && !showLoserStyles && (
+            <p
+              style={{ top: `${PROJECT_HEIGHT / 2}px` }}
+              className="font-bold text-white z-20 whitespace-nowrap right-8 absolute translate-y-[-50%] text-xl"
+            >
+              Not Accepted
+            </p>
+          )}
         </motion.div>
       </div>
     </motion.div>

@@ -47,6 +47,32 @@ describe('ProjectDetails', () => {
     expect(textInput).toBeDisabled();
   });
 
+  it('disables the input for inactive projects when the form is enabled', () => {
+    render(
+      <ProjectDetails
+        isFormEnabled
+        projects={[
+          createProject({ subtitle: 'Field 1', cost: 42000 }),
+          createProject({ subtitle: 'Field 2', isInactive: true }),
+        ]}
+        onFormSubmit={jest.fn()}
+        roleId="buyer"
+      />,
+      { wrapper },
+    );
+
+    const textInputs = screen.getAllByRole('textbox');
+    const listItems = screen.getAllByRole('listitem');
+
+    expect(textInputs).toHaveLength(2);
+
+    expect(listItems[0]).toHaveTextContent('Field 1');
+    expect(textInputs[0]).not.toBeDisabled();
+
+    expect(listItems[1]).toHaveTextContent('Field 2');
+    expect(textInputs[1]).toBeDisabled();
+  });
+
   it('disables a cost select input when the form is not enabled', async () => {
     render(
       <ProjectDetails
@@ -132,10 +158,9 @@ describe('ProjectDetails', () => {
     },
   );
 
-  it('lists the expected projects and greys out any that are inactive the market is solvable', () => {
+  it('lists the expected projects', () => {
     render(
       <ProjectDetails
-        isMarketSolvable
         projects={[
           createProject({ subtitle: 'Field 1', cost: 42000 }),
           createProject({ subtitle: 'Field 2', cost: 43000 }),
@@ -157,7 +182,7 @@ describe('ProjectDetails', () => {
     expect(listItems[1]).toHaveTextContent('£43,000');
   });
 
-  it('does not grey out a project when the market is not solvable', () => {
+  it('does not grey out an active project', () => {
     render(
       <ProjectDetails
         projects={[createProject()]}
@@ -172,10 +197,9 @@ describe('ProjectDetails', () => {
     expect(listItem.className).not.toContain('opacity');
   });
 
-  it('greys out a project when the market is solvable', () => {
+  it('greys out an inactive project', () => {
     render(
       <ProjectDetails
-        isMarketSolvable
         projects={[createProject({ isInactive: true })]}
         onFormSubmit={jest.fn()}
         roleId="buyer"

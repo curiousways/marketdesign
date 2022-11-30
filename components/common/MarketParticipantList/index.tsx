@@ -1,5 +1,9 @@
 import { FC } from 'react';
-import { findProjectIndex, includesProject } from '@/utils/walkthroughs';
+import {
+  findProjectIndex,
+  getGroupedProjects,
+  includesProject,
+} from '@/utils/project';
 import { MarketParticipant } from '../MarketParticipant';
 import { Project } from '../../../types/project';
 import { useProjectsContext } from '../../../context/ProjectsContext';
@@ -46,34 +50,6 @@ const sortMyProjects = (
   });
 };
 
-const getMyActiveProjects = (projects: Project[], myProjects: Project[]) =>
-  myProjects.filter((project) => projects.includes(project));
-
-const getIsMyFirstProject = (
-  projects: Project[],
-  project: Project,
-  myProjects: Project[],
-) => {
-  const projectIndex = getMyActiveProjects(projects, myProjects).indexOf(
-    project,
-  );
-
-  return projectIndex === 0;
-};
-
-const getIsMyLastProject = (
-  projects: Project[],
-  project: Project,
-  myProjects: Project[],
-) => {
-  const activeProjects = getMyActiveProjects(projects, myProjects);
-  const projectIndex = getMyActiveProjects(projects, myProjects).indexOf(
-    project,
-  );
-
-  return projectIndex + 1 === activeProjects.length;
-};
-
 export const MarketParticipantList: FC<MarketParticipantListProps> = ({
   myProjects,
   buyerProjects,
@@ -102,31 +78,22 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
   return (
     <ul>
       {sortedProjects.map((project) => {
-        const isMyFirstProject = getIsMyFirstProject(
-          sortedProjects,
-          project,
-          myProjects,
-        );
-
-        const isMyLastProject = getIsMyLastProject(
-          sortedProjects,
-          project,
-          myProjects,
-        );
+        const groupedProjects = getGroupedProjects(sortedProjects, project);
+        const isGroupedProject = groupedProjects.length > 1;
+        const isFirstGroupedProject = groupedProjects.indexOf(project) === 0;
+        const isLastGroupedProject =
+          groupedProjects.indexOf(project) === groupedProjects.length - 1;
 
         const projectCost = getProjectCost(project);
 
-        const groupedProjects = project.groupId
-          ? sortedProjects.filter(({ groupId }) => groupId === project.groupId)
-          : [];
-
-        // The total cost for all projects in a grop is needed for the case
+        // The total cost for all projects in a group is needed for the case
         // where a project comprises multple "sub-projects" (e.g. investor bidding).
-        const totalCost = groupedProjects
-          .map(getAcceptedProjectCost)
-          .reduce((a, b) => a + b, 0);
-
-        const isGroupedProject = !!groupedProjects.length;
+        const isDivisible = !!project.costPerCredit;
+        const totalCost = isDivisible
+          ? groupedProjects
+              .map(getAcceptedProjectCost)
+              .reduce((a, b) => a + b, 0)
+          : projectCost;
 
         return (
           <li key={JSON.stringify(project)}>
@@ -139,14 +106,15 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
               isLoser={includesProject(project, losingProjects)}
               loserIndex={findProjectIndex(project, sortedLosingProjects)}
               isMyProject={myProjects.includes(project)}
-              isMyFirstProject={isMyFirstProject}
-              isMyLastProject={isMyLastProject}
-              isMySubsequentProject={
-                getMyActiveProjects(sortedProjects, myProjects).includes(
-                  project,
-                ) && !isMyFirstProject
+              isGroupedProject={isGroupedProject}
+              isDivisible={isDivisible}
+              isFirstGroupedProject={isFirstGroupedProject}
+              isLastGroupedProject={isLastGroupedProject}
+              isSubsequentGroupedProject={
+                isGroupedProject && !isFirstGroupedProject
               }
               projectCost={getProjectCost(project)}
+              totalCost={totalCost}
               discountOrBonus={project.discountOrBonus}
               products={project.products}
               accepted={project.accepted(projectCost)}
@@ -154,12 +122,6 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
               showWinners={showWinners}
               showSurpluses={showSurpluses}
               isMarketSolved={isMarketSolved}
-              showResults={
-                !isGroupedProject ||
-                project === groupedProjects[groupedProjects.length - 1]
-              }
-              isGroupedProject={isGroupedProject}
-              totalCost={totalCost}
             />
           </li>
         );
