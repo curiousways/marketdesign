@@ -19,9 +19,7 @@ export const BiodiversityCount: FC<BiodiversityCountProps> = ({
   adjustCount,
   showLoserStyles,
 }: BiodiversityCountProps) => {
-  if (typeof count !== 'number') {
-    return null;
-  }
+  const hasCount = typeof count === 'number';
 
   if (showLoserStyles) {
     return (
@@ -37,9 +35,9 @@ export const BiodiversityCount: FC<BiodiversityCountProps> = ({
   }
 
   return (
-    <Biodiversity type={type} boxStyle={boxStyle}>
+    <Biodiversity type={type} boxStyle={boxStyle} hidden={!hasCount}>
       <AdjustedProductCount
-        count={count}
+        count={count ?? 0}
         accepted={adjustCount ? accepted : true}
       />
     </Biodiversity>

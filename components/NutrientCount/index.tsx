@@ -19,9 +19,7 @@ export const NutrientCount: FC<NutrientCountProps> = ({
   adjustCount,
   showLoserStyles,
 }: NutrientCountProps) => {
-  if (typeof count !== 'number') {
-    return null;
-  }
+  const hasCount = typeof count === 'number';
 
   if (showLoserStyles) {
     return (
@@ -37,9 +35,9 @@ export const NutrientCount: FC<NutrientCountProps> = ({
   }
 
   return (
-    <Nutrients type={type} boxStyle={boxStyle}>
+    <Nutrients type={type} boxStyle={boxStyle} hidden={!hasCount}>
       <AdjustedProductCount
-        count={count}
+        count={count ?? 0}
         accepted={adjustCount ? accepted : true}
       />
     </Nutrients>
