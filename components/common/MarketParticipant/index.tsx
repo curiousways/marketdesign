@@ -160,7 +160,9 @@ const useRowAnimation = (
       width: PROJECT_WIDTH,
     };
 
-    const marginTop = isSubsequentGroupedProject ? -PROJECT_BOTTOM_MARGIN : 0;
+    const marginTop = isSubsequentGroupedProject
+      ? -PROJECT_BOTTOM_MARGIN + 2
+      : 0;
 
     if (!showLoserStyles) {
       setAnimation({
@@ -347,17 +349,21 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
         <div className="relative">
           <div
             className={classNames(
-              'border-l-2 border-r-2 h-[2px] bg-whie',
+              'border-l-2 border-r-2 h-[2px] absolute w-full -top-[2px]',
               isMyProject ? 'border-black' : '',
             )}
           >
             <div
-              className={`border-t-2 border-dashed ${dividerColor} w-full absolute`}
+              className={classNames(
+                'border-t-2 border-dashed w-full absolute',
+                dividerColor,
+                isNotAccepted ? 'opacity-50' : '',
+              )}
             />
           </div>
           {!showWinners && (
             <div
-              className={`absolute z-20 top-0 text-white font-bold mx-10 px-1 translate-y-[-50%] ${backgroundColor}`}
+              className={`absolute z-20 top-0 text-white font-bold mx-10 px-1 translate-y-[-50%] -top-[2px] ${backgroundColor}`}
             >
               {isDivisible ? 'mix' : 'or'}
             </div>
