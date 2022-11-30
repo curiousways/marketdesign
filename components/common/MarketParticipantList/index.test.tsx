@@ -353,21 +353,21 @@ describe('MarketParticipantList', () => {
             title: 'Investor',
             subtitle: 'Biodiversity',
             cost: 10000,
+            costPerCredit: 10000,
             products: { biodiversity: 1, nutrients: 0 },
             accepted: () => 50,
             discountOrBonus: 2500,
             groupId: 'investor',
-            isDivisible: true,
           },
           {
             title: 'Investor',
             subtitle: 'Nutrients',
             cost: 18000,
+            costPerCredit: 9000,
             products: { biodiversity: 0, nutrients: 2 },
             accepted: () => 75,
             discountOrBonus: 2500,
             groupId: 'investor',
-            isDivisible: true,
           },
         ]}
         sellerProjects={[]}

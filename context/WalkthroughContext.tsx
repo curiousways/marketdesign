@@ -51,6 +51,12 @@ export const WalkthroughProvider: FunctionComponent<
   const [wasSolvableStage, setWasSolvableStage] = useState<number>();
 
   const scenario = getScenario(stage, { getProjectCost });
+
+  // Add a group ID to all of "my projects".
+  scenario.myProjects.forEach((project) => {
+    project.groupId = 'my-project';
+  });
+
   const router = useRouter();
   const [marketState, setMarketState] = useState<MarketState>(
     MarketState.pending,
