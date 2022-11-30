@@ -1,38 +1,38 @@
 import { FC, ReactNode } from 'react';
 import { ProductBox } from '../ProductBox';
 
-type BiodiversityProps = {
+type NutrientsProps = {
   type: 'positive' | 'negative' | 'grey';
   boxStyle?: 'buyer' | 'seller' | 'outcome';
   children?: ReactNode;
 };
 
-export const Biodiversity: FC<BiodiversityProps> = ({
+export const Nutrients: FC<NutrientsProps> = ({
   type,
   boxStyle,
   children,
-}: BiodiversityProps) => {
+}: NutrientsProps) => {
   if (type === 'grey') {
     return (
       <svg
-        width="30"
+        width="23"
         height="30"
-        viewBox="0 0 30 30"
+        viewBox="0 0 23 30"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <g opacity="0.7" filter="url(#filter0_ddiiii_1249_24261)">
+        <g opacity="0.7" filter="url(#filter0_ddiiii_1249_24260)">
           <path
-            d="M15 3C11.8154 3 9.23377 5.58163 9.23377 8.76623C9.23377 9.02444 9.02444 9.23377 8.76623 9.23377C5.58163 9.23377 3 11.8154 3 15C3 18.1846 5.58163 20.7663 8.76623 20.7663C9.02444 20.7663 9.23377 20.9756 9.23377 21.2337C9.23377 24.4184 11.8154 27 15 27C18.1846 27 20.7663 24.4184 20.7663 21.2337C20.7663 20.9756 20.9756 20.7663 21.2337 20.7663C24.4183 20.7663 27 18.1846 27 15C27 11.8154 24.4183 9.23377 21.2337 9.23377C20.9756 9.23377 20.7663 9.02444 20.7663 8.76623C20.7663 5.58163 18.1846 3 15 3Z"
+            d="M11.5 27C9.24575 27 7.08361 26.2283 5.48959 24.8545C3.89553 23.4807 3 21.6176 3 19.6749C3 16.666 4.61495 14.4108 6.58258 11.6631C8.11304 9.52596 9.85682 7.09082 11.2202 3.77137C11.2998 3.57737 11.4987 3 11.4987 3C11.4987 3 11.4992 3.00126 11.5 3.00366C11.5008 3.00126 11.5013 3 11.5013 3C11.5013 3 11.7002 3.57737 11.7798 3.77137C13.1432 7.09082 14.887 9.52596 16.4174 11.6631C18.385 14.4108 20 16.666 20 19.6749C20 21.6176 19.1045 23.4807 17.5104 24.8545C15.9276 26.2185 13.7385 27 11.5 27Z"
             fill="white"
           />
         </g>
         <defs>
           <filter
-            id="filter0_ddiiii_1249_24261"
+            id="filter0_ddiiii_1249_24260"
             x="-2"
             y="-2"
-            width="34"
+            width="27"
             height="34"
             filterUnits="userSpaceOnUse"
             colorInterpolationFilters="sRGB"
@@ -53,7 +53,7 @@ export const Biodiversity: FC<BiodiversityProps> = ({
             <feBlend
               mode="normal"
               in2="BackgroundImageFix"
-              result="effect1_dropShadow_1249_24261"
+              result="effect1_dropShadow_1249_24260"
             />
             <feColorMatrix
               in="SourceAlpha"
@@ -69,13 +69,13 @@ export const Biodiversity: FC<BiodiversityProps> = ({
             />
             <feBlend
               mode="normal"
-              in2="effect1_dropShadow_1249_24261"
-              result="effect2_dropShadow_1249_24261"
+              in2="effect1_dropShadow_1249_24260"
+              result="effect2_dropShadow_1249_24260"
             />
             <feBlend
               mode="normal"
               in="SourceGraphic"
-              in2="effect2_dropShadow_1249_24261"
+              in2="effect2_dropShadow_1249_24260"
               result="shape"
             />
             <feColorMatrix
@@ -94,7 +94,7 @@ export const Biodiversity: FC<BiodiversityProps> = ({
             <feBlend
               mode="normal"
               in2="shape"
-              result="effect3_innerShadow_1249_24261"
+              result="effect3_innerShadow_1249_24260"
             />
             <feColorMatrix
               in="SourceAlpha"
@@ -111,8 +111,8 @@ export const Biodiversity: FC<BiodiversityProps> = ({
             />
             <feBlend
               mode="normal"
-              in2="effect3_innerShadow_1249_24261"
-              result="effect4_innerShadow_1249_24261"
+              in2="effect3_innerShadow_1249_24260"
+              result="effect4_innerShadow_1249_24260"
             />
             <feColorMatrix
               in="SourceAlpha"
@@ -129,8 +129,8 @@ export const Biodiversity: FC<BiodiversityProps> = ({
             />
             <feBlend
               mode="normal"
-              in2="effect4_innerShadow_1249_24261"
-              result="effect5_innerShadow_1249_24261"
+              in2="effect4_innerShadow_1249_24260"
+              result="effect5_innerShadow_1249_24260"
             />
             <feColorMatrix
               in="SourceAlpha"
@@ -147,8 +147,8 @@ export const Biodiversity: FC<BiodiversityProps> = ({
             />
             <feBlend
               mode="normal"
-              in2="effect5_innerShadow_1249_24261"
-              result="effect6_innerShadow_1249_24261"
+              in2="effect5_innerShadow_1249_24260"
+              result="effect6_innerShadow_1249_24260"
             />
           </filter>
         </defs>
@@ -160,16 +160,16 @@ export const Biodiversity: FC<BiodiversityProps> = ({
     <ProductBox boxStyle={boxStyle}>
       {children}
       <svg
-        width="32"
+        width="22"
         height="32"
-        viewBox="0 0 32 32"
+        viewBox="0 0 22 32"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
           opacity="0.7"
-          d="M8.81169 7.68831C8.81169 3.71831 12.03 0.5 16 0.5C19.97 0.5 23.1884 3.71832 23.1884 7.68831C23.1884 8.30864 23.6912 8.81169 24.3116 8.81169C28.2817 8.81169 31.5 12.03 31.5 16C31.5 19.97 28.2817 23.1884 24.3116 23.1884C23.6913 23.1884 23.1884 23.6913 23.1884 24.3116C23.1884 28.2817 19.97 31.5 16 31.5C12.03 31.5 8.81169 28.2817 8.81169 24.3116C8.81169 23.6912 8.30864 23.1884 7.68831 23.1884C3.71832 23.1884 0.5 19.97 0.5 16C0.5 12.03 3.71831 8.81169 7.68831 8.81169C8.30873 8.81169 8.81169 8.30873 8.81169 7.68831Z"
-          fill={type === 'positive' ? '#6FCF97' : undefined}
+          d="M3.55382 28.7654L3.5538 28.7654C1.58991 27.0217 0.5 24.6703 0.5 22.2332C0.5 18.4038 2.4831 15.5249 5.04685 11.8362L5.05338 11.8268C6.98602 9.04625 9.20932 5.84757 10.9755 1.52781L10.9998 1.60143L11.0243 1.52726C12.7905 5.8473 15.0139 9.04614 16.9466 11.8268L16.9531 11.8361C19.5168 15.5249 21.5 18.4038 21.5 22.2332C21.5 24.6703 20.4101 27.0217 18.4462 28.7654C16.4949 30.498 13.7822 31.5 11 31.5C8.19741 31.5 5.51957 30.511 3.55382 28.7654Z"
+          fill={type === 'positive' ? '#56CCF2' : undefined}
           stroke="white"
         />
       </svg>
