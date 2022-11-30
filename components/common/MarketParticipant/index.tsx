@@ -12,6 +12,7 @@ import { Products } from '../../../types/products';
 import { BiodiversityCount } from '../BiodiversityCount';
 import { NutrientCount } from '../NutrientCount';
 import { getAdjustedCost } from '../../../utils/project';
+import { MarketParticipantMetric } from '../MarketParticipantMetric';
 
 const PROJECT_HEIGHT = 120;
 const PROJECT_WIDTH = 800;
@@ -19,6 +20,7 @@ const PROJECT_BOTTOM_MARGIN = 15;
 const COLLAPSED_PROJECT_HEIGHT = 60;
 const COLLAPSED_PROJECT_WIDTH = 210;
 const SHOW_LOSERS_MAX_SCREEN_WIDTH = 1700;
+const PROJECT_PADDING = '1.25rem';
 
 type MarketParticipantProps = {
   title: string;
@@ -225,7 +227,7 @@ const useProjectAnimation = (
 
     if (!showLoserStyles) {
       setAnimation({
-        padding: '1.25rem',
+        padding: PROJECT_PADDING,
         height: PROJECT_HEIGHT,
         width: PROJECT_WIDTH,
         transform: defaultTransform,
@@ -303,7 +305,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
 
   const showLoserStyles = isLoser && showWinners;
   const isNotAccepted = showWinners && !accepted;
-  const shiftResults = isGroupedProject && showResults;
+  const shiftResults = !!(isGroupedProject && showResults);
 
   const rowAnimation = useRowAnimation(
     showLoserStyles,
@@ -432,97 +434,53 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
             {!showLoserStyles && (
               <div className="flex gap-x-10 flex-[50%]">
                 {/* Bid/Offer */}
-                <motion.div
-                  variants={fadeInDown}
-                  initial="hidden"
-                  animate={showCosts ? 'visible' : ''}
-                  className="bg-white rounded-lg border border-black px-1 w-[95px]"
+                <MarketParticipantMetric
+                  heading={isBuyer ? 'Bid' : 'Offer'}
+                  show={!!showCosts}
+                  icon={isBuyer ? <HammerIcon /> : <OfferIcon />}
+                  shiftOffset={PROJECT_PADDING}
                   data-testid="bid-or-offer"
                 >
-                  <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
-                    {isBuyer ? <HammerIcon /> : <OfferIcon />}
-                  </div>
-                  <div className="text-center text-sm relative -mt-2">
-                    <p className="text-light-grey">
-                      {isBuyer ? 'Bid' : 'Offer'}
+                  <p>£{Math.round(adjustedCost).toLocaleString()}</p>
+                  {adjustedCost !== projectCost && showWinners && (
+                    <p className={`${textColor} opacity-50`}>
+                      £{Math.round(projectCost).toLocaleString()}
                     </p>
-                    <p>£{Math.round(adjustedCost).toLocaleString()}</p>
-                    {adjustedCost !== projectCost && showWinners && (
-                      <p className={`${textColor} opacity-50`}>
-                        £{Math.round(projectCost).toLocaleString()}
-                      </p>
-                    )}
-                  </div>
-                </motion.div>
+                  )}
+                </MarketParticipantMetric>
 
                 {/* Discount/Bonus */}
-                <motion.div
-                  variants={fadeInDown}
-                  initial="hidden"
-                  animate={
-                    showSurpluses && !isNotAccepted && showResults
-                      ? 'visible'
-                      : ''
-                  }
-                  className="w-[95px] z-20"
+                <MarketParticipantMetric
+                  heading={isBuyer ? 'Discount' : 'Bonus'}
+                  show={!!(showSurpluses && !isNotAccepted && showResults)}
+                  icon={isBuyer ? '-' : '+'}
+                  shiftResults={shiftResults}
+                  shiftOffset={PROJECT_PADDING}
                   data-testid="discount-or-bonus"
                 >
-                  <div
-                    className={classNames(
-                      'bg-white rounded-lg border border-black px-1 z-10',
-                      shiftResults ? '-translate-y-[100%]' : '',
-                    )}
-                  >
-                    <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
-                      <p className="text-black">{isBuyer ? '-' : '+'}</p>
-                    </div>
-                    <div className="text-center text-sm relative -mt-2">
-                      <p className="text-light-grey">
-                        {isBuyer ? 'Discount' : 'Bonus'}
-                      </p>
-                      <p>£{Math.round(discountOrBonus).toLocaleString()}</p>
-                    </div>
-                  </div>
-                </motion.div>
+                  <p>£{Math.round(discountOrBonus).toLocaleString()}</p>
+                </MarketParticipantMetric>
 
                 {/* Pays/Received */}
-                <motion.div
-                  variants={fadeInDown}
-                  initial="hidden"
-                  animate={
-                    isMarketSolved && !isNotAccepted && showResults
-                      ? 'visible'
-                      : ''
-                  }
-                  className="w-[95px]"
+                <MarketParticipantMetric
+                  heading={isBuyer ? 'Pays' : 'Received'}
+                  show={!!(isMarketSolved && !isNotAccepted && showResults)}
+                  icon={isBuyer ? <PoundcashTag /> : <CartPlus />}
+                  shiftResults={shiftResults}
+                  shiftOffset={PROJECT_PADDING}
                   data-testid="pays-or-received"
                 >
-                  <div
-                    className={classNames(
-                      'bg-white rounded-lg border border-black px-1 z-10',
-                      shiftResults ? '-translate-y-[100%]' : '',
-                    )}
-                  >
-                    <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
-                      {isBuyer ? <PoundcashTag /> : <CartPlus />}
-                    </div>
-                    <div className="text-center text-sm relative -mt-2">
-                      <p className="text-light-grey">
-                        {isBuyer ? 'Pays' : 'Received'}
-                      </p>
-                      <p>
-                        £
-                        {calculatePayment(
-                          isGroupedProject ? totalCost : projectCost,
-                          discountOrBonus,
-                          accepted,
-                          projectRoleId,
-                          isGroupedProject,
-                        ).toLocaleString()}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
+                  <p>
+                    £
+                    {calculatePayment(
+                      isGroupedProject ? totalCost : projectCost,
+                      discountOrBonus,
+                      accepted,
+                      projectRoleId,
+                      isGroupedProject,
+                    ).toLocaleString()}
+                  </p>
+                </MarketParticipantMetric>
               </div>
             )}
           </div>
