@@ -3,8 +3,6 @@ import { motion } from 'framer-motion';
 import { fadeIn } from '@/utils/animations';
 import { classNames } from '@/utils/index';
 import { RoleId } from '@/types/roles';
-import { NutrientsIcon } from '../../icons/NutrientsIcon';
-import { BiodiversityIconGray } from '../../icons/BiodiversityIcon';
 import { roles } from '../../data/roles';
 import { Credit } from '../Credit';
 import { CostInput } from '../CostInput';
@@ -12,6 +10,8 @@ import { Project } from '../../types/project';
 import { useProjectsContext } from '../../context/ProjectsContext';
 import { MapRegion } from '../MapRegion';
 import { MAP_INDICES } from '../../constants/map';
+import { Biodiversity } from '../Biodiversity';
+import { Nutrients } from '../Nutrients';
 
 type ProjectDetailsProps = {
   projects: Project[];
@@ -182,12 +182,12 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                     <Credit
                       count={project.products.biodiversity}
                       costPerCredit={project.costPerCredit}
-                      Icon={<BiodiversityIconGray />}
+                      Icon={<Biodiversity type="grey" />}
                     />
                     <Credit
                       count={project.products.nutrients}
                       costPerCredit={project.costPerCredit}
-                      Icon={<NutrientsIcon />}
+                      Icon={<Nutrients type="grey" />}
                     />
                   </div>
 

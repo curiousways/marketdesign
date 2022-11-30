@@ -323,7 +323,6 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
   );
 
   // Define some colour classes.
-  const shadowColor = isBuyer ? 'neo-shadow-brown' : 'neo-shadow-green';
   const backgroundColor = isBuyer ? 'bg-brown' : 'bg-green-light';
   const textColor = isBuyer ? 'text-brown' : 'text-green-light';
   const dividerColor = isBuyer ? 'border-brown' : 'border-green-light';
@@ -435,18 +434,18 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
             >
               <BiodiversityCount
                 type={isBuyer ? 'negative' : 'positive'}
+                boxStyle={isBuyer ? 'buyer' : 'seller'}
                 count={products.biodiversity}
                 adjustCount={showWinners}
                 accepted={accepted}
-                shadowColor={shadowColor}
                 showLoserStyles={showLoserStyles}
               />
               <NutrientCount
                 type={isBuyer ? 'negative' : 'positive'}
+                boxStyle={isBuyer ? 'buyer' : 'seller'}
                 count={products.nutrients}
                 adjustCount={showWinners}
                 accepted={accepted}
-                shadowColor={shadowColor}
                 showLoserStyles={showLoserStyles}
               />
             </div>

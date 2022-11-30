@@ -50,7 +50,7 @@ export const MarketOutcome: FC<MarketOutcomeProps> = ({
 
       <div className="flex gap-x-10 flex-[20%]">
         {/* Biodiversity */}
-        <div className="h-[66px] w-[66px] neo-shadow-blue rounded-lg flex items-center justify-center relative">
+        <Biodiversity type="positive" boxStyle="outcome">
           <div className="absolute -right-3 -top-2 rounded-full bg-white w-[29px] h-[29px] flex justify-center items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -67,11 +67,10 @@ export const MarketOutcome: FC<MarketOutcomeProps> = ({
               />
             </svg>
           </div>
-          <Biodiversity type="positive" />
-        </div>
+        </Biodiversity>
 
         {/* Nutrients */}
-        <div className="h-[66px] w-[66px] neo-shadow-blue rounded-lg flex items-center justify-center relative">
+        <Nutrients type="positive" boxStyle="outcome">
           <div className="absolute -right-3 -top-2 rounded-full bg-white w-[29px] h-[29px] flex justify-center items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -88,8 +87,7 @@ export const MarketOutcome: FC<MarketOutcomeProps> = ({
               />
             </svg>
           </div>
-          <Nutrients type="positive" />
-        </div>
+        </Nutrients>
       </div>
 
       <div className="flex gap-x-10 flex-[50%]">
