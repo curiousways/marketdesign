@@ -71,6 +71,12 @@ export const ProjectsProvider: FunctionComponent<ProjectsProviderProps> = ({
 
   const getProjectCost = useCallback(
     (project: Project): number => {
+      const [count] = Object.values(project.products).filter((x) => x);
+
+      if (project.costPerCredit) {
+        return project.costPerCredit * count;
+      }
+
       const { cost: dynamicProjectCost } = findEntry(state, project) ?? {};
 
       if (dynamicProjectCost) {
