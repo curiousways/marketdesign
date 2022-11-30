@@ -1,4 +1,6 @@
-const CartPlus = () => {
+import { FC } from 'react';
+
+export const CartPlus: FC = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -21,5 +23,3 @@ const CartPlus = () => {
     </svg>
   );
 };
-
-export default CartPlus;

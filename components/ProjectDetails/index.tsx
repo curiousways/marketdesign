@@ -1,10 +1,10 @@
 import { ChangeEvent, FC, FormEvent, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { fadeIn } from '@/utils/animations';
-import BiodiversityIconGray from 'icons/BiodiversityIcon';
-import NutrientsIcon from 'icons/NutrientsIcon';
 import { classNames } from '@/utils/index';
 import { RoleId } from '@/types/roles';
+import { NutrientsIcon } from '../../icons/NutrientsIcon';
+import { BiodiversityIconGray } from '../../icons/BiodiversityIcon';
 import { roles } from '../../data/roles';
 import { Credit } from '../Credit';
 import { CostInput } from '../CostInput';

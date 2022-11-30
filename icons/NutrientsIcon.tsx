@@ -1,4 +1,6 @@
-const NutrientsIcon = () => {
+import { FC } from 'react';
+
+export const NutrientsIcon: FC = () => {
   return (
     <svg
       width="23"
@@ -141,5 +143,3 @@ const NutrientsIcon = () => {
     </svg>
   );
 };
-
-export default NutrientsIcon;

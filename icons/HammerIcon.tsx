@@ -1,4 +1,6 @@
-const HammerIcon = () => {
+import { FC } from 'react';
+
+export const HammerIcon: FC = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -18,5 +20,3 @@ const HammerIcon = () => {
     </svg>
   );
 };
-
-export default HammerIcon;

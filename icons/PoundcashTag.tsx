@@ -1,4 +1,6 @@
-const PoundcashTag = () => {
+import { FC } from 'react';
+
+export const PoundcashTag: FC = () => {
   return (
     <svg
       width="21"
@@ -28,5 +30,3 @@ const PoundcashTag = () => {
     </svg>
   );
 };
-
-export default PoundcashTag;

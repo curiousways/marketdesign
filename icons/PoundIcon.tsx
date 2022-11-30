@@ -1,4 +1,6 @@
-const PoundIcon = () => (
+import { FC } from 'react';
+
+export const PoundIcon: FC = () => (
   <svg
     width="20"
     height="20"
@@ -26,5 +28,3 @@ const PoundIcon = () => (
     </defs>
   </svg>
 );
-
-export default PoundIcon;

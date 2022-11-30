@@ -1,4 +1,6 @@
-const OfferIcon = () => (
+import { FC } from 'react';
+
+export const OfferIcon: FC = () => (
   <svg
     width="20"
     height="20"
@@ -26,5 +28,3 @@ const OfferIcon = () => (
     </defs>
   </svg>
 );
-
-export default OfferIcon;

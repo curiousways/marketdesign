@@ -1,4 +1,6 @@
-const BiodiversityIconGray = () => {
+import { FC } from 'react';
+
+export const BiodiversityIconGray: FC = () => {
   return (
     <svg
       width="30"

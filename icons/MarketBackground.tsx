@@ -1,4 +1,6 @@
-export const MarketBackgroundRight = () => (
+import { FC } from 'react';
+
+export const MarketBackgroundRight: FC = () => (
   <svg
     width="1010"
     height="533"
