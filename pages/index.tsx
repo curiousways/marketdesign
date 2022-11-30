@@ -2,8 +2,8 @@ import type { NextPage } from 'next';
 
 import Image from 'next/image';
 
-import Button from '@/components/Button';
-import Header from '@/components/Header';
+import { Button } from '@/components/Button';
+import { Header } from '@/components/Header';
 
 import UnderstandingTheModel from '../public/assets/images/home/understanding-the-model.png';
 import Frame from '../public/assets/images/home/frame.png';

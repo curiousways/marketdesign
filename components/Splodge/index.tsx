@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 import { classNames } from '@/utils/index';
 
 // TODO: Make theme colours?
@@ -178,13 +178,13 @@ const CONTENT_SPLODGES = [
   </svg>,
 ];
 
-export const Splodge: FunctionComponent<SplodgeProps> = ({
+export const Splodge: FC<SplodgeProps> = ({
   children,
   color,
   type,
   index,
   height,
-}) => {
+}: SplodgeProps) => {
   const spodges = {
     heading: HEADING_SPLODGES,
     content: CONTENT_SPLODGES,

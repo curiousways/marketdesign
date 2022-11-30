@@ -1,6 +1,6 @@
 import Image, { ImageProps } from 'next/image';
-import { FunctionComponent } from 'react';
-import HeaderOverlayImage from '../public/assets/images/header-overlay.png';
+import { FC } from 'react';
+import HeaderOverlayImage from '../../public/assets/images/header-overlay.png';
 
 type HeaderProps = {
   title: string;
@@ -9,12 +9,12 @@ type HeaderProps = {
   secondaryImageSrc: ImageProps['src'];
 };
 
-const Header: FunctionComponent<HeaderProps> = ({
+export const Header: FC<HeaderProps> = ({
   title,
   description,
   mainImageSrc,
   secondaryImageSrc,
-}) => {
+}: HeaderProps) => {
   return (
     <header>
       <div className="relative">
@@ -55,5 +55,3 @@ const Header: FunctionComponent<HeaderProps> = ({
     </header>
   );
 };
-
-export default Header;

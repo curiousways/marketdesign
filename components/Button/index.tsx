@@ -1,11 +1,12 @@
 import Link from 'next/link';
+import { FC } from 'react';
 
-type Props = {
+type ButtonProps = {
   link: string;
   text: string;
 };
 
-const Button = ({ link, text }: Props) => {
+export const Button: FC<ButtonProps> = ({ link, text }: ButtonProps) => {
   return (
     <Link
       href={link}
@@ -28,5 +29,3 @@ const Button = ({ link, text }: Props) => {
     </Link>
   );
 };
-
-export default Button;
