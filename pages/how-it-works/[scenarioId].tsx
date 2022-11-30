@@ -3,7 +3,7 @@ import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { getAllScenarioIds, isValidScenarioId } from '@/utils/walkthroughs';
 import { WalkthroughProvider } from '@/context/WalkthroughContext';
-import { Walkthrough } from '../../components/common/Walkthrough';
+import { Walkthrough } from '../../components/Walkthrough';
 import { ProjectsProvider } from '../../context/ProjectsContext';
 
 interface HowItWorksScenarioParams extends ParsedUrlQuery {

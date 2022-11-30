@@ -1,8 +1,8 @@
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import Header from '@/components/common/Header';
-import { Splodge } from '@/components/common/Splodge';
+import { Header } from '@/components/Header';
+import { Splodge } from '@/components/Splodge';
 import { createScenarioId } from '@/utils/walkthroughs';
 import { walkthroughsByRole } from 'data/walkthroughs';
 import FieldsImg from '../../public/assets/images/how-it-works/fields.png';
