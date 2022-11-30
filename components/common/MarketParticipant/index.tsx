@@ -11,6 +11,7 @@ import { MarketParticipantTitle } from '../MarketParticipantTitle';
 import { Products } from '../../../types/products';
 import { BiodiversityCount } from '../BiodiversityCount';
 import { NutrientCount } from '../NutrientCount';
+import { getAdjustedCost } from '../../../utils/project';
 
 const PROJECT_HEIGHT = 120;
 const PROJECT_WIDTH = 800;
@@ -38,18 +39,21 @@ type MarketParticipantProps = {
   showWinners?: boolean;
   showSurpluses?: boolean;
   isMarketSolved?: boolean;
+  showResults?: boolean;
+  isGroupedProject?: boolean;
+  totalCost: number;
 };
-
-const getAdjustedCost = (cost: number, accepted: boolean | number) =>
-  typeof accepted === 'number' ? (accepted / 100) * cost : cost;
 
 const calculatePayment = (
   cost: number,
   discountOrBonus: number,
   accepted: boolean | number,
   projectRoleId: RoleId,
+  isGroupedProject?: boolean,
 ) => {
-  const adjustedCost = getAdjustedCost(cost, accepted);
+  const adjustedCost = isGroupedProject
+    ? cost
+    : getAdjustedCost(cost, accepted);
 
   if (projectRoleId === 'buyer') {
     return adjustedCost - discountOrBonus;
@@ -58,56 +62,87 @@ const calculatePayment = (
   return Math.round(adjustedCost + discountOrBonus);
 };
 
-const getMyProjectStyles = (
+const getBorderRadiusStyles = (
   isMyProject?: boolean,
   isMyFirstProject?: boolean,
   isMyLastProject?: boolean,
 ): CSSProperties => {
   const borderRadius = '0.5rem';
-  const borderWidth = '2px';
-  const borderColor = 'black';
-  const borderStyle = 'solid';
 
   if (!isMyProject) {
     return { borderRadius };
   }
 
-  const myProjectStyles: CSSProperties = {
-    borderRightColor: borderColor,
-    borderLeftColor: borderColor,
-    borderRightStyle: borderStyle,
-    borderLeftStyle: borderStyle,
-    borderRightWidth: borderWidth,
-    borderLeftWidth: borderWidth,
-  };
+  const styles: CSSProperties = {};
 
   if (isMyFirstProject) {
-    Object.assign(myProjectStyles, {
-      borderTopColor: borderColor,
-      borderTopStyle: borderStyle,
-      borderTopWidth: borderWidth,
+    Object.assign(styles, {
       borderTopLeftRadius: borderRadius,
       borderTopRightRadius: borderRadius,
     });
   }
 
   if (isMyLastProject) {
-    Object.assign(myProjectStyles, {
-      borderBottomColor: borderColor,
-      borderBottomStyle: borderStyle,
-      borderBottomWidth: borderWidth,
+    Object.assign(styles, {
       borderBottomLeftRadius: borderRadius,
       borderBottomRightRadius: borderRadius,
     });
+  }
+
+  return styles;
+};
+
+const getMyProjectStyles = (
+  isMyProject?: boolean,
+  isMyFirstProject?: boolean,
+  isMyLastProject?: boolean,
+): CSSProperties => {
+  const styles = getBorderRadiusStyles(
+    isMyProject,
+    isMyFirstProject,
+    isMyLastProject,
+  );
+
+  const borderWidth = '2px';
+  const borderColor = 'black';
+  const borderStyle = 'solid';
+
+  if (!isMyProject) {
+    return styles;
+  }
+
+  Object.assign(styles, {
+    borderRightColor: borderColor,
+    borderLeftColor: borderColor,
+    borderRightStyle: borderStyle,
+    borderLeftStyle: borderStyle,
+    borderRightWidth: borderWidth,
+    borderLeftWidth: borderWidth,
+  });
+
+  if (isMyFirstProject) {
+    Object.assign(styles, {
+      borderTopColor: borderColor,
+      borderTopStyle: borderStyle,
+      borderTopWidth: borderWidth,
+    });
+  }
+
+  if (isMyLastProject) {
+    Object.assign(styles, {
+      borderBottomColor: borderColor,
+      borderBottomStyle: borderStyle,
+      borderBottomWidth: borderWidth,
+    });
 
     if (!isMyFirstProject) {
-      Object.assign(myProjectStyles, {
+      Object.assign(styles, {
         marginTop: 0,
       });
     }
   }
 
-  return myProjectStyles;
+  return styles;
 };
 
 const useRowAnimation = (
@@ -260,11 +295,15 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
   showWinners,
   showSurpluses,
   isMarketSolved,
+  showResults,
+  totalCost,
+  isGroupedProject,
 }: MarketParticipantProps) => {
   const isBuyer = projectRoleId === 'buyer';
 
   const showLoserStyles = isLoser && showWinners;
   const isNotAccepted = showWinners && !accepted;
+  const shiftResults = isGroupedProject && showResults;
 
   const rowAnimation = useRowAnimation(showLoserStyles, isMySubsequentProject);
 
@@ -283,6 +322,15 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
   // Adjust metrics for projects that were only partially accepted.
   const adjustedCost = getAdjustedCost(projectCost, accepted);
 
+  // Because of the way some project bars get merged and the discount/pays boxes
+  // float between the bars we can't use overflow: hidden here and instead need
+  // to apply the border radius to multiple elements.
+  const borderRadiusStyles = getBorderRadiusStyles(
+    isMyProject,
+    isMyFirstProject,
+    isMyLastProject,
+  );
+
   return (
     <motion.div
       data-testid={`${isLoser ? 'losing-' : ''}${projectRoleId}-participant`}
@@ -290,11 +338,11 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
       initial="hidden"
       animate={rowAnimation}
       style={{ overflow: 'visible' }}
-      className="overflow-hidden select-none"
+      className="select-none"
     >
       {/* Add a divider between multiple user projects. */}
       {isMySubsequentProject && (
-        <div className="border-black border-l-2 border-r-2 relative h-[2px] z-10 bg-white">
+        <div className="border-black border-l-2 border-r-2 relative h-[2px] bg-white">
           <div
             className={`border-t-2 border-dashed ${dividerColor} w-full absolute`}
           />
@@ -310,7 +358,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
             isMyLastProject,
           )}
           className={classNames(
-            'absolute flex overflow-hidden left-0 top-0 bg-white',
+            'absolute flex left-0 top-0 bg-white',
             className,
           )}
         >
@@ -318,6 +366,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
           <div
             className={`absolute h-full ${backgroundColor} top-0 left-0`}
             style={{
+              ...borderRadiusStyles,
               width:
                 typeof accepted === 'number' && showWinners
                   ? `${accepted}%`
@@ -327,6 +376,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
 
           {/* Full-width background colour */}
           <div
+            style={borderRadiusStyles}
             className={`absolute h-full w-full ${backgroundColor} top-0 left-0 opacity-50`}
           />
 
@@ -401,18 +451,29 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
                 <motion.div
                   variants={fadeInDown}
                   initial="hidden"
-                  animate={showSurpluses && !isNotAccepted ? 'visible' : ''}
-                  className="bg-white rounded-lg border border-black px-1 w-[95px]"
+                  animate={
+                    showSurpluses && !isNotAccepted && showResults
+                      ? 'visible'
+                      : ''
+                  }
+                  className="w-[95px] z-20"
                   data-testid="discount-or-bonus"
                 >
-                  <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
-                    <p className="text-black">{isBuyer ? '-' : '+'}</p>
-                  </div>
-                  <div className="text-center text-sm relative -mt-2">
-                    <p className="text-light-grey">
-                      {isBuyer ? 'Discount' : 'Bonus'}
-                    </p>
-                    <p>£{Math.round(discountOrBonus).toLocaleString()}</p>
+                  <div
+                    className={classNames(
+                      'bg-white rounded-lg border border-black px-1 z-10',
+                      shiftResults ? '-translate-y-[75%]' : '',
+                    )}
+                  >
+                    <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
+                      <p className="text-black">{isBuyer ? '-' : '+'}</p>
+                    </div>
+                    <div className="text-center text-sm relative -mt-2">
+                      <p className="text-light-grey">
+                        {isBuyer ? 'Discount' : 'Bonus'}
+                      </p>
+                      <p>£{Math.round(discountOrBonus).toLocaleString()}</p>
+                    </div>
                   </div>
                 </motion.div>
 
@@ -420,26 +481,38 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
                 <motion.div
                   variants={fadeInDown}
                   initial="hidden"
-                  animate={isMarketSolved && !isNotAccepted ? 'visible' : ''}
-                  className="bg-white rounded-lg border border-black px-1 w-[95px]"
+                  animate={
+                    isMarketSolved && !isNotAccepted && showResults
+                      ? 'visible'
+                      : ''
+                  }
+                  className="w-[95px]"
                   data-testid="pays-or-received"
                 >
-                  <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
-                    {isBuyer ? <PoundcashTag /> : <CartPlus />}
-                  </div>
-                  <div className="text-center text-sm relative -mt-2">
-                    <p className="text-light-grey">
-                      {isBuyer ? 'Pays' : 'Received'}
-                    </p>
-                    <p>
-                      £
-                      {calculatePayment(
-                        projectCost,
-                        discountOrBonus,
-                        accepted,
-                        projectRoleId,
-                      ).toLocaleString()}
-                    </p>
+                  <div
+                    className={classNames(
+                      'bg-white rounded-lg border border-black px-1 z-10',
+                      shiftResults ? '-translate-y-[75%]' : '',
+                    )}
+                  >
+                    <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
+                      {isBuyer ? <PoundcashTag /> : <CartPlus />}
+                    </div>
+                    <div className="text-center text-sm relative -mt-2">
+                      <p className="text-light-grey">
+                        {isBuyer ? 'Pays' : 'Received'}
+                      </p>
+                      <p>
+                        £
+                        {calculatePayment(
+                          isGroupedProject ? totalCost : projectCost,
+                          discountOrBonus,
+                          accepted,
+                          projectRoleId,
+                          isGroupedProject,
+                        ).toLocaleString()}
+                      </p>
+                    </div>
                   </div>
                 </motion.div>
               </div>

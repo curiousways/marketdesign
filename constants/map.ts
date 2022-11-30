@@ -8,7 +8,7 @@ export const MAP_INDICES: { [key in string]: number } = {
   b1: 21,
   b2: 36,
   b3: 39,
-  i1: 26,
-  i2: 27,
-  i3: 28,
+  i1: 19,
+  i2: 25,
+  i3: 27,
 };

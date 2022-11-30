@@ -11,6 +11,7 @@ export interface Project {
   accepted: (value: number) => boolean | number;
   discountOrBonus: number;
   mapRegions?: string[];
+  groupId?: string;
 }
 
 // My projects require either a cost per credit or a highlighted map region, but

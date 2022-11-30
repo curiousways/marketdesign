@@ -24,6 +24,7 @@ const wrapper = ({ children }: WrapperProps) => (
     value={{
       setProjectCost,
       getProjectCost: jest.fn(),
+      getAcceptedProjectCost: jest.fn(),
     }}
   >
     {children}
