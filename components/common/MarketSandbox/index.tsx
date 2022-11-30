@@ -18,7 +18,7 @@ import { Bid, Result } from '../../../types/result';
 import { Project } from '../../../types/project';
 import { MarketState } from '../../../types/market';
 import { HighlightedMapRegions } from '../../../types/map';
-import { isProjectEqual } from '../../../utils/walkthroughs';
+import { isProjectEqual } from '../../../utils/project';
 import { useProjectsContext } from '../../../context/ProjectsContext';
 import { RoleId } from '../../../types/roles';
 

@@ -7,9 +7,8 @@ import {
   useMemo,
   useReducer,
 } from 'react';
-import { isProjectEqual } from '@/utils/walkthroughs';
+import { getAdjustedCost, isProjectEqual } from '@/utils/project';
 import { Project } from '../types/project';
-import { getAdjustedCost } from '../utils/project';
 
 type ProjectsContextType = {
   getProjectCost: (project: Project) => number;

@@ -1,10 +1,13 @@
 import { FC } from 'react';
-import { findProjectIndex, includesProject } from '@/utils/walkthroughs';
+import {
+  findProjectIndex,
+  getGroupedProjects,
+  includesProject,
+} from '@/utils/project';
 import { MarketParticipant } from '../MarketParticipant';
 import { Project } from '../../../types/project';
 import { useProjectsContext } from '../../../context/ProjectsContext';
 import { RoleId } from '../../../types/roles';
-import { getGroupedProjects } from '../../../utils/project';
 
 type MarketParticipantListProps = {
   myProjects: Project[];
