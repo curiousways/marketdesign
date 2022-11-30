@@ -460,7 +460,12 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
                   shiftOffset={PROJECT_PADDING}
                   testID="bid-or-offer"
                 >
-                  <p>£{Math.round(adjustedCost).toLocaleString()}</p>
+                  <p>
+                    £
+                    {Math.round(
+                      showWinners ? adjustedCost : projectCost,
+                    ).toLocaleString()}
+                  </p>
                   {adjustedCost !== projectCost && showWinners && (
                     <p className={`${textColor} opacity-50`}>
                       £{Math.round(projectCost).toLocaleString()}
