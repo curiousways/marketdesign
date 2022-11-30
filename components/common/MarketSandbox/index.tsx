@@ -140,7 +140,6 @@ const convertBidToProject = (
     discountOrBonus: Math.round(Math.abs(discountOrBonus)),
     accepted: () => isProjectAccepted(playableTraders, bidder, bid, result),
     groupId: objectHash(bidder),
-    isDivisible: !!bid.divisibility,
   };
 };
 
@@ -402,7 +401,6 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
         onFormSubmit={onFormSubmit}
         onFormRevise={onFormRevise}
         roleId={roleId}
-        isMarketSolvable={marketState >= MarketState.solvable}
         showSolveMarketBtn={marketState === MarketState.solvable}
       />
       <Market

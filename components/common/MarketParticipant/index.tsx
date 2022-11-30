@@ -344,15 +344,24 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
     >
       {/* Add a divider between multiple user projects. */}
       {isSubsequentGroupedProject && (
-        <div
-          className={classNames(
-            'border-l-2 border-r-2 relative h-[2px] bg-white',
-            isMyProject ? 'border-black' : '',
-          )}
-        >
+        <div className="relative">
           <div
-            className={`border-t-2 border-dashed ${dividerColor} w-full absolute`}
-          />
+            className={classNames(
+              'border-l-2 border-r-2 h-[2px] bg-whie',
+              isMyProject ? 'border-black' : '',
+            )}
+          >
+            <div
+              className={`border-t-2 border-dashed ${dividerColor} w-full absolute`}
+            />
+          </div>
+          {!showWinners && (
+            <div
+              className={`absolute z-20 top-0 text-white font-bold mx-10 px-1 translate-y-[-50%] ${backgroundColor}`}
+            >
+              {isDivisible ? 'mix' : 'or'}
+            </div>
+          )}
         </div>
       )}
 
@@ -402,7 +411,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
           >
             <MarketParticipantTitle
               title={title}
-              subtitle={subtitle}
+              subtitle={isDivisible ? 'Divisible' : subtitle}
               isMyProject={isMyProject}
               accepted={accepted}
               showAcceptedCosts={showCosts && showWinners}
@@ -487,6 +496,14 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
               </div>
             )}
           </div>
+          {isMarketSolved && isNotAccepted && !isDivisible && !showLoserStyles && (
+            <p
+              style={{ top: `${PROJECT_HEIGHT / 2}px` }}
+              className="font-bold text-white z-20 whitespace-nowrap right-8 absolute translate-y-[-50%] text-xl"
+            >
+              Not Accepted
+            </p>
+          )}
         </motion.div>
       </div>
     </motion.div>
