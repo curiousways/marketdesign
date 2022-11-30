@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import { capitalCase } from 'change-case';
 import fetch from 'isomorphic-unfetch';
 import cloneDeep from 'clone-deep';
+import objectHash from 'object-hash';
 import {
   DemoBid,
   DemoBidder,
@@ -17,7 +18,7 @@ import { Bid, Result } from '../../types/result';
 import { Project } from '../../types/project';
 import { MarketState } from '../../types/market';
 import { HighlightedMapRegions } from '../../types/map';
-import { isProjectEqual } from '../../utils/walkthroughs';
+import { isProjectEqual } from '../../utils/project';
 import { useProjectsContext } from '../../context/ProjectsContext';
 import { RoleId } from '../../types/roles';
 
@@ -138,7 +139,7 @@ const convertBidToProject = (
     products: getProductsForBid(bid, isInvestor),
     discountOrBonus: Math.round(Math.abs(discountOrBonus)),
     accepted: () => isProjectAccepted(playableTraders, bidder, bid, result),
-    groupId: isInvestor ? 'investor' : undefined,
+    groupId: objectHash(bidder),
   };
 };
 
@@ -400,7 +401,6 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
         onFormSubmit={onFormSubmit}
         onFormRevise={onFormRevise}
         roleId={roleId}
-        isMarketSolvable={marketState >= MarketState.solvable}
         showSolveMarketBtn={marketState === MarketState.solvable}
       />
       <Market

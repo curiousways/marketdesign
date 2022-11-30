@@ -20,7 +20,6 @@ type ProjectDetailsProps = {
   hasFixedBids?: boolean;
   isDivisibleInputEnabled?: boolean;
   showDivisibleInput?: boolean;
-  isMarketSolvable?: boolean;
   onFormSubmit: () => void;
   onFormRevise?: () => void;
   roleId: RoleId;
@@ -72,7 +71,6 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
   hasFixedBids,
   isDivisibleInputEnabled,
   showDivisibleInput,
-  isMarketSolvable,
   onFormSubmit,
   onFormRevise,
   roleId,
@@ -154,7 +152,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                 key={JSON.stringify(project)}
                 className={classNames(
                   'mb-3',
-                  isMarketSolvable && project.isInactive ? 'opacity-30' : '',
+                  project.isInactive ? 'opacity-30' : '',
                 )}
               >
                 {!!project.subtitle && projects.length > 1 && (
@@ -201,7 +199,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                   <div className="flex-1 max-w-[50%]">
                     <CostInput
                       cost={project.cost}
-                      disabled={!isFormEnabled}
+                      disabled={!isFormEnabled || project.isInactive}
                       bid={hasFixedBids ? getProjectBid(project) : undefined}
                       value={value}
                       name={priceInputNames[projectIndex]}

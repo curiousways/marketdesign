@@ -430,8 +430,8 @@ describe('MarketSandbox', () => {
     expect(allParticipants).toHaveLength(5);
     expect(allParticipants[0].title).toHaveTextContent('Buyer 2');
     expect(allParticipants[1].title).toHaveTextContent('Seller 1Field 1');
-    expect(allParticipants[2].title).toHaveTextContent('Seller 1Field 2');
-    expect(allParticipants[3].title).toHaveTextContent('Seller 1Both');
+    expect(allParticipants[2].title).toHaveTextContent('Field 2');
+    expect(allParticipants[3].title).toHaveTextContent('Both');
     expect(allParticipants[4].title).toHaveTextContent('Seller 2');
   });
 

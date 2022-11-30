@@ -21,8 +21,8 @@ type MapRegionProps = {
 };
 
 const ICONS: { [x in string]: StaticImageData } = {
-  woodland: swamp,
-  wetland: oakTree,
+  woodland: oakTree,
+  wetland: swamp,
 };
 
 export const MAP_REGION_PATHS = [

@@ -26,7 +26,6 @@ type SidebarProps = {
   hasFixedBids?: boolean;
   isDivisibleInputEnabled?: boolean;
   showDivisibleInput?: boolean;
-  isMarketSolvable?: boolean;
   onFormSubmit: () => void;
   onFormRevise?: () => void;
   roleId?: RoleId;
@@ -50,7 +49,6 @@ export const SideBar: FC<SidebarProps> = ({
   hasFixedBids,
   isDivisibleInputEnabled,
   showDivisibleInput,
-  isMarketSolvable,
   onFormSubmit,
   onFormRevise,
   roleId,
@@ -69,7 +67,6 @@ export const SideBar: FC<SidebarProps> = ({
             hasFixedBids={hasFixedBids}
             isDivisibleInputEnabled={isDivisibleInputEnabled}
             showDivisibleInput={showDivisibleInput}
-            isMarketSolvable={isMarketSolvable}
             onFormSubmit={onFormSubmit}
             onFormRevise={onFormRevise}
             roleId={roleId}

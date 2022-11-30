@@ -10,6 +10,7 @@ import { Project } from '../../types/project';
 import { useProjectsContext } from '../../context/ProjectsContext';
 import { HighlightedMapRegions } from '../../types/map';
 import { Map } from '../Map';
+import { getGroupedProjects } from '../../utils/project';
 
 type MarketScenarioProps = {
   myProjects: Project[];
@@ -71,12 +72,17 @@ export const MarketScenario: FC<MarketScenarioProps> = ({
         activeUserProjects.includes(project),
     );
 
+  const hasAcceptedGroupedProject = (projects: Project[], project: Project) =>
+    getGroupedProjects(projects, project).some((groupedProject) =>
+      groupedProject.accepted(getProjectCost(groupedProject)),
+    );
+
   const getWinningProjects = (projects: Project[], projectRoleId: RoleId) => {
     const hasUserProjects = hasAcceptedUserProjects(projects, projectRoleId);
 
     return getAllProjects(projects, projectRoleId).filter(
       (project) =>
-        project.accepted(getProjectCost(project)) ||
+        hasAcceptedGroupedProject(projects, project) ||
         (hasUserProjects && activeUserProjects.includes(project)),
     );
   };
@@ -86,7 +92,7 @@ export const MarketScenario: FC<MarketScenarioProps> = ({
 
     return getAllProjects(projects, projectRoleId).filter(
       (project) =>
-        !project.accepted(getProjectCost(project)) &&
+        !hasAcceptedGroupedProject(projects, project) &&
         !(hasUserProjects && activeUserProjects.includes(project)),
     );
   };
