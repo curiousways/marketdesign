@@ -3,7 +3,7 @@ import { ParsedUrlQuery } from 'querystring';
 import { DemoData } from '../../types/demo';
 import { getDemoFiles } from '../../utils/demo';
 import { ProjectsProvider } from '../../context/ProjectsContext';
-import { MarketSandbox } from '../../components/common/MarketSandbox';
+import { MarketSandbox } from '../../components/MarketSandbox';
 
 interface MarketSandboxScenarioParams extends ParsedUrlQuery {
   slug: string;
