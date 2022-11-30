@@ -116,7 +116,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
     event.preventDefault();
   };
 
-  const hasDivisibleLabel = !!projects.some(
+  const isInvestorScenario = !!projects.some(
     (project) => !!project.costPerCredit,
   );
 
@@ -132,7 +132,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
     >
       <div className="text-black text-l">
         <p className="font-bold">My Project{projects.length ? 's' : ''}</p>
-        <p>{roles[roleId].label}</p>
+        <p>{isInvestorScenario ? 'Investor' : roles[roleId].label}</p>
       </div>
 
       <form ref={formRef} onSubmit={onSubmit} className="flex flex-col">
@@ -249,7 +249,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
               <span className="ml-2">Divisible</span>
             </label>
           ) : (
-            hasDivisibleLabel && (
+            isInvestorScenario && (
               <span className="text-black opacity-30">Divisible</span>
             )
           )}
