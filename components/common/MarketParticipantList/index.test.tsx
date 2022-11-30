@@ -387,7 +387,7 @@ describe('MarketParticipantList', () => {
     expect(buyers[0].discountOrBonus).toHaveStyle({ opacity: 0 });
     expect(buyers[0].paysOrReceived).toHaveStyle({ opacity: 0 });
 
-    expect(buyers[1].title).toHaveTextContent(/^InvestorAccepted: 75%$/);
+    expect(buyers[1].title).toHaveTextContent(/^Accepted: 75%$/);
     expect(buyers[1].bidOrOffer).toHaveTextContent('£18,000');
     expect(buyers[1].discountOrBonus).toHaveTextContent('£2,500');
     expect(buyers[1].paysOrReceived).toHaveTextContent('£16,000');
