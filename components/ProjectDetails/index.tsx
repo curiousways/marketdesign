@@ -116,6 +116,10 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
     event.preventDefault();
   };
 
+  const hasDivisibleLabel = !!projects.some(
+    (project) => !!project.costPerCredit,
+  );
+
   return (
     <motion.div
       variants={fadeIn}
@@ -219,7 +223,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
           })}
         </ul>
         <div className="flex items-center">
-          {showDivisibleInput && (
+          {showDivisibleInput ? (
             // eslint-disable-next-line jsx-a11y/label-has-associated-control
             <label
               className={classNames(
@@ -244,6 +248,10 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
               </span>
               <span className="ml-2">Divisible</span>
             </label>
+          ) : (
+            hasDivisibleLabel && (
+              <span className="text-black opacity-30">Divisible</span>
+            )
           )}
           <div className="relative w-[100px] ml-auto">
             <button
