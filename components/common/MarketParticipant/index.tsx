@@ -441,7 +441,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
                   show={!!showCosts}
                   icon={isBuyer ? <HammerIcon /> : <OfferIcon />}
                   shiftOffset={PROJECT_PADDING}
-                  data-testid="bid-or-offer"
+                  testID="bid-or-offer"
                 >
                   <p>£{Math.round(adjustedCost).toLocaleString()}</p>
                   {adjustedCost !== projectCost && showWinners && (
@@ -458,7 +458,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
                   icon={isBuyer ? '-' : '+'}
                   shiftResults={shiftResults}
                   shiftOffset={PROJECT_PADDING}
-                  data-testid="discount-or-bonus"
+                  testID="discount-or-bonus"
                 >
                   <p>£{Math.round(discountOrBonus).toLocaleString()}</p>
                 </MarketParticipantMetric>
@@ -470,7 +470,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
                   icon={isBuyer ? <PoundcashTag /> : <CartPlus />}
                   shiftResults={shiftResults}
                   shiftOffset={PROJECT_PADDING}
-                  data-testid="pays-or-received"
+                  testID="pays-or-received"
                 >
                   <p>
                     £

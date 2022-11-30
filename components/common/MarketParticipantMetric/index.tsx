@@ -10,6 +10,7 @@ type MarketParticipantMetricProps = {
   icon: ReactNode;
   shiftResults?: boolean;
   shiftOffset?: string;
+  testID: string;
 };
 
 export const MarketParticipantMetric: FC<MarketParticipantMetricProps> = ({
@@ -19,12 +20,14 @@ export const MarketParticipantMetric: FC<MarketParticipantMetricProps> = ({
   icon,
   shiftResults,
   shiftOffset,
+  testID,
 }: MarketParticipantMetricProps) => (
   <motion.div
     variants={fadeInDown}
     initial="hidden"
     animate={show ? 'visible' : ''}
     className="w-[95px] z-20 relative"
+    data-testid={testID}
   >
     <div
       style={{
