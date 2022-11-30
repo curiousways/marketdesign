@@ -343,7 +343,7 @@ describe('MarketParticipantList', () => {
     ).toHaveTextContent('Seller 2');
   });
 
-  it('groups investor projects', () => {
+  it('groups the results for divisible projects', () => {
     render(
       <MarketParticipantList
         myProjects={[]}
@@ -357,6 +357,7 @@ describe('MarketParticipantList', () => {
             accepted: () => 50,
             discountOrBonus: 2500,
             groupId: 'investor',
+            isDivisible: true,
           },
           {
             title: 'Investor',
@@ -366,6 +367,7 @@ describe('MarketParticipantList', () => {
             accepted: () => 75,
             discountOrBonus: 2500,
             groupId: 'investor',
+            isDivisible: true,
           },
         ]}
         sellerProjects={[]}
@@ -391,5 +393,55 @@ describe('MarketParticipantList', () => {
     expect(buyers[1].bidOrOffer).toHaveTextContent('£18,000');
     expect(buyers[1].discountOrBonus).toHaveTextContent('£2,500');
     expect(buyers[1].paysOrReceived).toHaveTextContent('£16,000');
+  });
+
+  it('does not group the results for non-divisible projects', () => {
+    render(
+      <MarketParticipantList
+        myProjects={[]}
+        losingProjects={[]}
+        buyerProjects={[
+          {
+            title: 'Seller',
+            subtitle: 'Field 1',
+            cost: 10000,
+            products: { biodiversity: 1, nutrients: 0 },
+            accepted: () => true,
+            discountOrBonus: 2500,
+            groupId: '1',
+          },
+          {
+            title: 'Seller',
+            subtitle: 'Field 2',
+            cost: 18000,
+            products: { biodiversity: 0, nutrients: 2 },
+            accepted: () => true,
+            discountOrBonus: 2500,
+            groupId: '1',
+          },
+        ]}
+        sellerProjects={[]}
+        roleId="seller"
+        showCosts
+        showSurpluses
+        showWinners
+      />,
+      { wrapper },
+    );
+
+    const { buyers, sellers } = getMarketParticipants();
+
+    expect(buyers).toHaveLength(2);
+    expect(sellers).toHaveLength(0);
+
+    expect(buyers[0].title).toHaveTextContent(/^SellerField 1$/);
+    expect(buyers[0].bidOrOffer).toHaveTextContent('£10,000');
+    expect(buyers[0].discountOrBonus).toHaveStyle({ opacity: 0 });
+    expect(buyers[0].paysOrReceived).toHaveStyle({ opacity: 0 });
+
+    expect(buyers[1].title).toHaveTextContent(/^Field 2$/);
+    expect(buyers[1].bidOrOffer).toHaveTextContent('£18,000');
+    expect(buyers[1].discountOrBonus).toHaveTextContent('£2,500');
+    expect(buyers[1].paysOrReceived).toHaveTextContent('£15,500');
   });
 });

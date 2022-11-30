@@ -140,6 +140,7 @@ const convertBidToProject = (
     discountOrBonus: Math.round(Math.abs(discountOrBonus)),
     accepted: () => isProjectAccepted(playableTraders, bidder, bid, result),
     groupId: objectHash(bidder),
+    isDivisible: !!bid.divisibility,
   };
 };
 

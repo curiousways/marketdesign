@@ -86,11 +86,13 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
 
         const projectCost = getProjectCost(project);
 
-        // The total cost for all projects in a grop is needed for the case
+        // The total cost for all projects in a group is needed for the case
         // where a project comprises multple "sub-projects" (e.g. investor bidding).
-        const totalCost = groupedProjects
-          .map(getAcceptedProjectCost)
-          .reduce((a, b) => a + b, 0);
+        const totalCost = project.isDivisible
+          ? groupedProjects
+              .map(getAcceptedProjectCost)
+              .reduce((a, b) => a + b, 0)
+          : projectCost;
 
         return (
           <li key={JSON.stringify(project)}>
@@ -104,6 +106,7 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
               loserIndex={findProjectIndex(project, sortedLosingProjects)}
               isMyProject={myProjects.includes(project)}
               isGroupedProject={isGroupedProject}
+              isDivisible={project.isDivisible}
               isFirstGroupedProject={isFirstGroupedProject}
               isLastGroupedProject={isLastGroupedProject}
               isSubsequentGroupedProject={
@@ -118,10 +121,6 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
               showWinners={showWinners}
               showSurpluses={showSurpluses}
               isMarketSolved={isMarketSolved}
-              showResults={
-                !isGroupedProject ||
-                project === groupedProjects[groupedProjects.length - 1]
-              }
             />
           </li>
         );

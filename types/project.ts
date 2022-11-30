@@ -12,6 +12,7 @@ export interface Project {
   discountOrBonus: number;
   mapRegions?: string[];
   groupId?: string;
+  isDivisible?: boolean;
 }
 
 // My projects require either a cost per credit or a highlighted map region, but

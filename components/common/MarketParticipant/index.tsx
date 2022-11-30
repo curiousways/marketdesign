@@ -41,8 +41,8 @@ type MarketParticipantProps = {
   showWinners?: boolean;
   showSurpluses?: boolean;
   isMarketSolved?: boolean;
-  showResults?: boolean;
   isGroupedProject?: boolean;
+  isDivisible?: boolean;
   totalCost: number;
 };
 
@@ -298,15 +298,16 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
   showWinners,
   showSurpluses,
   isMarketSolved,
-  showResults,
   totalCost,
   isGroupedProject,
+  isDivisible,
 }: MarketParticipantProps) => {
   const isBuyer = projectRoleId === 'buyer';
 
   const showLoserStyles = isLoser && showWinners;
   const isNotAccepted = showWinners && !accepted;
-  const shiftResults = !!(isGroupedProject && showResults);
+  const showResults = !isDivisible || isLastGroupedProject;
+  const shiftResults = isDivisible && !!(isGroupedProject && showResults);
 
   const rowAnimation = useRowAnimation(
     showLoserStyles,
