@@ -434,6 +434,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
               )}
             >
               <BiodiversityCount
+                type={isBuyer ? 'negative' : 'positive'}
                 count={products.biodiversity}
                 adjustCount={showWinners}
                 accepted={accepted}
@@ -441,6 +442,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
                 showLoserStyles={showLoserStyles}
               />
               <NutrientCount
+                type={isBuyer ? 'negative' : 'positive'}
                 count={products.nutrients}
                 adjustCount={showWinners}
                 accepted={accepted}
