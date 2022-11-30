@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import { capitalCase } from 'change-case';
 import fetch from 'isomorphic-unfetch';
 import cloneDeep from 'clone-deep';
+import objectHash from 'object-hash';
 import {
   DemoBid,
   DemoBidder,
@@ -138,7 +139,7 @@ const convertBidToProject = (
     products: getProductsForBid(bid, isInvestor),
     discountOrBonus: Math.round(Math.abs(discountOrBonus)),
     accepted: () => isProjectAccepted(playableTraders, bidder, bid, result),
-    groupId: isInvestor ? 'investor' : undefined,
+    groupId: objectHash(bidder),
   };
 };
 

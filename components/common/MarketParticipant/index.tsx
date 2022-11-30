@@ -32,9 +32,9 @@ type MarketParticipantProps = {
   loserIndex?: number;
   className?: string;
   isMyProject?: boolean;
-  isMyFirstProject?: boolean;
-  isMyLastProject?: boolean;
-  isMySubsequentProject?: boolean;
+  isFirstGroupedProject?: boolean;
+  isLastGroupedProject?: boolean;
+  isSubsequentGroupedProject?: boolean;
   showCosts?: boolean;
   showWinners?: boolean;
   showSurpluses?: boolean;
@@ -63,26 +63,26 @@ const calculatePayment = (
 };
 
 const getBorderRadiusStyles = (
-  isMyProject?: boolean,
-  isMyFirstProject?: boolean,
-  isMyLastProject?: boolean,
+  isGroupedProject?: boolean,
+  isFirstGroupedProject?: boolean,
+  isLastGroupedProject?: boolean,
 ): CSSProperties => {
   const borderRadius = '0.5rem';
 
-  if (!isMyProject) {
+  if (!isGroupedProject) {
     return { borderRadius };
   }
 
   const styles: CSSProperties = {};
 
-  if (isMyFirstProject) {
+  if (isFirstGroupedProject) {
     Object.assign(styles, {
       borderTopLeftRadius: borderRadius,
       borderTopRightRadius: borderRadius,
     });
   }
 
-  if (isMyLastProject) {
+  if (isLastGroupedProject) {
     Object.assign(styles, {
       borderBottomLeftRadius: borderRadius,
       borderBottomRightRadius: borderRadius,
@@ -94,13 +94,13 @@ const getBorderRadiusStyles = (
 
 const getMyProjectStyles = (
   isMyProject?: boolean,
-  isMyFirstProject?: boolean,
-  isMyLastProject?: boolean,
+  isFirstGroupedProject?: boolean,
+  isLastGroupedProject?: boolean,
 ): CSSProperties => {
   const styles = getBorderRadiusStyles(
     isMyProject,
-    isMyFirstProject,
-    isMyLastProject,
+    isFirstGroupedProject,
+    isLastGroupedProject,
   );
 
   const borderWidth = '2px';
@@ -120,7 +120,7 @@ const getMyProjectStyles = (
     borderLeftWidth: borderWidth,
   });
 
-  if (isMyFirstProject) {
+  if (isFirstGroupedProject) {
     Object.assign(styles, {
       borderTopColor: borderColor,
       borderTopStyle: borderStyle,
@@ -128,14 +128,14 @@ const getMyProjectStyles = (
     });
   }
 
-  if (isMyLastProject) {
+  if (isLastGroupedProject) {
     Object.assign(styles, {
       borderBottomColor: borderColor,
       borderBottomStyle: borderStyle,
       borderBottomWidth: borderWidth,
     });
 
-    if (!isMyFirstProject) {
+    if (!isFirstGroupedProject) {
       Object.assign(styles, {
         marginTop: 0,
       });
@@ -147,7 +147,7 @@ const getMyProjectStyles = (
 
 const useRowAnimation = (
   showLoserStyles?: boolean,
-  isMySubsequentProject?: boolean,
+  isSubsequentGroupedProject?: boolean,
 ) => {
   const [animation, setAnimation] = useState<AnimationProps['animate']>();
 
@@ -157,7 +157,7 @@ const useRowAnimation = (
       width: PROJECT_WIDTH,
     };
 
-    const marginTop = isMySubsequentProject ? -PROJECT_BOTTOM_MARGIN : 0;
+    const marginTop = isSubsequentGroupedProject ? -PROJECT_BOTTOM_MARGIN : 0;
 
     if (!showLoserStyles) {
       setAnimation({
@@ -191,7 +191,7 @@ const useRowAnimation = (
       ],
       ...commonStyles,
     });
-  }, [showLoserStyles, isMySubsequentProject]);
+  }, [showLoserStyles, isSubsequentGroupedProject]);
 
   return animation;
 };
@@ -288,9 +288,9 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
   loserIndex,
   className = '',
   isMyProject,
-  isMyFirstProject,
-  isMyLastProject,
-  isMySubsequentProject,
+  isFirstGroupedProject,
+  isLastGroupedProject,
+  isSubsequentGroupedProject,
   showCosts,
   showWinners,
   showSurpluses,
@@ -305,7 +305,10 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
   const isNotAccepted = showWinners && !accepted;
   const shiftResults = isGroupedProject && showResults;
 
-  const rowAnimation = useRowAnimation(showLoserStyles, isMySubsequentProject);
+  const rowAnimation = useRowAnimation(
+    showLoserStyles,
+    isSubsequentGroupedProject,
+  );
 
   const projectAnimation = useProjectAnimation(
     showLoserStyles,
@@ -326,9 +329,9 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
   // float between the bars we can't use overflow: hidden here and instead need
   // to apply the border radius to multiple elements.
   const borderRadiusStyles = getBorderRadiusStyles(
-    isMyProject,
-    isMyFirstProject,
-    isMyLastProject,
+    isGroupedProject,
+    isFirstGroupedProject,
+    isLastGroupedProject,
   );
 
   return (
@@ -341,8 +344,13 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
       className="select-none"
     >
       {/* Add a divider between multiple user projects. */}
-      {isMySubsequentProject && (
-        <div className="border-black border-l-2 border-r-2 relative h-[2px] bg-white">
+      {isSubsequentGroupedProject && (
+        <div
+          className={classNames(
+            'border-l-2 border-r-2 relative h-[2px] bg-white',
+            isMyProject ? 'border-black' : '',
+          )}
+        >
           <div
             className={`border-t-2 border-dashed ${dividerColor} w-full absolute`}
           />
@@ -354,8 +362,8 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
           animate={projectAnimation}
           style={getMyProjectStyles(
             isMyProject,
-            isMyFirstProject,
-            isMyLastProject,
+            isFirstGroupedProject,
+            isLastGroupedProject,
           )}
           className={classNames(
             'absolute flex left-0 top-0 bg-white',
@@ -394,7 +402,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
               accepted={accepted}
               showAcceptedCosts={showCosts && showWinners}
               projectCost={projectCost}
-              hideMainTitle={isMySubsequentProject}
+              hideMainTitle={isSubsequentGroupedProject}
               showLoserStyles={showLoserStyles}
             />
 
@@ -462,7 +470,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
                   <div
                     className={classNames(
                       'bg-white rounded-lg border border-black px-1 z-10',
-                      shiftResults ? '-translate-y-[75%]' : '',
+                      shiftResults ? '-translate-y-[100%]' : '',
                     )}
                   >
                     <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
@@ -492,7 +500,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
                   <div
                     className={classNames(
                       'bg-white rounded-lg border border-black px-1 z-10',
-                      shiftResults ? '-translate-y-[75%]' : '',
+                      shiftResults ? '-translate-y-[100%]' : '',
                     )}
                   >
                     <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white border border-black">
