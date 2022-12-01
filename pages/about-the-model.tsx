@@ -2,14 +2,8 @@ import type { NextPage } from 'next';
 
 import Image from 'next/image';
 
-
-import { Button } from '@/components/Button';
 import { Header } from '@/components/Header';
-import Column from '@/components/about/Column'
-
-import UnderstandingTheModel from '../public/assets/images/home/understanding-the-model.png';
-import Frame from '../public/assets/images/home/frame.png';
-import Frame2 from '../public/assets/images/home/frame-2.png';
+import Column from '@/components/about/Column';
 
 import AbouTheModel from '../public/assets/images/home/understanding-the-model.png';
 import HeaderImg from '../public/assets/images/home/header.png';
@@ -146,4 +140,4 @@ const About: NextPage = () => {
   );
 };
 
-export default About
+export default About;

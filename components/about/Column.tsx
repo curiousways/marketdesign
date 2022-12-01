@@ -1,4 +1,4 @@
-import {ReactNode} from "react"
+import { ReactNode } from 'react';
 
 import { classNames } from '@/utils/index';
 
@@ -12,22 +12,16 @@ type Props = {
   children: ReactNode;
 };
 
-
-const Column = ({title, button, buttonLink, buttonText, children}: Props) => {
+const Column = ({ title, button, buttonLink, buttonText, children }: Props) => {
   return (
     <div className={classNames('max-w-[616px] space-y-10')}>
       <h2 className="heading-2">{title && title}</h2>
 
       {children}
 
-      {button && (
-        <Button
-          text={buttonText ? buttonText : ''}
-          link={buttonLink ? buttonLink : ''}
-        />
-      )}
+      {button && <Button text={buttonText ?? ''} link={buttonLink ?? ''} />}
     </div>
   );
-}
+};
 
-export default Column
+export default Column;
