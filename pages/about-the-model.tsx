@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import Image from 'next/image';
 
 import { Header } from '@/components/Header';
-import Column from '@/components/about/Column';
+import { Column } from '@/components/Column';
 
 import AbouTheModel from '../public/assets/images/home/understanding-the-model.png';
 import HeaderImg from '../public/assets/images/home/header.png';
