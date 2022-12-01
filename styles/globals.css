@@ -7,21 +7,6 @@
     box-shadow: 0 3px 10px rgb(0, 0, 0, 0.2);
   }
 
-  .neo-shadow-green {
-    background: linear-gradient(145deg, #c4dbbb, #a5b99e);
-    box-shadow: 7px 7px 13px #b2c7aa, -7px -7px 13px #bcd3b4;
-  }
-
-  .neo-shadow-brown {
-    background: #9d7f69;
-    box-shadow: inset 7px 7px 13px #987b66, inset -7px -7px 13px #a2836c;
-  }
-
-  .neo-shadow-blue {
-    background: linear-gradient(145deg, #89daf4, #73b8cd);
-    box-shadow: 7px 7px 13px #7dc8df, -7px -7px 13px #83d0e9;
-  }
-
   .heading-1 {
     @apply font-medium;
   }
