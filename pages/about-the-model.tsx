@@ -1,10 +1,8 @@
 import type { NextPage } from 'next';
 
-import Image from 'next/image';
-
 import { Header } from '@/components/Header';
 import { Column } from '@/components/Column';
-import { ImageTextGrid } from '@/components/ImageTextGrid'
+import { ImageTextGrid } from '@/components/ImageTextGrid';
 
 import AboutTheModel from '../public/assets/images/home/understanding-the-model.png';
 import HeaderImg from '../public/assets/images/home/header.png';

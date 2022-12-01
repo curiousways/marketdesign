@@ -12,7 +12,13 @@ type Props = {
   children: ReactNode;
 };
 
-export const Column = ({ title, button, buttonLink, buttonText, children }: Props) => {
+export const Column = ({
+  title,
+  button,
+  buttonLink,
+  buttonText,
+  children,
+}: Props) => {
   return (
     <div className={classNames('max-w-[616px] space-y-10')}>
       <h2 className="heading-2">{title && title}</h2>
