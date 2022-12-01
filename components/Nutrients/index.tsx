@@ -5,12 +5,14 @@ type NutrientsProps = {
   type: 'positive' | 'negative' | 'grey';
   boxStyle?: 'buyer' | 'seller' | 'outcome';
   children?: ReactNode;
+  hidden?: boolean;
 };
 
 export const Nutrients: FC<NutrientsProps> = ({
   type,
   boxStyle,
   children,
+  hidden,
 }: NutrientsProps) => {
   if (type === 'grey') {
     return (
@@ -157,7 +159,7 @@ export const Nutrients: FC<NutrientsProps> = ({
   }
 
   return (
-    <ProductBox boxStyle={boxStyle}>
+    <ProductBox boxStyle={boxStyle} hidden={hidden}>
       {children}
       <svg
         width="22"

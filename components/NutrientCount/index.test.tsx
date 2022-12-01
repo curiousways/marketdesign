@@ -10,10 +10,10 @@ describe('NutrientCount', () => {
     expect(screen.getByTestId('product-count').textContent).toBe('42');
   });
 
-  it('renders nothing if no count given', () => {
+  it('renders a count of zero if no count given', () => {
     render(<NutrientCount type="positive" boxStyle="buyer" accepted />);
 
-    expect(screen.queryByTestId('product-count')).not.toBeInTheDocument();
+    expect(screen.getByTestId('product-count').textContent).toBe('0');
   });
 
   it('renders a count of zero', () => {

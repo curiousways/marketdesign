@@ -116,6 +116,10 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
     event.preventDefault();
   };
 
+  const isInvestorScenario = !!projects.some(
+    (project) => !!project.costPerCredit,
+  );
+
   return (
     <motion.div
       variants={fadeIn}
@@ -128,7 +132,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
     >
       <div className="text-black text-l">
         <p className="font-bold">My Project{projects.length ? 's' : ''}</p>
-        <p>{roles[roleId].label}</p>
+        <p>{isInvestorScenario ? 'Investor' : roles[roleId].label}</p>
       </div>
 
       <form ref={formRef} onSubmit={onSubmit} className="flex flex-col">
@@ -192,26 +196,36 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                   </div>
 
                   {/* Project Value */}
-                  <p className="font-light">
-                    £{Math.round(projectValue).toLocaleString()}
-                  </p>
+                  <div>
+                    <p className="font-light">
+                      £{Math.round(projectValue).toLocaleString()}
+                    </p>
+                    {!!project.costPerCredit && (
+                      <p className="text-xs">per credit</p>
+                    )}
+                  </div>
 
                   <div className="flex-1 max-w-[50%]">
-                    <CostInput
-                      cost={project.cost}
-                      disabled={!isFormEnabled || project.isInactive}
-                      bid={hasFixedBids ? getProjectBid(project) : undefined}
-                      value={value}
-                      name={priceInputNames[projectIndex]}
-                      animate={
-                        !!isFormEnabled &&
-                        animateNextSteps &&
-                        animatedInputName === priceInputNames[projectIndex]
-                      }
-                      onInputChange={onCostInputChange}
-                      onSelectChange={onCostInputChange}
-                      placeholder={getCostInputPlaceholder(roleId)}
-                    />
+                    <div className="flex flex-col items-end">
+                      <CostInput
+                        cost={project.cost}
+                        disabled={!isFormEnabled || project.isInactive}
+                        bid={hasFixedBids ? getProjectBid(project) : undefined}
+                        value={value}
+                        name={priceInputNames[projectIndex]}
+                        animate={
+                          !!isFormEnabled &&
+                          animateNextSteps &&
+                          animatedInputName === priceInputNames[projectIndex]
+                        }
+                        onInputChange={onCostInputChange}
+                        onSelectChange={onCostInputChange}
+                        placeholder={getCostInputPlaceholder(roleId)}
+                      />
+                      {!!project.costPerCredit && (
+                        <p className="mt-1 text-xs">per credit</p>
+                      )}
+                    </div>
                   </div>
                 </div>
               </li>
@@ -219,7 +233,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
           })}
         </ul>
         <div className="flex items-center">
-          {showDivisibleInput && (
+          {showDivisibleInput ? (
             // eslint-disable-next-line jsx-a11y/label-has-associated-control
             <label
               className={classNames(
@@ -244,6 +258,10 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
               </span>
               <span className="ml-2">Divisible</span>
             </label>
+          ) : (
+            isInvestorScenario && (
+              <span className="text-black opacity-30">Divisible</span>
+            )
           )}
           <div className="relative w-[100px] ml-auto">
             <button

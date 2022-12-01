@@ -16,6 +16,7 @@ export const getBuyerScenario5_1: GetWalkthroughScenario = (stage: number) => ({
       discountOrBonus: 17000,
       products: { biodiversity: 4 },
       costPerCredit: 20000,
+      fixedBid: 20000,
     },
     {
       title: 'My Project',
@@ -25,6 +26,7 @@ export const getBuyerScenario5_1: GetWalkthroughScenario = (stage: number) => ({
       discountOrBonus: 5000,
       products: { nutrients: 2 },
       costPerCredit: 15000,
+      fixedBid: 15000,
     },
   ],
   buyerProjects: [

@@ -84,7 +84,7 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
         const isLastGroupedProject =
           groupedProjects.indexOf(project) === groupedProjects.length - 1;
 
-        const projectCost = getProjectCost(project);
+        const projectCost = getProjectCost(project, true);
 
         // The total cost for all projects in a group is needed for the case
         // where a project comprises multple "sub-projects" (e.g. investor bidding).
@@ -113,7 +113,7 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
               isSubsequentGroupedProject={
                 isGroupedProject && !isFirstGroupedProject
               }
-              projectCost={getProjectCost(project)}
+              projectCost={projectCost}
               totalCost={totalCost}
               discountOrBonus={project.discountOrBonus}
               products={project.products}

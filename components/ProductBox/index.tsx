@@ -4,6 +4,7 @@ import { classNames } from '../../utils';
 type ProductBoxProps = {
   boxStyle?: 'buyer' | 'seller' | 'outcome';
   children?: ReactNode;
+  hidden?: boolean;
 };
 
 type ProductBoxStyles = {
@@ -49,12 +50,14 @@ const styles: ProductBoxStyles = {
 export const ProductBox: FC<ProductBoxProps> = ({
   boxStyle,
   children,
+  hidden,
 }: ProductBoxProps) => (
   <div
     style={boxStyle ? styles[boxStyle] : undefined}
     className={classNames(
       'rounded-lg flex items-center justify-center relative',
       boxStyle ? 'h-[66px] w-[66px]' : '',
+      hidden ? 'opacity-20' : '',
     )}
   >
     {children}

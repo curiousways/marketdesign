@@ -5,12 +5,14 @@ type BiodiversityProps = {
   type: 'positive' | 'negative' | 'grey';
   boxStyle?: 'buyer' | 'seller' | 'outcome';
   children?: ReactNode;
+  hidden?: boolean;
 };
 
 export const Biodiversity: FC<BiodiversityProps> = ({
   type,
   boxStyle,
   children,
+  hidden,
 }: BiodiversityProps) => {
   if (type === 'grey') {
     return (
@@ -157,7 +159,7 @@ export const Biodiversity: FC<BiodiversityProps> = ({
   }
 
   return (
-    <ProductBox boxStyle={boxStyle}>
+    <ProductBox boxStyle={boxStyle} hidden={hidden}>
       {children}
       <svg
         width="32"

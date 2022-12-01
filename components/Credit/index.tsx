@@ -22,11 +22,13 @@ export const Credit: FC<CreditProps> = ({
       <span
         data-testid="product-count"
         className={classNames(
-          'top-0 text-[10px] text-black border border-black rounded-full bg-white h-[14px] flex justify-center items-center',
-          costPerCredit ? 'p-1' : 'absolute font-bold w-[14px] -right-1',
+          'top-0 text-black border border-black rounded-full bg-white h-[14px] flex justify-center items-center',
+          costPerCredit
+            ? 'p-1 text-[12px]'
+            : 'absolute font-bold w-[14px] -right-1 text-[10px]',
         )}
       >
-        {costPerCredit ? `£${costPerCredit * count}` : count}
+        {costPerCredit ? `£${(costPerCredit * count).toLocaleString()}` : count}
       </span>
     </div>
   );
