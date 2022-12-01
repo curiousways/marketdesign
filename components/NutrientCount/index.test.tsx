@@ -3,19 +3,23 @@ import { NutrientCount } from './index';
 
 describe('NutrientCount', () => {
   it('renders the count', () => {
-    render(<NutrientCount count={42} shadowColor="black" accepted />);
+    render(
+      <NutrientCount count={42} type="positive" boxStyle="buyer" accepted />,
+    );
 
     expect(screen.getByTestId('product-count').textContent).toBe('42');
   });
 
   it('renders nothing if no count given', () => {
-    render(<NutrientCount shadowColor="black" accepted />);
+    render(<NutrientCount type="positive" boxStyle="buyer" accepted />);
 
     expect(screen.queryByTestId('product-count')).not.toBeInTheDocument();
   });
 
   it('renders a count of zero', () => {
-    render(<NutrientCount count={0} shadowColor="black" accepted />);
+    render(
+      <NutrientCount count={0} type="positive" boxStyle="buyer" accepted />,
+    );
 
     expect(screen.getByTestId('product-count').textContent).toBe('0');
   });
@@ -26,7 +30,8 @@ describe('NutrientCount', () => {
         adjustCount
         count={42}
         accepted={50}
-        shadowColor="black"
+        type="positive"
+        boxStyle="buyer"
       />,
     );
 
@@ -37,7 +42,14 @@ describe('NutrientCount', () => {
   });
 
   it('does not render the adjusted if the adjust count prop is not given', () => {
-    render(<NutrientCount count={42} accepted={50} shadowColor="black" />);
+    render(
+      <NutrientCount
+        count={42}
+        accepted={50}
+        boxStyle="buyer"
+        type="positive"
+      />,
+    );
 
     expect(screen.getByTestId('product-count').textContent).toBe('42');
   });
@@ -49,7 +61,8 @@ describe('NutrientCount', () => {
         showLoserStyles
         count={42}
         accepted={50}
-        shadowColor="black"
+        type="positive"
+        boxStyle="buyer"
       />,
     );
 
