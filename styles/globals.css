@@ -37,7 +37,7 @@
   }
 }
 
-#home p {
+#home p, #about p {
   @apply text-xl;
 }
 

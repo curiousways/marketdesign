@@ -4,8 +4,9 @@ import Image from 'next/image';
 
 import { Header } from '@/components/Header';
 import { Column } from '@/components/Column';
+import { ImageTextGrid } from '@/components/ImageTextGrid'
 
-import AbouTheModel from '../public/assets/images/home/understanding-the-model.png';
+import AboutTheModel from '../public/assets/images/home/understanding-the-model.png';
 import HeaderImg from '../public/assets/images/home/header.png';
 import HeaderThumb from '../public/assets/images/home/header-thumb.png';
 
@@ -20,13 +21,13 @@ const About: NextPage = () => {
       />
 
       <main id="about">
-        <section className="xl:max-w-[790px] pl-20 2xl:pl-40 pt-24 pb-20 space-y-5 relative">
-          <p className="text-green-dark">
+        <section className="xl:max-w-[1130px] pl-20 2xl:pl-40 pt-32 pb-20 space-y-5 relative">
+          <p className="text-green-dark text-4xl">
             It defines a set of rules and processes to optimise outcomes for
             both buyers and sellers while delivering the greatest benefit to the
             natural environment.
           </p>
-          <p className="text-xl">
+          <p className="max-w-[790px]">
             This website explains the concepts underpinning the model, provides
             a step-by-step walkthrough of how it works for buyers and sellers,
             and presents a simulation of a real-world marketplace so you can
@@ -35,27 +36,13 @@ const About: NextPage = () => {
           </p>
         </section>
 
-        <section className="lg:flex lg:gap-x-10 xl:gap-x-20 xl:space-y-16">
-          <div className="max-w-[833px] relative z-10">
-            <Image
-              src={AbouTheModel}
-              alt=""
-              style={{
-                maxWidth: '100%',
-                height: 'auto',
-              }}
-            />
-          </div>
-
-          <div className="max-w-[461px] space-y-5">
-            <h2 className="heading-2 max-w-[343px]">About the Model</h2>
-            <p>
-              All markets have rules and processes that set out who can
-              participate, what can be traded, how prices are set and how
-              payment is settled.
-            </p>
-          </div>
-        </section>
+        <ImageTextGrid img={AboutTheModel} text_title="About the Model">
+          <p>
+            All markets have rules and processes that set out who can
+            participate, what can be traded, how prices are set and how payment
+            is settled.
+          </p>
+        </ImageTextGrid>
 
         {/*  */}
         <section className="relative">
