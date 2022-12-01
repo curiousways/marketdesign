@@ -11,7 +11,7 @@ import { getAdjustedCost, isProjectEqual } from '@/utils/project';
 import { Project } from '../types/project';
 
 type ProjectsContextType = {
-  getProjectCost: (project: Project) => number;
+  getProjectCost: (project: Project, sumCredits?: boolean) => number;
   setProjectCost: (project: Project, cost: number) => void;
   getAcceptedProjectCost: (project: Project) => number;
 };
@@ -70,10 +70,10 @@ export const ProjectsProvider: FunctionComponent<ProjectsProviderProps> = ({
   }, []);
 
   const getProjectCost = useCallback(
-    (project: Project): number => {
+    (project: Project, sumCredits?: boolean): number => {
       const [count] = Object.values(project.products).filter((x) => x);
 
-      if (project.costPerCredit) {
+      if (sumCredits && project.costPerCredit) {
         return project.costPerCredit * count;
       }
 
