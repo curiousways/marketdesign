@@ -4,6 +4,8 @@ import Image from 'next/image';
 
 import { Button } from '@/components/Button';
 import { Header } from '@/components/Header';
+import { ImageTextGrid } from '@/components/ImageTextGrid';
+import { Column } from '@/components/Column';
 
 import UnderstandingTheModel from '../public/assets/images/home/understanding-the-model.png';
 import Frame from '../public/assets/images/home/frame.png';
@@ -23,6 +25,7 @@ const Home: NextPage = () => {
       />
 
       <main id="home">
+        {/* Intro */}
         <section className="relative">
           <svg
             width="564"
@@ -54,28 +57,20 @@ const Home: NextPage = () => {
         </section>
 
         {/* Understanding the model  */}
-        <section className="lg:flex lg:gap-x-10 xl:gap-x-20 xl:space-y-16 mt-20">
-          <div className="max-w-[833px] relative z-10">
-            <Image
-              src={UnderstandingTheModel}
-              alt=""
-              style={{
-                maxWidth: '100%',
-                height: 'auto',
-              }}
-            />
-          </div>
-          <div className="max-w-[461px]">
-            <h2 className="heading-2 max-w-[343px]">Understanding the model</h2>
+        <section>
+          <ImageTextGrid
+            img={UnderstandingTheModel}
+            text_title="Understanding the model"
+          >
             <p>
               All markets have rules and processes that set out who can
               participate, what can be traded, how prices are set and how
               payment is settled.
             </p>
-          </div>
+          </ImageTextGrid>
         </section>
 
-        {/*  */}
+        {/* Optimise the financial & environmental benefits */}
         <section className="relative mb-5">
           <div className="xl:max-w-[1130px] pl-20 2xl:pl-40">
             <div className="relative">
@@ -92,12 +87,14 @@ const Home: NextPage = () => {
                   fill="#FFFCEF"
                 />
               </svg>
-
-              <div className="max-w-[616px] relative pt-5 space-y-10">
-                <div className="space-y-10 mt-5">
-                  <h2 className="heading-2">
-                    Optimise the financial & environmental benefits
-                  </h2>
+              <div className="relative pt-5 space-y-10">
+                <Column
+                  title="Optimise the financial & environmental benefits"
+                  button
+                  buttonLink="/"
+                  buttonText="Find out more"
+                  className="mt-5"
+                >
                   <p>
                     The Exeter Lindsay market model applies robust and
                     innovative thinking to optimise financial and environmental
@@ -106,30 +103,32 @@ const Home: NextPage = () => {
                     the model works and the ways in which it delivers better
                     outcomes for buyers, sellers and the environment.
                   </p>
-                </div>
-
-                <ul className="space-y-3 list-disc list-inside text-lg">
-                  <li>
-                    Building Blocks: Participants, Projects, Credits, Costs &
-                    Values
-                  </li>
-                  <li>Bids & Offers in a Market</li>
-                  <li>Choosing Winners: Surplus maximisation</li>
-                  <li>Determining Payments: Division using the Shapley</li>
-                </ul>
-
-                <Button text="Find out more" link="/" />
+                  <ul className="space-y-3 list-disc list-inside text-lg">
+                    <li>
+                      Building Blocks: Participants, Projects, Credits, Costs &
+                      Values
+                    </li>
+                    <li>Bids & Offers in a Market</li>
+                    <li>Choosing Winners: Surplus maximisation</li>
+                    <li>Determining Payments: Division using the Shapley</li>
+                  </ul>
+                </Column>
               </div>
 
-              <div className="max-w-[616px] mt-20 space-y-10">
-                <h2 className="heading-2">Take a tour</h2>
+              {/* Take a tour */}
+              <Column
+                title="Take a tour"
+                button
+                buttonLink="/"
+                buttonText="Find out more"
+                className="mt-20"
+              >
                 <p>
                   Take a guided tour of a market scenario to gain a step-by-step
                   understanding of how it works, how to participate and how to
                   maximise your opportunity as a buyer or seller.
                 </p>
-                <Button text="Take the tour" link="/how-it-works" />
-              </div>
+              </Column>
             </div>
 
             <div className="absolute -top-36 right-0">
@@ -145,7 +144,7 @@ const Home: NextPage = () => {
           </div>
         </section>
 
-        {/* Give it a try  */}
+        {/* How It Works */}
         <section className="pr-20 2xl:pr-40 flex gap-x-4">
           <div>
             <Image
@@ -157,17 +156,23 @@ const Home: NextPage = () => {
               }}
             />
           </div>
+
           <div>
-            <div className="max-w-[430px] space-y-10 relative -mt-10 mb-28">
-              <h2 className="heading-2">Give it a try</h2>
+            {/* Give it a try */}
+            <Column
+              title="Give it a try"
+              button
+              buttonLink="/"
+              buttonText="Start trading"
+              className="-mt-10 mb-28 max-w-[430px]"
+            >
               <p>
                 Get a feel for trading in markets based on Exeter Lindsay. We’ve
                 created a series of simulations to give you first hand
                 experience of the model and demonstrate how your choices can
                 affect outcomes in different circumstances.
               </p>
-              <Button text="Start trading" link="/market-sandbox" />
-            </div>
+            </Column>
 
             <div className="relative">
               <svg
@@ -184,12 +189,13 @@ const Home: NextPage = () => {
                   fillOpacity="0.1"
                 />
               </svg>
+
               <div className="max-w-[430px] pt-12 space-y-32">
                 <h2 className="heading-2">How It Works</h2>
-                <div className="space-y-10">
-                  <h3 className="heading-3">
-                    Optimising Natural Capital Markets
-                  </h3>
+                <Column
+                  title="Optimising Natural Capital Markets"
+                  titleClass="heading-3"
+                >
                   <p>
                     The goal of the Exeter Lindsay model is to optimise trading
                     for buyers and sellers of environmental goods and services
@@ -201,7 +207,7 @@ const Home: NextPage = () => {
                     <li>Equitable settlement </li>
                     <li>Efficient resource allocation</li>
                   </ul>
-                </div>
+                </Column>
               </div>
             </div>
           </div>

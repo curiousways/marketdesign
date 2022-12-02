@@ -10,7 +10,7 @@ type Props = {
 
 export const ImageTextGrid = ({ img, alt, text_title, children }: Props) => {
   return (
-    <section className="lg:flex lg:gap-x-10 xl:gap-x-20 xl:space-y-16">
+    <div className="lg:flex lg:gap-x-10 xl:gap-x-20 xl:space-y-16">
       <div className="max-w-[833px] relative z-10">
         <Image
           src={img}
@@ -26,6 +26,6 @@ export const ImageTextGrid = ({ img, alt, text_title, children }: Props) => {
         <h2 className="heading-2 max-w-[343px]">{text_title}</h2>
         {children}
       </div>
-    </section>
+    </div>
   );
 };
