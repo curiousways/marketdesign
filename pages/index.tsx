@@ -2,7 +2,6 @@ import type { NextPage } from 'next';
 
 import Image from 'next/image';
 
-import { Button } from '@/components/Button';
 import { Header } from '@/components/Header';
 import { ImageTextGrid } from '@/components/ImageTextGrid';
 import { Column } from '@/components/Column';
@@ -87,6 +86,7 @@ const Home: NextPage = () => {
                   fill="#FFFCEF"
                 />
               </svg>
+
               <div className="relative pt-5 space-y-10">
                 <Column
                   title="Optimise the financial & environmental benefits"

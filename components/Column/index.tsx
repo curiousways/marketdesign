@@ -9,8 +9,8 @@ type Props = {
   button?: boolean;
   buttonLink?: string;
   buttonText?: string;
-  titleClass?:string;
-  className?: string
+  titleClass?: string;
+  className?: string;
   children: ReactNode;
 };
 
