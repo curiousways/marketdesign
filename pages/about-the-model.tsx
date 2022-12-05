@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import { Header } from '@/components/Header';
 import { Column } from '@/components/Column';
 import { ImageTextGrid } from '@/components/ImageTextGrid';
-import { PageIntro } from "@/components/PageIntro"
+import { PageIntro } from '@/components/PageIntro';
 
 import AboutTheModel from '../public/assets/images/home/understanding-the-model.png';
 import HeaderImg from '../public/assets/images/home/header.png';
@@ -20,7 +20,6 @@ const About: NextPage = () => {
       />
 
       <main className="page" id="about">
-
         <section className="pt-32 pb-20">
           <PageIntro
             intro="It defines a set of rules and processes to optimise outcomes for

@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { classNames } from '@/utils/index';
 
 import { Button } from '@/components/Button';
-import { InlineTitle } from "@/components/InlineTitle/index"
+import { InlineTitle } from '@/components/InlineTitle/index';
 
 type Props = {
   title?: string;
@@ -29,7 +29,7 @@ export const Column = ({
   return (
     <div className={classNames('max-w-[616px] space-y-10', className)}>
       <InlineTitle
-        titleClass={titleClass ?? ""}
+        titleClass={titleClass ?? ''}
         title={title ?? ''}
         background={titlebackground}
       />

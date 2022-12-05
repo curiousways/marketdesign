@@ -5,9 +5,8 @@ import Image from 'next/image';
 import { Header } from '@/components/Header';
 import { ImageTextGrid } from '@/components/ImageTextGrid';
 import { Column } from '@/components/Column';
-import { Faqs } from '../components/Faqs';
 import { PageIntro } from '@/components/PageIntro';
-
+import { Faqs } from '../components/Faqs';
 
 import UnderstandingTheModel from '../public/assets/images/home/understanding-the-model.png';
 import Frame from '../public/assets/images/home/frame.png';
@@ -73,8 +72,6 @@ const Home: NextPage = () => {
         <section className="relative mb-5">
           <div className="xl:max-w-[1130px] pl-20 2xl:pl-40">
             <div className="relative">
-
-
               <div className="relative pt-5 space-y-10">
                 <Column
                   title="Optimise the financial & environmental benefits"
