@@ -22,7 +22,7 @@
   }
 }
 
-#home p {
+.page p {
   @apply text-xl;
 }
 
