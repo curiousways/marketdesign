@@ -3,6 +3,7 @@ import type { NextPage } from 'next';
 import { Header } from '@/components/Header';
 import { Column } from '@/components/Column';
 import { ImageTextGrid } from '@/components/ImageTextGrid';
+import { PageIntro } from "@/components/PageIntro"
 
 import AboutTheModel from '../public/assets/images/home/understanding-the-model.png';
 import HeaderImg from '../public/assets/images/home/header.png';
@@ -18,23 +19,22 @@ const About: NextPage = () => {
         secondaryImageSrc={HeaderThumb}
       />
 
-      <main id="about">
-        <section className="xl:max-w-[1130px] pl-20 2xl:pl-40 pt-32 pb-20 space-y-5 relative">
-          <p className="text-green-dark text-4xl">
-            It defines a set of rules and processes to optimise outcomes for
+      <main className="page" id="about">
+
+        <section className="pt-32 pb-20">
+          <PageIntro
+            intro="It defines a set of rules and processes to optimise outcomes for
             both buyers and sellers while delivering the greatest benefit to the
-            natural environment.
-          </p>
-          <p className="max-w-[790px]">
-            This website explains the concepts underpinning the model, provides
+            natural environment."
+            summary=" This website explains the concepts underpinning the model, provides
             a step-by-step walkthrough of how it works for buyers and sellers,
             and presents a simulation of a real-world marketplace so you can
             familiarise yourself with the model and how it operates in a range
-            of scenarios.
-          </p>
+            of scenarios."
+          />
         </section>
 
-        <ImageTextGrid img={AboutTheModel} text_title="About the Model">
+        <ImageTextGrid img={AboutTheModel} text_title="About the Model" reverse>
           <p>
             All markets have rules and processes that set out who can
             participate, what can be traded, how prices are set and how payment

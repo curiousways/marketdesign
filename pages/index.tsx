@@ -5,13 +5,15 @@ import Image from 'next/image';
 import { Header } from '@/components/Header';
 import { ImageTextGrid } from '@/components/ImageTextGrid';
 import { Column } from '@/components/Column';
+import { Faqs } from '../components/Faqs';
+import { PageIntro } from '@/components/PageIntro';
+
 
 import UnderstandingTheModel from '../public/assets/images/home/understanding-the-model.png';
 import Frame from '../public/assets/images/home/frame.png';
 import Frame2 from '../public/assets/images/home/frame-2.png';
 import HeaderImg from '../public/assets/images/home/header.png';
 import HeaderThumb from '../public/assets/images/home/header-thumb.png';
-import { Faqs } from '../components/Faqs';
 
 const Home: NextPage = () => {
   return (
@@ -23,7 +25,7 @@ const Home: NextPage = () => {
         secondaryImageSrc={HeaderThumb}
       />
 
-      <main id="home">
+      <main className="page" id="home">
         {/* Intro */}
         <section className="relative">
           <svg
@@ -39,19 +41,17 @@ const Home: NextPage = () => {
               fill="#7DBB67"
             />
           </svg>
-          <div className="xl:max-w-[1130px] pl-20 2xl:pl-40 pt-32 pb-20 space-y-5 relative">
-            <p className="text-green-dark text-4xl">
-              It defines a set of rules and processes to optimise outcomes for
-              both buyers and sellers while delivering the greatest benefit to
-              the natural environment.
-            </p>
-            <p className="max-w-[790px]">
-              This website explains the concepts underpinning the model,
-              provides a step-by-step walkthrough of how it works for buyers and
-              sellers, and presents a simulation of a real-world marketplace so
-              you can familiarise yourself with the model and how it operates in
-              a range of scenarios.
-            </p>
+          <div className="pt-32 pb-20">
+            <PageIntro
+              intro="It defines a set of rules and processes to optimise outcomes for
+            both buyers and sellers while delivering the greatest benefit to the
+            natural environment."
+              summary=" This website explains the concepts underpinning the model, provides
+            a step-by-step walkthrough of how it works for buyers and sellers,
+            and presents a simulation of a real-world marketplace so you can
+            familiarise yourself with the model and how it operates in a range
+            of scenarios."
+            />
           </div>
         </section>
 
@@ -73,19 +73,7 @@ const Home: NextPage = () => {
         <section className="relative mb-5">
           <div className="xl:max-w-[1130px] pl-20 2xl:pl-40">
             <div className="relative">
-              <svg
-                width="753"
-                height="317"
-                viewBox="0 0 753 317"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="absolute -top-24 -left-6 -z-0 max-w-[783px]"
-              >
-                <path
-                  d="M0 96.6406L64.5562 0L571.45 38.0493L753 228.063L636.473 317L33.0938 264.945L0 96.6406Z"
-                  fill="#FFFCEF"
-                />
-              </svg>
+
 
               <div className="relative pt-5 space-y-10">
                 <Column
@@ -94,6 +82,7 @@ const Home: NextPage = () => {
                   buttonLink="/"
                   buttonText="Find out more"
                   className="mt-5"
+                  titlebackground
                 >
                   <p>
                     The Exeter Lindsay market model applies robust and
