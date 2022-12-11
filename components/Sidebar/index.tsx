@@ -28,6 +28,7 @@ type SidebarProps = {
   onFormRevise?: () => void;
   roleId?: RoleId;
   projects: Project[];
+  children?: ReactNode;
 };
 
 export const SideBar: FC<SidebarProps> = ({
@@ -51,6 +52,7 @@ export const SideBar: FC<SidebarProps> = ({
   onFormRevise,
   roleId,
   projects,
+  children,
 }: SidebarProps) => (
   <div className="w-1/3 max-w-[434px] py-4 px-5">
     <AnimatePresence>
@@ -98,5 +100,6 @@ export const SideBar: FC<SidebarProps> = ({
         <DescriptionBox>{sidebarContent}</DescriptionBox>
       </div>
     </AnimatePresence>
+    {children}
   </div>
 );

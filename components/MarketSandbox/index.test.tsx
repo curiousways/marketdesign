@@ -2,6 +2,8 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import { ReactNode } from 'react';
 import nock from 'nock';
 import cloneDeep from 'clone-deep';
+import router from 'next/router';
+import mockRouter from 'next-router-mock';
 import { MAP_INDICES } from '../../constants/map';
 import { ProjectsProvider } from '../../context/ProjectsContext';
 import { getMarketParticipants } from '../../test-utils/market';
@@ -852,6 +854,60 @@ describe('MarketSandbox', () => {
 
     expect(within(marketOutcome).getByTestId('surplus')).toHaveTextContent(
       '£10,500',
+    );
+  });
+
+  describe.each([
+    '/market-sandbox/example-walkthrough',
+    '/market-sandbox/example-walkthrough?state=0',
+  ])('with URL path %s', (pathname) => {
+    beforeEach(() => {
+      mockRouter.setCurrentUrl(pathname);
+    });
+
+    it.each`
+      buttonText                   | routerState
+      ${'Return to Market Choice'} | ${{ pathname: '/market-sandbox' }}
+      ${'Shuffle Market'}          | ${{ pathname: '/market-sandbox/example-walkthrough' }}
+      ${'Replay Market'}           | ${{ pathname: '/market-sandbox/example-walkthrough', query: { state: '0' } }}
+    `(
+      'shows the "$buttonText" button and updates the route when clicked',
+      async ({ buttonText, routerState }) => {
+        const biddersResult = cloneDeep(singleBidScenario.states[0].bidders);
+
+        mockApiResponse({
+          rule: 'lindsay2018',
+          surplus_shares: {},
+          problem: {
+            free_disposal: true,
+            goods: [],
+            bidders: biddersResult,
+          },
+        });
+
+        render(<MarketSandbox data={singleBidScenario} />, { wrapper });
+
+        const region = getHighlightedMapRegionByKey('b1');
+
+        fireEvent.click(region);
+
+        const projectDetails = await screen.findByTestId('project-details');
+        const textInput = within(projectDetails).getByRole('textbox');
+
+        fireEvent.change(textInput, { target: { value: '8000' } });
+
+        expect(textInput).toBeValid();
+
+        fireEvent.click(within(projectDetails).getByText('Submit'));
+
+        // The buttons are hidden until the market is solved
+        expect(screen.queryByText(buttonText)).toBeNull();
+
+        fireEvent.click(await screen.findByText('Solve Market'));
+        fireEvent.click(await screen.findByText(buttonText));
+
+        expect(router).toMatchObject(routerState);
+      },
     );
   });
 });
