@@ -179,6 +179,7 @@ export const Walkthrough: FC = () => {
         onSolveMarketClick={onSolveMarketClick}
         sidebarContent={scenario.sidebarContent?.[stage]}
         isFormEnabled={isFormEnabled}
+        isFormSubmitHidden={marketState === MarketState.solved}
         isDivisibleInputEnabled={isFormEnabled && allowDivision}
         showDivisibleInput={showDivisibleInput}
         onFormSubmit={onFormSubmit}

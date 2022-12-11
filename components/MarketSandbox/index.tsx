@@ -393,6 +393,7 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
       <SideBar
         isFormEnabled={marketState === MarketState.pending}
         isFormReviseEnabled={marketState > MarketState.pending}
+        isFormSubmitHidden={marketState === MarketState.solved}
         showDetailsWidget={hasMyProjects}
         title={data.title}
         sidebarContent={data.description}
