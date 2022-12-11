@@ -1,6 +1,6 @@
 export const sidebarContent3 = (
   <p>
-    The project highlighted on the map, for example, will deliver 3 biodiversity
-    credits and 2 water quality credits.
+    The project highlighted on the map, for example, will deliver 2 biodiversity
+    credits and 3 water quality credits.
   </p>
 );
