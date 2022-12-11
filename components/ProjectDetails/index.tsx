@@ -182,7 +182,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                   )}
 
                   {/* Credits */}
-                  <div className="flex gap-x-2">
+                  <div className="flex gap-x-1">
                     <Credit
                       count={project.products.biodiversity}
                       costPerCredit={project.costPerCredit}
