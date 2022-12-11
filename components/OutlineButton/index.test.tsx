@@ -1,13 +1,13 @@
-import { render, screen } from '@testing-library/react';
-import { NavButton } from './index';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { OutlineButton } from './index';
 
-describe('NavButton', () => {
-  it('renders the given link', () => {
-    render(<NavButton link="/current-page" text="Click me" />);
+describe('OutlineButton', () => {
+  it('calls the callback on click', () => {
+    const onClick = jest.fn();
+    render(<OutlineButton onClick={onClick}>Click me</OutlineButton>);
 
-    const link = screen.getByRole('link');
+    fireEvent.click(screen.getByText('Click me'));
 
-    expect(link.tagName).toBe('A');
-    expect(link).toHaveAttribute('href', '/current-page');
+    expect(onClick).toHaveBeenCalledTimes(1);
   });
 });
