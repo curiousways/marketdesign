@@ -26,8 +26,29 @@ export const Map: FunctionComponent<Props> = ({
       xmlns="http://www.w3.org/2000/svg"
       data-testid="map"
     >
-      <rect width="1014" height="868" transform="translate(1)" fill="#92C6F5" />
-      <rect x="1" width="1014" height="497" fill="#7DBB67" />
+      <rect
+        width="200"
+        height="868"
+        transform="translate(1)"
+        fill="#EAEFE9"
+        stroke="black"
+      />
+      <rect
+        x="200"
+        width="814"
+        height="868"
+        transform="translate(1)"
+        fill="#D6EEFA"
+        stroke="black"
+      />
+      <rect
+        x="1"
+        y=".5"
+        width="1014"
+        height="497"
+        fill="#EAEFE9"
+        stroke="black"
+      />
       {MAP_REGION_PATHS.map((path, index) => {
         let matchedRoleId;
         let matchedRegion;
