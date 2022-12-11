@@ -4,11 +4,13 @@ import { classNames } from '@/utils/index';
 type CreditProps = {
   count?: number;
   costPerCredit?: number;
+  className?: string;
 };
 
 export const Credit: FC<CreditProps> = ({
   count,
   costPerCredit,
+  className,
 }: CreditProps) => {
   if (typeof count !== 'number') {
     return null;
@@ -22,6 +24,7 @@ export const Credit: FC<CreditProps> = ({
         costPerCredit
           ? 'p-1 text-[12px]'
           : 'absolute font-bold w-[14px] -right-1 text-[10px]',
+        className,
       )}
     >
       {costPerCredit ? `£${(costPerCredit * count).toLocaleString()}` : count}

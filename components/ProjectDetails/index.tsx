@@ -12,6 +12,7 @@ import { MapRegion } from '../MapRegion';
 import { MAP_INDICES } from '../../constants/map';
 import { Biodiversity } from '../Biodiversity';
 import { Nutrients } from '../Nutrients';
+import { Credit } from '../Credit';
 
 type ProjectDetailsProps = {
   projects: Project[];
@@ -77,6 +78,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
   animateNextSteps,
 }: ProjectDetailsProps) => {
   const { getProjectCost, setProjectCost } = useProjectsContext();
+  const { sharedCost } = projects.find((project) => !!project.sharedCost) ?? {};
 
   const priceInputNames = projects.map((_, index) => `project-${index}-price`);
 
@@ -136,7 +138,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
       </div>
 
       <form ref={formRef} onSubmit={onSubmit} className="flex flex-col">
-        <ul>
+        <ul className="relative">
           {projects.map((project, projectIndex) => {
             const projectValue = getProjectValue(project, roleId);
 
@@ -183,16 +185,29 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
 
                   {/* Credits */}
                   <div className="flex gap-x-2">
-                    <CreditWithIcon
-                      count={project.products.biodiversity}
-                      costPerCredit={project.costPerCredit}
-                      Icon={<Biodiversity type="grey" />}
-                    />
-                    <CreditWithIcon
-                      count={project.products.nutrients}
-                      costPerCredit={project.costPerCredit}
-                      Icon={<Nutrients type="grey" />}
-                    />
+                    {sharedCost ? (
+                      <>
+                        {project.products.biodiversity && (
+                          <Biodiversity type="grey" />
+                        )}
+                        {project.products.nutrients && (
+                          <Nutrients type="grey" />
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <CreditWithIcon
+                          count={project.products.biodiversity}
+                          costPerCredit={project.costPerCredit}
+                          Icon={<Biodiversity type="grey" />}
+                        />
+                        <CreditWithIcon
+                          count={project.products.nutrients}
+                          costPerCredit={project.costPerCredit}
+                          Icon={<Nutrients type="grey" />}
+                        />
+                      </>
+                    )}
                   </div>
 
                   {/* Project Value */}
@@ -231,6 +246,15 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
               </li>
             );
           })}
+          {sharedCost && (
+            <li className="absolute top-0 bottom-0 flex items-center">
+              <Credit
+                count={1}
+                costPerCredit={sharedCost}
+                className="inline-flex"
+              />
+            </li>
+          )}
         </ul>
 
         <div className="flex items-center">
