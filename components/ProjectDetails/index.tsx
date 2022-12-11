@@ -4,7 +4,7 @@ import { fadeIn } from '@/utils/animations';
 import { classNames } from '@/utils/index';
 import { RoleId } from '@/types/roles';
 import { roles } from '../../data/roles';
-import { Credit } from '../Credit';
+import { CreditWithIcon } from '../CreditWithIcon';
 import { CostInput } from '../CostInput';
 import { Project } from '../../types/project';
 import { useProjectsContext } from '../../context/ProjectsContext';
@@ -183,12 +183,12 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
 
                   {/* Credits */}
                   <div className="flex gap-x-2">
-                    <Credit
+                    <CreditWithIcon
                       count={project.products.biodiversity}
                       costPerCredit={project.costPerCredit}
                       Icon={<Biodiversity type="grey" />}
                     />
-                    <Credit
+                    <CreditWithIcon
                       count={project.products.nutrients}
                       costPerCredit={project.costPerCredit}
                       Icon={<Nutrients type="grey" />}
@@ -232,6 +232,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
             );
           })}
         </ul>
+
         <div className="flex items-center">
           {showDivisibleInput ? (
             // eslint-disable-next-line jsx-a11y/label-has-associated-control
