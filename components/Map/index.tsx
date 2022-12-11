@@ -30,7 +30,7 @@ export const Map: FunctionComponent<Props> = ({
         width="200"
         height="868"
         transform="translate(1)"
-        fill="#EAEFE9"
+        fill="#fff"
         stroke="black"
       />
       <rect
@@ -45,7 +45,7 @@ export const Map: FunctionComponent<Props> = ({
         x="1"
         y="1"
         width="1014"
-        height="497"
+        height="467"
         fill="#EAEFE9"
         stroke="black"
       />
