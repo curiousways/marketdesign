@@ -27,7 +27,7 @@ type MarketParticipantProps = {
   subtitle?: string;
   projectRoleId: 'buyer' | 'seller';
   projectCost: number;
-  accepted: boolean | number;
+  accepted?: boolean | number;
   discountOrBonus: number;
   products: Products;
   isLoser?: boolean;
@@ -43,7 +43,7 @@ type MarketParticipantProps = {
   isMarketSolved?: boolean;
   isGroupedProject?: boolean;
   isDivisible?: boolean;
-  totalCost: number;
+  totalCost?: number;
 };
 
 const calculatePayment = (
@@ -286,7 +286,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
   subtitle,
   projectRoleId,
   projectCost,
-  accepted,
+  accepted = false,
   discountOrBonus,
   products,
   isLoser,
@@ -497,7 +497,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
                   <p>
                     £
                     {calculatePayment(
-                      isGroupedProject ? totalCost : projectCost,
+                      isGroupedProject && totalCost ? totalCost : projectCost,
                       discountOrBonus,
                       accepted,
                       projectRoleId,

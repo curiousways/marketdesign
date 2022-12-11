@@ -1,4 +1,7 @@
-import { GetWalkthroughScenario } from '@/types/walkthrough';
+import {
+  GetWalkthroughScenario,
+  WalkthroughScenario,
+} from '@/types/walkthrough';
 import { HighlightedMapRegions } from '../../../../../types/map';
 import { MarketState } from '../../../../../types/market';
 import { Project } from '../../../../../types/project';
@@ -219,6 +222,36 @@ const getHighlightedMapRegions = (
   }
 };
 
+const getProjectOverlay = (
+  stage: number,
+): WalkthroughScenario['options']['projectOverlay'] => {
+  if (stage === 3) {
+    return {
+      roleId: 'seller',
+      project: {
+        title: 'Seller',
+        cost: 0,
+        discountOrBonus: 0,
+        accepted: () => false,
+        products: { biodiversity: 2, nutrients: 3 },
+      },
+    };
+  }
+
+  if (stage === 5) {
+    return {
+      roleId: 'buyer',
+      project: {
+        title: 'Buyer',
+        cost: 0,
+        discountOrBonus: 0,
+        accepted: () => false,
+        products: { biodiversity: 1, nutrients: 2 },
+      },
+    };
+  }
+};
+
 export const getGenericScenario0_0: GetWalkthroughScenario = (
   stage: number,
 ) => ({
@@ -253,5 +286,6 @@ export const getGenericScenario0_0: GetWalkthroughScenario = (
     highlightedMapRegions: getHighlightedMapRegions(stage),
     showParticipants: stage === 4 || stage > 5,
     showCosts: stage === 4,
+    projectOverlay: getProjectOverlay(stage),
   },
 });

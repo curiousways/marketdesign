@@ -190,7 +190,7 @@ export const Walkthrough: FC = () => {
         buyerProjects={scenario.buyerProjects}
         sellerProjects={scenario.sellerProjects}
         showCosts={
-          scenario.options.showCosts || marketState > MarketState.solvable
+          scenario.options.showCosts ?? marketState > MarketState.solvable
         }
         showAllProjects={marketState < MarketState.solvable}
         showWinners={marketState >= MarketState.showing_winners}
@@ -214,6 +214,7 @@ export const Walkthrough: FC = () => {
           loaderSpeed: MARKET_SOLVING_TIMEOUT + 1000,
           waitingTime: MARKET_SOLVING_TIMEOUT,
         }}
+        projectOverlay={scenario.options.projectOverlay}
       />
     </MainContainer>
   );
