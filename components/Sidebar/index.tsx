@@ -1,13 +1,11 @@
 import { FC, MouseEventHandler, ReactNode } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-
-import { fadeIn } from '@/utils/animations';
+import { AnimatePresence } from 'framer-motion';
 import { Pagination } from '../Pagination';
 import { DescriptionBox } from '../DescriptionBox';
 import { ProjectDetails } from '../ProjectDetails';
 import { RoleId } from '../../types/roles';
 import { Project } from '../../types/project';
-import { classNames } from '../../utils';
+import { OutlineButton } from '../OutlineButton';
 
 type SidebarProps = {
   title: string;
@@ -77,20 +75,12 @@ export const SideBar: FC<SidebarProps> = ({
 
         {/* Solve Market Button */}
         {showSolveMarketBtn && (
-          <motion.button
-            variants={fadeIn}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            layout
+          <OutlineButton
             onClick={onSolveMarketClick}
-            className={classNames(
-              'text-center border-2 border-black rounded-lg p-3 text-black text-l hover:bg-black hover:text-white duration-300',
-              animateNextSteps ? 'animate-scale' : '',
-            )}
+            className={animateNextSteps ? 'animate-scale' : ''}
           >
             Solve Market
-          </motion.button>
+          </OutlineButton>
         )}
 
         {/* Navigation with next and previous buttons */}
