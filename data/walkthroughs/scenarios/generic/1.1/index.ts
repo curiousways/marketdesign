@@ -207,13 +207,13 @@ const getHighlightedMapRegions = (
 ): HighlightedMapRegions | undefined => {
   if (stage === 3) {
     return {
-      seller: ['s3'],
+      seller: ['s1'],
     };
   }
 
   if (stage === 5) {
     return {
-      seller: ['s3'],
+      seller: ['s1'],
       buyer: ['b2'],
     };
   }
