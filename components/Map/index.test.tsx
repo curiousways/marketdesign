@@ -77,7 +77,7 @@ describe('Map', () => {
     fireEvent.click(path);
 
     expect(onClick).toHaveBeenCalledTimes(1);
-    expect(onClick).toHaveBeenCalledWith('s1', MAP_INDICES.s1);
+    expect(onClick).toHaveBeenCalledWith('s1');
     expect(path).toHaveClass('cursor-pointer');
   });
 

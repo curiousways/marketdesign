@@ -20,14 +20,13 @@ export const Map: FunctionComponent<Props> = ({
   onMapRegionClick,
 }: Props) => {
   return (
-    <div className="relative">
+    <div className="relative" data-testid="map">
       <svg
         width={MAP_VIEWBOX_WIDTH}
         height={MAP_VIEWBOX_HEIGHT}
         viewBox={MAP_VIEWBOX}
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        data-testid="map"
       >
         <rect
           width="1014"
@@ -75,7 +74,7 @@ export const Map: FunctionComponent<Props> = ({
                   type="button"
                   className="py-2 px-3 hover:bg-light-grey cursor-pointer w-full"
                   onClick={() => {
-                    onMapRegionClick(investorRegion);
+                    onMapRegionClick?.(investorRegion);
                   }}
                 >
                   {investorRegion}
