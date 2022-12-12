@@ -230,7 +230,7 @@ const getSellerProjects = (
   );
 
   if (marketState <= MarketState.solvable) {
-    return projects.filter((project) => !!myProjects?.includes(project));
+    return [];
   }
 
   return projects;
@@ -252,7 +252,7 @@ const getBuyerProjects = (
   );
 
   if (marketState <= MarketState.solvable) {
-    return projects.filter((project) => !!myProjects?.includes(project));
+    return [];
   }
 
   return projects;
@@ -436,7 +436,7 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
       />
       <Market
         showMap
-        myProjects={myProjects}
+        myProjects={marketState > MarketState.solvable ? myProjects : []}
         buyerProjects={getBuyerProjects(
           playableTraders,
           demoState.bidders,
