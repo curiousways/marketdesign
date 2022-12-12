@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { capitalCase } from 'change-case';
 import fetch from 'isomorphic-unfetch';
 import cloneDeep from 'clone-deep';
@@ -27,6 +27,7 @@ interface MarketSandboxProps {
 }
 
 const API_URL = 'https://marketdesign.herokuapp.com/solve/lindsay2018';
+const MARKET_SOLVING_TIMEOUT = 1000;
 
 const getProductsForBid = (bid: DemoBid | Bid, isInvestor?: boolean) => {
   const { q } = bid;
@@ -310,6 +311,7 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
   data,
 }: MarketSandboxProps) => {
   const [marketState, setMarketState] = useState<MarketState>(0);
+  const [isMarketSolving, setIsMarketSolving] = useState(false);
   const [result, setResult] = useState<Result>();
 
   // TODO: Swap states based on shuffle button etc. at the end of a scenario
@@ -365,7 +367,7 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
     });
 
     setResult(await res.json());
-    setMarketState(MarketState.solved);
+    setIsMarketSolving(true);
   }, [demoState, myProjects, roleId, getProjectCost, playableTraders]);
 
   const onFormSubmit = useCallback(() => {
@@ -387,6 +389,29 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
     },
     [playableTraders],
   );
+
+  const goToNextMarketState = useCallback(() => {
+    setMarketState((prev) => prev + 1);
+  }, []);
+
+  // Run through the solve market stages with an artificial delay between each.
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+
+    if (marketState === MarketState.solved) {
+      setIsMarketSolving(false);
+
+      return;
+    }
+
+    if (isMarketSolving) {
+      timer = setTimeout(goToNextMarketState, MARKET_SOLVING_TIMEOUT);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [isMarketSolving, marketState, goToNextMarketState]);
 
   return (
     <MainContainer>
