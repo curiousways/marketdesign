@@ -217,10 +217,11 @@ const findBidForProject = (
 const getSellerProjects = (
   playableTraders: DemoTrader[],
   bidders: DemoBidder[],
+  marketState: MarketState,
   myProjects?: Project[],
   result?: Result,
-): Project[] =>
-  getFilteredProjects(
+): Project[] => {
+  const projects = getFilteredProjects(
     isSellerBidder,
     playableTraders,
     bidders,
@@ -228,19 +229,34 @@ const getSellerProjects = (
     result,
   );
 
+  if (marketState <= MarketState.solvable) {
+    return projects.filter((project) => !!myProjects?.includes(project));
+  }
+
+  return projects;
+};
+
 const getBuyerProjects = (
   playableTraders: DemoTrader[],
   bidders: DemoBidder[],
+  marketState: MarketState,
   myProjects?: Project[],
   result?: Result,
-): Project[] =>
-  getFilteredProjects(
+): Project[] => {
+  const projects = getFilteredProjects(
     isBuyerBidder,
     playableTraders,
     bidders,
     myProjects,
     result,
   );
+
+  if (marketState <= MarketState.solvable) {
+    return projects.filter((project) => !!myProjects?.includes(project));
+  }
+
+  return projects;
+};
 
 const getProjectsForTrader = (
   playableTraders: DemoTrader[],
@@ -434,12 +450,14 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
         buyerProjects={getBuyerProjects(
           playableTraders,
           demoState.bidders,
+          marketState,
           myProjects,
           result,
         )}
         sellerProjects={getSellerProjects(
           playableTraders,
           demoState.bidders,
+          marketState,
           myProjects,
           result,
         )}
