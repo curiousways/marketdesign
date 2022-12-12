@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { capitalCase } from 'change-case';
 import fetch from 'isomorphic-unfetch';
 import cloneDeep from 'clone-deep';
@@ -27,7 +27,8 @@ interface MarketSandboxProps {
 }
 
 const API_URL = 'https://marketdesign.herokuapp.com/solve/lindsay2018';
-const MARKET_SOLVING_TIMEOUT = 750;
+const MARKET_SOLVING_TIMEOUT = 1000;
+const MARKET_SOLVING_STAGES = 5;
 
 const getProductsForBid = (bid: DemoBid | Bid, isInvestor?: boolean) => {
   const { q } = bid;
@@ -328,6 +329,7 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
 }: MarketSandboxProps) => {
   const [marketState, setMarketState] = useState<MarketState>(0);
   const [result, setResult] = useState<Result>();
+  const [loadingBarProgress, setLoadingBarProgress] = useState<number>(0);
 
   // TODO: Swap states based on shuffle button etc. at the end of a scenario
   // eslint-disable-next-line
@@ -347,6 +349,18 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
 
   const hasMyProjects = !!myProjects.length;
   const roleId = playableTrader ? getRoleId(playableTrader) : undefined;
+
+  const updateLoadingBarProgress = (state: MarketState) => {
+    setLoadingBarProgress((100 / MARKET_SOLVING_STAGES) * (state - 1));
+  };
+
+  const getNewMarketState = useCallback((previousMarketState: MarketState) => {
+    const newMarketState = previousMarketState + 1;
+
+    updateLoadingBarProgress(newMarketState);
+
+    return newMarketState;
+  }, []);
 
   const onSolveMarketClick = useCallback(async () => {
     if (!demoState) {
@@ -382,13 +396,13 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
     });
 
     setResult(await res.json());
-    setMarketState((previousMarketState) => previousMarketState + 1);
+    setMarketState(getNewMarketState);
 
     // Run through the remaining solve market stages with an artificial delay
     // between each.
     const timer: ReturnType<typeof setInterval> = setInterval(() => {
       setMarketState((previousMarketState) => {
-        const newMarketState = previousMarketState + 1;
+        const newMarketState = getNewMarketState(previousMarketState);
 
         if (newMarketState === MarketState.solved) {
           clearInterval(timer);
@@ -397,7 +411,14 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
         return newMarketState;
       });
     }, MARKET_SOLVING_TIMEOUT);
-  }, [demoState, myProjects, roleId, getProjectCost, playableTraders]);
+  }, [
+    demoState,
+    myProjects,
+    roleId,
+    getProjectCost,
+    playableTraders,
+    getNewMarketState,
+  ]);
 
   const onFormSubmit = useCallback(() => {
     setMarketState(MarketState.solvable);
@@ -436,7 +457,7 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
       />
       <Market
         showMap
-        myProjects={marketState > MarketState.solvable ? myProjects : []}
+        myProjects={myProjects}
         buyerProjects={getBuyerProjects(
           playableTraders,
           demoState.bidders,
@@ -460,6 +481,11 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
         showParticipants={hasMyProjects}
         highlightedMapRegions={getHighlightedMapRegions(data.playable_traders)}
         onMapRegionClick={onMapRegionClick}
+        loadingBar={{
+          progress: loadingBarProgress,
+          loaderSpeed: MARKET_SOLVING_TIMEOUT + 1000,
+          waitingTime: MARKET_SOLVING_TIMEOUT,
+        }}
       />
     </MainContainer>
   );
