@@ -27,7 +27,7 @@ interface MarketSandboxProps {
 }
 
 const API_URL = 'https://marketdesign.herokuapp.com/solve/lindsay2018';
-const MARKET_SOLVING_TIMEOUT = 1000;
+const MARKET_SOLVING_TIMEOUT = 750;
 
 const getProductsForBid = (bid: DemoBid | Bid, isInvestor?: boolean) => {
   const { q } = bid;
