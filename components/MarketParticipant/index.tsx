@@ -306,10 +306,11 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
 }: MarketParticipantProps) => {
   const isBuyer = projectRoleId === 'buyer';
 
+  const hasGroupedCost = totalCost !== projectCost;
   const showLoserStyles = isLoser && showWinners;
   const isNotAccepted = showWinners && !accepted;
-  const showResults = !isDivisible || isLastGroupedProject;
-  const shiftResults = isDivisible && !!(isGroupedProject && showResults);
+  const showResults = !hasGroupedCost || isLastGroupedProject;
+  const shiftResults = hasGroupedCost && !!(isGroupedProject && showResults);
 
   const rowAnimation = useRowAnimation(
     showLoserStyles,
