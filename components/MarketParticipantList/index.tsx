@@ -108,6 +108,7 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
               isMyProject={myProjects.includes(project)}
               isGroupedProject={isGroupedProject}
               isDivisible={isDivisible}
+              hasSharedCost={!!project.sharedCost}
               isFirstGroupedProject={isFirstGroupedProject}
               isLastGroupedProject={isLastGroupedProject}
               isSubsequentGroupedProject={
