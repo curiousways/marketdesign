@@ -9,10 +9,11 @@ import { RoleId } from '../../types/roles';
 import { classNames } from '../../utils';
 import oakTree from '../../public/assets/images/oak-tree.png';
 import swamp from '../../public/assets/images/swamp.png';
+import { HighlightedMapRegion } from '../../types/map';
 
 type MapRegionProps = {
   index: number;
-  region?: string;
+  region?: HighlightedMapRegion;
   size?: number;
   roleId?: RoleId;
   onClick?: (region: string, index: number) => void;
@@ -128,7 +129,7 @@ export const MapRegion: FunctionComponent<MapRegionProps> = ({
   const [boundingBox, setBoundingBox] = useState<DOMRect>();
 
   // Split the possible icon type from the given region.
-  const [finalRegion, iconType] = (region ?? '').split('-');
+  const [finalRegion, iconType] = (region?.regionKey ?? '').split('-');
 
   useEffect(() => {
     if (!ref.current || pathOnly) {
@@ -162,6 +163,7 @@ export const MapRegion: FunctionComponent<MapRegionProps> = ({
         stroke="black"
         className={classNames(isClickable ? 'cursor-pointer' : '')}
         onClick={handleClick}
+        data-label={region?.label}
       />
       {iconType && (
         <g data-testid="map-region-icon">

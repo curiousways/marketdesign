@@ -19,7 +19,9 @@ describe('Map', () => {
   it('highlights a buyer region by index', () => {
     const mapRegion = 'b1';
 
-    render(<Map highlightedMapRegions={{ buyer: [mapRegion] }} />);
+    render(
+      <Map highlightedMapRegions={{ buyer: [{ regionKey: mapRegion }] }} />,
+    );
 
     const filledPaths = getFilledPaths();
 
@@ -33,7 +35,9 @@ describe('Map', () => {
   it('highlights a seller region by index', () => {
     const mapRegion = 's1';
 
-    render(<Map highlightedMapRegions={{ seller: [mapRegion] }} />);
+    render(
+      <Map highlightedMapRegions={{ seller: [{ regionKey: mapRegion }] }} />,
+    );
 
     const filledPaths = getFilledPaths();
 
@@ -46,7 +50,12 @@ describe('Map', () => {
 
   it('highlights a some regions by mapped region key', () => {
     render(
-      <Map highlightedMapRegions={{ seller: ['s1'], buyer: ['b1', 'b2'] }} />,
+      <Map
+        highlightedMapRegions={{
+          seller: [{ regionKey: 's1' }],
+          buyer: [{ regionKey: 'b1' }, { regionKey: 'b2' }],
+        }}
+      />,
     );
 
     const filledPaths = getFilledPaths();
@@ -67,7 +76,7 @@ describe('Map', () => {
 
     render(
       <Map
-        highlightedMapRegions={{ seller: ['s1'] }}
+        highlightedMapRegions={{ seller: [{ regionKey: 's1' }] }}
         onMapRegionClick={onClick}
       />,
     );

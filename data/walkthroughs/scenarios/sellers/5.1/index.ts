@@ -69,7 +69,10 @@ export const getSellerScenario5_1: GetWalkthroughScenario = (
     highlightedMapRegions: {
       seller:
         stage >= 2
-          ? [HIGHLIGHTED_MAP_REGION_ONE, HIGHLIGHTED_MAP_REGION_TWO]
+          ? [
+              { regionKey: HIGHLIGHTED_MAP_REGION_ONE },
+              { regionKey: HIGHLIGHTED_MAP_REGION_TWO },
+            ]
           : undefined,
     },
     showParticipants: stage >= 3,
