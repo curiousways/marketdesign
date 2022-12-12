@@ -382,8 +382,10 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
     });
 
     setResult(await res.json());
+    setMarketState((previousMarketState) => previousMarketState + 1);
 
-    // Run through the solve market stages with an artificial delay between each.
+    // Run through the remaining solve market stages with an artificial delay
+    // between each.
     const timer: ReturnType<typeof setInterval> = setInterval(() => {
       setMarketState((previousMarketState) => {
         const newMarketState = previousMarketState + 1;
