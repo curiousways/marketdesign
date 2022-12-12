@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { capitalCase } from 'change-case';
 import fetch from 'isomorphic-unfetch';
 import cloneDeep from 'clone-deep';
@@ -327,7 +327,6 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
   data,
 }: MarketSandboxProps) => {
   const [marketState, setMarketState] = useState<MarketState>(0);
-  const [isMarketSolving, setIsMarketSolving] = useState(false);
   const [result, setResult] = useState<Result>();
 
   // TODO: Swap states based on shuffle button etc. at the end of a scenario
@@ -383,7 +382,19 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
     });
 
     setResult(await res.json());
-    setIsMarketSolving(true);
+
+    // Run through the solve market stages with an artificial delay between each.
+    const timer: ReturnType<typeof setInterval> = setInterval(() => {
+      setMarketState((previousMarketState) => {
+        const newMarketState = previousMarketState + 1;
+
+        if (newMarketState === MarketState.solved) {
+          clearInterval(timer);
+        }
+
+        return newMarketState;
+      });
+    }, MARKET_SOLVING_TIMEOUT);
   }, [demoState, myProjects, roleId, getProjectCost, playableTraders]);
 
   const onFormSubmit = useCallback(() => {
@@ -405,29 +416,6 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
     },
     [playableTraders],
   );
-
-  const goToNextMarketState = useCallback(() => {
-    setMarketState((prev) => prev + 1);
-  }, []);
-
-  // Run through the solve market stages with an artificial delay between each.
-  useEffect(() => {
-    let timer: ReturnType<typeof setTimeout>;
-
-    if (marketState === MarketState.solved) {
-      setIsMarketSolving(false);
-
-      return;
-    }
-
-    if (isMarketSolving) {
-      timer = setTimeout(goToNextMarketState, MARKET_SOLVING_TIMEOUT);
-    }
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [isMarketSolving, marketState, goToNextMarketState]);
 
   return (
     <MainContainer>
