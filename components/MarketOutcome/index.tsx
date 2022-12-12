@@ -1,5 +1,7 @@
 import { FC } from 'react';
+import { motion } from 'framer-motion';
 import { classNames } from '@/utils/index';
+import { fadeInDown } from '@/utils/animations';
 import { HammerIcon } from '../../icons/HammerIcon';
 import { BalanceIcon } from '../../icons/BalanceIcon';
 import { CartPlus } from '../../icons/CartPlus';
@@ -138,27 +140,30 @@ export const MarketOutcome: FC<MarketOutcomeProps> = ({
         </div>
 
         {/* Balance */}
-        {isMarketSolved && (
-          <div className="flex items-center justify-center">
-            <div className="bg-white rounded-lg px-1 pb-1 w-[95px]">
-              <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white shadow-custom">
-                <BalanceIcon />
-              </div>
+        <motion.div
+          variants={fadeInDown}
+          initial="hidden"
+          animate={isMarketSolved ? 'visible' : ''}
+          className="flex items-center justify-center"
+        >
+          <div className="bg-white rounded-lg px-1 pb-1 w-[95px]">
+            <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white shadow-custom">
+              <BalanceIcon />
+            </div>
 
-              <div className="text-center text-sm relative -mt-2">
-                <p className="text-light-grey">Balance</p>
-                <div
-                  className="flex justify-center items-center gap-x-1"
-                  data-testid="balance"
-                >
-                  <CartPlus />
-                  <span>=</span>
-                  <PoundcashTag />
-                </div>
+            <div className="text-center text-sm relative -mt-2">
+              <p className="text-light-grey">Balance</p>
+              <div
+                className="flex justify-center items-center gap-x-1"
+                data-testid="balance"
+              >
+                <CartPlus />
+                <span>=</span>
+                <PoundcashTag />
               </div>
             </div>
           </div>
-        )}
+        </motion.div>
       </div>
     </div>
   );
