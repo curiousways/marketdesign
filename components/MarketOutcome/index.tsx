@@ -145,6 +145,7 @@ export const MarketOutcome: FC<MarketOutcomeProps> = ({
           initial="hidden"
           animate={isMarketSolved ? 'visible' : ''}
           className="flex items-center justify-center"
+          data-testid="balance-container"
         >
           <div className="bg-white rounded-lg px-1 pb-1 w-[95px]">
             <div className="w-[29px] h-[29px] mx-auto relative bottom-3 flex justify-center items-center rounded-full bg-white shadow-custom">
