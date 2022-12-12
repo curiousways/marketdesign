@@ -30,7 +30,12 @@ describe('MapRegion', () => {
     const onClick = jest.fn();
 
     render(
-      <MapRegion roleId="buyer" index={12} region="b1" onClick={onClick} />,
+      <MapRegion
+        roleId="buyer"
+        index={12}
+        region={{ regionKey: 'b1' }}
+        onClick={onClick}
+      />,
     );
 
     const path = screen.getByTestId('map-region');
@@ -74,7 +79,13 @@ describe('MapRegion', () => {
   it.each(['woodland', 'wetland'])(
     'renders a region filled with the %s icon',
     (iconType) => {
-      render(<MapRegion index={21} roleId="buyer" region={`s1-${iconType}`} />);
+      render(
+        <MapRegion
+          index={21}
+          roleId="buyer"
+          region={{ regionKey: `s1-${iconType}` }}
+        />,
+      );
 
       expect(screen.getByTestId('map-region-icon')).toMatchSnapshot();
     },
@@ -89,7 +100,7 @@ describe('MapRegion', () => {
           size={50}
           index={21}
           roleId="buyer"
-          region={`s1-${iconType}`}
+          region={{ regionKey: `s1-${iconType}` }}
         />,
       );
 

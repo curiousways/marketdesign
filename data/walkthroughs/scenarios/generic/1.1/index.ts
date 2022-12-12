@@ -208,14 +208,14 @@ const getHighlightedMapRegions = (
 ): HighlightedMapRegions | undefined => {
   if (stage === 3) {
     return {
-      seller: ['s3'],
+      seller: [{ regionKey: 's3' }],
     };
   }
 
   if (stage === 5) {
     return {
-      seller: ['s3'],
-      buyer: ['b2'],
+      seller: [{ regionKey: 's3' }],
+      buyer: [{ regionKey: 'b2' }],
     };
   }
 };

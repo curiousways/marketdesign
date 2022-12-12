@@ -11,11 +11,11 @@ const getHighlightedMapRegions = (
   stage: number,
 ): HighlightedMapRegions | undefined => {
   if (stage === 2) {
-    return { seller: ['s1-woodland'] };
+    return { seller: [{ regionKey: 's1-woodland' }] };
   }
 
   if (stage === 3) {
-    return { seller: ['s1-wetland'] };
+    return { seller: [{ regionKey: 's1-wetland' }] };
   }
 };
 

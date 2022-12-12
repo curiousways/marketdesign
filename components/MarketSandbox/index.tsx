@@ -17,7 +17,7 @@ import { Market } from '../Market';
 import { Bid, Result } from '../../types/result';
 import { Project } from '../../types/project';
 import { MarketState } from '../../types/market';
-import { HighlightedMapRegions } from '../../types/map';
+import { HighlightedMapRegion, HighlightedMapRegions } from '../../types/map';
 import { isProjectEqual } from '../../utils/project';
 import { useProjectsContext } from '../../context/ProjectsContext';
 import { RoleId } from '../../types/roles';
@@ -288,18 +288,31 @@ const getRoleId = (trader: DemoTrader): RoleId => {
 const getHighlightedMapRegions = (
   traders: DemoTrader[],
 ): HighlightedMapRegions => {
-  const regions: { buyer: string[]; seller: string[] } = {
+  const regions: {
+    buyer: HighlightedMapRegion[];
+    seller: HighlightedMapRegion[];
+  } = {
     buyer: [],
     seller: [],
   };
 
   traders.forEach((trader) => {
     if (getRoleId(trader) === 'buyer') {
-      regions.buyer.push(...trader.locations);
+      regions.buyer.push(
+        ...trader.locations.map((regionKey) => ({
+          regionKey,
+          label: trader.name,
+        })),
+      );
     }
 
     if (getRoleId(trader) === 'seller') {
-      regions.seller.push(...trader.locations);
+      regions.seller.push(
+        ...trader.locations.map((regionKey) => ({
+          regionKey,
+          label: trader.name,
+        })),
+      );
     }
   }, regions);
 

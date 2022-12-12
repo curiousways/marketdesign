@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useEffect, useRef, useState } from 'react';
 import { HighlightedMapRegions } from '@/types/map';
 import { MAP_REGION_PATHS, MapRegion } from '../MapRegion';
 import {
@@ -8,15 +8,45 @@ import {
   MAP_VIEWBOX_WIDTH,
 } from '../../constants/map';
 
-type Props = {
+type MapProps = {
   highlightedMapRegions?: HighlightedMapRegions;
   onMapRegionClick?: (region: string, index: number) => void;
 };
 
-export const Map: FunctionComponent<Props> = ({
+type TextElement = {
+  label: string;
+  x: number;
+  y: number;
+};
+
+export const Map: FunctionComponent<MapProps> = ({
   highlightedMapRegions,
   onMapRegionClick,
-}: Props) => {
+}: MapProps) => {
+  const ref = useRef<SVGSVGElement>(null);
+  const [textElements, setTextElements] = useState<TextElement[]>([]);
+
+  useEffect(() => {
+    if (!ref.current) {
+      return;
+    }
+
+    const svgRect = ref.current.getBoundingClientRect();
+    const pathsWithLabels = [...ref.current.querySelectorAll('[data-label]')];
+
+    setTextElements(
+      pathsWithLabels.map((el) => {
+        const pathRect = el.getBoundingClientRect();
+
+        return {
+          x: pathRect.x - svgRect.x + pathRect.width / 2,
+          y: pathRect.y - svgRect.y + pathRect.height / 2,
+          label: String(el.getAttribute('data-label')),
+        };
+      }),
+    );
+  }, [ref]);
+
   return (
     <svg
       width={MAP_VIEWBOX_WIDTH}
@@ -25,6 +55,7 @@ export const Map: FunctionComponent<Props> = ({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       data-testid="map"
+      ref={ref}
     >
       <rect
         width="200"
@@ -93,6 +124,15 @@ export const Map: FunctionComponent<Props> = ({
         stroke="#000"
         fill="none"
       />
+      <defs>
+        <filter x="0" y="0" width="1" height="1" id="solid">
+          <feFlood flood-color="black" result="bg" />
+          <feMerge>
+            <feMergeNode in="bg" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
 
       {MAP_REGION_PATHS.map((path, index) => {
         let matchedRoleId;
@@ -101,7 +141,7 @@ export const Map: FunctionComponent<Props> = ({
         Object.entries(highlightedMapRegions ?? {}).find(
           ([roleId, regions = []]) =>
             regions.some((region) => {
-              if (MAP_INDICES[region.split('-')[0]] !== index) {
+              if (MAP_INDICES[region.regionKey.split('-')[0]] !== index) {
                 return false;
               }
 
@@ -123,6 +163,17 @@ export const Map: FunctionComponent<Props> = ({
           />
         );
       })}
+      {textElements.map(({ label, x, y }) => (
+        <text
+          x={x}
+          y={y}
+          key={`${label}-${x}-${y}`}
+          fill="white"
+          filter="url(#solid)"
+        >
+          {label}
+        </text>
+      ))}
     </svg>
   );
 };
