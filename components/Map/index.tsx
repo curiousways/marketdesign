@@ -27,7 +27,6 @@ export const Map: FunctionComponent<Props> = ({
         viewBox={MAP_VIEWBOX}
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        data-testid="map"
       >
         <rect
           width="200"
