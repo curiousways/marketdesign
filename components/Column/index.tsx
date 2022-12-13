@@ -1,41 +1,39 @@
-import { ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 
 import { classNames } from '@/utils/index';
 
-import { Button } from '@/components/Button';
+import { NavButton } from '@/components/NavButton';
 import { InlineTitle } from '@/components/InlineTitle/index';
 
-type Props = {
+type ColumnProps = {
   title?: string;
-  button?: boolean;
-  buttonLink?: string;
-  buttonText?: string;
+  button?: { link: string; text: string };
   titlebackground?: boolean;
   titleClass?: string;
   className?: string;
   children: ReactNode;
 };
 
-export const Column = ({
+export const Column: FC<ColumnProps> = ({
   title,
   button,
-  buttonLink,
-  buttonText,
   className,
   children,
   titlebackground,
   titleClass,
-}: Props) => {
+}: ColumnProps) => {
   return (
     <div className={classNames('max-w-[616px] space-y-10', className)}>
-      <InlineTitle
-        titleClass={titleClass ?? ''}
-        title={title ?? ''}
-        background={titlebackground}
-      />
+      {title && (
+        <InlineTitle
+          titleClass={titleClass}
+          title={title}
+          background={titlebackground}
+        />
+      )}
       {children}
 
-      {button && <Button text={buttonText ?? ''} link={buttonLink ?? ''} />}
+      {button && <NavButton text={button.text} link={button.link} />}
     </div>
   );
 };

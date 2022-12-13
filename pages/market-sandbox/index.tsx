@@ -11,12 +11,11 @@ const groupByCategories = (demoFiles: DemoFile[]) => {
   const initialData: { [key in string]: DemoFile[] } = {};
 
   return demoFiles.reduce((acc, demoFile) => {
-    const categoryDescription = demoFile.data.categories.join(', ');
+    demoFile.data.categories.forEach((category) => {
+      acc[category] = [...(acc[category] ?? []), demoFile];
+    });
 
-    return {
-      ...acc,
-      [categoryDescription]: [...(acc[categoryDescription] ?? []), demoFile],
-    };
+    return acc;
   }, initialData);
 };
 

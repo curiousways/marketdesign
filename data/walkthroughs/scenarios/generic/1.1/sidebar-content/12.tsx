@@ -7,8 +7,8 @@ export const sidebarContent12 = (
       Surplus.
     </p>
     <p>
-      Now let’s see how the Linday Market Mechanism finds the optimal market
-      solution.
+      Now press the ‘Solve Market’ button to see the surplus-maximising set of
+      winning offers and bids as chosen by the Lindsay Mechanism.
     </p>
   </>
 );

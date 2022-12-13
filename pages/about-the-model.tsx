@@ -74,7 +74,7 @@ const About: NextPage = () => {
                   </p>
                 </div>
 
-                <Column button buttonLink="/" buttonText="Find out more">
+                <Column button={{ link: '/', text: 'Find out more' }}>
                   <ul className="space-y-3 list-disc list-inside text-lg">
                     <li>
                       Building Blocks: Participants, Projects, Credits, Costs &
@@ -94,9 +94,7 @@ const About: NextPage = () => {
           <div className="xl:flex gap-x-20">
             <Column
               title="Take a Test"
-              button
-              buttonText="Take the tour"
-              buttonLink="/how-it-works"
+              button={{ link: '/how-it-works', text: 'Take the tour' }}
             >
               <p>
                 Take a guided tour of a market scenario to gain a step-by-step
@@ -107,9 +105,7 @@ const About: NextPage = () => {
 
             <Column
               title="Fast Simulation Results"
-              button
-              buttonText="Take the tour"
-              buttonLink="/how-it-works"
+              button={{ link: '/how-it-works', text: 'Take the tour' }}
             >
               <p>
                 Take a guided tour of a market scenario to gain a step-by-step
