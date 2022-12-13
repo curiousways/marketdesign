@@ -287,6 +287,20 @@ describe('ProjectDetails', () => {
     expect(onFormRevise).not.toHaveBeenCalled();
   });
 
+  it('hides the submit button', () => {
+    render(
+      <ProjectDetails
+        isFormSubmitHidden
+        projects={[createProject()]}
+        onFormSubmit={jest.fn()}
+        roleId="buyer"
+      />,
+      { wrapper },
+    );
+
+    expect(screen.getByText('Submit')).toHaveClass('hidden');
+  });
+
   it('shows the selected map region', async () => {
     const region = 's1';
 

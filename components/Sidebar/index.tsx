@@ -22,6 +22,7 @@ type SidebarProps = {
   sidebarContent?: ReactNode;
   isFormEnabled?: boolean;
   isFormReviseEnabled?: boolean;
+  isFormSubmitHidden?: boolean;
   animateNextSteps?: boolean;
   hasFixedBids?: boolean;
   isDivisibleInputEnabled?: boolean;
@@ -45,6 +46,7 @@ export const SideBar: FC<SidebarProps> = ({
   sidebarContent,
   isFormEnabled,
   isFormReviseEnabled,
+  isFormSubmitHidden,
   animateNextSteps,
   hasFixedBids,
   isDivisibleInputEnabled,
@@ -64,6 +66,7 @@ export const SideBar: FC<SidebarProps> = ({
           <ProjectDetails
             isFormEnabled={isFormEnabled}
             isFormReviseEnabled={isFormReviseEnabled}
+            isFormSubmitHidden={isFormSubmitHidden}
             hasFixedBids={hasFixedBids}
             isDivisibleInputEnabled={isDivisibleInputEnabled}
             showDivisibleInput={showDivisibleInput}
