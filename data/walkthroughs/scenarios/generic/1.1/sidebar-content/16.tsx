@@ -1,10 +1,12 @@
 export const sidebarContent16 = (
-  <p>
-    One of the key reasons that the Lindsay Mechanism maximises the surplus is
-    because in its second step, it hands that surplus back to the winning buyers
-    and sellers in the form of discounts and bonuses. In a nutshell, the Lindsay
-    Mechanism ensures that the benefits of trading are maximised and that those
-    benefits are enjoyed by the market participants and not, for example,
-    siphoned off by middle men or market brokers.
-  </p>
+  <>
+    <p>
+      The last remaining question is how exactly to divide the surplus up? The
+      Lindsay Mechanism adopts a procedure to determine that division called the
+      Balanced Winner Contribution rule. In brief, sellers and buyers that
+      contribute relatively more to the creation of the Market Surplus receive a
+      relatively larger share as a bonus or discount.
+    </p>
+    <p>Click next to divide the surplus.</p>
+  </>
 );
