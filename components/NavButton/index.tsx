@@ -1,16 +1,19 @@
 import Link from 'next/link';
 import { FC } from 'react';
 
-type ButtonProps = {
+type NavButtonProps = {
   link: string;
   text: string;
 };
 
-export const Button: FC<ButtonProps> = ({ link, text }: ButtonProps) => {
+export const NavButton: FC<NavButtonProps> = ({
+  link,
+  text,
+}: NavButtonProps) => {
   return (
     <Link
       href={link}
-      className="border border-red text-red text-lg font-medium inline-flex items-center gap-x-2 py-1 px-2"
+      className="border border-red hover:bg-red transition-colors text-red hover:text-white text-lg font-medium inline-flex items-center gap-x-2 py-1 px-2"
     >
       <span>{text}</span>
 

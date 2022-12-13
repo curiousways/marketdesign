@@ -1,4 +1,4 @@
-export const sidebarContent21 = (
+export const sidebarContent20 = (
   <p>
     Once surplus shares have been decided, the market outcome is fully
     determined. Winning buyers receive payments that are equal to their offer
