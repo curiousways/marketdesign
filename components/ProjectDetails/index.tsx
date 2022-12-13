@@ -17,6 +17,7 @@ type ProjectDetailsProps = {
   projects: Project[];
   isFormEnabled?: boolean;
   isFormReviseEnabled?: boolean;
+  isFormSubmitHidden?: boolean;
   hasFixedBids?: boolean;
   isDivisibleInputEnabled?: boolean;
   showDivisibleInput?: boolean;
@@ -68,6 +69,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
   projects,
   isFormEnabled,
   isFormReviseEnabled,
+  isFormSubmitHidden,
   hasFixedBids,
   isDivisibleInputEnabled,
   showDivisibleInput,
@@ -182,7 +184,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                   )}
 
                   {/* Credits */}
-                  <div className="flex gap-x-2">
+                  <div className="flex gap-x-1">
                     <Credit
                       count={project.products.biodiversity}
                       costPerCredit={project.costPerCredit}
@@ -275,6 +277,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                 isFormEnabled && !animatedInputName && animateNextSteps
                   ? 'animate-scale-large'
                   : '',
+                isFormSubmitHidden ? 'hidden' : '',
               )}
             >
               {isFormReviseEnabled ? 'Revise' : 'Submit'}

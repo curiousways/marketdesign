@@ -75,11 +75,9 @@ const Home: NextPage = () => {
               <div className="relative pt-5 space-y-10">
                 <Column
                   title="Optimise the financial & environmental benefits"
-                  button
-                  buttonLink="/"
-                  buttonText="Find out more"
                   className="mt-5"
                   titlebackground
+                  button={{ link: '/about-the-model', text: 'Find out more' }}
                 >
                   <p>
                     The Exeter Lindsay market model applies robust and
@@ -104,10 +102,8 @@ const Home: NextPage = () => {
               {/* Take a tour */}
               <Column
                 title="Take a tour"
-                button
-                buttonLink="/"
-                buttonText="Find out more"
                 className="mt-20"
+                button={{ link: '/how-it-works', text: 'Take the tour' }}
               >
                 <p>
                   Take a guided tour of a market scenario to gain a step-by-step
@@ -147,10 +143,8 @@ const Home: NextPage = () => {
             {/* Give it a try */}
             <Column
               title="Give it a try"
-              button
-              buttonLink="/"
-              buttonText="Start trading"
               className="-mt-10 mb-28 max-w-[430px]"
+              button={{ link: '/market-sandbox', text: 'Start trading' }}
             >
               <p>
                 Get a feel for trading in markets based on Exeter Lindsay. We’ve

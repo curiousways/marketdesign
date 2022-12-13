@@ -11,6 +11,7 @@ import { useProjectsContext } from '../../context/ProjectsContext';
 import { HighlightedMapRegions } from '../../types/map';
 import { Map } from '../Map';
 import { getGroupedProjects } from '../../utils/project';
+import { MarketParticipant } from '../MarketParticipant';
 
 type MarketScenarioProps = {
   myProjects: Project[];
@@ -31,6 +32,10 @@ type MarketScenarioProps = {
     href: string;
     text: string;
   };
+  projectOverlay?: {
+    roleId: 'buyer' | 'seller';
+    project: Project;
+  };
 };
 
 export const MarketScenario: FC<MarketScenarioProps> = ({
@@ -49,6 +54,7 @@ export const MarketScenario: FC<MarketScenarioProps> = ({
   highlightedMapRegions,
   investorRegions,
   onMapRegionClick,
+  projectOverlay,
 }: MarketScenarioProps) => {
   const { getProjectCost } = useProjectsContext();
 
@@ -166,12 +172,24 @@ export const MarketScenario: FC<MarketScenarioProps> = ({
 
   if (showMap) {
     return (
-      <div className="m-5">
+      <div className="m-5 relative">
         <Map
           highlightedMapRegions={highlightedMapRegions}
           investorRegions={investorRegions}
           onMapRegionClick={onMapRegionClick}
         />
+        {projectOverlay && (
+          <div className="absolute bottom-2 flex w-full justify-center">
+            <MarketParticipant
+              projectRoleId={projectOverlay.roleId}
+              title={projectOverlay.project.title}
+              subtitle={projectOverlay.project.subtitle}
+              projectCost={getProjectCost(projectOverlay.project)}
+              discountOrBonus={projectOverlay.project.discountOrBonus}
+              products={projectOverlay.project.products}
+            />
+          </div>
+        )}
       </div>
     );
   }

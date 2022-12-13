@@ -1,4 +1,4 @@
-export const sidebarContent19 = (
+export const sidebarContent18 = (
   <>
     <p>
       Once surplus shares have been decided, the market outcome is fully

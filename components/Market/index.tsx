@@ -33,6 +33,10 @@ type MarketProps = {
     loaderSpeed?: number;
     waitingTime?: number;
   };
+  projectOverlay?: {
+    roleId: 'buyer' | 'seller';
+    project: Project;
+  };
 };
 
 export const Market: FC<MarketProps> = ({
@@ -53,6 +57,7 @@ export const Market: FC<MarketProps> = ({
   onMapRegionClick,
   loadingOverlayText,
   loadingBar,
+  projectOverlay,
 }: MarketProps) => (
   <div className="border-l border-green-dark pt-8 w-full relative flex justify-center">
     <div className="z-20">
@@ -75,6 +80,7 @@ export const Market: FC<MarketProps> = ({
         showMap={showMap}
         highlightedMapRegions={highlightedMapRegions}
         investorRegions={investorRegions}
+        projectOverlay={projectOverlay}
         onMapRegionClick={onMapRegionClick}
       />
     </div>
