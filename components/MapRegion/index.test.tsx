@@ -38,7 +38,7 @@ describe('MapRegion', () => {
     fireEvent.click(path);
 
     expect(onClick).toHaveBeenCalledTimes(1);
-    expect(onClick).toHaveBeenCalledWith('b1', 12);
+    expect(onClick).toHaveBeenCalledWith('b1');
     expect(path).toHaveClass('cursor-pointer');
   });
 

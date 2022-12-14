@@ -21,7 +21,8 @@ type MarketProps = {
   showParticipants: boolean;
   showMap?: boolean;
   highlightedMapRegions?: HighlightedMapRegions;
-  onMapRegionClick?: (region: string, index: number) => void;
+  investorRegions?: string[];
+  onMapRegionClick?: (region: string) => void;
   link?: {
     href: string;
     text: string;
@@ -52,6 +53,7 @@ export const Market: FC<MarketProps> = ({
   showParticipants,
   showMap,
   highlightedMapRegions,
+  investorRegions,
   onMapRegionClick,
   loadingOverlayText,
   loadingBar,
@@ -77,6 +79,7 @@ export const Market: FC<MarketProps> = ({
         showParticipants={showParticipants}
         showMap={showMap}
         highlightedMapRegions={highlightedMapRegions}
+        investorRegions={investorRegions}
         projectOverlay={projectOverlay}
         onMapRegionClick={onMapRegionClick}
       />

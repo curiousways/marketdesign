@@ -294,12 +294,24 @@ const getHighlightedMapRegions = (
   };
 
   traders.forEach((trader) => {
-    if (getRoleId(trader) === 'buyer') {
+    if (trader.role === 'buyer') {
       regions.buyer.push(...trader.locations);
     }
 
-    if (getRoleId(trader) === 'seller') {
+    if (trader.role === 'seller') {
       regions.seller.push(...trader.locations);
+    }
+  }, regions);
+
+  return regions;
+};
+
+const getInvestorRegions = (traders: DemoTrader[]): string[] => {
+  const regions: string[] = [];
+
+  traders.forEach((trader) => {
+    if (trader.role === 'investor') {
+      regions.push(...trader.locations);
     }
   }, regions);
 
@@ -427,6 +439,7 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
         roleId={roleId}
         showParticipants={hasMyProjects}
         highlightedMapRegions={getHighlightedMapRegions(data.playable_traders)}
+        investorRegions={getInvestorRegions(data.playable_traders)}
         onMapRegionClick={onMapRegionClick}
       />
     </MainContainer>
