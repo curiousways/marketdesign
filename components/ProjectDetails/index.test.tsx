@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { ProjectDetails } from './index';
 import { Project } from '../../types/project';
 import { ProjectsContext } from '../../context/ProjectsContext';
@@ -338,5 +338,77 @@ describe('ProjectDetails', () => {
       MAP_REGION_PATHS[MAP_INDICES[regionA]],
       MAP_REGION_PATHS[MAP_INDICES[regionB]],
     ]);
+  });
+
+  it('lists projects with a cost per credit', () => {
+    render(
+      <ProjectDetails
+        projects={[
+          createProject({
+            subtitle: 'Field 1',
+            cost: 42000,
+            costPerCredit: 25000,
+            products: { biodiversity: 1 },
+          }),
+          createProject({
+            subtitle: 'Field 2',
+            cost: 43000,
+            costPerCredit: 30000,
+            products: { nutrients: 1 },
+          }),
+        ]}
+        onFormSubmit={jest.fn()}
+        roleId="buyer"
+      />,
+      { wrapper },
+    );
+
+    const listItems = screen.getAllByRole('listitem');
+
+    expect(listItems).toHaveLength(2);
+
+    expect(within(listItems[0]).queryByTestId('credit')).toHaveTextContent(
+      '£25,000',
+    );
+
+    expect(within(listItems[1]).queryByTestId('credit')).toHaveTextContent(
+      '£30,000',
+    );
+  });
+
+  it('lists projects with a shared cost', () => {
+    render(
+      <ProjectDetails
+        projects={[
+          createProject({
+            subtitle: 'Field 1',
+            cost: 42000,
+            costPerCredit: 25000,
+            sharedCost: 100000,
+          }),
+          createProject({
+            subtitle: 'Field 2',
+            cost: 43000,
+            costPerCredit: 25000,
+            sharedCost: 100000,
+          }),
+        ]}
+        onFormSubmit={jest.fn()}
+        roleId="buyer"
+      />,
+      { wrapper },
+    );
+
+    const listItems = screen.getAllByRole('listitem');
+
+    expect(listItems).toHaveLength(3);
+
+    expect(within(listItems[0]).queryByTestId('credit')).toBeNull();
+    expect(within(listItems[1]).queryByTestId('credit')).toBeNull();
+    expect(within(listItems[2]).getByTestId('credit')).not.toBeNull();
+
+    expect(within(listItems[2]).getByTestId('credit')).toHaveTextContent(
+      '£100,000',
+    );
   });
 });
