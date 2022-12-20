@@ -163,8 +163,6 @@ export const Walkthrough: FC = () => {
     }
   }, [scenario.fixedMarketState, isMarketSolving, marketState]);
 
-  console.log(scenario.options.showCosts, scenario.options.limitMarketInfo);
-
   return (
     <MainContainer>
       <SideBar
