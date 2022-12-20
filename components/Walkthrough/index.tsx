@@ -194,7 +194,7 @@ export const Walkthrough: FC = () => {
         sellerProjects={scenario.sellerProjects}
         showCosts={
           scenario.options.limitMarketInfo
-            ? scenario.options.showCosts ?? marketState > MarketState.solvable
+            ? marketState > MarketState.solvable
             : true
         }
         showAllProjects={marketState < MarketState.solvable}
