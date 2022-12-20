@@ -2,6 +2,7 @@ import { FC } from 'react';
 import {
   findProjectIndex,
   getGroupedProjects,
+  getUniqueProjectKey,
   includesProject,
 } from '@/utils/project';
 import { MarketParticipant } from '../MarketParticipant';
@@ -104,7 +105,7 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
             : projectCost;
 
         return (
-          <li key={JSON.stringify(project)}>
+          <li key={getUniqueProjectKey(project)}>
             <MarketParticipant
               projectRoleId={
                 includesProject(project, buyerProjects) ? 'buyer' : 'seller'

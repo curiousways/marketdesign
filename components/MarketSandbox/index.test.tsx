@@ -1,4 +1,11 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import { ReactNode } from 'react';
 import nock from 'nock';
 import cloneDeep from 'clone-deep';
@@ -413,6 +420,10 @@ const getInvestorRegionByKey = (key: string) => {
 };
 
 describe('MarketSandbox', () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
   it('highlights the expected map regions', () => {
     render(<MarketSandbox data={multipleBidsScenario} />, { wrapper });
 
@@ -435,18 +446,11 @@ describe('MarketSandbox', () => {
 
     const projectDetails = await screen.findByTestId('project-details');
     const mapPaths = getMapPaths(projectDetails);
+    const textInputs = within(projectDetails).getAllByRole('textbox');
 
+    expect(textInputs).toHaveLength(1);
     expect(mapPaths).toHaveLength(1);
     expect(mapPaths[0]).toEqual(MAP_REGION_PATHS[MAP_INDICES.b1]);
-
-    const { allParticipants } = getMarketParticipants();
-
-    expect(allParticipants).toHaveLength(5);
-    expect(allParticipants[0].title).toHaveTextContent('Buyer 2');
-    expect(allParticipants[1].title).toHaveTextContent('Seller 1Field 1');
-    expect(allParticipants[2].title).toHaveTextContent('Field 2');
-    expect(allParticipants[3].title).toHaveTextContent('Both');
-    expect(allParticipants[4].title).toHaveTextContent('Seller 2');
   });
 
   it('selects multiple map regions', async () => {
@@ -458,21 +462,20 @@ describe('MarketSandbox', () => {
 
     const projectDetails = await screen.findByTestId('project-details');
     const mapPaths = getMapPaths(projectDetails);
+    const textInputs = within(projectDetails).getAllByRole('textbox');
+
+    expect(textInputs).toHaveLength(3);
 
     expect(mapPaths).toHaveLength(4);
     expect(mapPaths).toEqual([
       MAP_REGION_PATHS[MAP_INDICES.s1],
       MAP_REGION_PATHS[MAP_INDICES.s2],
+
+      // This duplication is because of the either or case, which is inserted
+      // as a third option.
       MAP_REGION_PATHS[MAP_INDICES.s1],
       MAP_REGION_PATHS[MAP_INDICES.s2],
     ]);
-
-    const { allParticipants } = getMarketParticipants();
-
-    expect(allParticipants).toHaveLength(3);
-    expect(allParticipants[0].title).toHaveTextContent('Buyer 1');
-    expect(allParticipants[1].title).toHaveTextContent('Buyer 2');
-    expect(allParticipants[2].title).toHaveTextContent('Seller 2');
   });
 
   it('submits and revises a value for the selected project', async () => {
@@ -488,22 +491,66 @@ describe('MarketSandbox', () => {
 
     fireEvent.change(textInput, { target: { value: '8000' } });
 
-    expect(getMarketParticipants().buyers).toHaveLength(2);
     expect(submitButton).toHaveTextContent('Submit');
 
     fireEvent.click(submitButton);
 
-    expect(getMarketParticipants().buyers).toHaveLength(3);
+    expect(getMarketParticipants().buyers).toHaveLength(1);
     expect(textInput).toHaveValue('8000');
     expect(submitButton).toHaveTextContent('Revise');
 
     fireEvent.click(submitButton);
 
-    expect(getMarketParticipants().buyers).toHaveLength(2);
+    expect(getMarketParticipants().buyers).toHaveLength(0);
     expect(textInput).toHaveValue('');
   });
 
+  it('shows the other market participants once the solve market button is pressed', async () => {
+    const setIntervalSpy = jest.spyOn(global, 'setInterval');
+
+    mockApiResponse(() => ({
+      rule: 'lindsay2018',
+      surplus_shares: {},
+      problem: {
+        free_disposal: true,
+        goods: [],
+        bidders: cloneDeep(singleBidScenario.states[0].bidders),
+      },
+    }));
+
+    render(<MarketSandbox data={singleBidScenario} />, { wrapper });
+
+    const region = getHighlightedMapRegionByKey('b1');
+
+    fireEvent.click(region);
+
+    const projectDetails = await screen.findByTestId('project-details');
+
+    fireEvent.change(within(projectDetails).getByRole('textbox'), {
+      target: { value: '8000' },
+    });
+
+    // No participants before submit clicked
+    expect(getMarketParticipants().allParticipants).toHaveLength(0);
+
+    fireEvent.click(within(projectDetails).getByRole('button'));
+
+    // Only the user's participant before solve market clicked
+    expect(getMarketParticipants().allParticipants).toHaveLength(1);
+
+    fireEvent.click(await screen.findByText('Solve Market'));
+
+    await waitFor(() => expect(setIntervalSpy).toHaveBeenCalled());
+
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
+
+    expect(getMarketParticipants().allParticipants).toHaveLength(6);
+  });
+
   it('gives the expected outcome for a single bid project with multiple winning projects', async () => {
+    const setIntervalSpy = jest.spyOn(global, 'setInterval');
     const biddersResult = cloneDeep(singleBidScenario.states[0].bidders);
 
     findBid(biddersResult, 'seller 1').winning = 1;
@@ -541,6 +588,12 @@ describe('MarketSandbox', () => {
 
     fireEvent.click(within(projectDetails).getByText('Submit'));
     fireEvent.click(await screen.findByText('Solve Market'));
+
+    await waitFor(() => expect(setIntervalSpy).toHaveBeenCalled());
+
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
 
     const marketOutcome = await screen.findByTestId('market-outcome');
     const { buyers, sellers } = getMarketParticipants();
@@ -582,6 +635,7 @@ describe('MarketSandbox', () => {
   });
 
   it('gives the expected outcome for a partially accepted project when bidding above cost', async () => {
+    const setIntervalSpy = jest.spyOn(global, 'setInterval');
     const biddersResult = cloneDeep(singleBidScenario.states[0].bidders);
     let requestState: DemoState | undefined;
 
@@ -621,6 +675,12 @@ describe('MarketSandbox', () => {
     fireEvent.click(within(projectDetails).getByText('Submit'));
     fireEvent.click(await screen.findByText('Solve Market'));
 
+    await waitFor(() => expect(setIntervalSpy).toHaveBeenCalled());
+
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
+
     const marketOutcome = await screen.findByTestId('market-outcome');
     const { buyers, sellers } = getMarketParticipants();
 
@@ -653,6 +713,7 @@ describe('MarketSandbox', () => {
   });
 
   it('makes a request with a seller offer below cost', async () => {
+    const setIntervalSpy = jest.spyOn(global, 'setInterval');
     const biddersResult = cloneDeep(singleBidScenario.states[0].bidders);
     let requestState: DemoState | undefined;
 
@@ -692,12 +753,19 @@ describe('MarketSandbox', () => {
     fireEvent.click(within(projectDetails).getByText('Submit'));
     fireEvent.click(await screen.findByText('Solve Market'));
 
+    await waitFor(() => expect(setIntervalSpy).toHaveBeenCalled());
+
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
+
     await screen.findByTestId('market-outcome');
 
     expect(findBid(requestState!.bidders, 'seller 1').v).toBe(-1000);
   });
 
   it('gives the expected outcome for an XOR scenario where one option is accepted', async () => {
+    const setIntervalSpy = jest.spyOn(global, 'setInterval');
     const biddersResult = cloneDeep(multipleBidsScenario.states[0].bidders);
     let requestState: DemoState | undefined;
 
@@ -736,6 +804,12 @@ describe('MarketSandbox', () => {
 
     fireEvent.click(within(projectDetails).getByText('Submit'));
     fireEvent.click(await screen.findByText('Solve Market'));
+
+    await waitFor(() => expect(setIntervalSpy).toHaveBeenCalled());
+
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
 
     const marketOutcome = await screen.findByTestId('market-outcome');
     const { buyers, sellers } = getMarketParticipants();
@@ -789,6 +863,7 @@ describe('MarketSandbox', () => {
   });
 
   it('gives the expected outcome for an investor bidding scenario', async () => {
+    const setIntervalSpy = jest.spyOn(global, 'setInterval');
     const biddersResult = cloneDeep(investorBidScenario.states[0].bidders);
 
     findBid(biddersResult, 'investor', { bidIndex: 0 }).winning = 0.75;
@@ -829,6 +904,12 @@ describe('MarketSandbox', () => {
 
     fireEvent.click(within(projectDetails).getByText('Submit'));
     fireEvent.click(await screen.findByText('Solve Market'));
+
+    await waitFor(() => expect(setIntervalSpy).toHaveBeenCalled());
+
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
 
     const marketOutcome = await screen.findByTestId('market-outcome');
     const { buyers, sellers } = getMarketParticipants();

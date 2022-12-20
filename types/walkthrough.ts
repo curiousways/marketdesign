@@ -17,7 +17,6 @@ export interface WalkthroughOptions {
   };
   showParticipants: boolean;
   limitMarketInfo?: boolean;
-  showCosts?: boolean;
 }
 
 export interface WalkthroughScenario {

@@ -285,7 +285,6 @@ export const getGenericScenario0_0: GetWalkthroughScenario = (
     showMaps: true,
     highlightedMapRegions: getHighlightedMapRegions(stage),
     showParticipants: stage === 4 || stage > 5,
-    showCosts: stage === 4,
     projectOverlay: getProjectOverlay(stage),
   },
 });
