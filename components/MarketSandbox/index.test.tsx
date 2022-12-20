@@ -869,7 +869,7 @@ describe('MarketSandbox', () => {
       buttonText                   | routerState
       ${'Return to Market Choice'} | ${{ pathname: '/market-sandbox' }}
       ${'Shuffle Market'}          | ${{ pathname: '/market-sandbox/example-walkthrough' }}
-      ${'Replay Market'}           | ${{ pathname: '/market-sandbox/example-walkthrough', query: { state: '0' } }}
+      ${'Replay Market'}           | ${{ pathname: '/market-sandbox/example-walkthrough', query: { state: expect.stringMatching(/0|1/) } }}
     `(
       'shows the "$buttonText" button and updates the route when clicked',
       async ({ buttonText, routerState }) => {
@@ -885,7 +885,18 @@ describe('MarketSandbox', () => {
           },
         });
 
-        render(<MarketSandbox data={singleBidScenario} />, { wrapper });
+        render(
+          <MarketSandbox
+            data={{
+              ...singleBidScenario,
+              states: [
+                ...singleBidScenario.states,
+                ...singleBidScenario.states,
+              ],
+            }}
+          />,
+          { wrapper },
+        );
 
         const region = getHighlightedMapRegionByKey('b1');
 
@@ -909,5 +920,40 @@ describe('MarketSandbox', () => {
         expect(router).toMatchObject(routerState);
       },
     );
+
+    it('does not show the "Shuffle Market" button when only one state', async () => {
+      const biddersResult = cloneDeep(singleBidScenario.states[0].bidders);
+
+      mockApiResponse({
+        rule: 'lindsay2018',
+        surplus_shares: {},
+        problem: {
+          free_disposal: true,
+          goods: [],
+          bidders: biddersResult,
+        },
+      });
+
+      render(<MarketSandbox data={singleBidScenario} />, { wrapper });
+
+      const region = getHighlightedMapRegionByKey('b1');
+
+      fireEvent.click(region);
+
+      const projectDetails = await screen.findByTestId('project-details');
+      const textInput = within(projectDetails).getByRole('textbox');
+
+      fireEvent.change(textInput, { target: { value: '8000' } });
+
+      expect(textInput).toBeValid();
+
+      fireEvent.click(within(projectDetails).getByText('Submit'));
+
+      fireEvent.click(await screen.findByText('Solve Market'));
+
+      expect(await screen.findByText('Replay Market')).not.toBeNull();
+      expect(screen.getByText('Return to Market Choice')).not.toBeNull();
+      expect(screen.queryByText('Shuffle Market')).toBeNull();
+    });
   });
 });
