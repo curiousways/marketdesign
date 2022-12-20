@@ -428,9 +428,11 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
               <OutlineButton className="flex-1" onClick={onReplay}>
                 Replay Market
               </OutlineButton>
-              <OutlineButton className="flex-1" onClick={onShuffle}>
-                Shuffle Market
-              </OutlineButton>
+              {data.states.length > 1 && (
+                <OutlineButton className="flex-1" onClick={onShuffle}>
+                  Shuffle Market
+                </OutlineButton>
+              )}
             </div>
             <OutlineButton className="flex-1 mt-3" onClick={onReturnToIndex}>
               Return to Market Choice
