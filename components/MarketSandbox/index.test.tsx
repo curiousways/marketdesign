@@ -405,6 +405,20 @@ const getHighlightedMapRegionByKey = (key: string) => {
   return region;
 };
 
+const getInvestorRegionByKey = (key: string) => {
+  const map = screen.getByTestId('map');
+  const list = within(map).getByRole('list');
+  const listItems = within(list).getAllByRole('listitem');
+
+  const region = listItems.find(({ textContent }) => textContent === key);
+
+  if (!region) {
+    throw new Error(`Region with key ${key} is not in the investor list`);
+  }
+
+  return within(region).getByRole('button');
+};
+
 describe('MarketSandbox', () => {
   beforeEach(() => {
     jest.useFakeTimers();
@@ -875,7 +889,7 @@ describe('MarketSandbox', () => {
 
     render(<MarketSandbox data={investorBidScenario} />, { wrapper });
 
-    const region = getHighlightedMapRegionByKey('i1');
+    const region = getInvestorRegionByKey('i1');
 
     fireEvent.click(region);
 

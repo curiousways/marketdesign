@@ -6,6 +6,7 @@ type BiodiversityProps = {
   boxStyle?: 'buyer' | 'seller' | 'outcome';
   children?: ReactNode;
   hidden?: boolean;
+  size?: number;
 };
 
 export const Biodiversity: FC<BiodiversityProps> = ({
@@ -13,12 +14,13 @@ export const Biodiversity: FC<BiodiversityProps> = ({
   boxStyle,
   children,
   hidden,
+  size = 32,
 }: BiodiversityProps) => {
   if (type === 'grey') {
     return (
       <svg
-        width="30"
-        height="30"
+        width={size}
+        height={size}
         viewBox="0 0 30 30"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -162,8 +164,8 @@ export const Biodiversity: FC<BiodiversityProps> = ({
     <ProductBox boxStyle={boxStyle} hidden={hidden}>
       {children}
       <svg
-        width="32"
-        height="32"
+        width={size}
+        height={size}
         viewBox="0 0 32 32"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

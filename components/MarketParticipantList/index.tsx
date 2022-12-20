@@ -81,20 +81,28 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
       {sortedProjects.map((project) => {
         const groupedProjects = getGroupedProjects(sortedProjects, project);
         const isGroupedProject = groupedProjects.length > 1;
+
         const isFirstGroupedProject = groupedProjects.indexOf(project) === 0;
         const isLastGroupedProject =
           groupedProjects.indexOf(project) === groupedProjects.length - 1;
 
         const projectCost = getProjectCost(project, true);
 
+        const isDivisible = !!project.costPerCredit;
+        const allGroupedProjectsWon =
+          groupedProjects.length > 1 &&
+          groupedProjects.every((groupedProject) =>
+            groupedProject.accepted(getProjectCost(groupedProject)),
+          );
+
         // The total cost for all projects in a group is needed for the case
         // where a project comprises multple "sub-projects" (e.g. investor bidding).
-        const isDivisible = !!project.costPerCredit;
-        const totalCost = isDivisible
-          ? groupedProjects
-              .map(getAcceptedProjectCost)
-              .reduce((a, b) => a + b, 0)
-          : projectCost;
+        const totalCost =
+          isDivisible || allGroupedProjectsWon
+            ? groupedProjects
+                .map(getAcceptedProjectCost)
+                .reduce((a, b) => a + b, 0)
+            : projectCost;
 
         return (
           <li key={getUniqueProjectKey(project)}>

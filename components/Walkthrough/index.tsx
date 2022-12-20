@@ -163,6 +163,8 @@ export const Walkthrough: FC = () => {
     }
   }, [scenario.fixedMarketState, isMarketSolving, marketState]);
 
+  console.log(scenario.options.showCosts, scenario.options.limitMarketInfo);
+
   return (
     <MainContainer>
       <SideBar
@@ -179,6 +181,7 @@ export const Walkthrough: FC = () => {
         onSolveMarketClick={onSolveMarketClick}
         sidebarContent={scenario.sidebarContent?.[stage]}
         isFormEnabled={isFormEnabled}
+        isFormSubmitHidden={marketState === MarketState.solved}
         isDivisibleInputEnabled={isFormEnabled && allowDivision}
         showDivisibleInput={showDivisibleInput}
         onFormSubmit={onFormSubmit}
@@ -191,7 +194,7 @@ export const Walkthrough: FC = () => {
         sellerProjects={scenario.sellerProjects}
         showCosts={
           scenario.options.limitMarketInfo
-            ? marketState > MarketState.solvable
+            ? scenario.options.showCosts ?? marketState > MarketState.solvable
             : true
         }
         showAllProjects={marketState < MarketState.solvable}
@@ -216,6 +219,7 @@ export const Walkthrough: FC = () => {
           loaderSpeed: MARKET_SOLVING_TIMEOUT + 1000,
           waitingTime: MARKET_SOLVING_TIMEOUT,
         }}
+        projectOverlay={scenario.options.projectOverlay}
       />
     </MainContainer>
   );

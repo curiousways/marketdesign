@@ -28,9 +28,7 @@ export const InlineTitle = ({
           />
         </svg>
       )}
-      <h2 className={classNames('heading-2', titleClass ?? '')}>
-        {title && title}
-      </h2>
+      <h2 className={classNames('heading-2', titleClass)}>{title}</h2>
     </div>
   );
 };
