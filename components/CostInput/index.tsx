@@ -34,7 +34,15 @@ export const CostInput: FC<CostInputProps> = ({
 
   const validateInput = useCallback(
     (element: HTMLInputElement) => {
+      if (element.value.length && !Number.isFinite(Number(element.value))) {
+        element.setCustomValidity('Please enter a number to proceed');
+
+        return;
+      }
+
       if (!bid) {
+        element.setCustomValidity('');
+
         return;
       }
 
