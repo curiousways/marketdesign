@@ -8,7 +8,7 @@ import { MarketParticipantList } from '../MarketParticipantList';
 import { MarketOutcome } from '../MarketOutcome';
 import { Project } from '../../types/project';
 import { useProjectsContext } from '../../context/ProjectsContext';
-import { HighlightedMapRegions } from '../../types/map';
+import { HighlightedMapRegion } from '../../types/map';
 import { Map } from '../Map';
 import { getGroupedProjects } from '../../utils/project';
 import { MarketParticipant } from '../MarketParticipant';
@@ -25,7 +25,7 @@ type MarketScenarioProps = {
   showCosts: boolean;
   showParticipants: boolean;
   showMap?: boolean;
-  highlightedMapRegions?: HighlightedMapRegions;
+  highlightedMapRegions?: HighlightedMapRegion[];
   investorRegions?: string[];
   onMapRegionClick?: (region: string) => void;
   link?: {

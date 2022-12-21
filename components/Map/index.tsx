@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import { HighlightedMapRegions } from '@/types/map';
+import { HighlightedMapRegion } from '@/types/map';
 import { MAP_REGION_PATHS, MapRegion } from '../MapRegion';
 import {
   MAP_INDICES,
@@ -9,7 +9,7 @@ import {
 } from '../../constants/map';
 
 type Props = {
-  highlightedMapRegions?: HighlightedMapRegions;
+  highlightedMapRegions?: HighlightedMapRegion[];
   investorRegions?: string[];
   onMapRegionClick?: (region: string) => void;
 };
@@ -99,19 +99,20 @@ export const Map: FunctionComponent<Props> = ({
         {MAP_REGION_PATHS.map((path, index) => {
           let matchedRoleId;
           let matchedRegion;
+          let matchedLabel;
 
-          Object.entries(highlightedMapRegions ?? {}).find(
-            ([roleId, regions = []]) =>
-              regions.some((region) => {
-                if (MAP_INDICES[region.split('-')[0]] !== index) {
-                  return false;
-                }
+          highlightedMapRegions?.find(({ roleId, regions, label }) =>
+            regions.some((region) => {
+              if (MAP_INDICES[region.split('-')[0]] !== index) {
+                return false;
+              }
 
-                matchedRegion = region;
-                matchedRoleId = roleId;
+              matchedRegion = region;
+              matchedRoleId = roleId;
+              matchedLabel = label;
 
-                return true;
-              }),
+              return true;
+            }),
           );
 
           return (
@@ -122,6 +123,7 @@ export const Map: FunctionComponent<Props> = ({
               region={matchedRegion}
               roleId={matchedRoleId}
               onClick={onMapRegionClick}
+              label={matchedLabel}
             />
           );
         })}
