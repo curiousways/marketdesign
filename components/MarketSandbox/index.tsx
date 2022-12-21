@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { useCallback, useState } from 'react';
+import { ChangeEvent, useCallback, useState } from 'react';
 import { capitalCase } from 'change-case';
 import fetch from 'isomorphic-unfetch';
 import cloneDeep from 'clone-deep';
@@ -17,11 +17,18 @@ import { isProjectEqual } from '../../utils/project';
 import { useProjectsContext } from '../../context/ProjectsContext';
 import { RoleId } from '../../types/roles';
 import { OutlineButton } from '../OutlineButton';
+import { Checkbox } from '../Checkbox';
 
 interface MarketSandboxProps {
   data: DemoData;
   stateIndex?: number;
 }
+
+type MarketSandboxCheatOptions = {
+  revealPlayers: boolean;
+  revealBids: boolean;
+  revealProducts: boolean;
+};
 
 const API_URL = 'https://marketdesign.herokuapp.com/solve/lindsay2018';
 const MARKET_SOLVING_TIMEOUT = 1000;
@@ -216,6 +223,7 @@ const getSellerProjects = (
   playableTraders: DemoTrader[],
   bidders: DemoBidder[],
   marketState: MarketState,
+  cheatOptions: MarketSandboxCheatOptions,
   myProjects?: Project[],
   result?: Result,
 ): Project[] => {
@@ -227,7 +235,7 @@ const getSellerProjects = (
     result,
   );
 
-  if (marketState <= MarketState.solvable) {
+  if (marketState <= MarketState.solvable && !cheatOptions.revealPlayers) {
     return [];
   }
 
@@ -238,6 +246,7 @@ const getBuyerProjects = (
   playableTraders: DemoTrader[],
   bidders: DemoBidder[],
   marketState: MarketState,
+  cheatOptions: MarketSandboxCheatOptions,
   myProjects?: Project[],
   result?: Result,
 ): Project[] => {
@@ -249,7 +258,7 @@ const getBuyerProjects = (
     result,
   );
 
-  if (marketState <= MarketState.solvable) {
+  if (marketState <= MarketState.solvable && !cheatOptions.revealPlayers) {
     return [];
   }
 
@@ -339,6 +348,12 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
 }: MarketSandboxProps) => {
   const [marketState, setMarketState] = useState<MarketState>(0);
   const [result, setResult] = useState<Result>();
+  const [cheatOptions, setCheatOptions] = useState<MarketSandboxCheatOptions>({
+    revealPlayers: false,
+    revealBids: false,
+    revealProducts: false,
+  });
+
   const router = useRouter();
 
   // If a valid state index is passed in use that, otherwise pick a random state.
@@ -471,6 +486,18 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
     void router.push(pathname.replace(/\/[^/]+$/, ''));
   }, [router, pathname]);
 
+  const updateCheatOption = useCallback(
+    (evt: ChangeEvent<HTMLInputElement>) => {
+      const { name, checked } = evt.target;
+
+      setCheatOptions({
+        ...cheatOptions,
+        [name]: checked,
+      });
+    },
+    [cheatOptions],
+  );
+
   return (
     <MainContainer>
       <SideBar
@@ -504,6 +531,29 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
             </OutlineButton>
           </div>
         )}
+        {marketState === MarketState.solvable && (
+          <div className="flex flex-col mt-5 items-center">
+            <div className="space-y-1">
+              <Checkbox name="revealPlayers" onChange={updateCheatOption}>
+                Reveal players
+              </Checkbox>
+              <Checkbox
+                name="revealProducts"
+                onChange={updateCheatOption}
+                disabled={!cheatOptions.revealPlayers}
+              >
+                Reveal credits
+              </Checkbox>
+              <Checkbox
+                name="revealBids"
+                onChange={updateCheatOption}
+                disabled={!cheatOptions.revealPlayers}
+              >
+                Reveal bids/offers
+              </Checkbox>
+            </div>
+          </div>
+        )}
       </SideBar>
       <Market
         showMap
@@ -512,6 +562,7 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
           playableTraders,
           demoState.bidders,
           marketState,
+          cheatOptions,
           myProjects,
           result,
         )}
@@ -519,10 +570,13 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
           playableTraders,
           demoState.bidders,
           marketState,
+          cheatOptions,
           myProjects,
           result,
         )}
-        showCosts={marketState > MarketState.solvable}
+        showCosts={
+          marketState > MarketState.solvable || cheatOptions.revealBids
+        }
         showAllProjects={marketState < MarketState.solvable}
         showWinners={marketState >= MarketState.showing_winners}
         showSurpluses={marketState >= MarketState.showing_surpluses}
@@ -532,6 +586,9 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
         highlightedMapRegions={getHighlightedMapRegions(data.playable_traders)}
         investorRegions={getInvestorRegions(data.playable_traders)}
         onMapRegionClick={onMapRegionClick}
+        hideProducts={
+          marketState <= MarketState.solvable && !cheatOptions.revealProducts
+        }
         loadingBar={{
           progress: loadingBarProgress,
           loaderSpeed: MARKET_SOLVING_TIMEOUT + 1000,

@@ -20,6 +20,7 @@ type MarketParticipantListProps = {
   showWinners?: boolean;
   showSurpluses?: boolean;
   isMarketSolved?: boolean;
+  hideProducts?: boolean;
 };
 
 /**
@@ -61,6 +62,7 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
   showWinners,
   showSurpluses,
   isMarketSolved,
+  hideProducts,
 }: MarketParticipantListProps) => {
   const { getProjectCost, getAcceptedProjectCost } = useProjectsContext();
   const sortedProjects = sortMyProjects(
@@ -131,6 +133,7 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
               showWinners={showWinners}
               showSurpluses={showSurpluses}
               isMarketSolved={isMarketSolved}
+              hideProducts={hideProducts}
             />
           </li>
         );

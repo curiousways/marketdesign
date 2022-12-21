@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import { ChangeEvent, FC, ReactNode } from 'react';
 import { classNames } from '../../utils';
 
 type CheckboxProps = {
@@ -6,7 +6,7 @@ type CheckboxProps = {
   required?: boolean;
   disabled?: boolean;
   name: string;
-  onChange: () => void;
+  onChange: (evt: ChangeEvent<HTMLInputElement>) => void;
   children: ReactNode;
 };
 
@@ -18,7 +18,14 @@ export const Checkbox: FC<CheckboxProps> = ({
   onChange,
   children,
 }: CheckboxProps) => (
-  <label htmlFor={name} className={classNames('flex select-none', className)}>
+  // eslint-disable-next-line jsx-a11y/label-has-associated-control
+  <label
+    className={classNames(
+      'flex select-none',
+      !disabled ? 'cursor-pointer' : '',
+      className,
+    )}
+  >
     <span>
       <input
         required={required}
@@ -26,8 +33,11 @@ export const Checkbox: FC<CheckboxProps> = ({
         name={name}
         disabled={disabled}
         onChange={onChange}
+        className={!disabled ? 'cursor-pointer' : ''}
       />
     </span>
-    <span className="ml-2">{children}</span>
+    <span className={classNames('ml-2', disabled ? 'opacity-50' : '')}>
+      {children}
+    </span>
   </label>
 );

@@ -268,7 +268,6 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
               disabled={!isDivisibleInputEnabled}
               onChange={onInputChange}
               className={classNames(
-                isDivisibleInputEnabled ? 'cursor-pointer' : '',
                 isFormEnabled &&
                   animatedInputName === 'is-divisible' &&
                   isDivisibleInputEnabled &&
