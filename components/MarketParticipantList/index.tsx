@@ -62,7 +62,9 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
   showSurpluses,
   isMarketSolved,
 }: MarketParticipantListProps) => {
-  const { getProjectCost, getAcceptedProjectCost } = useProjectsContext();
+  const { getProjectCost, getAcceptedProjectCost, isProjectDivisible } =
+    useProjectsContext();
+
   const sortedProjects = sortMyProjects(
     myProjects,
     buyerProjects,
@@ -88,7 +90,9 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
 
         const projectCost = getProjectCost(project, true);
 
-        const isDivisible = !!project.costPerCredit;
+        const isDivisible =
+          !!project.costPerCredit || isProjectDivisible(project);
+
         const allGroupedProjectsWon =
           groupedProjects.length > 1 &&
           groupedProjects.every((groupedProject) =>

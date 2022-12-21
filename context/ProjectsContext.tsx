@@ -14,11 +14,14 @@ type ProjectsContextType = {
   getProjectCost: (project: Project, sumCredits?: boolean) => number;
   setProjectCost: (project: Project, cost: number) => void;
   getAcceptedProjectCost: (project: Project) => number;
+  isProjectDivisible: (project: Project) => boolean;
+  setIsProjectDivisible: (project: Project, divisible: boolean) => void;
 };
 
 type ProjectsState = {
   project: Project;
   cost?: number;
+  divisible?: boolean;
 }[];
 
 type ProjectsUpdateCostAction = {
@@ -26,7 +29,14 @@ type ProjectsUpdateCostAction = {
   value: { project: Project; cost: number };
 };
 
-type ProjectsAction = ProjectsUpdateCostAction;
+type ProjectsUpdateDivisibilityAction = {
+  type: 'UPDATE_DIVISIBILITY';
+  value: { project: Project; divisible: boolean };
+};
+
+type ProjectsAction =
+  | ProjectsUpdateCostAction
+  | ProjectsUpdateDivisibilityAction;
 
 const findEntry = (state: ProjectsState, project: Project) =>
   state.find((item) => isProjectEqual(item.project, project));
@@ -49,6 +59,19 @@ const reducer = (
       return [...state, { project, cost }];
     }
 
+    case 'UPDATE_DIVISIBILITY': {
+      const { project, divisible } = action.value;
+      const entry = findEntry(state, action.value.project);
+
+      if (entry) {
+        entry.divisible = divisible;
+
+        return state;
+      }
+
+      return [...state, { project, divisible }];
+    }
+
     default:
       throw new Error('Unknown action');
   }
@@ -68,6 +91,13 @@ export const ProjectsProvider: FunctionComponent<ProjectsProviderProps> = ({
   const setProjectCost = useCallback((project: Project, cost: number) => {
     dispatch({ type: 'UPDATE_COST', value: { project, cost } });
   }, []);
+
+  const setIsProjectDivisible = useCallback(
+    (project: Project, divisible: boolean) => {
+      dispatch({ type: 'UPDATE_DIVISIBILITY', value: { project, divisible } });
+    },
+    [],
+  );
 
   const getProjectCost = useCallback(
     (project: Project, sumCredits?: boolean): number => {
@@ -92,6 +122,15 @@ export const ProjectsProvider: FunctionComponent<ProjectsProviderProps> = ({
     [state],
   );
 
+  const isProjectDivisible = useCallback(
+    (project: Project): boolean => {
+      const { divisible = false } = findEntry(state, project) ?? {};
+
+      return divisible;
+    },
+    [state],
+  );
+
   const getAcceptedProjectCost = useCallback(
     (project: Project): number => {
       const cost = getProjectCost(project);
@@ -107,8 +146,16 @@ export const ProjectsProvider: FunctionComponent<ProjectsProviderProps> = ({
       getProjectCost,
       setProjectCost,
       getAcceptedProjectCost,
+      isProjectDivisible,
+      setIsProjectDivisible,
     }),
-    [getProjectCost, setProjectCost, getAcceptedProjectCost],
+    [
+      getProjectCost,
+      setProjectCost,
+      getAcceptedProjectCost,
+      isProjectDivisible,
+      setIsProjectDivisible,
+    ],
   );
 
   return (

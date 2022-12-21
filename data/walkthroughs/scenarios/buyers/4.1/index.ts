@@ -11,7 +11,6 @@ export const getBuyerScenario4_1: GetWalkthroughScenario = (stage: number) => ({
   myProjects: [
     {
       title: 'My Project',
-      subtitle: 'Divisible',
       cost: 180000,
       // The number below is so specific because we wanted specifically 120,000
       // to be accepted (67% of 180,000 is actually 120,600).
