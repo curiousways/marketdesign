@@ -15,7 +15,7 @@ type MapRegionProps = {
   region?: string;
   size?: number;
   roleId?: RoleId;
-  onClick?: (region: string, index: number) => void;
+  onClick?: (region: string) => void;
   pathOnly?: boolean;
   isSmall?: boolean;
 };
@@ -145,7 +145,7 @@ export const MapRegion: FunctionComponent<MapRegionProps> = ({
       return;
     }
 
-    onClick?.(finalRegion, index);
+    onClick?.(finalRegion);
   };
 
   const getIconId = (suffix: string) =>

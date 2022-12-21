@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { MarketOutcome } from './index';
 import { ProjectsContext } from '../../context/ProjectsContext';
 
@@ -64,20 +64,24 @@ describe('MarketOutcome', () => {
     expect(screen.getByTestId('surplus')).toHaveTextContent('£13,000');
   });
 
-  it('does not render the balance if the market is not solved', () => {
+  it('does not show the balance if the market is not solved', () => {
     render(<MarketOutcome buyerProjects={[]} sellerProjects={[]} />, {
       wrapper,
     });
 
-    expect(screen.queryByTestId('balance')).not.toBeInTheDocument();
+    expect(screen.getByTestId('balance-container')).toHaveStyle({ opacity: 0 });
   });
 
-  it('renders the balance if the market is solved', () => {
+  it('shows the balance if the market is solved', async () => {
     render(
       <MarketOutcome isMarketSolved buyerProjects={[]} sellerProjects={[]} />,
       { wrapper },
     );
 
-    expect(screen.getByTestId('balance')).toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.getByTestId('balance-container')).toHaveStyle({
+        opacity: 1,
+      }),
+    );
   });
 });

@@ -11,6 +11,10 @@ export interface WalkthroughOptions {
   showDivisibleInput?: boolean;
   showMaps: boolean;
   highlightedMapRegions?: HighlightedMapRegions;
+  projectOverlay?: {
+    roleId: 'buyer' | 'seller';
+    project: Project;
+  };
   showParticipants: boolean;
   limitMarketInfo?: boolean;
 }

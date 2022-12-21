@@ -11,7 +11,7 @@ export const sidebarContent11 = (
     </p>
     <p>
       If you look carefully, however, you’ll notice that buyers 1 & 2 are paying
-      for seller 2’s project when they really don’t need to. Seller 1’s project
+      for seller 1’s project when they really don’t need to. Seller 2’s project
       provides enough credits to cover their demands.
     </p>
   </>

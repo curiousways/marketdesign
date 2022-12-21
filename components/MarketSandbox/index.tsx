@@ -24,6 +24,8 @@ interface MarketSandboxProps {
 }
 
 const API_URL = 'https://marketdesign.herokuapp.com/solve/lindsay2018';
+const MARKET_SOLVING_TIMEOUT = 1000;
+const MARKET_SOLVING_STAGES = 5;
 
 const getProductsForBid = (bid: DemoBid | Bid, isInvestor?: boolean) => {
   const { q } = bid;
@@ -213,10 +215,11 @@ const findBidForProject = (
 const getSellerProjects = (
   playableTraders: DemoTrader[],
   bidders: DemoBidder[],
+  marketState: MarketState,
   myProjects?: Project[],
   result?: Result,
-): Project[] =>
-  getFilteredProjects(
+): Project[] => {
+  const projects = getFilteredProjects(
     isSellerBidder,
     playableTraders,
     bidders,
@@ -224,19 +227,34 @@ const getSellerProjects = (
     result,
   );
 
+  if (marketState <= MarketState.solvable) {
+    return [];
+  }
+
+  return projects;
+};
+
 const getBuyerProjects = (
   playableTraders: DemoTrader[],
   bidders: DemoBidder[],
+  marketState: MarketState,
   myProjects?: Project[],
   result?: Result,
-): Project[] =>
-  getFilteredProjects(
+): Project[] => {
+  const projects = getFilteredProjects(
     isBuyerBidder,
     playableTraders,
     bidders,
     myProjects,
     result,
   );
+
+  if (marketState <= MarketState.solvable) {
+    return [];
+  }
+
+  return projects;
+};
 
 const getProjectsForTrader = (
   playableTraders: DemoTrader[],
@@ -291,12 +309,24 @@ const getHighlightedMapRegions = (
   };
 
   traders.forEach((trader) => {
-    if (getRoleId(trader) === 'buyer') {
+    if (trader.role === 'buyer') {
       regions.buyer.push(...trader.locations);
     }
 
-    if (getRoleId(trader) === 'seller') {
+    if (trader.role === 'seller') {
       regions.seller.push(...trader.locations);
+    }
+  }, regions);
+
+  return regions;
+};
+
+const getInvestorRegions = (traders: DemoTrader[]): string[] => {
+  const regions: string[] = [];
+
+  traders.forEach((trader) => {
+    if (trader.role === 'investor') {
+      regions.push(...trader.locations);
     }
   }, regions);
 
@@ -319,6 +349,7 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
       : randomStateIndex;
 
   const demoState = data.states[finalStateIndex];
+  const [loadingBarProgress, setLoadingBarProgress] = useState<number>(0);
 
   const [selectedMapRegion, setSelectedMapRegion] = useState<string>();
   const [playableTrader, setPlayableTrader] = useState<DemoTrader>();
@@ -335,6 +366,18 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
 
   const hasMyProjects = !!myProjects.length;
   const roleId = playableTrader ? getRoleId(playableTrader) : undefined;
+
+  const updateLoadingBarProgress = (state: MarketState) => {
+    setLoadingBarProgress((100 / MARKET_SOLVING_STAGES) * (state - 1));
+  };
+
+  const getNewMarketState = useCallback((previousMarketState: MarketState) => {
+    const newMarketState = previousMarketState + 1;
+
+    updateLoadingBarProgress(newMarketState);
+
+    return newMarketState;
+  }, []);
 
   const onSolveMarketClick = useCallback(async () => {
     if (!demoState) {
@@ -370,8 +413,29 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
     });
 
     setResult(await res.json());
-    setMarketState(MarketState.solved);
-  }, [demoState, myProjects, roleId, getProjectCost, playableTraders]);
+    setMarketState(getNewMarketState);
+
+    // Run through the remaining solve market stages with an artificial delay
+    // between each.
+    const timer: ReturnType<typeof setInterval> = setInterval(() => {
+      setMarketState((previousMarketState) => {
+        const newMarketState = getNewMarketState(previousMarketState);
+
+        if (newMarketState === MarketState.solved) {
+          clearInterval(timer);
+        }
+
+        return newMarketState;
+      });
+    }, MARKET_SOLVING_TIMEOUT);
+  }, [
+    demoState,
+    myProjects,
+    roleId,
+    getProjectCost,
+    playableTraders,
+    getNewMarketState,
+  ]);
 
   const onFormSubmit = useCallback(() => {
     setMarketState(MarketState.solvable);
@@ -412,6 +476,7 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
       <SideBar
         isFormEnabled={marketState === MarketState.pending}
         isFormReviseEnabled={marketState > MarketState.pending}
+        isFormSubmitHidden={marketState === MarketState.solved}
         showDetailsWidget={hasMyProjects}
         title={data.title}
         sidebarContent={data.description}
@@ -446,12 +511,14 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
         buyerProjects={getBuyerProjects(
           playableTraders,
           demoState.bidders,
+          marketState,
           myProjects,
           result,
         )}
         sellerProjects={getSellerProjects(
           playableTraders,
           demoState.bidders,
+          marketState,
           myProjects,
           result,
         )}
@@ -463,7 +530,13 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
         roleId={roleId}
         showParticipants={hasMyProjects}
         highlightedMapRegions={getHighlightedMapRegions(data.playable_traders)}
+        investorRegions={getInvestorRegions(data.playable_traders)}
         onMapRegionClick={onMapRegionClick}
+        loadingBar={{
+          progress: loadingBarProgress,
+          loaderSpeed: MARKET_SOLVING_TIMEOUT + 1000,
+          waitingTime: MARKET_SOLVING_TIMEOUT,
+        }}
       />
     </MainContainer>
   );
