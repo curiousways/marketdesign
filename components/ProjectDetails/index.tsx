@@ -21,6 +21,7 @@ type ProjectDetailsProps = {
   isFormSubmitHidden?: boolean;
   hasFixedBids?: boolean;
   isDivisibleInputEnabled?: boolean;
+  isDivisibleInputRequired?: boolean;
   showDivisibleInput?: boolean;
   onFormSubmit: () => void;
   onFormRevise?: () => void;
@@ -73,6 +74,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
   isFormSubmitHidden,
   hasFixedBids,
   isDivisibleInputEnabled,
+  isDivisibleInputRequired,
   showDivisibleInput,
   onFormSubmit,
   onFormRevise,
@@ -285,7 +287,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
               <span>
                 <input
                   ref={divisibleInputRef}
-                  required={isDivisibleInputEnabled}
+                  required={isDivisibleInputRequired}
                   type="checkbox"
                   name="is-divisible"
                   disabled={!isDivisibleInputEnabled}

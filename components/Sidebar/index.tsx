@@ -26,6 +26,7 @@ type SidebarProps = {
   animateNextSteps?: boolean;
   hasFixedBids?: boolean;
   isDivisibleInputEnabled?: boolean;
+  isDivisibleInputRequired?: boolean;
   showDivisibleInput?: boolean;
   onFormSubmit: () => void;
   onFormRevise?: () => void;
@@ -50,6 +51,7 @@ export const SideBar: FC<SidebarProps> = ({
   animateNextSteps,
   hasFixedBids,
   isDivisibleInputEnabled,
+  isDivisibleInputRequired,
   showDivisibleInput,
   onFormSubmit,
   onFormRevise,
@@ -69,6 +71,7 @@ export const SideBar: FC<SidebarProps> = ({
             isFormSubmitHidden={isFormSubmitHidden}
             hasFixedBids={hasFixedBids}
             isDivisibleInputEnabled={isDivisibleInputEnabled}
+            isDivisibleInputRequired={isDivisibleInputRequired}
             showDivisibleInput={showDivisibleInput}
             onFormSubmit={onFormSubmit}
             onFormRevise={onFormRevise}
