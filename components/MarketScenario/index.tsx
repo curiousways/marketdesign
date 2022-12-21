@@ -185,6 +185,7 @@ export const MarketScenario: FC<MarketScenarioProps> = ({
               title={projectOverlay.project.title}
               subtitle={projectOverlay.project.subtitle}
               projectCost={getProjectCost(projectOverlay.project)}
+              projectBid={getProjectCost(projectOverlay.project)}
               discountOrBonus={projectOverlay.project.discountOrBonus}
               products={projectOverlay.project.products}
             />

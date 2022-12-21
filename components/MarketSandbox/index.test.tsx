@@ -949,4 +949,70 @@ describe('MarketSandbox', () => {
       '£10,500',
     );
   });
+
+  it('modifies the max number of investor credits being bidded for', async () => {
+    const setIntervalSpy = jest.spyOn(global, 'setInterval');
+    const biddersResult = cloneDeep(investorBidScenario.states[0].bidders);
+    let requestState: DemoState | undefined;
+
+    mockApiResponse((_req: any, body: any) => {
+      requestState = body;
+
+      return {
+        rule: 'lindsay2018',
+        surplus_shares: {},
+        problem: {
+          free_disposal: true,
+          goods: [],
+          bidders: biddersResult,
+        },
+      };
+    });
+
+    render(<MarketSandbox data={investorBidScenario} />, { wrapper });
+
+    const region = getInvestorRegionByKey('i1');
+
+    fireEvent.click(region);
+
+    const projectDetails = await screen.findByTestId('project-details');
+    const textInputs = within(projectDetails).getAllByRole('textbox');
+
+    fireEvent.change(textInputs[0], { target: { value: '10000' } });
+    fireEvent.change(textInputs[1], { target: { value: '2000' } });
+
+    expect(textInputs[0]).toBeValid();
+    expect(textInputs[1]).toBeValid();
+
+    fireEvent.click(within(projectDetails).getByText('Submit'));
+    fireEvent.click(await screen.findByText('Solve Market'));
+
+    await waitFor(() => expect(setIntervalSpy).toHaveBeenCalled());
+
+    const modifiedBidder = requestState?.bidders.find(
+      ({ name }) => name === 'investor',
+    );
+
+    expect(modifiedBidder).toEqual({
+      bids: [
+        {
+          divisibility: 1,
+          q: {
+            biodiversity: 3,
+            nutrients: 0,
+          },
+          v: 10000,
+        },
+        {
+          divisibility: 1,
+          q: {
+            biodiversity: 0,
+            nutrients: 3,
+          },
+          v: 2000,
+        },
+      ],
+      name: 'investor',
+    });
+  });
 });

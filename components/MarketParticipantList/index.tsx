@@ -87,6 +87,7 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
           groupedProjects.indexOf(project) === groupedProjects.length - 1;
 
         const projectCost = getProjectCost(project, true);
+        const projectBid = getProjectCost(project);
 
         const isDivisible = !!project.costPerCredit;
         const allGroupedProjectsWon =
@@ -123,6 +124,7 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
                 isGroupedProject && !isFirstGroupedProject
               }
               projectCost={projectCost}
+              projectBid={projectBid}
               totalCost={totalCost}
               discountOrBonus={project.discountOrBonus}
               products={project.products}
@@ -131,6 +133,7 @@ export const MarketParticipantList: FC<MarketParticipantListProps> = ({
               showWinners={showWinners}
               showSurpluses={showSurpluses}
               isMarketSolved={isMarketSolved}
+              costPerCredit={project.costPerCredit}
             />
           </li>
         );

@@ -9,6 +9,8 @@ type BiodiversityCountProps = {
   adjustCount?: boolean;
   accepted: number | boolean;
   showLoserStyles?: boolean;
+  projectBid: number;
+  costPerCredit?: number;
 };
 
 export const BiodiversityCount: FC<BiodiversityCountProps> = ({
@@ -18,8 +20,14 @@ export const BiodiversityCount: FC<BiodiversityCountProps> = ({
   accepted,
   adjustCount,
   showLoserStyles,
+  projectBid,
+  costPerCredit,
 }: BiodiversityCountProps) => {
   const hasCount = typeof count === 'number';
+  const maxCount =
+    hasCount && !!costPerCredit
+      ? Math.floor((costPerCredit * count) / projectBid)
+      : count;
 
   if (showLoserStyles) {
     return (
@@ -28,7 +36,7 @@ export const BiodiversityCount: FC<BiodiversityCountProps> = ({
           data-testid="losing-product-count"
           className="border border-black rounded-full bg-white w-[20px] h-[20px] flex justify-center items-center absolute -right-[8px] -top-[8px]"
         >
-          {count}
+          {maxCount}
         </div>
       </Biodiversity>
     );
@@ -37,7 +45,7 @@ export const BiodiversityCount: FC<BiodiversityCountProps> = ({
   return (
     <Biodiversity type={type} boxStyle={boxStyle} hidden={!hasCount}>
       <AdjustedProductCount
-        count={count ?? 0}
+        count={maxCount ?? 0}
         accepted={adjustCount ? accepted : true}
       />
     </Biodiversity>

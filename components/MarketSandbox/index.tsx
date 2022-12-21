@@ -324,6 +324,22 @@ const getHighlightedMapRegions = (
   return regions;
 };
 
+const getAdjustedProductCount = (
+  project: Project,
+  projectCost: number,
+  productCount: number,
+) => {
+  const positiveProductCount = Math.abs(productCount);
+
+  if (!project.costPerCredit || !positiveProductCount) {
+    return productCount;
+  }
+
+  return Math.floor(
+    (project.costPerCredit * positiveProductCount) / projectCost,
+  );
+};
+
 const getInvestorRegions = (traders: DemoTrader[]): string[] => {
   const regions: string[] = [];
 
@@ -393,6 +409,18 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
       );
 
       bid.v = getProjectCost(project);
+
+      bid.q.biodiversity = getAdjustedProductCount(
+        project,
+        bid.v,
+        bid.q.biodiversity,
+      );
+
+      bid.q.nutrients = getAdjustedProductCount(
+        project,
+        bid.v,
+        bid.q.nutrients,
+      );
 
       if (roleId === 'seller') {
         bid.v *= -1;

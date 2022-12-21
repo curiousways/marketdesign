@@ -13,7 +13,7 @@ export const ProductCount: FC<ProductCountProps> = ({
   <div
     data-testid="product-count"
     className={classNames(
-      'absolute right-0 border-black rounded-full bg-white w-[29px] h-[29px] flex justify-center items-center',
+      'absolute right-0 border-black rounded-full bg-white min-w-[29px] min-h-[29px] leading-[.5rem] p-[.5rem] flex justify-center items-center',
       className,
     )}
   >

@@ -4,21 +4,40 @@ import { NutrientCount } from './index';
 describe('NutrientCount', () => {
   it('renders the count', () => {
     render(
-      <NutrientCount count={42} type="positive" boxStyle="buyer" accepted />,
+      <NutrientCount
+        count={42}
+        type="positive"
+        boxStyle="buyer"
+        accepted
+        projectBid={1000}
+      />,
     );
 
     expect(screen.getByTestId('product-count').textContent).toBe('42');
   });
 
   it('renders a count of zero if no count given', () => {
-    render(<NutrientCount type="positive" boxStyle="buyer" accepted />);
+    render(
+      <NutrientCount
+        type="positive"
+        boxStyle="buyer"
+        accepted
+        projectBid={1000}
+      />,
+    );
 
     expect(screen.getByTestId('product-count').textContent).toBe('0');
   });
 
   it('renders a count of zero', () => {
     render(
-      <NutrientCount count={0} type="positive" boxStyle="buyer" accepted />,
+      <NutrientCount
+        count={0}
+        type="positive"
+        boxStyle="buyer"
+        accepted
+        projectBid={1000}
+      />,
     );
 
     expect(screen.getByTestId('product-count').textContent).toBe('0');
@@ -30,6 +49,7 @@ describe('NutrientCount', () => {
         adjustCount
         count={42}
         accepted={50}
+        projectBid={1000}
         type="positive"
         boxStyle="buyer"
       />,
@@ -46,6 +66,7 @@ describe('NutrientCount', () => {
       <NutrientCount
         count={42}
         accepted={50}
+        projectBid={1000}
         boxStyle="buyer"
         type="positive"
       />,
@@ -61,6 +82,7 @@ describe('NutrientCount', () => {
         showLoserStyles
         count={42}
         accepted={50}
+        projectBid={1000}
         type="positive"
         boxStyle="buyer"
       />,
@@ -68,5 +90,20 @@ describe('NutrientCount', () => {
 
     expect(screen.getByTestId('losing-product-count').textContent).toBe('42');
     expect(screen.queryByTestId('product-count')).not.toBeInTheDocument();
+  });
+
+  it('modifies the count when there is a cost per credit', () => {
+    render(
+      <NutrientCount
+        type="positive"
+        boxStyle="buyer"
+        accepted
+        count={42}
+        projectBid={1000}
+        costPerCredit={100}
+      />,
+    );
+
+    expect(screen.getByTestId('product-count').textContent).toBe('4');
   });
 });
