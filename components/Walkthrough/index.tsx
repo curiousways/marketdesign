@@ -1,12 +1,18 @@
 import { FC, MouseEvent, MouseEventHandler, useEffect, useState } from 'react';
 import { sentenceCase } from 'change-case';
 import { useWalkthroughContext } from '../../context/WalkthroughContext';
-import { getNextScenarioId, parseScenarioId } from '../../utils/walkthroughs';
+import {
+  getNextScenarioId,
+  isValidRoleId,
+  parseScenarioId,
+} from '../../utils/walkthroughs';
 import { SideBar } from '../Sidebar';
 import { RoleId } from '../../types/roles';
 import { Market } from '../Market';
 import { MarketState } from '../../types/market';
 import { MainContainer } from '../MainContainer';
+import { HighlightedMapRegion } from '../../types/map';
+import { WalkthroughScenario } from '../../types/walkthrough';
 
 const MARKET_SOLVING_TIMEOUT = 4000;
 const MARKET_SOLVING_STAGES = 5;
@@ -31,6 +37,20 @@ const getOverlayText = (marketState: MarketState) => {
   if (marketState === MarketState.calculating_final_payments) {
     return 'Calculating Final Payments';
   }
+};
+
+const getHighlightedMapRegions = (scenario: WalkthroughScenario) => {
+  const highlightedMapRegions: HighlightedMapRegion[] = [];
+
+  Object.entries(scenario.options.highlightedMapRegions ?? {}).forEach(
+    ([roleId, regions]) => {
+      if (isValidRoleId(roleId) && regions?.length) {
+        highlightedMapRegions.push({ regions, roleId });
+      }
+    },
+  );
+
+  return highlightedMapRegions;
 };
 
 export const Walkthrough: FC = () => {
@@ -210,7 +230,7 @@ export const Walkthrough: FC = () => {
         }
         showParticipants={scenario.options.showParticipants}
         showMap={scenario.options.showMaps}
-        highlightedMapRegions={scenario.options.highlightedMapRegions}
+        highlightedMapRegions={getHighlightedMapRegions(scenario)}
         loadingOverlayText={getOverlayText(marketState)}
         loadingBar={{
           progress: loadingBarProgress,

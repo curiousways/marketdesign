@@ -1,15 +1,17 @@
-import { GetWalkthroughScenario } from '@/types/walkthrough';
+import {
+  GetWalkthroughScenario,
+  WalkthroughHighlightedMapRegions,
+} from '@/types/walkthrough';
 import { sidebarContentStage1 } from './sidebar-content/1';
 import { sidebarContentStage2 } from './sidebar-content/2';
 import { sidebarContentStage3 } from './sidebar-content/3';
 import { sidebarContentStage12 } from './sidebar-content/12';
 import { sidebarContentStage4 } from './sidebar-content/4';
 import { sidebarContentStage5 } from './sidebar-content/5';
-import { HighlightedMapRegions } from '../../../../../types/map';
 
 const getHighlightedMapRegions = (
   stage: number,
-): HighlightedMapRegions | undefined => {
+): WalkthroughHighlightedMapRegions | undefined => {
   if (stage === 2) {
     return { seller: ['s1-woodland'] };
   }

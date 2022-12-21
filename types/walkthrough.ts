@@ -1,7 +1,10 @@
-import { HighlightedMapRegions } from './map';
 import { MarketState } from './market';
 import { MyProject, Project } from './project';
 import { RoleId } from './roles';
+
+export type WalkthroughHighlightedMapRegions = Partial<{
+  [key in RoleId]: string[];
+}>;
 
 export interface WalkthroughOptions {
   stages: number;
@@ -10,7 +13,7 @@ export interface WalkthroughOptions {
   showDetailsWidget: boolean;
   showDivisibleInput?: boolean;
   showMaps: boolean;
-  highlightedMapRegions?: HighlightedMapRegions;
+  highlightedMapRegions?: WalkthroughHighlightedMapRegions;
   projectOverlay?: {
     roleId: 'buyer' | 'seller';
     project: Project;
