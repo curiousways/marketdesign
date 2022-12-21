@@ -968,6 +968,7 @@ describe('MarketSandbox', () => {
     `(
       'shows the "$buttonText" button and updates the route when clicked',
       async ({ buttonText, routerState }) => {
+        const setIntervalSpy = jest.spyOn(global, 'setInterval');
         const biddersResult = cloneDeep(singleBidScenario.states[0].bidders);
 
         mockApiResponse({
@@ -1010,6 +1011,17 @@ describe('MarketSandbox', () => {
         expect(screen.queryByText(buttonText)).toBeNull();
 
         fireEvent.click(await screen.findByText('Solve Market'));
+
+        await waitFor(() => expect(setIntervalSpy).toHaveBeenCalled());
+
+        // Run through all stages
+        act(() => {
+          jest.advanceTimersByTime(1000);
+          jest.advanceTimersByTime(1000);
+          jest.advanceTimersByTime(1000);
+          jest.advanceTimersByTime(1000);
+        });
+
         fireEvent.click(await screen.findByText(buttonText));
 
         expect(router).toMatchObject(routerState);
@@ -1017,6 +1029,7 @@ describe('MarketSandbox', () => {
     );
 
     it('does not show the "Shuffle Market" button when only one state', async () => {
+      const setIntervalSpy = jest.spyOn(global, 'setInterval');
       const biddersResult = cloneDeep(singleBidScenario.states[0].bidders);
 
       mockApiResponse({
@@ -1043,8 +1056,17 @@ describe('MarketSandbox', () => {
       expect(textInput).toBeValid();
 
       fireEvent.click(within(projectDetails).getByText('Submit'));
-
       fireEvent.click(await screen.findByText('Solve Market'));
+
+      await waitFor(() => expect(setIntervalSpy).toHaveBeenCalled());
+
+      // Run through all stages
+      act(() => {
+        jest.advanceTimersByTime(1000);
+        jest.advanceTimersByTime(1000);
+        jest.advanceTimersByTime(1000);
+        jest.advanceTimersByTime(1000);
+      });
 
       expect(await screen.findByText('Replay Market')).not.toBeNull();
       expect(screen.getByText('Return to Market Choice')).not.toBeNull();
