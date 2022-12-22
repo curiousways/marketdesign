@@ -322,6 +322,22 @@ const getHighlightedMapRegions = (
   return regions;
 };
 
+const getAdjustedProductCount = (
+  project: Project,
+  projectCost: number,
+  productCount: number,
+) => {
+  const positiveProductCount = Math.abs(productCount);
+
+  if (!project.costPerCredit || !positiveProductCount) {
+    return productCount;
+  }
+
+  return Math.floor(
+    (project.costPerCredit * positiveProductCount) / projectCost,
+  );
+};
+
 const getInvestorRegions = (traders: DemoTrader[]): string[] => {
   const regions: string[] = [];
 
@@ -380,6 +396,16 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
     return newMarketState;
   }, []);
 
+  const showDivisibleInput = myProjects.some((project) => {
+    if (project.costPerCredit) {
+      return false;
+    }
+
+    const bid = findBidForProject(playableTraders, demoState.bidders, project);
+
+    return !!bid.divisibility;
+  });
+
   const onSolveMarketClick = useCallback(async () => {
     if (!demoState) {
       throw new Error(
@@ -400,11 +426,25 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
 
       bid.v = getProjectCost(project);
 
+      bid.q.biodiversity = getAdjustedProductCount(
+        project,
+        bid.v,
+        bid.q.biodiversity,
+      );
+
+      bid.q.nutrients = getAdjustedProductCount(
+        project,
+        bid.v,
+        bid.q.nutrients,
+      );
+
       if (roleId === 'seller') {
         bid.v *= -1;
       }
 
-      bid.divisibility = isProjectDivisible(project) ? 1 : 0;
+      if (showDivisibleInput) {
+        bid.divisibility = isProjectDivisible(project) ? 1 : 0;
+      }
     });
 
     const res = await fetch(API_URL, {
@@ -439,6 +479,7 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
     playableTraders,
     getNewMarketState,
     isProjectDivisible,
+    showDivisibleInput,
   ]);
 
   const onFormSubmit = useCallback(() => {
@@ -460,16 +501,6 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
     },
     [playableTraders],
   );
-
-  const showDivisibleInput = myProjects.some((project) => {
-    if (project.costPerCredit) {
-      return false;
-    }
-
-    const bid = findBidForProject(playableTraders, demoState.bidders, project);
-
-    return !!bid.divisibility;
-  });
 
   const [pathname] = router.asPath.split('?');
 

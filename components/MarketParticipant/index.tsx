@@ -27,6 +27,7 @@ type MarketParticipantProps = {
   subtitle?: string;
   projectRoleId: 'buyer' | 'seller';
   projectCost: number;
+  projectBid: number;
   accepted?: boolean | number;
   discountOrBonus: number;
   products: Products;
@@ -45,6 +46,7 @@ type MarketParticipantProps = {
   isDivisible?: boolean;
   hasSharedCost?: boolean;
   totalCost?: number;
+  costPerCredit?: number;
 };
 
 const calculatePayment = (
@@ -299,6 +301,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
   subtitle,
   projectRoleId,
   projectCost,
+  projectBid,
   accepted = false,
   discountOrBonus,
   products,
@@ -316,6 +319,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
   totalCost,
   isGroupedProject,
   isDivisible,
+  costPerCredit,
   hasSharedCost,
 }: MarketParticipantProps) => {
   const isBuyer = projectRoleId === 'buyer';
@@ -455,6 +459,8 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
                 adjustCount={showWinners}
                 accepted={accepted}
                 showLoserStyles={showLoserStyles}
+                projectBid={projectBid}
+                costPerCredit={costPerCredit}
               />
               <NutrientCount
                 type={isBuyer ? 'negative' : 'positive'}
@@ -463,6 +469,8 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
                 adjustCount={showWinners}
                 accepted={accepted}
                 showLoserStyles={showLoserStyles}
+                projectBid={projectBid}
+                costPerCredit={costPerCredit}
               />
             </div>
 

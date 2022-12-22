@@ -9,6 +9,8 @@ type NutrientCountProps = {
   adjustCount?: boolean;
   accepted: number | boolean;
   showLoserStyles?: boolean;
+  projectBid: number;
+  costPerCredit?: number;
 };
 
 export const NutrientCount: FC<NutrientCountProps> = ({
@@ -18,8 +20,14 @@ export const NutrientCount: FC<NutrientCountProps> = ({
   accepted,
   adjustCount,
   showLoserStyles,
+  projectBid,
+  costPerCredit,
 }: NutrientCountProps) => {
   const hasCount = typeof count === 'number';
+  const maxCount =
+    hasCount && !!costPerCredit
+      ? Math.floor((costPerCredit * count) / projectBid)
+      : count;
 
   if (showLoserStyles) {
     return (
@@ -28,7 +36,7 @@ export const NutrientCount: FC<NutrientCountProps> = ({
           data-testid="losing-product-count"
           className="border border-black rounded-full bg-white w-[20px] h-[20px] flex justify-center items-center absolute -right-[8px] -top-[8px]"
         >
-          {count}
+          {maxCount}
         </div>
       </Nutrients>
     );
@@ -37,7 +45,7 @@ export const NutrientCount: FC<NutrientCountProps> = ({
   return (
     <Nutrients type={type} boxStyle={boxStyle} hidden={!hasCount}>
       <AdjustedProductCount
-        count={count ?? 0}
+        count={maxCount ?? 0}
         accepted={adjustCount ? accepted : true}
       />
     </Nutrients>

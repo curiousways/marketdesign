@@ -9,6 +9,7 @@ describe('BiodiversityCount', () => {
         type="positive"
         boxStyle="buyer"
         accepted
+        projectBid={1000}
       />,
     );
 
@@ -16,14 +17,27 @@ describe('BiodiversityCount', () => {
   });
 
   it('renders a count of zero if no count given', () => {
-    render(<BiodiversityCount type="positive" boxStyle="buyer" accepted />);
+    render(
+      <BiodiversityCount
+        type="positive"
+        boxStyle="buyer"
+        accepted
+        projectBid={1000}
+      />,
+    );
 
     expect(screen.getByTestId('product-count').textContent).toBe('0');
   });
 
   it('renders a count of zero', () => {
     render(
-      <BiodiversityCount count={0} type="positive" boxStyle="buyer" accepted />,
+      <BiodiversityCount
+        count={0}
+        type="positive"
+        boxStyle="buyer"
+        accepted
+        projectBid={1000}
+      />,
     );
 
     expect(screen.getByTestId('product-count').textContent).toBe('0');
@@ -37,6 +51,7 @@ describe('BiodiversityCount', () => {
         accepted={50}
         type="positive"
         boxStyle="buyer"
+        projectBid={1000}
       />,
     );
 
@@ -53,6 +68,7 @@ describe('BiodiversityCount', () => {
         accepted={50}
         type="positive"
         boxStyle="buyer"
+        projectBid={1000}
       />,
     );
 
@@ -68,10 +84,26 @@ describe('BiodiversityCount', () => {
         accepted={50}
         type="positive"
         boxStyle="buyer"
+        projectBid={1000}
       />,
     );
 
     expect(screen.getByTestId('losing-product-count').textContent).toBe('42');
     expect(screen.queryByTestId('product-count')).not.toBeInTheDocument();
+  });
+
+  it('modifies the count when there is a cost per credit', () => {
+    render(
+      <BiodiversityCount
+        type="positive"
+        boxStyle="buyer"
+        accepted
+        count={42}
+        projectBid={1000}
+        costPerCredit={100}
+      />,
+    );
+
+    expect(screen.getByTestId('product-count').textContent).toBe('4');
   });
 });

@@ -1,9 +1,11 @@
+export type DemoProducts = {
+  biodiversity: number;
+  nutrients: number;
+};
+
 export type DemoBid = {
   v: number;
-  q: {
-    biodiversity: number;
-    nutrients: number;
-  };
+  q: DemoProducts;
   divisibility: number;
   label?: string;
   xor_group?: string;
