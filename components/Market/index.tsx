@@ -22,6 +22,7 @@ type MarketProps = {
   showMap?: boolean;
   highlightedMapRegions?: HighlightedMapRegions;
   investorRegions?: string[];
+  hideProducts?: boolean;
   onMapRegionClick?: (region: string) => void;
   link?: {
     href: string;
@@ -58,6 +59,7 @@ export const Market: FC<MarketProps> = ({
   loadingOverlayText,
   loadingBar,
   projectOverlay,
+  hideProducts,
 }: MarketProps) => (
   <div className="border-l border-green-dark pt-8 w-full relative flex justify-center">
     <div className="z-20">
@@ -82,6 +84,7 @@ export const Market: FC<MarketProps> = ({
         investorRegions={investorRegions}
         projectOverlay={projectOverlay}
         onMapRegionClick={onMapRegionClick}
+        hideProducts={hideProducts}
       />
     </div>
 

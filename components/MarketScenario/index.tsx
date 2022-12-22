@@ -27,6 +27,7 @@ type MarketScenarioProps = {
   showMap?: boolean;
   highlightedMapRegions?: HighlightedMapRegions;
   investorRegions?: string[];
+  hideProducts?: boolean;
   onMapRegionClick?: (region: string) => void;
   link?: {
     href: string;
@@ -55,6 +56,7 @@ export const MarketScenario: FC<MarketScenarioProps> = ({
   investorRegions,
   onMapRegionClick,
   projectOverlay,
+  hideProducts,
 }: MarketScenarioProps) => {
   const { getProjectCost } = useProjectsContext();
 
@@ -149,6 +151,7 @@ export const MarketScenario: FC<MarketScenarioProps> = ({
             showWinners={showWinners}
             showSurpluses={showSurpluses}
             isMarketSolved={isMarketSolved}
+            hideProducts={hideProducts}
           />
         </motion.div>
 

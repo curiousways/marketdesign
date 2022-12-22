@@ -13,6 +13,7 @@ import { MAP_INDICES } from '../../constants/map';
 import { Biodiversity } from '../Biodiversity';
 import { Nutrients } from '../Nutrients';
 import { Credit } from '../Credit';
+import { Checkbox } from '../Checkbox';
 
 type ProjectDetailsProps = {
   projects: Project[];
@@ -271,11 +272,13 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
 
         <div className="flex items-center">
           {showDivisibleInput ? (
-            // eslint-disable-next-line jsx-a11y/label-has-associated-control
-            <label
+            <Checkbox
+              ref={divisibleInputRef}
+              required={isDivisibleInputRequired}
+              name="is-divisible"
+              disabled={!isDivisibleInputEnabled}
+              onChange={onInputChange}
               className={classNames(
-                'flex select-none',
-                isDivisibleInputEnabled ? 'cursor-pointer' : '',
                 isFormEnabled &&
                   animatedInputName === 'is-divisible' &&
                   isDivisibleInputEnabled &&
@@ -284,18 +287,8 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                   : '',
               )}
             >
-              <span>
-                <input
-                  ref={divisibleInputRef}
-                  required={isDivisibleInputRequired}
-                  type="checkbox"
-                  name="is-divisible"
-                  disabled={!isDivisibleInputEnabled}
-                  onChange={onInputChange}
-                />
-              </span>
-              <span className="ml-2">Divisible</span>
-            </label>
+              Divisible
+            </Checkbox>
           ) : (
             isInvestorScenario && (
               <span className="text-black opacity-30">Divisible</span>

@@ -45,6 +45,7 @@ type MarketParticipantProps = {
   isDivisible?: boolean;
   hasSharedCost?: boolean;
   totalCost?: number;
+  hideProducts?: boolean;
 };
 
 const calculatePayment = (
@@ -316,6 +317,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
   totalCost,
   isGroupedProject,
   isDivisible,
+  hideProducts,
   hasSharedCost,
 }: MarketParticipantProps) => {
   const isBuyer = projectRoleId === 'buyer';
@@ -442,29 +444,31 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
             />
 
             {/* Products */}
-            <div
-              className={classNames(
-                'flex',
-                showLoserStyles ? 'gap-x-4' : 'gap-x-10 flex-[20%]',
-              )}
-            >
-              <BiodiversityCount
-                type={isBuyer ? 'negative' : 'positive'}
-                boxStyle={isBuyer ? 'buyer' : 'seller'}
-                count={products.biodiversity}
-                adjustCount={showWinners}
-                accepted={accepted}
-                showLoserStyles={showLoserStyles}
-              />
-              <NutrientCount
-                type={isBuyer ? 'negative' : 'positive'}
-                boxStyle={isBuyer ? 'buyer' : 'seller'}
-                count={products.nutrients}
-                adjustCount={showWinners}
-                accepted={accepted}
-                showLoserStyles={showLoserStyles}
-              />
-            </div>
+            {(!hideProducts || isMyProject) && (
+              <div
+                className={classNames(
+                  'flex',
+                  showLoserStyles ? 'gap-x-4' : 'gap-x-10 flex-[20%]',
+                )}
+              >
+                <BiodiversityCount
+                  type={isBuyer ? 'negative' : 'positive'}
+                  boxStyle={isBuyer ? 'buyer' : 'seller'}
+                  count={products.biodiversity}
+                  adjustCount={showWinners}
+                  accepted={accepted}
+                  showLoserStyles={showLoserStyles}
+                />
+                <NutrientCount
+                  type={isBuyer ? 'negative' : 'positive'}
+                  boxStyle={isBuyer ? 'buyer' : 'seller'}
+                  count={products.nutrients}
+                  adjustCount={showWinners}
+                  accepted={accepted}
+                  showLoserStyles={showLoserStyles}
+                />
+              </div>
+            )}
 
             {!showLoserStyles && (
               <div className="flex gap-x-10 flex-[50%]">
