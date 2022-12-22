@@ -396,6 +396,16 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
     return newMarketState;
   }, []);
 
+  const showDivisibleInput = myProjects.some((project) => {
+    if (project.costPerCredit) {
+      return false;
+    }
+
+    const bid = findBidForProject(playableTraders, demoState.bidders, project);
+
+    return !!bid.divisibility;
+  });
+
   const onSolveMarketClick = useCallback(async () => {
     if (!demoState) {
       throw new Error(
@@ -432,7 +442,9 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
         bid.v *= -1;
       }
 
-      bid.divisibility = isProjectDivisible(project) ? 1 : 0;
+      if (showDivisibleInput) {
+        bid.divisibility = isProjectDivisible(project) ? 1 : 0;
+      }
     });
 
     const res = await fetch(API_URL, {
@@ -467,6 +479,7 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
     playableTraders,
     getNewMarketState,
     isProjectDivisible,
+    showDivisibleInput,
   ]);
 
   const onFormSubmit = useCallback(() => {
@@ -488,16 +501,6 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
     },
     [playableTraders],
   );
-
-  const showDivisibleInput = myProjects.some((project) => {
-    if (project.costPerCredit) {
-      return false;
-    }
-
-    const bid = findBidForProject(playableTraders, demoState.bidders, project);
-
-    return !!bid.divisibility;
-  });
 
   const [pathname] = router.asPath.split('?');
 
