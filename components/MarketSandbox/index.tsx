@@ -108,7 +108,7 @@ const convertBidToProject = (
   mapRegion?: string,
 ): Project => {
   const { name: title } = bidder;
-  const { v, label } = bid;
+  const { v, label, xor_group, divisibility } = bid;
   const isInvestor =
     findPlayableTraderForBidder(playableTraders, bidder)?.role === 'investor';
 
@@ -133,8 +133,9 @@ const convertBidToProject = (
     mapRegions: regions.length
       ? regions
       : [mapRegion].filter((x): x is string => !!x),
-    cost: Math.abs(cost),
+    cost,
     costPerCredit,
+    sharedCost: xor_group && divisibility ? cost : undefined,
     products: getProductsForBid(bid, isInvestor),
     discountOrBonus: Math.round(Math.abs(discountOrBonus)),
     accepted: () => isProjectAccepted(playableTraders, bidder, bid, result),
