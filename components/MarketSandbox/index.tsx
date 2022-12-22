@@ -354,7 +354,7 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
 
   const [selectedMapRegion, setSelectedMapRegion] = useState<string>();
   const [playableTrader, setPlayableTrader] = useState<DemoTrader>();
-  const { getProjectCost } = useProjectsContext();
+  const { getProjectCost, isProjectDivisible } = useProjectsContext();
   const { playable_traders: playableTraders } = data;
 
   const myProjects = getProjectsForTrader(
@@ -403,6 +403,8 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
       if (roleId === 'seller') {
         bid.v *= -1;
       }
+
+      bid.divisibility = isProjectDivisible(project) ? 1 : 0;
     });
 
     const res = await fetch(API_URL, {
@@ -436,6 +438,7 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
     getProjectCost,
     playableTraders,
     getNewMarketState,
+    isProjectDivisible,
   ]);
 
   const onFormSubmit = useCallback(() => {
@@ -457,6 +460,16 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
     },
     [playableTraders],
   );
+
+  const showDivisibleInput = myProjects.some((project) => {
+    if (project.costPerCredit) {
+      return false;
+    }
+
+    const bid = findBidForProject(playableTraders, demoState.bidders, project);
+
+    return !!bid.divisibility;
+  });
 
   const [pathname] = router.asPath.split('?');
 
@@ -487,6 +500,8 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
         onFormRevise={onFormRevise}
         roleId={roleId}
         showSolveMarketBtn={marketState === MarketState.solvable}
+        isDivisibleInputEnabled={showDivisibleInput}
+        showDivisibleInput={showDivisibleInput}
       >
         {marketState === MarketState.solved && (
           <div className="flex flex-col mt-5">
