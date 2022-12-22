@@ -181,6 +181,7 @@ export const Walkthrough: FC = () => {
         isFormEnabled={isFormEnabled}
         isFormSubmitHidden={marketState === MarketState.solved}
         isDivisibleInputEnabled={isFormEnabled && allowDivision}
+        isDivisibleInputRequired={isFormEnabled && allowDivision}
         showDivisibleInput={showDivisibleInput}
         onFormSubmit={onFormSubmit}
         roleId={roleId}
