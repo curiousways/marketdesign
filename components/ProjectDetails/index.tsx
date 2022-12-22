@@ -79,8 +79,11 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
   roleId,
   animateNextSteps,
 }: ProjectDetailsProps) => {
-  const { getProjectCost, setProjectCost } = useProjectsContext();
+  const { getProjectCost, setProjectCost, setIsProjectDivisible } =
+    useProjectsContext();
+
   const { sharedCost } = projects.find((project) => !!project.sharedCost) ?? {};
+  const divisibleInputRef = useRef<HTMLInputElement>(null);
 
   const priceInputNames = projects.map((_, index) => `project-${index}-price`);
 
@@ -103,6 +106,11 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
 
   const onSubmit = (event: FormEvent) => {
     event.preventDefault();
+
+    projects.forEach((project) => {
+      setIsProjectDivisible(project, !!divisibleInputRef.current?.checked);
+    });
+
     onFormSubmit();
   };
 
@@ -163,7 +171,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
                   project.isInactive ? 'opacity-30' : '',
                 )}
               >
-                {!!project.subtitle && projects.length > 1 && (
+                {!!project.subtitle && (
                   <span className="flex justify-end text-sm underline">
                     {project.subtitle}
                   </span>
@@ -276,6 +284,7 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({
             >
               <span>
                 <input
+                  ref={divisibleInputRef}
                   required={isDivisibleInputEnabled}
                   type="checkbox"
                   name="is-divisible"

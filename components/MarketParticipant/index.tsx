@@ -44,6 +44,7 @@ type MarketParticipantProps = {
   isMarketSolved?: boolean;
   isGroupedProject?: boolean;
   isDivisible?: boolean;
+  hasSharedCost?: boolean;
   totalCost?: number;
   costPerCredit?: number;
 };
@@ -283,6 +284,18 @@ const useProjectAnimation = (
   return animation;
 };
 
+const getDividerText = (isDivisible?: boolean, hasSharedCost?: boolean) => {
+  if (hasSharedCost) {
+    return 'mix';
+  }
+
+  if (!isDivisible) {
+    return 'or';
+  }
+
+  return null;
+};
+
 export const MarketParticipant: FC<MarketParticipantProps> = ({
   title,
   subtitle,
@@ -307,6 +320,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
   isGroupedProject,
   isDivisible,
   costPerCredit,
+  hasSharedCost,
 }: MarketParticipantProps) => {
   const isBuyer = projectRoleId === 'buyer';
 
@@ -331,6 +345,7 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
   const backgroundColor = isBuyer ? 'bg-brown' : 'bg-green-light';
   const textColor = isBuyer ? 'text-brown' : 'text-green-light';
   const dividerColor = isBuyer ? 'border-brown' : 'border-green-light';
+  const dividerText = getDividerText(isDivisible, hasSharedCost);
 
   // Adjust metrics for projects that were only partially accepted.
   const adjustedCost = getAdjustedCost(projectCost, accepted);
@@ -365,11 +380,11 @@ export const MarketParticipant: FC<MarketParticipantProps> = ({
               )}
             />
           </div>
-          {!showWinners && (
+          {!showWinners && !!dividerText && (
             <div
               className={`absolute z-20 top-0 text-white font-bold mx-10 px-1 translate-y-[-50%] -top-[2px] ${backgroundColor}`}
             >
-              {isDivisible ? 'mix' : 'or'}
+              {dividerText}
             </div>
           )}
         </div>

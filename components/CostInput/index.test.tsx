@@ -76,6 +76,27 @@ describe('CostInput', () => {
     expect(textInput).toBeValid();
   });
 
+  it('validates that the value entered is a number', async () => {
+    render(
+      <CostInput
+        name="my-input"
+        cost={42}
+        onInputChange={jest.fn()}
+        onSelectChange={jest.fn()}
+      />,
+    );
+
+    const textInput = screen.getByRole('textbox');
+
+    fireEvent.change(textInput, { target: { value: 'not a number' } });
+
+    expect(textInput).not.toBeValid();
+
+    fireEvent.change(textInput, { target: { value: '42' } });
+
+    expect(textInput).toBeValid();
+  });
+
   it('renders a select input if multiple costs are given', async () => {
     render(
       <CostInput

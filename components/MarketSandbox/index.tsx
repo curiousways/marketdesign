@@ -4,13 +4,8 @@ import { capitalCase } from 'change-case';
 import fetch from 'isomorphic-unfetch';
 import cloneDeep from 'clone-deep';
 import objectHash from 'object-hash';
-import {
-  DemoBid,
-  DemoBidder,
-  DemoData,
-  DemoState,
-  DemoTrader,
-} from '../../types/demo';
+import { useRouter } from 'next/router';
+import { DemoBid, DemoBidder, DemoData, DemoTrader } from '../../types/demo';
 import { MainContainer } from '../MainContainer';
 import { SideBar } from '../Sidebar';
 import { Market } from '../Market';
@@ -21,9 +16,11 @@ import { HighlightedMapRegions } from '../../types/map';
 import { isProjectEqual } from '../../utils/project';
 import { useProjectsContext } from '../../context/ProjectsContext';
 import { RoleId } from '../../types/roles';
+import { OutlineButton } from '../OutlineButton';
 
 interface MarketSandboxProps {
   data: DemoData;
+  stateIndex?: number;
 }
 
 const API_URL = 'https://marketdesign.herokuapp.com/solve/lindsay2018';
@@ -111,7 +108,7 @@ const convertBidToProject = (
   mapRegion?: string,
 ): Project => {
   const { name: title } = bidder;
-  const { v, label } = bid;
+  const { v, label, xor_group, divisibility } = bid;
   const isInvestor =
     findPlayableTraderForBidder(playableTraders, bidder)?.role === 'investor';
 
@@ -136,8 +133,9 @@ const convertBidToProject = (
     mapRegions: regions.length
       ? regions
       : [mapRegion].filter((x): x is string => !!x),
-    cost: Math.abs(cost),
+    cost,
     costPerCredit,
+    sharedCost: xor_group && divisibility ? cost : undefined,
     products: getProductsForBid(bid, isInvestor),
     discountOrBonus: Math.round(Math.abs(discountOrBonus)),
     accepted: () => isProjectAccepted(playableTraders, bidder, bid, result),
@@ -354,14 +352,22 @@ const getInvestorRegions = (traders: DemoTrader[]): string[] => {
 
 export const MarketSandbox: NextPage<MarketSandboxProps> = ({
   data,
+  stateIndex,
 }: MarketSandboxProps) => {
   const [marketState, setMarketState] = useState<MarketState>(0);
   const [result, setResult] = useState<Result>();
+  const router = useRouter();
+
+  // If a valid state index is passed in use that, otherwise pick a random state.
+  const randomStateIndex = Math.floor(Math.random() * data.states.length);
+  const finalStateIndex =
+    typeof stateIndex === 'number' && data.states[stateIndex]
+      ? stateIndex
+      : randomStateIndex;
+
+  const demoState = data.states[finalStateIndex];
   const [loadingBarProgress, setLoadingBarProgress] = useState<number>(0);
 
-  // TODO: Swap states based on shuffle button etc. at the end of a scenario
-  // eslint-disable-next-line
-  const [demoState, setDemoState] = useState<DemoState>(data.states[0]);
   const [selectedMapRegion, setSelectedMapRegion] = useState<string>();
   const [playableTrader, setPlayableTrader] = useState<DemoTrader>();
   const { getProjectCost } = useProjectsContext();
@@ -480,6 +486,20 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
     [playableTraders],
   );
 
+  const [pathname] = router.asPath.split('?');
+
+  const onReplay = useCallback(() => {
+    void router.push(`${pathname}?state=${finalStateIndex}`);
+  }, [router, finalStateIndex, pathname]);
+
+  const onShuffle = useCallback(() => {
+    void router.push(pathname);
+  }, [router, pathname]);
+
+  const onReturnToIndex = useCallback(() => {
+    void router.push(pathname.replace(/\/[^/]+$/, ''));
+  }, [router, pathname]);
+
   return (
     <MainContainer>
       <SideBar
@@ -495,7 +515,25 @@ export const MarketSandbox: NextPage<MarketSandboxProps> = ({
         onFormRevise={onFormRevise}
         roleId={roleId}
         showSolveMarketBtn={marketState === MarketState.solvable}
-      />
+      >
+        {marketState === MarketState.solved && (
+          <div className="flex flex-col mt-5">
+            <div className="flex justify-between w-full space-x-3">
+              <OutlineButton className="flex-1" onClick={onReplay}>
+                Replay Market
+              </OutlineButton>
+              {data.states.length > 1 && (
+                <OutlineButton className="flex-1" onClick={onShuffle}>
+                  Shuffle Market
+                </OutlineButton>
+              )}
+            </div>
+            <OutlineButton className="flex-1 mt-3" onClick={onReturnToIndex}>
+              Return to Market Choice
+            </OutlineButton>
+          </div>
+        )}
+      </SideBar>
       <Market
         showMap
         myProjects={myProjects}
