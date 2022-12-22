@@ -1,7 +1,12 @@
 import { FC, MouseEvent, MouseEventHandler, useEffect, useState } from 'react';
 import { sentenceCase } from 'change-case';
+import { useRouter } from 'next/router';
 import { useWalkthroughContext } from '../../context/WalkthroughContext';
-import { getNextScenarioId, parseScenarioId } from '../../utils/walkthroughs';
+import {
+  createScenarioId,
+  getNextScenarioId,
+  parseScenarioId,
+} from '../../utils/walkthroughs';
 import { SideBar } from '../Sidebar';
 import { RoleId } from '../../types/roles';
 import { Market } from '../Market';
@@ -52,6 +57,7 @@ export const Walkthrough: FC = () => {
     isMarketSolving,
     wasSolvableStage,
   } = useWalkthroughContext();
+  const router = useRouter();
 
   const onSolveMarketClick: MouseEventHandler = (
     e: MouseEvent<HTMLElement>,
@@ -60,8 +66,9 @@ export const Walkthrough: FC = () => {
     goToNextMarketState();
   };
 
-  const { walkthroughIndex } = parseScenarioId(scenarioId);
+  const { walkthroughIndex, scenarioIndex } = parseScenarioId(scenarioId);
   const { isFormEnabled, allowDivision, showDivisibleInput } = scenario.options;
+  const hasPreviousWalkthrough = stage === 1 && scenarioIndex > 0;
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
@@ -132,6 +139,18 @@ export const Walkthrough: FC = () => {
   };
 
   const onPreviousClick = () => {
+    if (hasPreviousWalkthrough) {
+      void router.replace(
+        `/how-it-works/${createScenarioId(
+          roleId,
+          walkthroughIndex,
+          scenarioIndex - 1,
+        )}`,
+      );
+
+      return;
+    }
+
     const hasPreviousSidebarContent = scenario.sidebarContent?.[stage - 1];
 
     // If the previous stage had no sidebar content and we have already passed
@@ -171,7 +190,7 @@ export const Walkthrough: FC = () => {
         title={walkthrough.title}
         subtitle={getWalkthroughTitle(roleId, walkthroughIndex)}
         hasNextPage={hasNextStage}
-        hasPreviousPage={hasPreviousStage}
+        hasPreviousPage={hasPreviousStage || hasPreviousWalkthrough}
         onNextClick={goToNextStage}
         onPreviousClick={onPreviousClick}
         showSolveMarketBtn={marketState === MarketState.solvable}
