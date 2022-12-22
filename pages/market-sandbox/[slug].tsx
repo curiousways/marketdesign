@@ -7,10 +7,12 @@ import { MarketSandbox } from '../../components/MarketSandbox';
 
 interface MarketSandboxScenarioParams extends ParsedUrlQuery {
   slug: string;
+  state?: string;
 }
 
 interface MarketSandboxScenarioProps {
   data: DemoData;
+  stateIndex: number | null;
 }
 
 const MarketSandboxScenario: NextPage<MarketSandboxScenarioProps> = ({
@@ -53,6 +55,7 @@ export const getStaticProps: GetStaticProps<
   return {
     props: {
       data: demoFile.data,
+      stateIndex: params?.state ? Number(params.state) : null,
     },
   };
 };
