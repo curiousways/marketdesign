@@ -18,6 +18,7 @@ const createProject = (overrides?: Partial<Project>) => ({
 type WrapperProps = { children: ReactNode };
 
 const setProjectCost = jest.fn();
+const setIsProjectDivisible = jest.fn();
 
 const wrapper = ({ children }: WrapperProps) => (
   <ProjectsContext.Provider
@@ -25,6 +26,8 @@ const wrapper = ({ children }: WrapperProps) => (
       setProjectCost,
       getProjectCost: jest.fn(),
       getAcceptedProjectCost: jest.fn(),
+      setIsProjectDivisible,
+      isProjectDivisible: () => false,
     }}
   >
     {children}
@@ -245,6 +248,49 @@ describe('ProjectDetails', () => {
     fireEvent.submit(screen.getByText('Submit'));
 
     expect(onFormSubmit).toHaveBeenCalledTimes(1);
+  });
+
+  it('updates the project divisibility when the divisibility input is checked', async () => {
+    const project = createProject();
+
+    render(
+      <ProjectDetails
+        isFormEnabled
+        showDivisibleInput
+        isDivisibleInputEnabled
+        projects={[project]}
+        onFormSubmit={jest.fn()}
+        roleId="buyer"
+      />,
+      { wrapper },
+    );
+
+    fireEvent.click(screen.getByText('Divisible'));
+    fireEvent.submit(screen.getByText('Submit'));
+
+    expect(setIsProjectDivisible).toHaveBeenCalledTimes(1);
+    expect(setIsProjectDivisible).toHaveBeenCalledWith(project, true);
+  });
+
+  it('updates the project divisibility when the divisibility input is not checked', async () => {
+    const project = createProject();
+
+    render(
+      <ProjectDetails
+        isFormEnabled
+        showDivisibleInput
+        isDivisibleInputEnabled
+        projects={[project]}
+        onFormSubmit={jest.fn()}
+        roleId="buyer"
+      />,
+      { wrapper },
+    );
+
+    fireEvent.submit(screen.getByText('Submit'));
+
+    expect(setIsProjectDivisible).toHaveBeenCalledTimes(1);
+    expect(setIsProjectDivisible).toHaveBeenCalledWith(project, false);
   });
 
   it('revises the form if enabled', () => {

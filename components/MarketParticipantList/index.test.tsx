@@ -22,6 +22,8 @@ const wrapper = ({ children }: WrapperProps) => (
       getProjectCost: jest.fn(({ cost }) =>
         Array.isArray(cost) ? cost[0] : cost,
       ),
+      setIsProjectDivisible: jest.fn(),
+      isProjectDivisible: () => false,
     }}
   >
     {children}
