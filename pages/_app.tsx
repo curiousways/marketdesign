@@ -63,17 +63,19 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           cardType: 'summary_large_image',
         }}
       />
-      <Nav
-        className="px-10 lg:pb-8 pt-5"
-        activeClassName="underline text-green-dark"
-      />
+      {router.pathname !== '/auth' && (
+        <Nav
+          className="px-10 lg:pb-8 pt-5"
+          activeClassName="underline text-green-dark"
+        />
+      )}
       <Component
         {...pageProps}
         // Remount components if the route changes
         // https://nextjs.org/docs/api-reference/next/router#resetting-state-after-navigation
         key={router.asPath}
       />
-      <Footer />
+      {router.pathname !== '/auth' && <Footer />}
     </>
   );
 };
