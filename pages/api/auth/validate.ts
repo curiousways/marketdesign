@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export const USERNAME = 'marketdesign';
@@ -6,8 +6,6 @@ export const PASSWORD = 'curiousways';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const { token } = req.body;
-
-  console.log(req.body);
 
   if (typeof process.env.JWT_PRIVATE_KEY !== 'string') {
     throw new Error('JWT_PRIVATE_KEY env var not set');
@@ -19,9 +17,17 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     return;
   }
 
+  let decoded;
+
   try {
-    jwt.verify(token, process.env.JWT_PRIVATE_KEY);
+    decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY) as JwtPayload;
   } catch (err) {
+    res.status(401).end();
+
+    return;
+  }
+
+  if (!decoded?.exp || decoded.exp < new Date().getTime()) {
     res.status(401).end();
 
     return;

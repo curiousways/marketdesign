@@ -17,9 +17,17 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     throw new Error('JWT_PRIVATE_KEY env var not set');
   }
 
-  const token = jwt.sign({ username: USERNAME }, process.env.JWT_PRIVATE_KEY, {
-    algorithm: 'RS256',
-  });
+  const now = new Date();
+
+  now.setDate(now.getDate() + 1);
+
+  const token = jwt.sign(
+    { username: USERNAME, exp: now.getTime() },
+    process.env.JWT_PRIVATE_KEY,
+    {
+      algorithm: 'RS256',
+    },
+  );
 
   res.status(200).json({ token });
 }
