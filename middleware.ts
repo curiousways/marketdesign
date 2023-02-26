@@ -3,7 +3,6 @@ import type { NextRequest } from 'next/server';
 import fetch from 'isomorphic-unfetch';
 
 export async function middleware(request: NextRequest) {
-  // @ts-ignore
   const token = request.cookies.get('access_token')?.value;
   const res = await fetch(new URL('/api/auth/validate', request.url).href, {
     method: 'POST',
