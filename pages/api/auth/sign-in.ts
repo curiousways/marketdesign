@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export const USERNAME = 'marketdesign';
-export const PASSWORD = 'curiousways';
+export const PASSWORD = 'meb1djg5rtb.RUQ.pvb';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const { username, password } = req.body;
