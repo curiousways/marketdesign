@@ -6,7 +6,7 @@ import { MarketBackgroundRight } from '../../icons/MarketBackground';
 import { MarketScenario } from '../MarketScenario';
 import { Project } from '../../types/project';
 import { RoleId } from '../../types/roles';
-import { HighlightedMapRegions } from '../../types/map';
+import { HighlightedMapRegion } from '../../types/map';
 
 type MarketProps = {
   myProjects: Project[];
@@ -20,7 +20,7 @@ type MarketProps = {
   isMarketSolved: boolean;
   showParticipants: boolean;
   showMap?: boolean;
-  highlightedMapRegions?: HighlightedMapRegions;
+  highlightedMapRegions?: HighlightedMapRegion[];
   investorRegions?: string[];
   onMapRegionClick?: (region: string) => void;
   link?: {

@@ -1,5 +1,7 @@
 import { RoleId } from './roles';
 
-export type HighlightedMapRegions = Partial<{
-  [key in RoleId]: string[];
-}>;
+export type HighlightedMapRegion = {
+  roleId: RoleId;
+  regions: string[];
+  label?: string;
+};

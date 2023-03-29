@@ -18,6 +18,7 @@ type MapRegionProps = {
   onClick?: (region: string) => void;
   pathOnly?: boolean;
   isSmall?: boolean;
+  label?: string;
 };
 
 const ICONS: { [x in string]: StaticImageData } = {
@@ -123,6 +124,7 @@ export const MapRegion: FunctionComponent<MapRegionProps> = ({
   onClick,
   pathOnly,
   isSmall,
+  label,
 }: MapRegionProps) => {
   const ref = useRef<SVGPathElement>(null);
   const [boundingBox, setBoundingBox] = useState<DOMRect>();
@@ -162,7 +164,9 @@ export const MapRegion: FunctionComponent<MapRegionProps> = ({
         stroke="black"
         className={classNames(isClickable ? 'cursor-pointer' : '')}
         onClick={handleClick}
-      />
+      >
+        {label && <title>{label}</title>}
+      </path>
       {iconType && (
         <g data-testid="map-region-icon">
           <path
